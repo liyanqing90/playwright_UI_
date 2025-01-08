@@ -1,0 +1,206 @@
+{
+  "cookies": [
+    {
+      "name": "_ac",
+      "value": "852dd54d81426df6.1736238674",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1736265599,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "fvlid",
+      "value": "1736238674745blZMFEpuEP",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1770798674.745847,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "sessionip",
+      "value": "103.75.152.102",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1770798674.848599,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "sessionid",
+      "value": "62F9C41A-D84C-451D-A600-518456C95F60%7C%7C2025-01-07+16%3A31%3A14.810%7C%7C0",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1770798674.848713,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "autoid",
+      "value": "6172546eb592236b96c05943a7be5de1",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1770798678.048895,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "sessionvid",
+      "value": "101D99BA-0BC6-4CD0-B52A-8CCFCA828610",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1736240478.049005,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "area",
+      "value": "110108",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1770798678.049028,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "page_referer",
+      "value": "https://energyspace.m.autohome.com.cn/",
+      "domain": ".pcmx.autohome.com.cn",
+      "path": "/",
+      "expires": 1736242278.10925,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "ahpvno",
+      "value": "2",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1736325077,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__ah_uuid_ng",
+      "value": "c_62F9C41A-D84C-451D-A600-518456C95F60",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1770798678.032969,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "v_no",
+      "value": "2",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1770798678.048944,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "visit_info_ad",
+      "value": "62F9C41A-D84C-451D-A600-518456C95F60||101D99BA-0BC6-4CD0-B52A-8CCFCA828610||-1||-1||2",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1770798678.048965,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "ref",
+      "value": "0%7C0%7C0%7C0%7C2025-01-07+16%3A31%3A18.031%7C2025-01-07+16%3A31%3A14.810",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": 1751790678.048985,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "pageid",
+      "value": "1736238678074_4725",
+      "domain": ".pcmx.autohome.com.cn",
+      "path": "/",
+      "expires": 1736242278.109304,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "ahrlid",
+      "value": "1736238678032Gkg89Y1jHS-1736238680211",
+      "domain": ".autohome.com.cn",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://energyspace.m.autohome.com.cn",
+      "localStorage": [
+        {
+          "name": "__CDN_CONFIG__",
+          "value": "{\"value\":\"i1.autoimg.cn,i3.autoimg.cn,zhifu2.autoimg.cn,wz0.autoimg.cn,mall3.autoimg.cn,mall2.autoimg.cn,m0.autoimg.cn,k3.autoimg.cn,k2ipv6.autoimg.cn,k1.autoimg.cn,k0.autoimg.cn,j2.autoimg.cn,img1.autoimg.cn,img0.autoimg.cn,dealer0.autoimg.cn,club2.autoimg.cn,car3.m.autoimg.cn,car2.m.autoimg.cn,car1.autoimg.cn,car0.m.autoimg.cn,car0.autoimg.cn,app0.autoimg.cn,www3.autoimg.cn,tv.autoimg.cn,k2.autoimg.cn,img3.autoimg.cn,files3.autoimg.cn,adm3.autoimg.cn,www2.autoimg.cn,m1.autoimg.cn,img2.autoimg.cn,i2.autoimg.cn,dealer2.autoimg.cn,car3.autoimg.cn,car2.autoimg.cn,app2.autoimg.cn,2sc2.autoimg.cn,panovr.autoimg.cn,z.autoimg.cn,dx.autoimg.cn,g.autoimg.cn,s.autoimg.cn,x.autoimg.cn,adm2.autoimg.cn,cjh2.autoimg.cn\",\"expiry\":1736239274562}"
+        },
+        {
+          "name": "__WEB_OBSERVER_SAMPLE__",
+          "value": "{\"special\":false,\"base\":[{\"type\":\"web\",\"value\":40},{\"type\":\"img\",\"value\":1}],\"custom\":[{\"type\":\"web\",\"items\":[{\"key\":\"1211001,948,7999\",\"value\":10},{\"key\":\"1211002,572,3306\",\"value\":10},{\"key\":\"1211001,948,7998\",\"value\":20},{\"key\":\"1211003,47,1344\",\"value\":25},{\"key\":\"1211002,572,3305\",\"value\":10},{\"key\":\"1211001,40,1347\",\"value\":20},{\"key\":\"1211002,572,3282\",\"value\":10},{\"key\":\"1211002,572,3288\",\"value\":20},{\"key\":\"1211002,572,3286\",\"value\":10},{\"key\":\"1211002,572,3287\",\"value\":10},{\"key\":\"1211002,1373,0\",\"value\":10},{\"key\":\"1211002,1374,0\",\"value\":10},{\"key\":\"1211001,37,0\",\"value\":5},{\"key\":\"1211001,948,0\",\"value\":1},{\"key\":\"1211001,155,0\",\"value\":5},{\"key\":\"1211001,49,0\",\"value\":1},{\"key\":\"1211009,57,0\",\"value\":25},{\"key\":\"1211003,46,0\",\"value\":5},{\"key\":\"1211002,216,0\",\"value\":1},{\"key\":\"1211002,572,0\",\"value\":20},{\"key\":\"1211002,1936,0\",\"value\":1},{\"key\":\"1211003,47,0\",\"value\":1},{\"key\":\"1211001,526,0\",\"value\":1},{\"key\":\"204,2147,26469\",\"value\":4},{\"key\":\"1,40,0\",\"value\":50},{\"key\":\"1,948,7999\",\"value\":50},{\"key\":\"1,948,7998\",\"value\":25},{\"key\":\"1,948,13912\",\"value\":25},{\"key\":\"1,37,3\",\"value\":20},{\"key\":\"2,572,3290\",\"value\":200},{\"key\":\"2,572,3289\",\"value\":200},{\"key\":\"2,572,3685\",\"value\":50},{\"key\":\"2,572,9429\",\"value\":25},{\"key\":\"2,572,3285\",\"value\":10},{\"key\":\"2,572,3287\",\"value\":25},{\"key\":\"2,572,7040\",\"value\":50},{\"key\":\"2,572,27130\",\"value\":10},{\"key\":\"3,47,1344\",\"value\":50},{\"key\":\"3,46,1343\",\"value\":20},{\"key\":\"2,1373,0\",\"value\":40},{\"key\":\"2,1374,0\",\"value\":40},{\"key\":\"2,572,27224\",\"value\":25},{\"key\":\"2,572,27225\",\"value\":25},{\"key\":\"2,572,27405\",\"value\":25},{\"key\":\"2,572,27406\",\"value\":25},{\"key\":\"1,38,0\",\"value\":10},{\"key\":\"1,48,0\",\"value\":10},{\"key\":\"1,948,0\",\"value\":25},{\"key\":\"1,155,0\",\"value\":10},{\"key\":\"1,244,0\",\"value\":1},{\"key\":\"2,572,0\",\"value\":50},{\"key\":\"2,1936,0\",\"value\":4},{\"key\":\"3,47,0\",\"value\":5},{\"key\":\"9,57,0\",\"value\":25},{\"key\":\"1,37,0\",\"value\":5},{\"key\":\"1,526,0\",\"value\":1},{\"key\":\"224,2217,0\",\"value\":50},{\"key\":\"224,2230,0\",\"value\":40},{\"key\":\"224,2236,0\",\"value\":40},{\"key\":\"224,2222,0\",\"value\":40},{\"key\":\"224,2247,0\",\"value\":40},{\"key\":\"208,2124,0\",\"value\":40},{\"key\":\"79,912,0\",\"value\":1}]}],\"timestamp\":1736238674313}"
+        },
+        {
+          "name": "url-pvareaid",
+          "value": "[\"6860426\"]"
+        }
+      ]
+    },
+    {
+      "origin": "http://app.ahohcrm.autohome.com.cn",
+      "localStorage": [
+        {
+          "name": "ahoh_global_userinfo",
+          "value": "{\"account\":\"12500000002\",\"appType\":\"\",\"avatar\":\"https://x.autoimg.cn/space/images/head_120X120.png\",\"dataPermissions\":[{\"dataInfoList\":[],\"dataScope\":null,\"dateType\":null,\"deptIds\":[],\"tenantIds\":[]},{\"dataInfoList\":[],\"dataScope\":null,\"dateType\":null,\"deptIds\":[],\"tenantIds\":[]},{\"dataInfoList\":[],\"dataScope\":null,\"dateType\":null,\"deptIds\":[],\"tenantIds\":[]}],\"dccNo\":\"\",\"dccPwd\":\"\",\"isOnline\":0,\"name\":\"\u7ba1\u5bb62\",\"nickName\":\"\u7ba1\u5bb62\",\"operPermissions\":[],\"phone\":\"12500000002\",\"positionName\":\"\u7ba1\u5bb6\",\"post\":\"6\",\"roles\":[{\"dataScope\":4,\"remark\":\"\",\"roleName\":\"\u9500\u552e\",\"roleNo\":\"R00049\",\"status\":0,\"tenantId\":null},{\"dataScope\":4,\"remark\":\"\",\"roleName\":\"\u65b0\u96f6\u552e-\u7ba1\u5bb6\",\"roleNo\":\"R00069\",\"status\":0,\"tenantId\":null}],\"sipUrl\":\"sip:null@fsahoh.corpautohome.com:7443\",\"tenantIds\":[100000119],\"tenants\":[{\"beginTime\":null,\"brandId\":null,\"brandName\":\"\",\"dataPermissions\":[],\"dccWeight\":null,\"depts\":[{\"ancestorList\":[],\"ancestors\":\"0\",\"createdStime\":null,\"deptId\":3082,\"deptIdReal\":3082,\"deptName\":\"\u52a0\u76df\u5546\u9999\u6e2f\u7efc\u5408\u6d4b\u8bd5\u95e8\u5e971\",\"deptNameReal\":\"\u52a0\u76df\u5546\u9999\u6e2f\u7efc\u5408\u6d4b\u8bd5\u95e8\u5e971\",\"id\":null,\"parentId\":null,\"status\":null,\"tenantId\":null,\"thirdId\":\"\"}],\"endTime\":null,\"factoryId\":null,\"factoryName\":\"\",\"id\":null,\"isDel\":null,\"managerId\":null,\"productNo\":\"\",\"roles\":[{\"dataScope\":4,\"remark\":\"\",\"roleName\":\"\u9500\u552e\",\"roleNo\":\"R00049\",\"status\":0,\"tenantId\":100000119},{\"dataScope\":4,\"remark\":\"\",\"roleName\":\"\u65b0\u96f6\u552e-\u7ba1\u5bb6\",\"roleNo\":\"R00069\",\"status\":0,\"tenantId\":100000119}],\"seriesIds\":\"\",\"seriesNames\":\"\",\"sysBrandSeriesList\":[],\"tenantId\":100000119,\"tenantName\":\"\u65b0\u96f6\u552e\u52a0\u76df\u5546\u6d4b\u8bd5\u79df\u6237\",\"tenantType\":null}],\"userId\":24170,\"userName\":\"\",\"wsUrl\":\"wss://fsahoh.corpautohome.com:7443\",\"role\":6,\"storeInfo\":{\"address\":\"\u9999\u6e2f\u7279\u522b\u884c\u653f\u533a\u79bb\u5c9b\u533a\u7fd4\u5929\u8def1\u53f7\",\"addressDesc\":\"\u5f15\u5bfc\u5730\u5740\",\"bdLatitude\":22.31557984,\"bdLongitude\":113.92706607,\"cityFirstSpell\":\"X\",\"cityId\":810100,\"cityName\":\"\u9999\u6e2f\",\"closeTime\":\"22:00:00\",\"clueWeight\":0,\"countyId\":810101,\"countyName\":\"\u9999\u6e2f\",\"createdStime\":\"2023-04-03 19:08:30\",\"dccWeight\":0,\"dealerId\":\"\",\"endTime\":null,\"id\":33,\"isDel\":0,\"latitude\":\"22.309761\",\"longitude\":\"113.920541\",\"mainStoreId\":\"\",\"managerNameEncrypt\":\"\u53f0\u6e7e\u4e0a\u95e8\u5e971\",\"managerPhoneEncrypt\":\"12500000000\",\"modifiedStime\":\"2024-12-19 19:53:01\",\"openTime\":\"09:00:00\",\"ownerNameEncrypt\":\"\",\"ownerPhoneEncrypt\":\"\",\"provinceId\":810000,\"provinceName\":\"\u9999\u6e2f\",\"sort\":0,\"startTime\":\"2023-04-03 00:00:00\",\"storeContactPhoneEncrypt\":\"12200000000\",\"storeFullName\":\"\u6d4b\u8bd5\u88ab\u4fdd\u9669\u4eba\u4fe1\u606f\",\"storeId\":\"3082\",\"storeImage\":\"\",\"storeLevel\":\"\u4e00\u7c7b\u5e97\",\"storeName\":\"\u52a0\u76df\u5546\u9999\u6e2f\u7efc\u5408\u6d4b\u8bd5\u95e8\u5e971\",\"storeShowName\":\"\u5916\u663e\",\"storeStatus\":1,\"storeType\":3,\"summary\":\"\u7b80\u4ecb\u8be6\u7ec6\u5730\u5740\u9999\u6e2f\u7279\u522b\",\"tenantId\":100000119,\"tenantName\":\"\u65b0\u96f6\u552e\u52a0\u76df\u5546\u6d4b\u8bd5\u79df\u6237\",\"thumbnail\":\"\",\"travelDealerid\":\"\",\"workerId\":24168},\"token\":\"ad1a53fe40124832acac80da89584546\"}"
+        },
+        {
+          "name": "ahoh_global_policy_role",
+          "value": "\"customer\""
+        },
+        {
+          "name": "ftwo_deviceId",
+          "value": "0280d214953c472b9ebaaeb25a6cbc55"
+        },
+        {
+          "name": "ahoh_is_delivery_24170",
+          "value": "{\"isDelivery\":false}"
+        },
+        {
+          "name": "ahoh_global_hide_favourite_popover",
+          "value": "true"
+        },
+        {
+          "name": "ftwo_userId",
+          "value": "cGhvbmU9MTI1MDAwMDAwMDImcG9zdD02Jm5hbWU9566h5a62MiZ0b2tlbj1hZDFhNTNmZTQwMTI0ODMyYWNhYzgwZGE4OTU4NDU0NiZ1c2VySWQ9MjQxNzAmYWRkcmVzc0Rlc2M95byV5a+85Zyw5Z2AJnN0b3JlSWQ9MzA4MiZzdG9yZVR5cGU9MyZjaXR5SWQ9ODEwMTAw"
+        },
+        {
+          "name": "ahoh_user_role_list_24170",
+          "value": "[{\"key\":\"ahoh_consultant\",\"name\":\"\u65b0\u8f66\"}]"
+        }
+      ]
+    }
+  ]
+}

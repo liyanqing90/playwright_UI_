@@ -1,0 +1,23 @@
+projects:
+  ahoh:
+    test_data_dir: "test_data/"
+    environments:
+      dev:
+        base_url: "http://dev.project1.com"
+      test:
+        base_url: "http://prod.project1.com"
+      stage:
+        base_url: "http://stage.project1.com"
+      prod:
+        base_url: "http://prod.project1.com"
+  project2:
+    test_data_dir: "test_data/"
+    environments:
+      dev:
+        base_url: "http://dev.project1.com"
+      test:
+        base_url: "http://prod.project1.com"
+      stage:
+        base_url: "http://stage.project1.com"
+      prod:
+        base_url: "http://prod.project1.com"
