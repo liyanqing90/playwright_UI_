@@ -1,13 +1,19 @@
 import json
+import time
 from typing import Generator
+from datetime import datetime
 
 import pytest
 from playwright.sync_api import Browser, sync_playwright, Page
 
 from page_objects.base_page import BasePage
 from utils.logger import logger
+from utils.dingtalk_notifier import ReportNotifier
 
 log = logger
+
+DINGTALK_TOKEN = "636325ecf2302baf112f74ac54d8ef991de9b307c00bd168d3f2baa7df7f9113"
+DINGTALK_SECRET = "SECa7e01bee3a34e05d1b57297a95b8920d8c257088979c49fa0b50889fd60c570c"
 
 DEVICE = {}
 
@@ -86,5 +92,69 @@ def ui_helper(page):
     ui = BasePage(page)
     yield ui
 
-# def pytest_generate_tests(metafunc):  # noqa
-#     """测试用例参数化功能实现"""
+def report_notifier():
+    return ReportNotifier(DINGTALK_TOKEN, DINGTALK_SECRET)
+
+
+def pytest_terminal_summary(terminalreporter, exitstatus, config):
+    """测试结束时发送通知"""
+    from utils.config import Config
+    import os
+
+    # 获取环境配置
+    config = Config()
+    env = os.getenv('ENV', config.env.value)
+    duration = round(time.time() - terminalreporter._sessionstarttime, 2)
+    # 获取失败用例详情
+    failures = []
+    if terminalreporter.stats:
+        for item in terminalreporter.stats.get('failed', []):
+            log.info(f"Processing failed test: {item.nodeid}")
+            error_msg =extract_assertion_message(item.sections)
+            failures.append({
+                "test_case": item.nodeid.split("::")[-1],
+                "reason": error_msg,
+            })
+
+
+    report_data = {
+        "timestamp": datetime.now().strftime("%Y%m%d_%H%M%S"),
+        "environment": env,
+        "total_tests": terminalreporter._numcollected,
+        "passed": terminalreporter._numcollected - len(terminalreporter.stats.get('failed', [])),
+        "failed": len(terminalreporter.stats.get('failed', [])),
+        "skipped": len(terminalreporter.stats.get('skipped', [])),
+        "duration": duration,
+        "failures": failures
+    }
+
+    report_notifier().notify(report_data)
+
+
+def extract_assertion_message(log_list):
+    for log_type, message in log_list:
+        if "Step execution failed:" in message:
+            # 清除ANSI转义码及其相关内容
+            clean_msg = ''
+            i = 0
+            while i < len(message):
+                if message[i] == '\x1b':
+                    # 跳过转义序列
+                    while i < len(message) and message[i] != 'm':
+                        i += 1
+                    i += 1  # 跳过 'm'
+                else:
+                    clean_msg += message[i]
+                    i += 1
+
+            # 提取断言信息
+            start = clean_msg.find("Step execution failed:") + len("Step execution failed:")
+
+            # 返回清理后的信息
+            result = clean_msg[start:].strip()
+            # 移除可能残留的 [0m 或类似序列
+            if '[0m' in result:
+                result = result.replace('[0m', '')
+            return result.strip()
+
+    return None

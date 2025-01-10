@@ -3,7 +3,7 @@ from typing import Dict, Any, Set
 import allure
 from _pytest.fixtures import FixtureRequest
 
-from src.test_step_executor import TestStepExecutor
+from src.test_step_executor import StepExecutor
 from utils.logger import logger
 
 log = logger
@@ -45,7 +45,7 @@ class CaseExecutor:
 
         try:
             # 执行测试步骤
-            step_executor = TestStepExecutor(page, ui_helper, self.elements)
+            step_executor = StepExecutor(page, ui_helper, self.elements)
             steps = self.test_data[case_name]["steps"]
 
             for step in steps:

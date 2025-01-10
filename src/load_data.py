@@ -74,9 +74,8 @@ def _convert_to_test_data(excel_cases: List[ExcelTestCase]) -> Dict[str, Dict]:
     return {'test_data': test_data}
 
 
-class TestDataConverter:
-    def __init__(self):
-        config = Config()
+class DataConverter:
+    def __init__(self, config):
         self.test_data_dir = config.test_data_dir
 
         self.excel_handler = ExcelHandler(config.test_data_dir)

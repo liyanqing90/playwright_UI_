@@ -27,7 +27,7 @@ class StepAction:
     NO_SELECTOR_ACTIONS = NAVIGATE + WAIT + REFRESH
 
 
-class TestStepExecutor:
+class StepExecutor:
     def __init__(self, page, ui_helper, elements: Dict[str, Any]):
         self.page = page
         self.ui_helper = ui_helper

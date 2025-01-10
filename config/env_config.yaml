@@ -1,23 +1,22 @@
 projects:
-  ahoh:
-    test_data_dir: "test_data/"
+  demo:
+    test_data_dir: "test_data/demo"
     environments:
-      dev:
-        base_url: "http://dev.project1.com"
-      test:
-        base_url: "http://prod.project1.com"
-      stage:
-        base_url: "http://stage.project1.com"
-      prod:
-        base_url: "http://prod.project1.com"
-  project2:
-    test_data_dir: "test_data/"
+      dev: "http://dev.demo.com"
+      test: "http://test.demo.com"
+      stage: "http://stage.demo.com"
+      prod: "http://prod.demo.com"
+  holo_live:
+    test_data_dir: "test_data/hololive"
     environments:
-      dev:
-        base_url: "http://dev.project1.com"
-      test:
-        base_url: "http://prod.project1.com"
-      stage:
-        base_url: "http://stage.project1.com"
-      prod:
-        base_url: "http://prod.project1.com"
+      dev: "http://dev.hololive.com"
+      test: "http://test.hololive.com"
+      stage: "http://stage.hololive.com"
+      prod: "http://prod.hololive.com"
+  other_project:
+    test_data_dir: "test_data/other_project"
+    environments:
+      dev: "http://dev.other.com"
+      test: "http://test.other.com"
+      stage: "http://stage.other.com"
+      prod: "http://prod.other.com"

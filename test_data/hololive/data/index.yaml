@@ -1,0 +1,46 @@
+test_data:
+  test_demo:
+    description: "demo测试"
+    steps:
+      - action: goto
+        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
+      - action: fill
+        selector: "请输入您的密码"
+        value: "18210233933"
+      - action: fill
+        selector: "请输入您的密码"
+        value: "Admin123!"
+      - action: click
+        selector: "登录按钮"
+      - action: click
+        selector: "图片元素"
+      - action: click
+        selector: "第二个图片元素"
+      - action: click
+        selector: "剧本文本"
+      - action: click
+        selector: "角色图片"
+      - action: click
+        selector: "开始时间输入框"
+      - action: click
+        selector: "00文本"
+      - action: click
+        selector: "01文本"
+      - action: click
+        selector: "确定按钮"
+      - action: click
+        selector: "灵感文本"
+      - action: click
+        selector: "不保存按钮"
+      - action: click
+        selector: "成长文本"
+      - action: click
+        selector: "开始练习按钮"
+      - action: click
+        selector: "Close按钮"
+      - action: click
+        selector: "考试文本"
+      - action: click
+        selector: "重新考试按钮"
+      - action: click
+        selector: "Close按钮"

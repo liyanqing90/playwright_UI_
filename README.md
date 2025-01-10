@@ -232,3 +232,45 @@ login_test:
 8. 合理使用变量，避免硬编码
 9. 及时清理测试数据，保持测试独立性
 10. 定期review测试用例，保持与业务同步
+
+
+```
+配置文件优化
+
+补充pytest.ini配置，添加常用配置项如：
+测试标记（markers）
+日志配置
+并行测试配置
+测试报告配置
+测试框架优化
+
+添加环境变量管理，支持多环境配置
+实现配置优先级：命令行参数 > 环境变量 > 配置文件
+添加测试数据驱动支持，优化test_data目录结构
+报告系统优化
+
+整合Allure报告，添加自定义步骤和附件
+添加失败重试机制
+实现测试结果通知（邮件/钉钉等）
+代码结构优化
+
+将page_objects重构为更清晰的页面对象模型
+提取公共操作到base_page
+添加元素定位器管理
+持续集成
+
+添加GitHub Actions CI配置
+实现测试结果可视化
+添加测试覆盖率统计
+其他优化
+
+添加类型注解
+完善日志系统
+添加API测试支持
+实现测试数据生成工具
+```
+
+
+###
+全息录制命令
+`playwright codegen "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"`

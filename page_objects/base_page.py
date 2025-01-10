@@ -1,5 +1,5 @@
 import functools
-from typing import Callable
+from typing import Callable, Literal
 
 import allure
 from playwright.sync_api import Page
@@ -37,7 +37,7 @@ class BasePage:
         self.page.on("crash", lambda: logger.error("页面崩溃"))
         self.page.on("console", lambda msg: logger.debug(f"控制台 {msg.type}: {msg.text}"))
 
-    def _wait_for_element(self, selector: str, state="visible", timeout: int = 10000):
+    def _wait_for_element(self, selector: str, state:Literal["attached", "detached", "hidden", "visible"]="visible", timeout: int = 10000):
         """统一的元素等待方法"""
         try:
             self.page.wait_for_selector(selector, state=state, timeout=timeout)
@@ -148,7 +148,7 @@ class BasePage:
 
     @handle_page_error
     @allure.step("等待加载状态")
-    def wait_for_load_state(self, state: str):
+    def wait_for_load_state(self, state: Literal["domcontentloaded", "load", "networkidle"] | None = None):
         """等待页面加载状态"""
         self.page.wait_for_load_state(state)
 
