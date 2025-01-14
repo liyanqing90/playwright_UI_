@@ -1,5 +1,5 @@
-from config.config import DirPath
 from src.load_data import DataConverter
+from utils.config import DirPath
 
 
 def run_test_data():

@@ -11,6 +11,7 @@ from playwright.sync_api import Browser, sync_playwright, Page
 
 from page_objects.base_page import BasePage
 from src.runner import RunYaml
+from utils.config import Config
 from utils.dingtalk_notifier import ReportNotifier
 from utils.logger import logger
 
@@ -22,20 +23,17 @@ DINGTALK_SECRET = "SECa7e01bee3a34e05d1b57297a95b8920d8c257088979c49fa0b50889fd6
 DEVICE = {}
 
 
-def set_device(device):
-    global DEVICE
-    DEVICE = device
 
-
+# BROWSER_CONFIG = dict(os.environ['BROWSER_CONFIG'])
+config = Config()
 @pytest.fixture(scope="session")
 def browser() -> Generator[Browser, None, None]:
     """
     创建浏览器实例，session 级别的 fixture
     """
     with sync_playwright() as playwright:
-        device = playwright.devices["iPhone 15 Pro"]
-        set_device(device)
-        browser = playwright.chromium.launch(headless=False)
+        browser = getattr(playwright, config.browser).launch(headless=False)
+        # browser = playwright.chromium.launch(headless=False)
 
         yield browser
 
@@ -45,7 +43,21 @@ def browser() -> Generator[Browser, None, None]:
 
 @pytest.fixture(scope="session")
 def context(browser: Browser):
-    context = browser.new_context(**DEVICE)
+    context_options = {}
+    browser_config = config.browser_config
+    print("browser_config",browser_config)
+    if "user_agent" in browser_config:
+        context_options["user_agent"] = browser_config.get("user_agent")
+    if "viewport" in browser_config:
+        context_options["viewport"] = browser_config["viewport"]
+    if "device_scale_factor" in browser_config:
+        context_options["device_scale_factor"] = browser_config.get("device_scale_factor")
+    if "is_mobile" in browser_config:
+        context_options["is_mobile"] = browser_config.get("is_mobile")
+    if "has_touch" in browser_config:
+        context_options["has_touch"] = browser_config.get("has_touch")
+
+    context = browser.new_context(**context_options)
     cookie = convert_cookies(read_cookies())
     context.add_cookies(cookie)
     yield context

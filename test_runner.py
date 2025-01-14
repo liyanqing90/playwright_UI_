@@ -80,7 +80,7 @@ def main(
         browser=browser,
         env=env,
         project=project,
-        base_url=base_url,
+        base_url=base_url
     )
     # 配置运行环境
     config.configure_environment()

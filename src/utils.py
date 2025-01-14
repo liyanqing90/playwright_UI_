@@ -7,13 +7,12 @@ from configobj import ConfigObj
 def singleton(cls):
     _instance = {}
 
-    def inner():
+    def inner(**kwargs):  # 修改这里，接收关键字参数
         if cls not in _instance:
-            _instance[cls] = cls()
+            _instance[cls] = cls(**kwargs) # 修改这里，传递关键字参数给 cls 的构造函数
         return _instance[cls]
 
     return inner
-
 
 def set_ini(key, value):
     config = ConfigObj("pytest.ini", encoding="UTF8")

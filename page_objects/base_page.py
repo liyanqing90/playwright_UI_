@@ -37,7 +37,8 @@ class BasePage:
         self.page.on("crash", lambda: logger.error("页面崩溃"))
         self.page.on("console", lambda msg: logger.debug(f"控制台 {msg.type}: {msg.text}"))
 
-    def _wait_for_element(self, selector: str, state:Literal["attached", "detached", "hidden", "visible"]="visible", timeout: int = 10000):
+    def _wait_for_element(self, selector: str, state: Literal["attached", "detached", "hidden", "visible"] = "visible",
+                          timeout: int = 10000):
         """统一的元素等待方法"""
         try:
             self.page.wait_for_selector(selector, state=state, timeout=timeout)

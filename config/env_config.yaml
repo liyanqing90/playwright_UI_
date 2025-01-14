@@ -1,20 +1,23 @@
 projects:
   demo:
-    test_data_dir: "test_data/demo"
+    test_dir: "test_data/demo"
     environments:
       dev: "http://dev.demo.com"
       test: "http://test.demo.com"
       stage: "http://stage.demo.com"
       prod: "http://prod.demo.com"
+    browser_config: {"viewport": {"width": 393, "height": 659}, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit"}
   holo_live:
-    test_data_dir: "test_data/hololive"
+    test_dir: "test_data/hololive"
     environments:
       dev: "http://dev.hololive.com"
       test: "http://test.hololive.com"
       stage: "http://stage.hololive.com"
       prod: "http://prod.hololive.com"
+    browser_config: {"viewport": {"width": 1080, "height": 768}}
+
   other_project:
-    test_data_dir: "test_data/other_project"
+    test_dir: "test_data/other_project"
     environments:
       dev: "http://dev.other.com"
       test: "http://test.other.com"

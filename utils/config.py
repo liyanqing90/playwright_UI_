@@ -1,10 +1,12 @@
 # config.py
 import os
 from enum import Enum
+from pathlib import Path
 from typing import Optional
 
 from pydantic_settings import BaseSettings
 
+from src.utils import singleton
 from utils.logger import logger
 from utils.yaml_handler import YamlHandler
 
@@ -27,7 +29,7 @@ class Project(str, Enum):
     HOLO_LIVE = "holo_live"  # 确保枚举值使用小写
     OTHER_PROJECT = "other_project"
 
-
+@singleton
 class Config(BaseSettings):
     marker: Optional[str] = None
     keyword: Optional[str] = None
@@ -37,7 +39,7 @@ class Config(BaseSettings):
     project: Project = Project.DEMO
     base_url: str = ""
     test_dir: str = ""
-
+    browser_config: Optional[dict] = None
     class Config:
         case_sensitive = False
 
@@ -78,15 +80,19 @@ class Config(BaseSettings):
                 raise ValueError(f"Environment {self.env.value} not found for project {self.project.value}")
 
             # 设置测试数据目录
-            self.test_dir = project_config.get(f"test_data/{self.project.value}")
+            self.test_dir = project_config.get("test_dir")
+            print("********************************")
+            print(self.test_dir)
+            self.browser_config = project_config.get("browser_config",{'viewport': {'width': 1920, 'height': 1080}})
 
-        elif self.project == Project.HoloLive:
-            self.test_data_dir = "test_data/hololive"
+            # 设置环境变量
+            os.environ['BASE_URL'] = self.base_url
+            os.environ['TEST_DIR'] = str(self.test_dir)
+            # os.environ['BROWSER_CONFIG'] = str(browser_config)
 
-        elif self.project == Project.OTHER_PROJECT:
-            self.test_data_dir = "test_data/other_project"
-        os.environ['BASE_URL'] = self.base_url
-        os.environ['TEST_DATA_DIR'] = self.test_data_dir
+        except Exception as e:
+            logger.error(f"Failed to load config: {str(e)}")
+            raise ValueError(f"Configuration error: {str(e)}")
 
     def configure_environment(self):
         """配置运行环境"""
@@ -102,4 +108,13 @@ class Config(BaseSettings):
         print(f"TEST_ENV: {os.environ.get('TEST_ENV')}")
         print(f"TEST_PROJECT: {os.environ.get('TEST_PROJECT')}")
         print(f"BASE_URL: {os.environ.get('BASE_URL')}")
-        print(f"TEST_DATA_DIR: {os.environ.get('TEST_DATA_DIR')}")
+        print(f"TEST_DIR: {os.environ.get('TEST_DIR')}")
+
+
+
+
+class DirPath:
+    def __init__(self):
+        self.test_dir = os.environ['TEST_DIR']
+        self.base_dir = Path.cwd()
+        print(self.test_dir,"*******************************")

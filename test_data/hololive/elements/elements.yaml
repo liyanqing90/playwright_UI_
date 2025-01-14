@@ -1,4 +1,5 @@
 elements:
+  请输入您的用户名: placeholder=请输入您的用户名
   请输入您的密码: placeholder=请输入您的密码
   登录按钮: role=link, name=登录
   图片元素: .live > img
