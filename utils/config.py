@@ -1,13 +1,12 @@
 # config.py
 import os
 from enum import Enum
-from pathlib import Path
 from typing import Optional
 
 from pydantic_settings import BaseSettings
 
-from utils.yaml_handler import YamlHandler
 from utils.logger import logger
+from utils.yaml_handler import YamlHandler
 
 
 class Browser(str, Enum):
@@ -25,7 +24,7 @@ class Environment(str, Enum):
 
 class Project(str, Enum):
     DEMO = "demo"
-    HoloLive = "holo_live"
+    HOLO_LIVE = "holo_live"  # 确保枚举值使用小写
     OTHER_PROJECT = "other_project"
 
 
@@ -37,42 +36,49 @@ class Config(BaseSettings):
     env: Environment = Environment.PROD
     project: Project = Project.DEMO
     base_url: str = ""
-    test_data_dir: str = ""
+    test_dir: str = ""
+
     class Config:
         case_sensitive = False
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._update_config_based_on_env_and_project()
+        self.validate_config()
+
+    def validate_config(self):
+        """验证配置是否有效"""
+        if not isinstance(self.project, Project):
+            try:
+                self.project = Project(self.project.lower())  # 转换为小写再验证
+            except ValueError:
+                valid_projects = ", ".join([p.value for p in Project])
+                raise ValueError(f"Invalid project: {self.project}. Valid projects are: {valid_projects}")
 
     def _update_config_based_on_env_and_project(self):
         """根据环境和项目更新配置"""
         try:
-            env_config = YamlHandler.load_yaml('config/env_config.yaml')
-            print("*******")
-            print(env_config)
-            print(self.project)
-            print(self.env)
+            env_config = YamlHandler().load_yaml('config/env_config.yaml')
             if not env_config or not isinstance(env_config, dict):
                 raise ValueError("Invalid YAML configuration")
-            
-            projects = env_config.get('projects')
+
+            projects = env_config.get('projects', {})
             if not projects or not isinstance(projects, dict):
                 raise ValueError("Missing or invalid projects configuration")
-        except Exception as e:
-            logger.error(f"Failed to load config: {str(e)}")
-            env_config = {'projects': {}}
-        project_config = env_config.get(self.project.value)
-        if not project_config:
-            raise ValueError(f"Project {self.project.value} not found in config")
-            
-        self.base_url = project_config['environments'].get(self.env.value)
-        if not self.base_url:
-            raise ValueError(f"Environment {self.env.value} not found for project {self.project.value}")
-            
-        self.test_data_dir = Path.cwd() / project_config.get('test_data_dir', 'test_data')
-        if self.project == Project.DEMO:
-            self.test_data_dir = "test_data/demo"
+
+            # 从 projects 字典中获取项目配置
+            project_config = projects.get(self.project.value)
+            if not project_config:
+                raise ValueError(f"Project {self.project.value} not found in config")
+
+            # 获取环境URL
+            environments = project_config.get('environments', {})
+            self.base_url = environments.get(self.env.value)
+            if not self.base_url:
+                raise ValueError(f"Environment {self.env.value} not found for project {self.project.value}")
+
+            # 设置测试数据目录
+            self.test_dir = project_config.get(f"test_data/{self.project.value}")
 
         elif self.project == Project.HoloLive:
             self.test_data_dir = "test_data/hololive"
@@ -88,7 +94,7 @@ class Config(BaseSettings):
         os.environ['BROWSER'] = self.browser.value
         os.environ['TEST_ENV'] = self.env.value
         os.environ['TEST_PROJECT'] = self.project.value
-        
+
         # 打印环境变量配置
         print("配置的环境变量：")
         print(f"PWHEADED: {os.environ.get('PWHEADED')}")

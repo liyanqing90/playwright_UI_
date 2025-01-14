@@ -26,16 +26,19 @@ poetry install
 ### 运行测试
 
 运行所有测试：
+
 ```bash
 poetry run pytest
 ```
 
 运行单个测试文件：
+
 ```bash
 poetry run pytest path/to/test_file.py
 ```
 
 生成测试报告：
+
 ```bash
 poetry run pytest --alluredir=reports
 ```
@@ -94,58 +97,58 @@ playwright_UI/
 测试用例由三个核心文件协同定义：
 
 1. `cases/cases.yaml` - 定义测试用例元数据
-   - 用例名称
-   - 前置条件（fixtures）
-   - 依赖关系
-   - 示例：
-     ```yaml
-     test_demo:
-       description: "示例测试用例"
-       fixtures: ["login"]
-       depends_on: []
-     ```
+    - 用例名称
+    - 前置条件（fixtures）
+    - 依赖关系
+    - 示例：
+      ```yaml
+      test_demo:
+        description: "示例测试用例"
+        fixtures: ["login"]
+        depends_on: []
+      ```
 
 2. `data/index.yaml` - 定义测试步骤
-   - 操作步骤序列
-   - 操作类型（点击、输入、断言等）
-   - 参数配置
-   - 示例：
-     ```yaml
-     test_demo:
-       steps:
-         - action: goto
-           value: "https://example.com"
-         - action: click
-           selector: "login_button"
-     ```
+    - 操作步骤序列
+    - 操作类型（点击、输入、断言等）
+    - 参数配置
+    - 示例：
+      ```yaml
+      test_demo:
+        steps:
+          - action: goto
+            value: "https://example.com"
+          - action: click
+            selector: "login_button"
+      ```
 
 3. `elements/elements.yaml` - 定义页面元素
-   - 元素名称
-   - 定位方式（CSS、XPath、Text等）
-   - 示例：
-     ```yaml
-     login_button:  "button.login"
-     ```
+    - 元素名称
+    - 定位方式（CSS、XPath、Text等）
+    - 示例：
+      ```yaml
+      login_button:  "button.login"
+      ```
 
 #### 用例编写流程
 
 1. 在`cases/cases.yaml`中定义新用例
-   - 指定用例名称
-   - 配置前置条件和依赖
+    - 指定用例名称
+    - 配置前置条件和依赖
 
 2. 在`elements/elements.yaml`中添加所需元素
-   - 使用合适的定位方式
-   - 添加描述信息
+    - 使用合适的定位方式
+    - 添加描述信息
 
 3. 在`data/index.yaml`中编写测试步骤
-   - 按顺序添加操作步骤
-   - 引用已定义的元素
-   - 配置操作参数
+    - 按顺序添加操作步骤
+    - 引用已定义的元素
+    - 配置操作参数
 
 #### 示例用例
 
 ```yaml
-# cases/cases.yaml
+# cases/test_cases.yaml
 login_test:
   description: "用户登录测试"
   fixtures: ["setup_browser"]
@@ -154,7 +157,7 @@ login_test:
 
 ```yaml
 # elements/elements.yaml
-title: 
+title:
   selector: ".title"
   description: "页面标题"
 
@@ -194,6 +197,7 @@ title:
   selector: ".fill-info-popup-close"
   description: "热门车系关闭按钮"
 ```
+
 ```yaml
 # data/index.yaml
 login_test:
@@ -233,7 +237,6 @@ login_test:
 9. 及时清理测试数据，保持测试独立性
 10. 定期review测试用例，保持与业务同步
 
-
 ```
 配置文件优化
 
@@ -270,7 +273,7 @@ login_test:
 实现测试数据生成工具
 ```
 
-
 ###
+
 全息录制命令
 `playwright codegen "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"`

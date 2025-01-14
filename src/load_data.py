@@ -1,10 +1,7 @@
 from typing import Dict, Any, List
 
-import yaml
-
-from utils.config import Config
-from utils import logger
 from utils.excel_handler import ExcelHandler, ExcelTestCase
+from utils.yaml_handler import YamlHandler
 
 
 def _convert_to_cases(excel_cases: List[ExcelTestCase]) -> Dict[str, List]:
@@ -25,7 +22,6 @@ def _convert_to_cases(excel_cases: List[ExcelTestCase]) -> Dict[str, List]:
             case_info['skip'] = "功能开发中"
 
         cases.append(case_info)
-
     return {'test_cases': cases}
 
 
@@ -75,29 +71,21 @@ def _convert_to_test_data(excel_cases: List[ExcelTestCase]) -> Dict[str, Dict]:
 
 
 class DataConverter:
-    def __init__(self, config):
-        self.test_data_dir = config.test_data_dir
+    def __init__(self, dir):
+        self.test_data_dir = dir
 
-        self.excel_handler = ExcelHandler(config.test_data_dir)
+        self.excel_handler = ExcelHandler(self.test_data_dir)
         self.yaml_data = self._load_yaml_data()
 
     def _load_yaml_data(self) -> Dict[str, Any]:
+        yaml = YamlHandler()
+
         """加载现有的YAML配置文件"""
         return {
-            'cases': self._load_yaml_file(self.test_data_dir + '/cases/cases.yaml'),
-            'test_data': self._load_yaml_file(self.test_data_dir + '/data/index.yaml'),
-            'elements': self._load_yaml_file(self.test_data_dir + '/elements/elements.yaml')
+            'cases': yaml.load_yaml_dir(self.test_data_dir + '/cases'),
+            'test_data': yaml.load_yaml_dir(self.test_data_dir + '/data'),
+            'elements': yaml.load_yaml_dir(self.test_data_dir + '/elements')
         }
-
-    @staticmethod
-    def _load_yaml_file(file_path: str) -> Dict[str, Any]:
-        """加载单个YAML文件"""
-        try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                return yaml.safe_load(f)
-        except Exception as e:
-            logger.error(f"加载YAML文件失败 {file_path}: {str(e)}")
-            return {}
 
     def convert_excel_data(self) -> Dict[str, Any]:
         """转换Excel数据为项目格式"""
@@ -124,15 +112,15 @@ class DataConverter:
         merged = {
             'cases': self._merge_cases(
                 self.yaml_data['cases'].get('test_cases', []),
-                excel_data['cases']['test_cases']
+                excel_data['cases'].get('test_cases', {})
             ),
             'test_data': self._merge_test_data(
                 self.yaml_data['test_data'].get('test_data', {}),
-                excel_data['test_data']['test_data']
+                excel_data['test_data'].get('test_data', {})
             ),
             'elements': self._merge_elements(
                 self.yaml_data['elements'].get('elements', {}),
-                excel_data['elements']['elements']
+                excel_data['elements'].get('elements', {})
             )
         }
         return merged

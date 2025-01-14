@@ -1,14 +1,18 @@
 import json
 import time
-from typing import Generator
+import types
 from datetime import datetime
+from pathlib import Path
+from typing import Generator
 
 import pytest
+from _pytest.python import Module
 from playwright.sync_api import Browser, sync_playwright, Page
 
 from page_objects.base_page import BasePage
-from utils.logger import logger
+from src.runner import RunYaml
 from utils.dingtalk_notifier import ReportNotifier
+from utils.logger import logger
 
 log = logger
 
@@ -92,6 +96,7 @@ def ui_helper(page):
     ui = BasePage(page)
     yield ui
 
+
 def report_notifier():
     return ReportNotifier(DINGTALK_TOKEN, DINGTALK_SECRET)
 
@@ -110,12 +115,11 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     if terminalreporter.stats:
         for item in terminalreporter.stats.get('failed', []):
             log.info(f"Processing failed test: {item.nodeid}")
-            error_msg =extract_assertion_message(item.sections)
+            error_msg = extract_assertion_message(item.sections)
             failures.append({
                 "test_case": item.nodeid.split("::")[-1],
                 "reason": error_msg,
             })
-
 
     report_data = {
         "timestamp": datetime.now().strftime("%Y%m%d_%H%M%S"),
@@ -128,7 +132,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
         "failures": failures
     }
 
-    report_notifier().notify(report_data)
+    # report_notifier().notify(report_data)
 
 
 def extract_assertion_message(log_list):
@@ -158,3 +162,18 @@ def extract_assertion_message(log_list):
             return result.strip()
 
     return None
+
+
+def pytest_collect_file(file_path: Path, parent):  # noqa
+    if file_path.suffix in [".yaml", "xlsx"]:
+        print("file_paht", file_path)
+        py_module = Module.from_parent(parent, path=file_path)
+        # 动态创建 module
+        module = types.ModuleType(file_path.stem)
+        # 解析 yaml 内容
+        name = module.__name__
+        run = RunYaml.from_parent(parent, module=module, name=name)
+        run.collect_case()
+        # 重写属性
+        py_module._getobj = lambda: module  # noqa
+        return py_module
