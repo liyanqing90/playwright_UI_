@@ -1,4 +1,5 @@
 import logging
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any
@@ -72,10 +73,12 @@ class StepExecutor:
         if action not in StepAction.NO_SELECTOR_ACTIONS and not step.get("selector"):
             raise ValueError(f"操作 {action} 需要提供 selector")
 
-    def _execute_action(self, action: str, selector: str, value: str, step: Dict[str, Any]) -> None:
+    def _execute_action(self, action: str, selector: str, value: str = None, step: Dict[str, Any] = None) -> None:
         action = action.lower()
         with allure.step(f"执行步骤: {action}"):
             if action in StepAction.NAVIGATE:
+                if not value:
+                    value = os.environ.get('BASE_URL')
                 self.ui_helper.goto(value)
 
             elif action in StepAction.CLICK:

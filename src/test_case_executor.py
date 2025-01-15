@@ -20,14 +20,13 @@ def _setup_test_environment(case: Dict[str, Any]) -> None:
         log.info(f"Setting up test environment for case: {case['name']}")
         # 添加环境准备代码
 
-
 class CaseExecutor:
-    def __init__(self, test_data: Dict[str, Any], elements: Dict[str, Any], request: FixtureRequest = None):
+    def __init__(self, test_data: Dict[str, Any], elements: Dict[str, Any], request: FixtureRequest):
         self.test_data = test_data
         self.elements = elements
         self.executed_cases: Set[str] = set()
         self.executed_fixtures: Set[str] = set()
-        self.request = request  # 保存 pytest 的 request 对象
+        self.request: FixtureRequest = request  # 保存 pytest 的 request 对象
 
     def execute_test_case(self, case: Dict[str, Any], page, ui_helper) -> None:
         case_name = case["name"]
@@ -102,31 +101,11 @@ class CaseExecutor:
                 if fixture_name not in self.executed_fixtures:
                     log.info(f"执行 fixture: {fixture_name}")
                     try:
-                        if self.request is None:
-                            raise ValueError("pytest request object not available")
-
                         # 通过 request.getfixturevalue 获取和执行 fixture
-                        self.request.getfixturevalue(fixture_name)
+                        fixture_value = self.request.getfixturevalue(fixture_name)
                         self.executed_fixtures.add(fixture_name)
+                        if fixture_value:
+                            log.info(f"Fixture {fixture_name} return {fixture_value}")
                     except Exception as e:
                         log.error(f"Fixture '{fixture_name}' 执行失败: {str(e)}")
                         raise
-
-# def create_test_case(test_case: Dict[str, Any]):
-#     """创建单个测试用例函数"""
-#     def test_func(request, page, ui_helper, test_data, elements):
-#         executor = CaseExecutor(test_data, elements, request)
-#         executor.execute_test_case(test_case, page, ui_helper)
-#
-#     # 设置测试函数的名称和文档
-#     test_func.__name__ = f"test_{test_case['name']}"
-#     test_func.__doc__ = test_case.get('description', '')
-#
-#     # 添加标记（如果需要）
-#     if test_case.get('skip'):
-#         test_func = pytest.mark.skip(reason=test_case['skip'])(test_func)
-#
-#     # 设置函数的模块来源
-#     test_func.__module__ = "test_runner"
-#
-#     return test_func

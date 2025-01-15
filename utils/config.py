@@ -81,8 +81,6 @@ class Config(BaseSettings):
 
             # 设置测试数据目录
             self.test_dir = project_config.get("test_dir")
-            print("********************************")
-            print(self.test_dir)
             self.browser_config = project_config.get("browser_config",{'viewport': {'width': 1920, 'height': 1080}})
 
             # 设置环境变量
@@ -101,15 +99,6 @@ class Config(BaseSettings):
         os.environ['TEST_ENV'] = self.env.value
         os.environ['TEST_PROJECT'] = self.project.value
 
-        # 打印环境变量配置
-        print("配置的环境变量：")
-        print(f"PWHEADED: {os.environ.get('PWHEADED')}")
-        print(f"BROWSER: {os.environ.get('BROWSER')}")
-        print(f"TEST_ENV: {os.environ.get('TEST_ENV')}")
-        print(f"TEST_PROJECT: {os.environ.get('TEST_PROJECT')}")
-        print(f"BASE_URL: {os.environ.get('BASE_URL')}")
-        print(f"TEST_DIR: {os.environ.get('TEST_DIR')}")
-
 
 
 
@@ -117,4 +106,3 @@ class DirPath:
     def __init__(self):
         self.test_dir = os.environ['TEST_DIR']
         self.base_dir = Path.cwd()
-        print(self.test_dir,"*******************************")

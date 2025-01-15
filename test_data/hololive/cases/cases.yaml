@@ -1,4 +1,4 @@
 test_cases:
   - name: test_demo
-    fixtures: [ ]
+    fixtures: [login ]
     depends_on: [ ]

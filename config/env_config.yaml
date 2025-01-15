@@ -13,7 +13,7 @@ projects:
       dev: "http://dev.hololive.com"
       test: "http://test.hololive.com"
       stage: "http://stage.hololive.com"
-      prod: "http://prod.hololive.com"
+      prod: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
     browser_config: {"viewport": {"width": 1080, "height": 768}}
 
   other_project:

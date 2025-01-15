@@ -1,4 +1,5 @@
 import json
+import os
 import time
 import types
 from datetime import datetime
@@ -11,9 +12,11 @@ from playwright.sync_api import Browser, sync_playwright, Page
 
 from page_objects.base_page import BasePage
 from src.runner import RunYaml
+from src.test_step_executor import StepExecutor
 from utils.config import Config
 from utils.dingtalk_notifier import ReportNotifier
 from utils.logger import logger
+from utils.yaml_handler import YamlHandler
 
 log = logger
 
@@ -22,10 +25,10 @@ DINGTALK_SECRET = "SECa7e01bee3a34e05d1b57297a95b8920d8c257088979c49fa0b50889fd6
 
 DEVICE = {}
 
-
-
 # BROWSER_CONFIG = dict(os.environ['BROWSER_CONFIG'])
 config = Config()
+
+
 @pytest.fixture(scope="session")
 def browser() -> Generator[Browser, None, None]:
     """
@@ -45,7 +48,6 @@ def browser() -> Generator[Browser, None, None]:
 def context(browser: Browser):
     context_options = {}
     browser_config = config.browser_config
-    print("browser_config",browser_config)
     if "user_agent" in browser_config:
         context_options["user_agent"] = browser_config.get("user_agent")
     if "viewport" in browser_config:
@@ -178,7 +180,6 @@ def extract_assertion_message(log_list):
 
 def pytest_collect_file(file_path: Path, parent):  # noqa
     if file_path.suffix in [".yaml", "xlsx"]:
-        print("file_paht", file_path)
         py_module = Module.from_parent(parent, path=file_path)
         # 动态创建 module
         module = types.ModuleType(file_path.stem)
@@ -189,3 +190,41 @@ def pytest_collect_file(file_path: Path, parent):  # noqa
         # 重写属性
         py_module._getobj = lambda: module  # noqa
         return py_module
+
+log_steps = {
+    "holo_live": [
+        {
+            "action": "goto",
+            "value": None
+        },
+        {
+            "action": "fill",
+            "selector": "请输入您的用户名",
+            "value": "18210233933"
+        },
+        {
+            "action": "fill",
+            "selector": "请输入您的密码",
+            "value": "Admin123!"
+        },
+        {
+            "action": "click",
+            "selector": "登录按钮"
+        }
+    ]
+}
+
+@pytest.fixture()
+def login(page, ui_helper,request):
+    yaml = YamlHandler()
+    test_dir = os.environ.get('TEST_DIR')
+    project = os.environ.get('TEST_PROJECT')
+    elements = yaml.load_yaml_dir(f"{test_dir}/elements/").get("elements")
+    step_executor = StepExecutor(page, ui_helper, elements)
+    steps = log_steps.get(project)
+
+    for step in steps:
+        step_executor.execute_step(step)
+
+    return None
+

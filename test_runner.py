@@ -25,7 +25,9 @@ def build_pytest_args(config):
         '-v',
         "-p", "no:warnings",
         "--report-log=report.json",
-        "-s"
+        "-s",
+        "--alluredir=reports/allure-results",
+        "--clean-alluredir"
     ]
     if marker:
         pytest_args.extend(["-m", marker])
