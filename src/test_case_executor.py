@@ -20,6 +20,7 @@ def _setup_test_environment(case: Dict[str, Any]) -> None:
         log.info(f"Setting up test environment for case: {case['name']}")
         # 添加环境准备代码
 
+
 class CaseExecutor:
     def __init__(self, test_data: Dict[str, Any], elements: Dict[str, Any], request: FixtureRequest):
         self.test_data = test_data

@@ -1,21 +1,23 @@
 import types
 from inspect import Parameter, Signature
 
+import allure
 import pytest
 from playwright.sync_api import Page
 
 from src.case_utils import run_test_data
 from src.test_case_executor import CaseExecutor
-import allure
+
+
 class RunYaml(pytest.Item):
     """运行yaml"""
 
     def __init__(self, module: types.ModuleType, name, **kw):
         super().__init__(name, **kw)
         self.data = run_test_data()
-        self.test_cases = self.data['cases']['test_cases']
-        self.test_data = self.data['test_data']['test_data']
-        self.elements = self.data['elements']['elements']
+        self.test_cases = self.data.get('test_cases')
+        self.test_data = self.data['test_data']
+        self.elements = self.data['elements']
         self.module: types.ModuleType = module  # 动态创建的 module 模型
         self.module_variable = {}  # 模块变量
         self.context = {}
