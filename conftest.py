@@ -191,40 +191,17 @@ def pytest_collect_file(file_path: Path, parent):  # noqa
         py_module._getobj = lambda: module  # noqa
         return py_module
 
-log_steps = {
-    "holo_live": [
-        {
-            "action": "goto",
-            "value": None
-        },
-        {
-            "action": "fill",
-            "selector": "请输入您的用户名",
-            "value": "18210233933"
-        },
-        {
-            "action": "fill",
-            "selector": "请输入您的密码",
-            "value": "Admin123!"
-        },
-        {
-            "action": "click",
-            "selector": "登录按钮"
-        }
-    ]
-}
+
+
 
 @pytest.fixture()
-def login(page, ui_helper,request):
+def login(page, ui_helper, request):
     yaml = YamlHandler()
     test_dir = os.environ.get('TEST_DIR')
-    project = os.environ.get('TEST_PROJECT')
     elements = yaml.load_yaml_dir(f"{test_dir}/elements/").get("elements")
+    login_steps = yaml.load_yaml_dir(f"{test_dir}/steps/").get("steps").get("login")
     step_executor = StepExecutor(page, ui_helper, elements)
-    steps = log_steps.get(project)
-
-    for step in steps:
+    for step in login_steps:
         step_executor.execute_step(step)
 
     return None
-
