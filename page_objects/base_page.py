@@ -53,6 +53,10 @@ class BasePage:
         self.page.goto(url)
         self.page.wait_for_load_state("networkidle")
         self.page.wait_for_timeout(1000)
+    @handle_page_error
+    @allure.step("暂停")
+    def pause(self):
+        self.page.pause()
 
     @handle_page_error
     @allure.step("点击元素 {selector}")

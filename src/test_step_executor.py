@@ -23,9 +23,10 @@ class StepAction:
     STORE_ATTRIBUTE = ['store_attribute', '存储属性']
     REFRESH = ['refresh', '刷新']
     VERIFY = ['verify', '验证']
+    PAUSE = ['pause', '暂停']
 
     # 不需要selector的操作
-    NO_SELECTOR_ACTIONS = NAVIGATE + WAIT + REFRESH
+    NO_SELECTOR_ACTIONS = NAVIGATE + WAIT + REFRESH +PAUSE
 
 
 class StepExecutor:
@@ -80,6 +81,9 @@ class StepExecutor:
                 if not value:
                     value = os.environ.get('BASE_URL')
                 self.ui_helper.goto(value)
+
+            elif action in StepAction.PAUSE:
+                self.ui_helper.pause()
 
             elif action in StepAction.CLICK:
                 self.ui_helper.click(selector)

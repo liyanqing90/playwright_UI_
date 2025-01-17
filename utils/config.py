@@ -29,6 +29,7 @@ class Project(str, Enum):
     HOLO_LIVE = "holo_live"  # 确保枚举值使用小写
     OTHER_PROJECT = "other_project"
 
+
 @singleton
 class Config(BaseSettings):
     marker: Optional[str] = None
@@ -40,6 +41,7 @@ class Config(BaseSettings):
     base_url: str = ""
     test_dir: str = ""
     browser_config: Optional[dict] = None
+
     class Config:
         case_sensitive = False
 
@@ -81,7 +83,7 @@ class Config(BaseSettings):
 
             # 设置测试数据目录
             self.test_dir = project_config.get("test_dir")
-            self.browser_config = project_config.get("browser_config",{'viewport': {'width': 1920, 'height': 1080}})
+            self.browser_config = project_config.get("browser_config", {'viewport': {'width': 1920, 'height': 1080}})
 
             # 设置环境变量
             os.environ['BASE_URL'] = self.base_url
@@ -98,8 +100,6 @@ class Config(BaseSettings):
         os.environ['BROWSER'] = self.browser.value
         os.environ['TEST_ENV'] = self.env.value
         os.environ['TEST_PROJECT'] = self.project.value
-
-
 
 
 class DirPath:
