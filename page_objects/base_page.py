@@ -1,4 +1,5 @@
 import functools
+import os
 from typing import Callable, Literal
 
 import allure
@@ -24,7 +25,8 @@ def handle_page_error(func: Callable) -> Callable:
 
     return wrapper
 
-
+def base_url():
+    return os.environ.get('BASE_URL')
 class BasePage:
     def __init__(self, page: Page):
         self.page = page
@@ -50,6 +52,9 @@ class BasePage:
     @allure.step("导航到 {url}")
     def goto(self, url: str):
         """导航到指定URL"""
+        base_rul = base_url()
+        if "http" not in url:
+            url = base_rul + url
         self.page.goto(url)
         self.page.wait_for_load_state("networkidle")
         self.page.wait_for_timeout(1000)

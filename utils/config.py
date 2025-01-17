@@ -27,7 +27,9 @@ class Environment(str, Enum):
 class Project(str, Enum):
     DEMO = "demo"
     HOLO_LIVE = "holo_live"  # 确保枚举值使用小写
+    ASSISTANT = "assistant"
     OTHER_PROJECT = "other_project"
+
 
 
 @singleton

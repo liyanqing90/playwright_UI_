@@ -1,0 +1,19 @@
+elements:
+  请输入您的用户名: //input[@placeholder='请输入您的用户名']
+  请输入您的密码: //input[@placeholder='请输入您的密码']
+  登录按钮: .login-btn
+  图片元素: .live > img
+  第二个图片元素: div:nth-child(3) > img
+  剧本文本: text=剧本
+  角色图片: role=img
+  开始时间输入框: "#form_item_sectionList_0_startTime"
+  00文本: text=00
+  01文本: text=01
+  确定按钮: text=确 定
+  灵感文本: text=灵感
+  不保存按钮: //button[@class='ant-btn no-save']
+  成长文本: text=成长
+  开始练习按钮: text=开始练习
+  取消练习&考试按钮: //button[@class='ant-btn button btn-cancle']
+  考试文本: text=考试
+  重新考试按钮: text=重新考试
