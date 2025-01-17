@@ -24,6 +24,7 @@ class StepAction:
     REFRESH = ['refresh', '刷新']
     VERIFY = ['verify', '验证']
     PAUSE = ['pause', '暂停']
+    UPLOAD = ['upload', '上传文件']
 
     # 不需要selector的操作
     NO_SELECTOR_ACTIONS = NAVIGATE + WAIT + REFRESH +PAUSE
@@ -93,6 +94,9 @@ class StepExecutor:
 
             elif action in StepAction.PRESS_KEY:
                 self.ui_helper.press_key(selector, step.get('key', value))
+
+            elif action in StepAction.UPLOAD:
+                self.ui_helper.upload_file(selector, value)
 
             elif action in StepAction.WAIT:
                 wait_time = int(float(step.get('value', '1')) * 1000) if step.get('value') else 1000

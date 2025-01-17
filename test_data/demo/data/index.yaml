@@ -3,5 +3,11 @@ test_data:
     description: "demo测试"
     steps:
       - action: goto
-        value: /test
-      - action: pause
+        value: "https://www.baidu.com"
+      - action: click
+        selector: 图片
+      - action: upload
+        selector: 上传
+        value: "./files/demo/01.PNG"
+      - action: wait
+        value: 3

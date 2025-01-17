@@ -1,13 +1,7 @@
 elements:
   title: .title
-  全城比价: text=全城比价
-  对比试驾: text=对比试驾
-  旧车估值: text=旧车估值
-  送充电桩: text=送充电桩
-  到店领好礼: text=到店领好礼
-  询底价: .series-card__price > .btn:first-child
-  查看更多: text=查看更多
-  热门车系弹框标题: .fill-info-popup-header-title
-  热门车系关闭: .fill-info-popup-close
+  上传文件: //div[@class="file"]//label[@class="file-label"]
+  图片: //span[@class="soutu-btn"]
+  上传: //input[@value="上传图片"]
 
 

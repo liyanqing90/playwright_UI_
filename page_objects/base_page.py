@@ -25,8 +25,11 @@ def handle_page_error(func: Callable) -> Callable:
 
     return wrapper
 
+
 def base_url():
     return os.environ.get('BASE_URL')
+
+
 class BasePage:
     def __init__(self, page: Page):
         self.page = page
@@ -56,8 +59,9 @@ class BasePage:
         if "http" not in url:
             url = base_rul + url
         self.page.goto(url)
-        self.page.wait_for_load_state("networkidle")
+        # self.page.wait_for_load_state("networkidle")
         self.page.wait_for_timeout(1000)
+
     @handle_page_error
     @allure.step("暂停")
     def pause(self):
@@ -69,6 +73,13 @@ class BasePage:
         """点击元素"""
         self._wait_for_element(selector)
         self.page.click(selector)
+
+    @handle_page_error
+    @allure.step("点击元素 {selector}")
+    def upload_file(self, selector: str, file_path: str):
+        """上传文件"""
+        self._wait_for_element(selector)
+        self.page.locator(selector).set_input_files(file_path)
 
     @handle_page_error
     @allure.step("输入文本 {text}")
