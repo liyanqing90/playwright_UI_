@@ -18,8 +18,6 @@ from utils.dingtalk_notifier import ReportNotifier
 from utils.logger import logger
 from utils.yaml_handler import YamlHandler
 
-log = logger
-
 DINGTALK_TOKEN = "636325ecf2302baf112f74ac54d8ef991de9b307c00bd168d3f2baa7df7f9113"
 DINGTALK_SECRET = "SECa7e01bee3a34e05d1b57297a95b8920d8c257088979c49fa0b50889fd60c570c"
 
@@ -44,7 +42,7 @@ def browser() -> Generator[Browser, None, None]:
         browser.close()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def context(browser: Browser):
     context_options = {}
     browser_config = config.browser_config
@@ -128,7 +126,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     failures = []
     if terminalreporter.stats:
         for item in terminalreporter.stats.get('failed', []):
-            log.info(f"Processing failed test: {item.nodeid}")
+            logger.info(f"Processing failed test: {item.nodeid}")
             error_msg = extract_assertion_message(item.sections)
             failures.append({
                 "test_case": item.nodeid.split("::")[-1],
