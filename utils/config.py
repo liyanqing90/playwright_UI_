@@ -31,7 +31,6 @@ class Project(str, Enum):
     OTHER_PROJECT = "other_project"
 
 
-
 @singleton
 class Config(BaseSettings):
     marker: Optional[str] = None

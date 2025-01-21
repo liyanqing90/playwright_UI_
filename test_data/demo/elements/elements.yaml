@@ -3,5 +3,78 @@ elements:
   上传文件: //div[@class="file"]//label[@class="file-label"]
   图片: //span[@class="soutu-btn"]
   上传: //input[@value="上传图片"]
+  # 输入框
+  name_input: input#name  # 姓名输入框
+  email_input: input#email  # 邮箱输入框
+  phone_input: input#phone  # 电话输入框
+  address_textarea: textarea#textarea  # 地址输入框
+  datepicker_1: input#datepicker  # 日期选择器 1
+  datepicker_2: input#txtDate  # 日期选择器 2
+  start_date: input#start-date  # 开始日期输入框
+  end_date: input#end-date  # 结束日期输入框
+  field1: input#field1  # 字段 1 输入框
+  field2: input#field2  # 字段 2 输入框
+  input1: input#input1  # 表单输入框 1
+  input2: input#input2  # 表单输入框 2
+  input3: input#input3  # 表单输入框 3
+  combo_box: input#comboBox  # 下拉滚动菜单输入框
+  shadow_text_input: input[type="text"]  # Shadow DOM 中的文本输入框
 
+  # 按钮类
+  dynamic_button: button[name="start"]  # 动态按钮（START/STOP）
+  alert_button: button#alertBtn  # 简单弹窗按钮
+  confirm_button: button#confirmBtn  # 确认弹窗按钮
+  prompt_button: button#promptBtn  # 提示弹窗按钮
+  new_tab_button: button[onclick="myFunction()"]  # 打开新标签页按钮
+  popup_button: button#PopUp  # 弹出窗口按钮
+  hover_button: button.dropbtn  # 鼠标悬停按钮
+  double_click_button: button[ondblclick="myFunction1()"]  # 双击按钮
+  submit_date_range: button.submit-btn  # 日期范围提交按钮
+  btn1: button#btn1  # 表单提交按钮 1
+  btn2: button#btn2  # 表单提交按钮 2
+  btn3: button#btn3  # 表单提交按钮 3
 
+  # 链接类
+  post_title: h3.post-title a  # 文章标题链接
+  laptop_links: div#laptops a  # 笔记本电脑链接（Apple, Lenovo, Dell）
+  broken_links: div#broken-links a  # 错误链接（400, 401, 403 等）
+  footer_links: ul li a  # 页脚链接（Home, Hidden Elements, Download Files）
+  shadow_blog_link: a[href="https://www.pavantestingtools.com/"]  # Shadow DOM 中的博客链接
+  shadow_youtube_link: a[href="https://www.youtube.com/@sdetpavan/videos"]  # Shadow DOM 中的 YouTube 链接
+
+  # 下拉菜单类
+  country_select: select#country  # 国家下拉菜单
+  colors_select: select#colors  # 颜色下拉菜单（多选）
+  animals_select: select#animals  # 动物下拉菜单（多选）
+
+  # 复选框和单选框
+  gender_radio_male: input#male  # 性别单选按钮（Male）
+  gender_radio_female: input#female  # 性别单选按钮（Female）
+  days_checkbox_sunday: input#sunday  # 星期复选框（Sunday）
+  days_checkbox_monday: input#monday  # 星期复选框（Monday）
+  days_checkbox_tuesday: input#tuesday  # 星期复选框（Tuesday）
+  days_checkbox_wednesday: input#wednesday  # 星期复选框（Wednesday）
+  days_checkbox_thursday: input#thursday  # 星期复选框（Thursday）
+  days_checkbox_friday: input#friday  # 星期复选框（Friday）
+  days_checkbox_saturday: input#saturday  # 星期复选框（Saturday）
+
+  # 文件上传
+  single_file_input: input#singleFileInput  # 单文件上传输入框
+  multiple_files_input: input#multipleFilesInput  # 多文件上传输入框
+  shadow_file_input: input[type="file"]  # Shadow DOM 中的文件上传输入框
+
+  # 分页
+  pagination_links: ul.pagination a  # 分页链接（1, 2, 3, 4）
+
+  # 拖放元素
+  draggable: div#draggable  # 可拖拽元素
+  droppable: div#droppable  # 可放置区域
+
+  # 滑动条
+  slider_range: div#slider-range  # 滑动条
+
+  # 下拉滚动菜单
+  dropdown: div#dropdown  # 下拉滚动菜单选项区域
+
+  # Shadow DOM 中的可点击元素
+  shadow_checkbox: input[type="checkbox"]  # Shadow DOM 中的复选框

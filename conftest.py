@@ -58,8 +58,8 @@ def context(browser: Browser):
         context_options["has_touch"] = browser_config.get("has_touch")
 
     context = browser.new_context(**context_options)
-    cookie = convert_cookies(read_cookies())
-    context.add_cookies(cookie)
+    # cookie = convert_cookies(read_cookies())
+    # context.add_cookies(cookie)
     yield context
     storage_state = context.storage_state(path='config/storage_state.json')
     context.close()
@@ -188,8 +188,6 @@ def pytest_collect_file(file_path: Path, parent):  # noqa
         # 重写属性
         py_module._getobj = lambda: module  # noqa
         return py_module
-
-
 
 
 @pytest.fixture()
