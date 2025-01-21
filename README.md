@@ -282,6 +282,14 @@ login_test:
 `playwright codegen "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"`
 
 
+元素提取方式
+- 使用chrome插件: SelectorsHub
+- 使用pycharm 插件: Test Automation
+- 使用playwright录制功能提取元素，或使用prompt 提取步骤及元素
+- 复制HTML元素，使用prompt提取
+
+推荐使用chatgpt、deepseek提取元素
+
 根据HTML提取元素 prompt
 ``` prompt
 请根据以下要求提取 HTML 中的元素，并以 YAML 格式输出：
