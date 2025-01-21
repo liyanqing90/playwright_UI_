@@ -18,8 +18,6 @@ from utils.dingtalk_notifier import ReportNotifier
 from utils.logger import logger
 from utils.yaml_handler import YamlHandler
 
-log = logger
-
 DINGTALK_TOKEN = "636325ecf2302baf112f74ac54d8ef991de9b307c00bd168d3f2baa7df7f9113"
 DINGTALK_SECRET = "SECa7e01bee3a34e05d1b57297a95b8920d8c257088979c49fa0b50889fd60c570c"
 
@@ -35,16 +33,12 @@ def browser() -> Generator[Browser, None, None]:
     创建浏览器实例，session 级别的 fixture
     """
     with sync_playwright() as playwright:
-        browser = getattr(playwright, config.browser).launch(headless=False)
-        # browser = playwright.chromium.launch(headless=False)
-
+        browser = getattr(playwright, config.browser).launch(headless=not config.headed)
         yield browser
-
-        # 清理资源
         browser.close()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def context(browser: Browser):
     context_options = {}
     browser_config = config.browser_config
@@ -60,8 +54,8 @@ def context(browser: Browser):
         context_options["has_touch"] = browser_config.get("has_touch")
 
     context = browser.new_context(**context_options)
-    cookie = convert_cookies(read_cookies())
-    context.add_cookies(cookie)
+    # cookie = convert_cookies(read_cookies())
+    # context.add_cookies(cookie)
     yield context
     storage_state = context.storage_state(path='config/storage_state.json')
     context.close()
@@ -128,7 +122,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     failures = []
     if terminalreporter.stats:
         for item in terminalreporter.stats.get('failed', []):
-            log.info(f"Processing failed test: {item.nodeid}")
+            logger.info(f"Processing failed test: {item.nodeid}")
             error_msg = extract_assertion_message(item.sections)
             failures.append({
                 "test_case": item.nodeid.split("::")[-1],
@@ -190,8 +184,6 @@ def pytest_collect_file(file_path: Path, parent):  # noqa
         # 重写属性
         py_module._getobj = lambda: module  # noqa
         return py_module
-
-
 
 
 @pytest.fixture()

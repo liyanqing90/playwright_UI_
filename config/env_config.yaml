@@ -2,11 +2,11 @@ projects:
   demo:
     test_dir: "test_data/demo"
     environments:
-      dev: "https://letcode.in/"
-      test: "https://letcode.in/"
-      stage: "https://letcode.in/"
-      prod: "https://letcode.in/"
-    browser_config: { "viewport": { "width": 1080, "height": 768 } }
+      dev: "https://testautomationpractice.blogspot.com/"
+      test: "https://testautomationpractice.blogspot.com/"
+      stage: "https://testautomationpractice.blogspot.com/"
+      prod: "https://testautomationpractice.blogspot.com/"
+    browser_config: { "viewport": { "width": 1920, "height": 1080 } }
 
   holo_live:
     test_dir: "test_data/hololive"
@@ -23,7 +23,7 @@ projects:
       test: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
       stage: "http://stage.hololive.com"
       prod: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
-    browser_config: { "viewport": { "width": 1080, "height": 768 } }
+    browser_config: { "viewport": { "width": 1920, "height": 1080 } }
 
   other_project:
     test_dir: "test_data/other_project"
