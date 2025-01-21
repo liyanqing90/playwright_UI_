@@ -35,7 +35,7 @@ class Project(str, Enum):
 class Config(BaseSettings):
     marker: Optional[str] = None
     keyword: Optional[str] = None
-    headed: bool = False
+    headed: bool = True  # 将默认值改为 True
     browser: Browser = Browser.CHROMIUM
     env: Environment = Environment.PROD
     project: Project = Project.DEMO

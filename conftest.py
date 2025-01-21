@@ -33,12 +33,8 @@ def browser() -> Generator[Browser, None, None]:
     创建浏览器实例，session 级别的 fixture
     """
     with sync_playwright() as playwright:
-        browser = getattr(playwright, config.browser).launch(headless=False)
-        # browser = playwright.chromium.launch(headless=False)
-
+        browser = getattr(playwright, config.browser).launch(headless=not config.headed)
         yield browser
-
-        # 清理资源
         browser.close()
 
 
