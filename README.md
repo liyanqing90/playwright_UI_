@@ -275,7 +275,7 @@ login_test:
 添加API测试支持
 实现测试数据生成工具
 ```
-
+`poetry export -f requirements.txt --output requirements.txt ` #导出requirements.txt
 ###
 
 全息录制命令
