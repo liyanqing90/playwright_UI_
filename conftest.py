@@ -21,9 +21,7 @@ from utils.yaml_handler import YamlHandler
 DINGTALK_TOKEN = "636325ecf2302baf112f74ac54d8ef991de9b307c00bd168d3f2baa7df7f9113"
 DINGTALK_SECRET = "SECa7e01bee3a34e05d1b57297a95b8920d8c257088979c49fa0b50889fd60c570c"
 
-DEVICE = {}
 
-# BROWSER_CONFIG = dict(os.environ['BROWSER_CONFIG'])
 config = Config()
 
 
