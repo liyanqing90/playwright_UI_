@@ -195,3 +195,8 @@ def login(page, ui_helper, request):
         step_executor.execute_step(step)
 
     return None
+
+@pytest.fixture()
+def fixture_demo():
+    logger.info("fixture demo")
+    return "fixture demo"
