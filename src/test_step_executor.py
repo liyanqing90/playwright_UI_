@@ -131,7 +131,7 @@ class StepExecutor:
             not selector):
             raise ValueError(f"操作 {action} 需要提供selector参数")
 
-    def _execute_action(self, action: str, selector: str, value: str = None, step: Dict[str, Any] = None) -> None:
+    def _execute_action(self, action: str, selector: str, value: Any = None, step: Dict[str, Any] = None) -> None:
         """执行具体操作"""
         action = action.lower()
         with allure.step(f"执行步骤: {action}"):
@@ -159,7 +159,7 @@ class StepExecutor:
                 self.ui_helper.upload_file(selector, value)
 
             elif action in StepAction.WAIT:
-                wait_time = int(float(step.get('value', '1')) * 1000) if step.get('value') else 1000
+                wait_time = int(float(step.get('value', 1)) * 1000) if step.get('value') else 1000
                 self.ui_helper.wait_for_timeout(wait_time)
 
             elif action in StepAction.ASSERT_VISIBLE:

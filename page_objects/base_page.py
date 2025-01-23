@@ -69,7 +69,7 @@ class BasePage:
     def click(self, selector: str):
         """点击元素"""
         self._wait_for_element(selector)
-        self.page.click(selector)
+        self.page.locator(selector).first.click()
 
     @handle_page_error
     @allure.step("点击元素 {selector}")
