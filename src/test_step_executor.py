@@ -1,4 +1,5 @@
 from datetime import datetime
+from io import StringIO
 from pathlib import Path
 from typing import Dict, Any
 
@@ -44,7 +45,6 @@ class StepAction:
     TYPE = ['type', '模拟输入']
     CLEAR = ['clear', '清空']
     ENTER_FRAME = ['enter_frame', '进入框架']
-    EXIT_FRAME = ['exit_frame', '退出框架']
     ACCEPT_ALERT = ['accept_alert', '接受弹框']
     DISMISS_ALERT = ['dismiss_alert', '取消弹框']
     SWITCH_WINDOW = ['switch_window', '切换窗口']
@@ -63,57 +63,75 @@ class StepAction:
             REFRESH +
             PAUSE +
             CLOSE_WINDOW +
-            EXIT_FRAME +
             WAIT_FOR_NEW_WINDOW
     )
 
 
 class StepExecutor:
+
     def __init__(self, page, ui_helper, elements: Dict[str, Any]):
         self.page = page
         self.ui_helper = ui_helper
         self.elements = elements
         self.start_time = None
+        self.step_has_error = False  # 步骤错误状态
+        self._log_buffer = StringIO()  # 步骤日志缓存
+        self._buffer_handler_id = None
+        self._prepare_evidence_dir()
+        self._VALID_ACTIONS = {
+            a.lower()
+            for attr in dir(StepAction)
+            if isinstance((alist := getattr(StepAction, attr)), list)
+            for a in alist
+        }
+
+        self._NO_SELECTOR_ACTIONS = {
+            a.lower() for a in StepAction.NO_SELECTOR_ACTIONS
+        }
+
+    @staticmethod
+    def _prepare_evidence_dir():
+        """创建截图存储目录"""
         Path("./evidence/screenshots").mkdir(parents=True, exist_ok=True)
+        # 日志handler ID        Path("./evidence/screenshots").mkdir(parents=True, exist_ok=True)
 
     def execute_step(self, step: Dict[str, Any]) -> None:
         try:
+            # self._buffer_handler_id = logger.add(
+            #     self._log_buffer.write,
+            #     format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}",
+            #     level="DEBUG"
+            # )
+
             self.start_time = datetime.now()
-            self._validate_step(step)
 
-            action = step.get("action")
-            selector = step.get("selector")
+            action = step.get("action", "").lower()
+            selector = self.elements.get(pre_selector := step.get("selector"), pre_selector)
             value = step.get("value")
-
-            if selector and selector in self.elements:
-                selector = self.elements[selector]
-
-            logger.info(f"Executing step: {action} | Selector: {selector} | Value: {value}")
+            self._validate_step(action, selector)
+            logger.info(f"执行步骤: {action} | 选择器: {selector} | 值: {value}")
 
             self._execute_action(action, selector, value, step)
 
         except Exception as e:
-            logger.error(f"Step execution failed: {str(e)}")
+            self.has_error = True
             self._capture_failure_evidence()
             raise
         finally:
-            self._logger_step_duration()
+            self._log_step_duration()
 
-    def _validate_step(self, step: Dict[str, Any]) -> None:
-        if not step.get("action"):
-            raise ValueError("Step action is missing")
-
-        action = step["action"].lower()
-        # 验证是否是支持的操作
-        if not any(action in action_list for action_list in StepAction.__dict__.values()
-                   if isinstance(action_list, list)):
+    def _validate_step(self, action, selector) -> None:
+        if not action:
+            raise ValueError("步骤缺少必要参数: action", f"原始输入: {action}")
+        # 操作类型白名单校验
+        if action not in self._VALID_ACTIONS:
             raise ValueError(f"不支持的操作类型: {action}")
+        # 必要参数校验
+        if (action not in self._NO_SELECTOR_ACTIONS and
+                not selector):
+            raise ValueError(f"操作 {action} 需要提供selector参数")
 
-        # 验证是否需要selector
-        if action not in StepAction.NO_SELECTOR_ACTIONS and not step.get("selector"):
-            raise ValueError(f"操作 {action} 需要提供 selector")
-
-    def _execute_action(self, action: str, selector: str, value: str = None, step: Dict[str, Any] = None) -> None:
+    def _execute_action(self, action: str, selector: str, value: Any = None, step: Dict[str, Any] = None) -> None:
         """执行具体操作"""
         action = action.lower()
         with allure.step(f"执行步骤: {action}"):
@@ -141,7 +159,7 @@ class StepExecutor:
                 self.ui_helper.upload_file(selector, value)
 
             elif action in StepAction.WAIT:
-                wait_time = int(float(step.get('value', '1')) * 1000) if step.get('value') else 1000
+                wait_time = int(float(step.get('value', 1)) * 1000) if step.get('value') else 1000
                 self.ui_helper.wait_for_timeout(wait_time)
 
             elif action in StepAction.ASSERT_VISIBLE:
@@ -220,9 +238,6 @@ class StepExecutor:
             elif action in StepAction.ENTER_FRAME:
                 self.ui_helper.enter_frame(selector)
 
-            elif action in StepAction.EXIT_FRAME:
-                self.ui_helper.exit_frame()
-
 
             elif action in StepAction.ACCEPT_ALERT:
                 text = self.ui_helper.accept_alert(selector, value)
@@ -248,13 +263,65 @@ class StepExecutor:
                 if 'variable_name' in step:
                     self.ui_helper.store_variable(step['variable_name'], str(count), step.get('scope', 'global'))
 
-    def _capture_failure_evidence(self) -> None:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        screenshot_path = f"./evidence/screenshots/failure_{timestamp}.png"
-        self.page.screenshot(path=screenshot_path)
-        allure.attach.file(screenshot_path, "失败截图", allure.attachment_type.PNG)
+    def _finalize_step(self):
+        """统一后处理逻辑"""
+        # 移除日志handler
+        if self._buffer_handler_id:
+            logger.remove(self._buffer_handler_id)
+            self._buffer_handler_id = None
 
-    def _logger_step_duration(self) -> None:
+        # 记录耗时
+        self._log_step_duration()
+
+        # 失败时采集证据
+        if self.step_has_error:
+            self._capture_failure_evidence()
+
+    def _log_step_duration(self):
+        """统一记录步骤耗时"""
         if self.start_time:
             duration = (datetime.now() - self.start_time).total_seconds()
-            logger.info(f"Step execution took {duration:.2f} seconds")
+            status = "成功" if not self.step_has_error else "失败"
+            logger.info(f"[{status}] 步骤耗时: {duration:.2f}s")
+
+    def _capture_failure_evidence(self):
+        """统一失败证据采集"""
+        try:
+            # 生成时间戳
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+            # 1. 捕获屏幕截图
+            screenshot_path = f"./evidence/screenshots/failure_{timestamp}.png"
+            self.page.screenshot(path=screenshot_path, full_page=True)
+            allure.attach.file(
+                screenshot_path,
+                name="失败截图",
+                attachment_type=allure.attachment_type.PNG
+            )
+
+            # 2. 捕获页面HTML
+            html_content = self.page.content()
+            allure.attach(
+                html_content,
+                name="页面HTML",
+                attachment_type=allure.attachment_type.HTML
+            )
+
+            # 3. 捕获步骤日志
+            log_content = self._log_buffer.getvalue()
+            allure.attach(
+                log_content,
+                name="步骤日志",
+                attachment_type=allure.attachment_type.TEXT
+            )
+
+            # 4. 记录上下文信息
+            context_info = f"URL: {self.page.url}\n错误时间: {timestamp}"
+            allure.attach(
+                context_info,
+                name="失败上下文",
+                attachment_type=allure.attachment_type.TEXT
+            )
+
+        except Exception as e:
+            logger.error(f"证据采集失败: {str(e)}")

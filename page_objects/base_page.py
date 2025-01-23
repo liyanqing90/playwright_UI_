@@ -69,7 +69,7 @@ class BasePage:
     def click(self, selector: str):
         """点击元素"""
         self._wait_for_element(selector)
-        self.page.click(selector)
+        self.page.locator(selector).first.click()
 
     @handle_page_error
     @allure.step("点击元素 {selector}")
@@ -211,7 +211,6 @@ class BasePage:
     @allure.step("悬停在元素 {selector}")
     def hover(self, selector: str):
         """鼠标悬停在元素上"""
-        self._wait_for_element(selector)
         self.page.hover(selector)
 
     @handle_page_error
@@ -233,7 +232,7 @@ class BasePage:
     def select_option(self, selector: str, value: str):
         """选择下拉框选项"""
         self._wait_for_element(selector)
-        self.page.select_option(selector, value=value)
+        self.page.locator(selector).select_option(value=value)
 
     @handle_page_error
     @allure.step("拖拽元素")
@@ -298,26 +297,17 @@ class BasePage:
     def enter_frame(self, selector: str):
         """进入iframe"""
         self._wait_for_element(selector)
-        frame = self.page.frame_locator(selector)
-        return frame
-
-    @handle_page_error
-    @allure.step("退出iframe")
-    def exit_frame(self):
-        """退出iframe"""
-        self.page = self.page.main_frame()
+        return self.page.frame_locator(selector)
 
     @handle_page_error
     @allure.step("接受弹窗")
     def accept_alert(self, selector, value=None):
         dialog_message = None  # 用于存储弹框内容
-
         if not value:
             value = {}
 
         def handle_dialog(dialog):
             nonlocal dialog_message  # 声明为外部变量
-
             if message := value.get("message"):
                 dialog.accept(message)
             else:
@@ -367,8 +357,9 @@ class BasePage:
     @allure.step("关闭当前窗口")
     def close_window(self):
         """关闭当前窗口"""
+        if len(self.page.context.pages) == 1:
+            raise RuntimeError("无法关闭最后一个窗口")
         self.page.close()
-        # 切换到剩余窗口
         self.page = self.page.context.pages[-1]
 
     @handle_page_error
@@ -407,6 +398,9 @@ class BasePage:
     def manage_cookies(self, action: str, **kwargs):
         """管理Cookie"""
         if action == "add":
+            required = {"name", "value", "url"}
+            if not required.issubset(kwargs):
+                raise ValueError("添加Cookie缺少必要参数: name, value, url")
             self.page.context.add_cookies([kwargs])
         elif action == "get":
             return self.page.context.cookies()
@@ -425,9 +419,3 @@ class BasePage:
     def get_page_title(self) -> str:
         """获取页面标题"""
         return self.page.title()
-
-    @handle_page_error
-    @allure.step("切换到默认内容")
-    def switch_to_default(self):
-        """切换到默认内容(用于iframe操作后)"""
-        self.page = self.page.main_frame()
