@@ -233,6 +233,7 @@ class BasePage:
         """选择下拉框选项"""
         self._wait_for_element(selector)
         self.page.locator(selector).select_option(value=value)
+
     @handle_page_error
     @allure.step("拖拽元素")
     def drag_and_drop(self, source: str, target: str):
@@ -298,13 +299,13 @@ class BasePage:
         self._wait_for_element(selector)
         return self.page.frame_locator(selector)
 
-
     @handle_page_error
     @allure.step("接受弹窗")
     def accept_alert(self, selector, value=None):
         dialog_message = None  # 用于存储弹框内容
         if not value:
             value = {}
+
         def handle_dialog(dialog):
             nonlocal dialog_message  # 声明为外部变量
             if message := value.get("message"):
@@ -312,6 +313,7 @@ class BasePage:
             else:
                 dialog.accept()
             dialog_message = dialog.message
+
         self.page.once("dialog", handle_dialog)
         self.page.click(selector)
         return dialog_message
@@ -359,6 +361,7 @@ class BasePage:
             raise RuntimeError("无法关闭最后一个窗口")
         self.page.close()
         self.page = self.page.context.pages[-1]
+
     @handle_page_error
     @allure.step("等待新窗口打开")
     def wait_for_new_window(self) -> Page:
@@ -416,5 +419,3 @@ class BasePage:
     def get_page_title(self) -> str:
         """获取页面标题"""
         return self.page.title()
-
-

@@ -105,10 +105,10 @@ class StepExecutor:
 
             self.start_time = datetime.now()
 
-            action = step.get("action","").lower()
-            selector = self.elements.get(pre_selector:=step.get("selector"), pre_selector)
+            action = step.get("action", "").lower()
+            selector = self.elements.get(pre_selector := step.get("selector"), pre_selector)
             value = step.get("value")
-            self._validate_step(action,selector)
+            self._validate_step(action, selector)
             logger.info(f"执行步骤: {action} | 选择器: {selector} | 值: {value}")
 
             self._execute_action(action, selector, value, step)
@@ -120,7 +120,7 @@ class StepExecutor:
         finally:
             self._log_step_duration()
 
-    def _validate_step(self, action,selector) -> None:
+    def _validate_step(self, action, selector) -> None:
         if not action:
             raise ValueError("步骤缺少必要参数: action", f"原始输入: {action}")
         # 操作类型白名单校验
@@ -128,7 +128,7 @@ class StepExecutor:
             raise ValueError(f"不支持的操作类型: {action}")
         # 必要参数校验
         if (action not in self._NO_SELECTOR_ACTIONS and
-            not selector):
+                not selector):
             raise ValueError(f"操作 {action} 需要提供selector参数")
 
     def _execute_action(self, action: str, selector: str, value: Any = None, step: Dict[str, Any] = None) -> None:

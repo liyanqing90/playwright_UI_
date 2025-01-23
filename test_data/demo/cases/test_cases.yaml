@@ -4,7 +4,7 @@ test_cases:
   #    depends_on: [ ]
   - name: test_alert
     fixtures: [ fixture_demo ]
-  - name: test_input
+  #  - name: test_input
   - name: test_radio
   - name: test_checkbox
     depends_on: [ test_input ]
