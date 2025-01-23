@@ -24,7 +24,6 @@ def build_pytest_args(config):
         f"{test_dir}/cases",
         '-v',
         "-p", "no:warnings",
-        "--report-log=report.json",
         "-s",
         "--alluredir=reports/allure-results",
         "--clean-alluredir"

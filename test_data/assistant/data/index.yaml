@@ -14,11 +14,11 @@ test_data:
       - action: click
         selector: "开始时间输入框"
       - action: click
-        selector: "00文本"
+        selector: "话题时"
       - action: click
-        selector: "01文本"
+        selector: "话题分"
       - action: click
-        selector: "确定按钮"
+        selector: "话题时间确定"
       - action: click
         selector: "灵感文本"
       - action: click
@@ -49,11 +49,11 @@ test_data:
       - action: click
         selector: "开始时间输入框"
       - action: click
-        selector: "00文本"
+        selector: "话题时"
       - action: click
-        selector: "01文本"
+        selector: "话题分"
       - action: click
-        selector: "确定按钮"
+        selector: "话题时间确定"
       - action: click
         selector: "灵感文本"
       - action: click
