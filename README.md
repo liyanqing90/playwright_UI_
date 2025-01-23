@@ -275,14 +275,16 @@ login_test:
 添加API测试支持
 实现测试数据生成工具
 ```
+
 `poetry export -f requirements.txt --output requirements.txt ` #导出requirements.txt
+
 ###
 
 全息录制命令
 `playwright codegen "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"`
 
-
 元素提取方式
+
 - 使用chrome插件: SelectorsHub
 - 使用pycharm 插件: Test Automation
 - 使用playwright录制功能提取元素，或使用prompt 提取步骤及元素
@@ -291,6 +293,7 @@ login_test:
 推荐使用chatgpt、deepseek提取元素
 
 根据HTML提取元素 prompt
+
 ``` prompt
 请根据以下要求提取 HTML 中的元素，并以 YAML 格式输出：
 1. 提取 HTML 中的元素。
@@ -317,13 +320,17 @@ dont_write_input: "input#dontwrite" # 确认文本为只读
 
 核心任务:
 
-1. 元素定位提取: 从 elements 示例数据中，提取并列出所有 Playwright 可用的元素定位符。定位符格式必须严格符合 Playwright 的规范（如 text=, placeholder=, role=, xpath, css 等），且仅包含定位信息本身，不包含其他任何操作、说明或上下文。
-2. 步骤转换: 将 steps 示例数据中定义的代码步骤转换为 Playwright 的标准步骤描述。每个步骤描述应包含 action、selector（若适用）和 value（若适用）三个属性：
-  - action: 根据下方的 代码方法对应关系，将原始代码中的动作转换为对应的 Playwright 标准方法名称。
-  - selector: 将原始代码中步骤的 selector 值替换为第一步中提取的对应定位符。
-  - value: 如果原始代码的步骤中有 value 值，则将其原样保留。
+1. 元素定位提取: 从 elements 示例数据中，提取并列出所有 Playwright 可用的元素定位符。定位符格式必须严格符合 Playwright
+   的规范（如 text=, placeholder=, role=, xpath, css 等），且仅包含定位信息本身，不包含其他任何操作、说明或上下文。
+2. 步骤转换: 将 steps 示例数据中定义的代码步骤转换为 Playwright 的标准步骤描述。每个步骤描述应包含 action、selector（若适用）和
+   value（若适用）三个属性：
+
+- action: 根据下方的 代码方法对应关系，将原始代码中的动作转换为对应的 Playwright 标准方法名称。
+- selector: 将原始代码中步骤的 selector 值替换为第一步中提取的对应定位符。
+- value: 如果原始代码的步骤中有 value 值，则将其原样保留。
+
 3. 输出格式: 请分两部分输出结果，第一部分输出提取的元素定位符，第二部分输出转换后的步骤描述。
-代码方法对应关系 (原始代码 -> Playwright):
+   代码方法对应关系 (原始代码 -> Playwright):
 
 ```navigate -> page.goto
 pause -> page.pause
@@ -358,6 +365,7 @@ close_window -> page.close
 wait_for_new_window -> page.context.expect_page
 wait_for_element_hidden -> page.wait_for_selector(state="hidden")
 ```
+
 示例数据 (YAML 格式, 仅用于演示，请不要将其作为输入进行处理):
 
 ```YAML
@@ -367,6 +375,7 @@ wait_for_element_hidden -> page.wait_for_selector(state="hidden")
     page.locator('//input[@value="上传图片"]').set_input_files("2024_12_20_15_11_IMG_0238.PNG")
 
 ```
+
 输出要求:
 
 第一部分: Playwright 元素定位符 (每行一个定位符):
@@ -378,6 +387,7 @@ elements:
   图片: //span[@class="soutu-btn"]
   上传: //input[@value="上传图片"]
 ```
+
 第二部分: 转换后的步骤描述 (YAML 格式):
 
 ```YAML
@@ -395,6 +405,7 @@ steps:
    - ... (其他步骤)
   
 ```
+
 重要提示:
 
 - 请严格按照上述指令进行操作，确保输出结果的正确性和格式规范。

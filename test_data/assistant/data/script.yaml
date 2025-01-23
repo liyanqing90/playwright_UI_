@@ -71,7 +71,7 @@ test_data:
         selector: 剧本刷新
       - action: click
         selector: 关闭预览
-#      - action: pause
+      #      - action: pause
       - action: click
         selector: switch_script
       - action: click
@@ -88,6 +88,8 @@ test_data:
         selector: 共享中心
       - action: click
         selector: 我的创作
+      - action: wait
+        value: 1
       - action: click
         selector: edit_button
       - action: click
