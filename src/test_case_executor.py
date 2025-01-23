@@ -1,7 +1,6 @@
 from typing import Dict, Any, Set
 
 import allure
-from _pytest.fixtures import FixtureRequest
 
 from src.test_step_executor import StepExecutor
 from utils.logger import logger
@@ -23,11 +22,10 @@ def _setup_test_environment(case: Dict[str, Any]) -> None:
 
 class CaseExecutor:
 
-    def __init__(self, test_data: Dict[str, Any], elements: Dict[str, Any], request: FixtureRequest):
+    def __init__(self, test_data: Dict[str, Any], elements: Dict[str, Any]):
         self.test_data = test_data
         self.elements = elements
         self.executed_fixtures: Set[str] = set()
-        self.request: FixtureRequest = request  # 保存 pytest 的 request 对象
 
     def execute_test_case(self, case: Dict[str, Any], page, ui_helper) -> None:
         case_name = case["name"]
@@ -46,4 +44,3 @@ class CaseExecutor:
             pass
         #     # 清理测试环境
         #     self._cleanup_test_environment(case)
-

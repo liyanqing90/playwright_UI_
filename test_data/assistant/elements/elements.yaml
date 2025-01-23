@@ -7,9 +7,9 @@ elements:
   剧本文本: text=剧本
   角色图片: role=img
   开始时间输入框: "#form_item_sectionList_0_startTime"
-  话题时:  role=tooltip >> ul.left >> text=05
-  话题分:  role=tooltip >> ul.right >> text=02
-  话题时间确定:  role=tooltip >> text=确 定
+  话题时: role=tooltip >> ul.left >> text=05
+  话题分: role=tooltip >> ul.right >> text=02
+  话题时间确定: role=tooltip >> text=确 定
   灵感文本: text=灵感
   不保存按钮: //button[@class='ant-btn no-save']
   成长文本: text=成长
@@ -61,7 +61,7 @@ elements:
   剧本分: //ul[@class="right"]//li[contains(text(),"00")]
   案例引用: //label[span[text()='案例引用']][1]
   脚本引用: //label[span[text()='脚本引用']][1]
-  手动录入:  //label[span[text()='手动录入']][1]
+  手动录入: //label[span[text()='手动录入']][1]
   话题名称: "#form_item_sectionList_0_subject"
   确定时间: .submit
   生成脚本: .creat-btn
