@@ -22,8 +22,8 @@ def _setup_test_environment(case: Dict[str, Any]) -> None:
 
 class CaseExecutor:
 
-    def __init__(self, test_data: Dict[str, Any], elements: Dict[str, Any]):
-        self.test_data = test_data
+    def __init__(self, case_data: Dict[str, Any], elements: Dict[str, Any]):
+        self.case_data = case_data
         self.elements = elements
         self.executed_fixtures: Set[str] = set()
 
@@ -35,8 +35,7 @@ class CaseExecutor:
         try:
             # 执行测试步骤
             step_executor = StepExecutor(page, ui_helper, self.elements)
-            steps = self.test_data[case_name]["steps"]
-
+            steps = self.case_data["steps"]
             for step in steps:
                 step_executor.execute_step(step)
 
