@@ -98,7 +98,7 @@ def convert_to_yaml_format(test_cases: List[ExcelTestCase]) -> Dict:
             yaml_case['steps'].append(yaml_step)
 
         yaml_cases.append(yaml_case)
-        logger.info(f"转换用例: {yaml_case['name']}")
+        logger.debug(f"转换用例: {yaml_case['name']}")
 
     return {'test_cases': yaml_cases}
 
@@ -259,9 +259,9 @@ class ExcelHandler:
                 ExcelTestCase.COLUMN_VALUE
             ])
             df.to_excel(template_path, index=False)
-            logger.info(f"创建测试用例模板文件: {template_path}")
+            logger.debug(f"创建测试用例模板文件: {template_path}")
         else:
-            logger.info(f"测试用例模板文件已存在: {template_path}")
+            logger.debug(f"测试用例模板文件已存在: {template_path}")
 
 
 def get_excel_files(directory: str) -> List[Path]:
@@ -275,5 +275,5 @@ def get_excel_files(directory: str) -> List[Path]:
     for file in dir_path.glob("*"):
         if file.is_file() and file.suffix == '.xlsx' and not file.name.startswith('~$'):
             excel_files.append(file)
-            logger.info(f"找到Excel文件: {file}")
+            logger.debug(f"找到Excel文件: {file}")
     return excel_files

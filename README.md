@@ -25,21 +25,14 @@
 ```bash
 poetry install
 ```
-
-### 运行测试
-
-运行所有测试：
-
+### 安装驱动
 ```bash
-poetry run pytest
+playwright install chromium
 ```
-
-运行单个测试文件：
-
+### 执行命令，有头模式运行demo项目
 ```bash
-poetry run pytest path/to/test_file.py
+python test_runner.py --project demo
 ```
-
 生成测试报告：
 
 ```bash

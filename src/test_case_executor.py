@@ -10,13 +10,13 @@ log = logger
 
 def _cleanup_test_environment(case: Dict[str, Any]) -> None:
     with allure.step("测试环境清理"):
-        log.info(f"Cleaning up test environment for case: {case['name']}")
+        log.debug(f"Cleaning up test environment for case: {case['name']}")
         # fixture 的清理会由 pytest 自动处理
 
 
 def _setup_test_environment(case: Dict[str, Any]) -> None:
     with allure.step("测试环境准备"):
-        log.info(f"Setting up test environment for case: {case['name']}")
+        log.debug(f"Setting up test environment for case: {case['name']}")
         # 添加环境准备代码
 
 

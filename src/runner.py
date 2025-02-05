@@ -62,7 +62,7 @@ class TestCaseGenerator(pytest.Item):
         fixtures = case.get("fixtures", [])
         case_data = self.test_data.get(case_name, {})
 
-        logger.info(f"用例名称: {case_name}")
+        logger.debug(f"用例名称: {case_name}")
 
         # 使用闭包绑定当前 case 数据
         def _test_function_wrapper_for_case(page, ui_helper, **kwargs):  # 重命名闭包函数
