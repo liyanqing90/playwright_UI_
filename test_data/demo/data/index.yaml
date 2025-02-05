@@ -3,97 +3,26 @@ test_data:
     description: "demo测试"
     steps:
       - action: goto
-        value: "https://www.baidu.com"
+        value: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      - action: fill
+        selector: 用户名
+        value: "15011290391"
+      - action: fill
+        selector: 密码
+        value: "Aa1234qwer-"
+      - action: click
+        selector: 登录
+      - action: click
+        selector: 剧本
+      - action: click
+        selector: 灵感
+      - action: click
+        selector: 剧本
+      - action: click
+        selector: 直播
+      - action: click
+        selector: 剧本
       - action: click
         selector: 图片
-      - action: upload
-        selector: 上传
-        value: "./files/demo/01.PNG"
-      - action: wait
-        value: 3
-  test_alert:
-    description: "alert测试"
-    steps:
-      - action: goto
-        value: ""
-      - action: fill
-        selector: name_input
-        value: "pagan"
-      - action: fill
-        selector: email_input
-        value: "pagan@demo.com"
-      - action: fill
-        selector: phone_input
-        value: "123456789"
-  test_input:
-    description: "input测试"
-    steps:
-      - action: goto
-        value: ""
-      - action: fill
-        selector: name_input
-        value: "pagan"
-      - action: fill
-        selector: email_input
-        value: "pagan@demo.com"
-      - action: fill
-        selector: phone_input
-        value: "123456789"
-      - action: fill
-        selector: address_textarea
-        value: "pagan@demo.com"
-  test_radio:
-    description: "radio测试"
-    steps:
-      - action: goto
-        value: ""
       - action: click
-        selector: gender_radio_male
-      - action: click
-        selector: gender_radio_female
-  test_checkbox:
-    description: "checkbox测试"
-    steps:
-      - action: goto
-        value: ""
-      - action: click
-        selector: days_checkbox_sunday
-      - action: click
-        selector: days_checkbox_monday
-      - action: click
-        selector: days_checkbox_tuesday
-      - action: click
-        selector: days_checkbox_wednesday
-      - action: click
-        selector: days_checkbox_friday
-      - action: click
-        selector: days_checkbox_saturday
-  test_select:
-    description: "select测试"
-    steps:
-      - action: goto
-        value: ""
-      - action: select
-        selector: country_select
-        value: "canada"
-      - action: select
-        selector: colors_select
-        value: "blue"
-      - action: select
-        selector: animals_select
-        value: "dog"
-      - action: select
-        selector: animals_select
-        value: "lion"
-  test_upload:
-    description: "upload测试"
-    steps:
-      - action: goto
-        value: ""
-      - action: upload
-        selector: single_file_input
-        value: "./files/demo/01.PNG"
-      - action: upload
-        selector: multiple_files_input
-        value: "./files/demo/01.PNG"
-
+        selector: 清空全部

@@ -97,11 +97,6 @@ class StepExecutor:
 
     def execute_step(self, step: Dict[str, Any]) -> None:
         try:
-            # self._buffer_handler_id = logger.add(
-            #     self._log_buffer.write,
-            #     format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}",
-            #     level="DEBUG"
-            # )
 
             self.start_time = datetime.now()
 
