@@ -119,7 +119,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     failures = []
     if terminalreporter.stats:
         for item in terminalreporter.stats.get('failed', []):
-            logger.info(f"Processing failed test: {item.nodeid}")
+            logger.debug(f"Processing failed test: {item.nodeid}")
             error_msg = extract_assertion_message(item.sections)
             failures.append({
                 "test_case": item.nodeid.split("::")[-1],
@@ -204,7 +204,7 @@ def login(page, ui_helper, request):
 
 @pytest.fixture()
 def fixture_demo():
-    logger.info("fixture demo")
+    logger.debug("fixture demo")
     return "fixture demo"
 
 

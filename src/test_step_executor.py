@@ -104,7 +104,7 @@ class StepExecutor:
             selector = self.elements.get(pre_selector := step.get("selector"), pre_selector)
             value = step.get("value")
             self._validate_step(action, selector)
-            logger.info(f"执行步骤: {action} | 选择器: {selector} | 值: {value}")
+            logger.debug(f"执行步骤: {action} | 选择器: {selector} | 值: {value}")
 
             self._execute_action(action, selector, value, step)
 
@@ -277,7 +277,7 @@ class StepExecutor:
         if self.start_time:
             duration = (datetime.now() - self.start_time).total_seconds()
             status = "成功" if not self.step_has_error else "失败"
-            logger.info(f"[{status}] 步骤耗时: {duration:.2f}s")
+            logger.debug(f"[{status}] 步骤耗时: {duration:.2f}s")
 
     def _capture_failure_evidence(self):
         """统一失败证据采集"""

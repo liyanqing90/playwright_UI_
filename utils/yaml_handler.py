@@ -9,7 +9,7 @@ from utils.logger import logger
 
 def get_yaml_files(directory: str) -> List[Path]:
     """使用 pathlib.Path 获取目录下所有的Excel文件（排除临时文件）"""
-    logger.info(f"搜索目录: {directory}")
+    logger.debug(f"搜索目录: {directory}")
     yaml_files = []
     dir_path = Path(directory)
     if not dir_path.is_dir():
