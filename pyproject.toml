@@ -26,6 +26,7 @@ ruamel-yaml = "^0.18.10"
 configobj = "^5.0.9"
 pytest-base-url = "^2.1.0"
 pytest-dependency = "^0.6.0"
+poetry-core = "^2.0.1"
 
 
 [build-system]
