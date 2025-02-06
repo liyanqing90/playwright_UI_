@@ -33,11 +33,10 @@ playwright install chromium
 ```bash
 python test_runner.py --project demo
 ```
-生成测试报告：
+### 生成测试报告：
 
 ```bash
-poetry run pytest --alluredir=reports
-```
+allure serve reports/allure-results
 
 ## 项目结构
 
@@ -82,14 +81,14 @@ playwright_UI/
 ├── pytest.ini               # Pytest配置
 ├── README.md                # 项目文档
 └── test_runner.py           # 测试运行器
-```
+
 
 ## 测试开发指南
 
 ### 测试用例编写
 
 #### 用例文件结构
-
+```
 测试用例由三个核心文件协同定义：
 
 1. `cases/cases.yaml` - 定义测试用例元数据
