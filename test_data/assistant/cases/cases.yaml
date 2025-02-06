@@ -1,10 +1,4 @@
 test_cases:
-  #  - name: test_demo
-  #    fixtures: [ ]
-  #    depends_on: [ ]
-  #  - name: test_demo2
-  #    fixtures: [ login ]
-  #    depends_on: [ ]
   - name: test_create_script
     fixtures: [ login ]
   - name: test_script_library

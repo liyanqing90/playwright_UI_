@@ -1,12 +1,2 @@
 test_cases:
-  #  - name: test_demo
-  #    fixtures: [ ]
-  #    depends_on: [ ]
-  - name: test_alert
-    fixtures: [ fixture_demo ]
-  #  - name: test_input
-  - name: test_radio
-  - name: test_checkbox
-    depends_on: [ test_input ]
-  - name: test_select
-  - name: test_upload
+    - name: test_demo

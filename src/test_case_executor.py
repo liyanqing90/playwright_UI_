@@ -10,20 +10,20 @@ log = logger
 
 def _cleanup_test_environment(case: Dict[str, Any]) -> None:
     with allure.step("测试环境清理"):
-        log.info(f"Cleaning up test environment for case: {case['name']}")
+        log.debug(f"Cleaning up test environment for case: {case['name']}")
         # fixture 的清理会由 pytest 自动处理
 
 
 def _setup_test_environment(case: Dict[str, Any]) -> None:
     with allure.step("测试环境准备"):
-        log.info(f"Setting up test environment for case: {case['name']}")
+        log.debug(f"Setting up test environment for case: {case['name']}")
         # 添加环境准备代码
 
 
 class CaseExecutor:
 
-    def __init__(self, test_data: Dict[str, Any], elements: Dict[str, Any]):
-        self.test_data = test_data
+    def __init__(self, case_data: Dict[str, Any], elements: Dict[str, Any]):
+        self.case_data = case_data
         self.elements = elements
         self.executed_fixtures: Set[str] = set()
 
@@ -35,8 +35,7 @@ class CaseExecutor:
         try:
             # 执行测试步骤
             step_executor = StepExecutor(page, ui_helper, self.elements)
-            steps = self.test_data[case_name]["steps"]
-
+            steps = self.case_data["steps"]
             for step in steps:
                 step_executor.execute_step(step)
 
