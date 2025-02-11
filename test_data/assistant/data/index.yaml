@@ -70,3 +70,29 @@ test_data:
         selector: "重新考试按钮"
       - action: click
         selector: "取消练习&考试按钮"
+
+
+  test_su_cai:
+    description: "素材测试"
+    steps:
+      - action: click
+        selector: "text=素材"
+      - action: click
+        selector: 素材筛选条件选择器输入框
+      - action: click
+        selector: 素材筛选条件下拉选项
+      - action: click
+        selector: 素材查询按钮
+      - action: click
+        selector: 素材
+      - action: wait
+        value: 1
+      - action: click
+        selector: 素材上传按钮
+      - action: click
+        selector: 素材通用素材
+      - action: upload
+        selector: 素材upload浏览
+        value: files/demo/01.PNG
+      - action: click
+        selector: 素材确认按钮
