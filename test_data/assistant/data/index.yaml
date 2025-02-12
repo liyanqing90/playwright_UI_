@@ -72,17 +72,23 @@ test_data:
         selector: "取消练习&考试按钮"
 
 
-  test_su_cai:
+  test_material:
     description: "素材测试"
     steps:
       - action: click
-        selector: "text=素材"
+        selector: 素材
       - action: click
         selector: 素材筛选条件选择器输入框
       - action: click
         selector: 素材筛选条件下拉选项
       - action: click
         selector: 素材查询按钮
+      - action: click
+        selector: 素材删除按钮
+      - action: wait
+        value: 1
+      - action: click
+        selector: 删除确认是按钮
       - action: click
         selector: 素材
       - action: wait
@@ -94,5 +100,28 @@ test_data:
       - action: upload
         selector: 素材upload浏览
         value: files/demo/01.PNG
+      - action: wait
+        value: 1
       - action: click
         selector: 素材确认按钮
+
+
+  test_growth:
+    description: "素材测试"
+    steps:
+      - action: click
+        selector: 成长导航栏链接
+      - action: click
+        selector: 练习活动项图标
+      - action: click
+        selector: 数据概览
+      - action: click
+        selector: 成长导航栏链接
+      - action: click
+        selector: 考试第二个标签页
+      - action: click
+        selector: 考试查看按钮
+      - action: click
+        selector: 数据概览
+      - action: click
+        selector: 考试关闭按钮
