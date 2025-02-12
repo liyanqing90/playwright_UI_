@@ -2,27 +2,124 @@ test_data:
   test_demo:
     description: "demo测试"
     steps:
-      - action: goto
-        value: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
-      - action: fill
-        selector: 用户名
-        value: "15011290391"
-      - action: fill
-        selector: 密码
-        value: "Aa1234qwer-"
+      - step_ref: login_steps
       - action: click
-        selector: 登录
+        selector: "图片元素"
       - action: click
-        selector: 剧本
+        selector: "第二个图片元素"
       - action: click
-        selector: 灵感
+        selector: "剧本文本"
       - action: click
-        selector: 剧本
+        selector: "角色图片"
       - action: click
-        selector: 直播
+        selector: "开始时间输入框"
       - action: click
-        selector: 剧本
+        selector: "话题时"
       - action: click
-        selector: 图片
+        selector: "话题分"
       - action: click
-        selector: 清空全部
+        selector: "话题时间确定"
+      - action: click
+        selector: "灵感文本"
+      - action: click
+        selector: "不保存按钮"
+      - action: click
+        selector: "成长文本"
+      - action: click
+        selector: "开始练习按钮"
+      - action: click
+        selector: "取消练习&考试按钮"
+      - action: click
+        selector: "考试文本"
+      - action: click
+        selector: "重新考试按钮"
+      - action: click
+        selector: "取消练习&考试按钮"
+  test_demo2:
+    description: "demo测试"
+    steps:
+      - action: click
+        selector: "图片元素"
+      - action: click
+        selector: "第二个图片元素"
+      - action: click
+        selector: "剧本文本"
+      - action: click
+        selector: "角色图片"
+      - action: click
+        selector: "开始时间输入框"
+      - action: click
+        selector: "话题时"
+      - action: click
+        selector: "话题分"
+      - action: click
+        selector: "话题时间确定"
+      - action: click
+        selector: "灵感文本"
+      - action: click
+        selector: "不保存按钮"
+      - action: click
+        selector: "成长文本"
+      - action: click
+        selector: "开始练习按钮"
+      - action: click
+        selector: "取消练习&考试按钮"
+      - action: click
+        selector: "考试文本"
+      - action: click
+        selector: "重新考试按钮"
+      - action: click
+        selector: "取消练习&考试按钮"
+
+
+  test_material:
+    description: "素材测试"
+    steps:
+      - action: click
+        selector: 素材
+      - action: click
+        selector: 素材筛选条件选择器输入框
+      - action: click
+        selector: 素材筛选条件下拉选项
+      - action: click
+        selector: 素材查询按钮
+      - action: click
+        selector: 素材删除按钮
+      - action: wait
+        value: 1
+      - action: pause
+      - action: click
+        selector: 素材删除确认按钮
+      - action: click
+        selector: 素材
+      - action: wait
+        value: 1
+      - action: click
+        selector: 素材上传按钮
+      - action: click
+        selector: 素材通用素材
+      - action: upload
+        selector: 素材upload浏览
+        value: files/demo/01.PNG
+      - action: click
+        selector: 素材确认按钮
+
+  test_growth:
+    description: "素材测试"
+    steps:
+      - action: click
+        selector: 成长导航栏链接
+      - action: click
+        selector: 练习活动项图标
+      - action: click
+        selector: 练习数据概览
+      - action: click
+        selector: 成长导航栏链接
+      - action: click
+        selector: 考试第二个标签页
+      - action: click
+        selector: 考试查看按钮
+      - action: click
+        selector: 考试数据概览
+      - action: click
+        selector: 考试关闭按钮
