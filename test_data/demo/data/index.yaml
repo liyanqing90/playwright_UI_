@@ -87,9 +87,8 @@ test_data:
         selector: 素材删除按钮
       - action: wait
         value: 1
-      - action: pause
       - action: click
-        selector: 素材删除确认按钮
+        selector: 删除确认是按钮
       - action: click
         selector: 素材
       - action: wait
@@ -101,8 +100,11 @@ test_data:
       - action: upload
         selector: 素材upload浏览
         value: files/demo/01.PNG
+      - action: wait
+        value: 1
       - action: click
         selector: 素材确认按钮
+
 
   test_growth:
     description: "素材测试"
@@ -112,7 +114,7 @@ test_data:
       - action: click
         selector: 练习活动项图标
       - action: click
-        selector: 练习数据概览
+        selector: 数据概览
       - action: click
         selector: 成长导航栏链接
       - action: click
@@ -120,6 +122,6 @@ test_data:
       - action: click
         selector: 考试查看按钮
       - action: click
-        selector: 考试数据概览
+        selector: 数据概览
       - action: click
         selector: 考试关闭按钮

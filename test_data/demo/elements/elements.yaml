@@ -116,23 +116,23 @@ elements:
   optional_script_2_textarea: "//div[@class='script-title'][.//div[text()='可选脚本2']]//following-sibling::div[@class='input-wrap']//textarea"  # 可选脚本2的文本输入框
   optional_script_2_edit_button: "//div[@class='script-title'][.//div[text()='可选脚本2']]//following-sibling::div[@class='btn-box']//div[@class='btn primary' and text()='再次编辑']"  # 可选脚本2的“再次编辑”按钮
 
-  #素材
+
 #素材
   素材: text="素材"
   素材上传按钮: //span[contains(text(),'上 传')]
-  素材通用素材: //div[@role='document']//div[1]//div[2]//div[1]//div[1]//div[1]//label[2]//span[2]
+  素材通用素材: (//input[@value='2'])[1]
   素材upload浏览: '#form_in_modal_url'
   素材确认按钮: text="确 认"
   素材筛选条件选择器输入框: //span[@class='ant-select-selection-item']
   素材筛选条件下拉选项: text=通用素材
-  素材查询按钮: ".ant-col .ant-btn:nth-child(2)"
+  素材查询按钮: "text=查询 >> nth=0"
   素材删除按钮: "text=删除 >> nth=0"
-  删除确认是按钮: button[class='ant-btn ant-btn-primary ant-btn-sm']
+  删除确认是按钮: //span[contains(text(),'是')]
+
 #成长-
   成长导航栏链接: ".growUp-icon"
   练习活动项图标: ".active .item-top__icon"
-  练习数据概览: ".title-right .btn:nth-child(2)"
-  考试第二个标签页: ".tab-wrap li:nth-child(2)"
-  考试查看按钮: //tbody/tr[1]/td[6]/div[1]
-  考试数据概览: ".title-right .btn:nth-child(2)"
+  数据概览: text="数据概览"
+  考试第二个标签页: "text=考试 >> nth=0"
+  考试查看按钮: "text=查看 >> nth=0"
   考试关闭按钮: ".exam-detail .detail-box-close"
