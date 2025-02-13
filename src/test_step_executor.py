@@ -7,6 +7,7 @@ import allure
 
 from page_objects.base_page import base_url
 from utils.logger import logger
+from utils.variable_manager import VariableManager
 
 
 class StepAction:
@@ -78,6 +79,7 @@ class StepAction:
 class StepExecutor:
 
     def __init__(self, page, ui_helper, elements: Dict[str, Any]):
+        self.has_error = None
         self.page = page
         self.ui_helper = ui_helper
         self.elements = elements
@@ -109,8 +111,8 @@ class StepExecutor:
             self.start_time = datetime.now()
 
             action = step.get("action", "").lower()
-            selector = self.elements.get(pre_selector := step.get("selector"), pre_selector)
-            value = step.get("value")
+            selector = self.elements.get(pre_selector := step.get("selector"), pre_selector) # 替换变量
+            value = replace_values_from_dict_regex(step.get("value")) # 替换变量
             self._validate_step(action, selector)
             logger.debug(f"执行步骤: {action} | 选择器: {selector} | 值: {value}")
 
@@ -338,3 +340,32 @@ def generate_faker_data(data_type):
     faker = Faker()
     if data_type == 'name':
         return "新零售" + faker.uuid4().replace("-", "")[:6]
+    
+    
+import re
+
+def replace_values_from_dict_regex( value_string):
+  """
+  使用正则表达式从字典中替换字符串中的占位符。
+
+  Args:
+    value_dict: 存储值的字典。
+    value_string: 包含占位符的字符串，占位符格式为 '$<key>'。
+
+  Returns:
+    替换占位符后的字符串。
+  """
+  variable_manager = VariableManager()
+  def replace_placeholder(match):
+    """正则表达式替换的回调函数，用于获取匹配到的占位符键名并替换。"""
+    placeholder_key = match.group(1) # 获取捕获组 (括号内的内容)，即占位符的键名
+    value = variable_manager.get_variable(placeholder_key) # 使用字典的 get() 方法安全地获取值
+    if value is not None:
+      return str(value) # 如果找到值，则替换为字典中的值
+    else:
+      print(f"Warning: Key '{placeholder_key}' not found in the dictionary. Placeholder will be kept.")
+      return match.group(0) # 如果键未找到，打印警告信息并保留原始占位符
+
+  pattern = r'\$<(.*?)>'  # 匹配格式为 '$<key>' 的占位符，(.*?) 匹配任意字符（非贪婪模式）作为键名
+  replaced_string = re.sub(pattern, replace_placeholder, value_string)
+  return replaced_string
