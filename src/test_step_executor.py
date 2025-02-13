@@ -2,7 +2,7 @@ from datetime import datetime
 from io import StringIO
 from pathlib import Path
 from typing import Dict, Any
-
+from faker import Faker
 import allure
 
 from page_objects.base_page import base_url
@@ -56,6 +56,7 @@ class StepAction:
     MANAGE_COOKIES = ['cookies', 'Cookie操作']
     TAB_SWITCH = ['switch_tab', '切换标签页']
     DOWNLOAD_VERIFY = ['verify_download', '验证下载']
+    FAKER = ['faker', '生成数据']
     # 不需要selector的操作
     NO_SELECTOR_ACTIONS = (
             NAVIGATE +
@@ -63,7 +64,14 @@ class StepAction:
             REFRESH +
             PAUSE +
             CLOSE_WINDOW +
-            WAIT_FOR_NEW_WINDOW
+            WAIT_FOR_NEW_WINDOW +
+            GET_ELEMENT_COUNT +
+            EXECUTE_SCRIPT +
+            CAPTURE_SCREENSHOT +
+            MANAGE_COOKIES +
+            TAB_SWITCH +
+            DOWNLOAD_VERIFY +
+            FAKER
     )
 
 
@@ -257,6 +265,11 @@ class StepExecutor:
                 count = self.ui_helper.get_element_count(selector)
                 if 'variable_name' in step:
                     self.ui_helper.store_variable(step['variable_name'], str(count), step.get('scope', 'global'))
+            elif action in StepAction.FAKER:
+                value = generate_faker_data(step.get('data_type'))
+                if 'variable_name' not in step:
+                    raise ValueError("步骤缺少必要参数: variable_name")
+                self.ui_helper.store_variable(step['variable_name'], value, step.get('scope', 'global'))
 
     def _finalize_step(self):
         """统一后处理逻辑"""
@@ -320,3 +333,8 @@ class StepExecutor:
 
         except Exception as e:
             logger.error(f"证据采集失败: {str(e)}")
+
+def generate_faker_data(data_type):
+    faker = Faker()
+    if data_type == 'name':
+        return "新零售" + faker.uuid4().replace("-", "")[:6]
