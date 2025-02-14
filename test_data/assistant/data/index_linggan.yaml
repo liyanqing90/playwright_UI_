@@ -38,7 +38,7 @@ test_data:
       - action: click
         selector: Abarth
       - action: click
-        selector: 车系ID输入框
+        selector: "车系ID输入框"
       - action: click
         selector: Abarth_500新能源
       - action: click
@@ -78,4 +78,53 @@ test_data:
         selector: 无收藏
       - action: click
         selector: 无收藏
+      - action: click
+        selector: 找脚本
+      - action: click
+        selector: 筛选图标
+      - action: click
+        selector: 更新时间
+      - action: fill
+        selector: 更新时间
+        value: "2025-01-01 20:58:06"
+      - action: click
+        selector: 结束日期
+      - action: fill
+        selector: 结束日期
+        value: "2025-02-01 20:00:06"
+      - action: click
+        selector: 确定按钮
+      - action: click
+        selector: 问题意图
+      - action: click
+        selector: 排行榜
+      - action: click
+        selector: 创建人
+      - action: click
+        selector: 张鹏飞
+      - action: click
+        selector: 最小值
+      - action: fill
+        selector: 最小值
+        value: "50"
+      - action: click
+        selector: 最大值
+      - action: fill
+        selector: 最大值
+        value: "100"
+      - action: click
+        selector: 讲解车系
+      - action: click
+        selector: Abarth
+      - action: click
+        selector: 车系ID
+      - action: click
+        selector: Abarth_500新能源
+      - action: click
+        selector: 确定
+      - action: click
+        selector: 筛选图标
+      - action: click
+        selector: 重置
+
 

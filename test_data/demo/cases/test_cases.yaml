@@ -1,2 +1,6 @@
 test_cases:
     - name: test_demo
+      fixtures: [ login ]
+    - name: test_demo1
+      fixtures: [ login ]
+

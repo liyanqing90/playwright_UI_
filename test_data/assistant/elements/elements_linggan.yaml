@@ -28,3 +28,11 @@ elements:
   制作脚本: "text=制作脚本"
   找案例: "text=找案例"
   无收藏: ".no-collection >> nth=0"
+  更新时间: role=textbox[name="更新时间"]
+  排行榜: text="排行榜"
+  创建人: role=combobox[name="创建人"]
+  东雪: text="东雪" >> exact=True
+  最小值: role=spinbutton[name="最小值"]
+  最大值: role=spinbutton[name="最大值"]
+  车系ID: "#form_item_seriesId"
+  张鹏飞: "text=张鹏飞"
