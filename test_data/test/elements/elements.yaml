@@ -1,0 +1,5 @@
+elements:
+  用户名输入框: .el-input
+  登录链接: get_by_role(link, name="登录")
+  好的按钮: get_by_role(button, name="好的")
+  欢迎使用欢迎指引: div:has-text("欢迎使用！请先登录密码登录验证码登录获取验证码 登录修改密码")

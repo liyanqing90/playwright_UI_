@@ -1,0 +1,16 @@
+test_data:
+  test_demo:
+    description: "demo测试"
+    steps:
+      - action: goto
+        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
+      - action: click
+        selector: 用户名输入框
+      - action: click
+        selector: 登录链接
+      - action: click
+        selector: 好的按钮
+      - action: click
+        selector: 欢迎使用欢迎指引
+        value: "验证码登录"
+

@@ -30,6 +30,7 @@ class Project(str, Enum):
     ASSISTANT = "assistant"
     OTHER_PROJECT = "other_project"
     MARKETING = "marketing"
+    TEST = "test"
 
 
 @singleton
