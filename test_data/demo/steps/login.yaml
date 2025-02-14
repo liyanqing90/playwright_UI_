@@ -1,0 +1,11 @@
+steps:
+  login_steps:
+    - action: click
+      selector: "图片元素"
+    - action: click
+      selector: "第二个图片元素"
+    - action: click
+      selector: "剧本文本"
+    - action: click
+      selector: "角色图片"
+    - action: click
