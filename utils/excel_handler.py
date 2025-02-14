@@ -226,16 +226,11 @@ class ExcelHandler:
         if pd.isna(action_value) or not str(action_value).strip() or not current_case:
             return None
 
-        element_name = str(row.get(ExcelTestCase.COLUMN_ELEMENT, '')).strip()
-        element_selector = self._resolve_element_selector(element_name)
-        step_name = element_name if element_name and element_name.lower() != 'nan' else current_case.title
-
+        element_selector = str(row.get(ExcelTestCase.COLUMN_ELEMENT, '')).strip()
         step = {
-            'name': step_name,
             'action': str(action_value).strip(),
             'selector': element_selector,
             'value': str(row.get(ExcelTestCase.COLUMN_VALUE, '')).strip(),
-            'description': str(row.get(ExcelTestCase.COLUMN_EXPECT, '')).strip()
         }
 
         return {k: ('' if pd.isna(v) or str(v).lower() in ['nan', 'none', 'null'] else v) for k, v in step.items()}
