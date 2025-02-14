@@ -2,11 +2,11 @@ projects:
   demo:
     test_dir: "test_data/demo"
     environments:
-      dev: "https://testautomationpractice.blogspot.com/"
-      test: "https://testautomationpractice.blogspot.com/"
-      stage: "https://testautomationpractice.blogspot.com/"
-      prod: "https://testautomationpractice.blogspot.com/"
-    browser_config: { "viewport": { "width": 1920, "height": 1080 } }
+      dev: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      test: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      stage: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      prod: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+    browser_config: { "viewport": { "width": 1080, "height": 798 } }
 
   holo_live:
     test_dir: "test_data/hololive"
@@ -32,12 +32,3 @@ projects:
       test: "http://test.other.com"
       stage: "http://stage.other.com"
       prod: "http://prod.other.com"
-  marketing:
-    test_dir: "test_data/marketing"
-    environments:
-      dev: "http://dev.demo.com"
-      test: "http://test.demo.com"
-      stage: "http://stage.demo.com"
-      prod: "http://prod.demo.com"
-    browser_config: { "viewport": { "width": 393, "height": 659 }, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit" ,        user_agent='Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1',
-}

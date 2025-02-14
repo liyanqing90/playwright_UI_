@@ -12,9 +12,8 @@ def _convert_to_cases(excel_cases: List[ExcelTestCase]):
         case_name = f"test_{case.title.strip().lower().replace(' ', '_')}"
 
         case_info = {
-            'name': case_name,  # 使用处理后的用例名称
-            'description': case.title,
-            'fixtures': []  # 默认fixture
+            'name': case_name,
+            'fixtures': []# 使用处理后的用例名称
         }
 
         # 添加其他必要的case级别信息

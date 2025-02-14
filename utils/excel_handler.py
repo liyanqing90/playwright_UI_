@@ -137,7 +137,8 @@ class ExcelHandler:
 
                 if not name or not selector_value:
                     continue
-
+                if selector_value == 'nan':
+                    continue
                 selector = f"{selector_type}={selector_value}" if selector_type and selector_type not in ['nan',
                                                                                                           'css selector'] else selector_value
                 self.element_repository[name] = selector
