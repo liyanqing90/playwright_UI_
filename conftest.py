@@ -11,21 +11,18 @@ from _pytest.python import Module
 from playwright.sync_api import Browser, sync_playwright, Page
 
 from page_objects.base_page import BasePage
-from src.runner import RunYaml
+from src.case_utils import run_test_data
+from src.runner import TestCaseGenerator
 from src.test_step_executor import StepExecutor
 from utils.config import Config
 from utils.dingtalk_notifier import ReportNotifier
 from utils.logger import logger
 from utils.yaml_handler import YamlHandler
 
-log = logger
-
 DINGTALK_TOKEN = "636325ecf2302baf112f74ac54d8ef991de9b307c00bd168d3f2baa7df7f9113"
 DINGTALK_SECRET = "SECa7e01bee3a34e05d1b57297a95b8920d8c257088979c49fa0b50889fd60c570c"
 
-DEVICE = {}
 
-# BROWSER_CONFIG = dict(os.environ['BROWSER_CONFIG'])
 config = Config()
 
 
@@ -35,16 +32,12 @@ def browser() -> Generator[Browser, None, None]:
     创建浏览器实例，session 级别的 fixture
     """
     with sync_playwright() as playwright:
-        browser = getattr(playwright, config.browser).launch(headless=False)
-        # browser = playwright.chromium.launch(headless=False)
-
+        browser = getattr(playwright, config.browser).launch(headless=not config.headed)
         yield browser
-
-        # 清理资源
         browser.close()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def context(browser: Browser):
     context_options = {}
     browser_config = config.browser_config
@@ -60,8 +53,6 @@ def context(browser: Browser):
         context_options["has_touch"] = browser_config.get("has_touch")
 
     context = browser.new_context(**context_options)
-    cookie = convert_cookies(read_cookies())
-    context.add_cookies(cookie)
     yield context
     storage_state = context.storage_state(path='config/storage_state.json')
     context.close()
@@ -128,7 +119,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     failures = []
     if terminalreporter.stats:
         for item in terminalreporter.stats.get('failed', []):
-            log.info(f"Processing failed test: {item.nodeid}")
+            logger.debug(f"Processing failed test: {item.nodeid}")
             error_msg = extract_assertion_message(item.sections)
             failures.append({
                 "test_case": item.nodeid.split("::")[-1],
@@ -179,19 +170,23 @@ def extract_assertion_message(log_list):
 
 
 def pytest_collect_file(file_path: Path, parent):  # noqa
+    datas = run_test_data()
+
     if file_path.suffix in [".yaml", "xlsx"]:
-        py_module = Module.from_parent(parent, path=file_path)
-        # 动态创建 module
-        module = types.ModuleType(file_path.stem)
-        # 解析 yaml 内容
-        name = module.__name__
-        run = RunYaml.from_parent(parent, module=module, name=name)
-        run.collect_case()
-        # 重写属性
-        py_module._getobj = lambda: module  # noqa
+
+        py_module, module = create_py_module(file_path, parent,datas)
+        py_module._getobj = lambda: module  # 返回 pytest 模块对象
         return py_module
 
 
+def create_py_module(file_path: Path, parent,datas):
+    """创建并生成 py 模块"""
+    py_module = Module.from_parent(parent, path=file_path)
+    module = types.ModuleType(file_path.stem)  # 动态创建 module
+    # 解析 YAML 并生成测试函数
+    generator = TestCaseGenerator.from_parent(parent, module=module, name=module.__name__, datas=datas)
+    generator.generate()
+    return py_module, module
 
 
 @pytest.fixture()
@@ -205,3 +200,12 @@ def login(page, ui_helper, request):
         step_executor.execute_step(step)
 
     return None
+
+
+@pytest.fixture()
+def fixture_demo():
+    logger.debug("fixture demo")
+    return "fixture demo"
+
+
+

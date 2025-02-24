@@ -1,16 +1,19 @@
-# Playwright UI 测试项目
+# Playwright UI 自动化测试框架
 
-## 项目介绍
+一个基于Playwright的UI自动化测试框架,支持多种方式编写和管理测试用例。
 
-本项目是基于Playwright的UI自动化测试框架，使用Python编写，采用Poetry进行依赖管理。框架特点包括：
+## 特性
 
-- 使用YAML文件定义测试用例，易于维护和扩展
-- 支持多种元素定位方式
-- 提供丰富的断言和操作类型
-- 自动生成测试报告
-- 支持并行测试执行
+- 基于Playwright实现,支持多种主流浏览器
+- 支持YAML/Excel两种方式编写测试用例
+- 内置40+种常用UI操作
+- 支持多项目、多环境配置
+- 完整的Page Object模式实现
+- 灵活的变量管理和数据驱动
+- 详细的操作日志和失败截图
+- 集成Allure测试报告
 
-## 快速开始
+## 安装
 
 ### 环境准备
 
@@ -22,26 +25,18 @@
 ```bash
 poetry install
 ```
-
-### 运行测试
-
-运行所有测试：
+### 安装驱动
+```bash
+playwright install chromium
+```
+### 执行命令，有头模式运行demo项目
+```bash
+python test_runner.py --project demo
+```
+### 生成测试报告：
 
 ```bash
-poetry run pytest
-```
-
-运行单个测试文件：
-
-```bash
-poetry run pytest path/to/test_file.py
-```
-
-生成测试报告：
-
-```bash
-poetry run pytest --alluredir=reports
-```
+allure serve reports/allure-results
 
 ## 项目结构
 
@@ -86,14 +81,14 @@ playwright_UI/
 ├── pytest.ini               # Pytest配置
 ├── README.md                # 项目文档
 └── test_runner.py           # 测试运行器
-```
+
 
 ## 测试开发指南
 
 ### 测试用例编写
 
 #### 用例文件结构
-
+```
 测试用例由三个核心文件协同定义：
 
 1. `cases/cases.yaml` - 定义测试用例元数据
@@ -273,7 +268,140 @@ login_test:
 实现测试数据生成工具
 ```
 
+`poetry export -f requirements.txt --output requirements.txt ` #导出requirements.txt
+
+## [点击查看录制文档](https://test-crdqcu2hkpbr.feishu.cn/docx/YpIRdgOXGo1CQdxp1cacxwGbnZd?from=from_copylink)
 ###
 
-全息录制命令
-`playwright codegen "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"`
+助手录制命令
+`playwright codegen "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"`
+
+元素提取方式
+
+- 使用chrome插件: SelectorsHub
+- 使用pycharm 插件: Test Automation
+- 使用playwright录制功能提取元素，或使用prompt 提取步骤及元素
+- 复制HTML元素，使用prompt提取
+
+推荐使用chatgpt、deepseek提取元素
+
+根据HTML提取元素 prompt
+
+``` prompt
+请根据以下要求提取 HTML 中的元素，并以 YAML 格式输出：
+1. 提取 HTML 中的元素。
+2. 元素命名需符合 Python 变量命名规范（小写字母，单词之间用下划线分隔）。
+3. 保留注释信息，描述每个字段的功能或用途。
+4. 避免 YAML 将 `#` 解析为注释符号，确保字段值中的 `#` 被正确保留。
+5. 每一项均单独命名
+请按照以下 YAML 格式输出：
+
+yaml
+full_name_input: "input#fullName"  # 输入全名
+join_input: "input#join"           # 追加文本并按下键盘 Tab
+get_me_input: "input#getMe"        # 获取文本框内容
+clear_me_input: "input#clearMe"    # 清除文本
+no_edit_input: "input#noEdit"      # 确认编辑字段已禁用
+dont_write_input: "input#dontwrite" # 确认文本为只读
+```
+
+录制脚本转化prompt
+
+角色设定:
+
+你是一个代码转换助手，负责将给定的代码片段转换为更规范的步骤描述，并提取特定的元素定位信息。
+
+核心任务:
+
+1. 元素定位提取: 从 elements 示例数据中，提取并列出所有 Playwright 可用的元素定位符。定位符格式必须严格符合 Playwright
+   的规范（如 text=, placeholder=, role=, xpath, css 等），且仅包含定位信息本身，不包含其他任何操作、说明或上下文。如果选择器中有# 号。需要使用引号包裹
+2. 步骤转换: 将 steps 示例数据中定义的代码步骤转换为 Playwright 的标准步骤描述。每个步骤描述应包含 action、selector（若适用）和
+   value（若适用）三个属性：
+
+- action: 根据下方的 代码方法对应关系，将原始代码中的动作转换为对应的 Playwright 标准方法名称。
+- selector: 将原始代码中步骤的 selector 值替换为第一步中提取的对应定位符。
+- value: 如果原始代码的步骤中有 value 值，则将其原样保留。
+
+3. 输出格式: 请分两部分输出结果，第一部分输出提取的元素定位符，第二部分输出转换后的步骤描述。
+   代码方法对应关系 (原始代码 -> Playwright):
+
+```navigate -> page.goto
+pause -> page.pause
+click -> page.click
+fill -> page.fill
+press_key -> page.locator(selector).press
+upload_file -> page.locator(selector).set_input_files
+assert_visible -> page.is_visible
+assert_text -> page.inner_text
+store_variable -> variable_manager.set_variable
+store_text -> page.inner_text
+store_attribute -> page.get_attribute
+refresh -> page.reload
+hover -> page.hover
+double_click -> page.dblclick
+right_click -> page.click(button='right')
+select_option -> page.select_option
+drag_and_drop -> page.locator(source).drag_to(page.locator(target))
+get_value -> page.input_value
+scroll_into_view -> page.locator(selector).scroll_into_view_if_needed
+scroll_to -> page.evaluate(f"window.scrollTo({x}, {y})")
+focus -> page.focus
+blur -> page.evaluate("element => element.blur()", page.locator(selector))
+type -> page.locator(selector).type
+clear -> page.locator(selector).clear
+enter_frame -> page.frame_locator
+exit_frame -> page.main_frame
+accept_alert -> page.once("dialog", handle_dialog)
+dismiss_alert -> page.once("dialog", handle_dialog)
+switch_window -> page.context.pages
+close_window -> page.close
+wait_for_new_window -> page.context.expect_page
+wait_for_element_hidden -> page.wait_for_selector(state="hidden")
+```
+
+示例数据 (YAML 格式, 仅用于演示，请不要将其作为输入进行处理):
+
+```YAML
+    page.goto("https://www.baidu.com/")
+    page.locator('//span[@class="soutu-btn"]').first.click()
+    page.locator('//input[@value="上传图片"]').click()
+    page.locator('//input[@value="上传图片"]').set_input_files("2024_12_20_15_11_IMG_0238.PNG")
+
+```
+
+输出要求:
+
+第一部分: Playwright 元素定位符 (每行一个定位符):
+
+```yaml
+#<这里输出从示例数据中提取的定位符>
+elements:
+  title: .title
+  图片: //span[@class="soutu-btn"]
+  上传: //input[@value="上传图片"]
+```
+
+第二部分: 转换后的步骤描述 (YAML 格式):
+
+```YAML
+steps:
+   - action: goto
+     value: "https://www.baidu.com"
+   - action: click
+     selector: 图片
+   - action: upload
+     selector: 上传
+     value: "./files/demo/01.PNG"
+   - action: <Playwright 方法名称>
+     selector: <对应的定位符> (如果需要)
+     value: <值> (如果需要)
+   - ... (其他步骤)
+  
+```
+
+重要提示:
+
+- 请严格按照上述指令进行操作，确保输出结果的正确性和格式规范。
+- 示例数据仅用于演示，请不要将其作为输入进行处理。 你应该使用这些示例数据进行转换，并按照指定的格式输出结果。
+- 如果某个步骤不需要 selector 或 value 属性，则省略这些属性。
+- 请将 wait 步骤的 action 保留为 wait, 不要转换为 playwright 的 api

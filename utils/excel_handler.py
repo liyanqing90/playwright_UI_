@@ -98,7 +98,7 @@ def convert_to_yaml_format(test_cases: List[ExcelTestCase]) -> Dict:
             yaml_case['steps'].append(yaml_step)
 
         yaml_cases.append(yaml_case)
-        logger.info(f"转换用例: {yaml_case['name']}")
+        logger.debug(f"转换用例: {yaml_case['name']}")
 
     return {'test_cases': yaml_cases}
 
@@ -137,7 +137,8 @@ class ExcelHandler:
 
                 if not name or not selector_value:
                     continue
-
+                if selector_value == 'nan':
+                    continue
                 selector = f"{selector_type}={selector_value}" if selector_type and selector_type not in ['nan',
                                                                                                           'css selector'] else selector_value
                 self.element_repository[name] = selector
@@ -225,16 +226,11 @@ class ExcelHandler:
         if pd.isna(action_value) or not str(action_value).strip() or not current_case:
             return None
 
-        element_name = str(row.get(ExcelTestCase.COLUMN_ELEMENT, '')).strip()
-        element_selector = self._resolve_element_selector(element_name)
-        step_name = element_name if element_name and element_name.lower() != 'nan' else current_case.title
-
+        element_selector = str(row.get(ExcelTestCase.COLUMN_ELEMENT, '')).strip()
         step = {
-            'name': step_name,
             'action': str(action_value).strip(),
             'selector': element_selector,
             'value': str(row.get(ExcelTestCase.COLUMN_VALUE, '')).strip(),
-            'description': str(row.get(ExcelTestCase.COLUMN_EXPECT, '')).strip()
         }
 
         return {k: ('' if pd.isna(v) or str(v).lower() in ['nan', 'none', 'null'] else v) for k, v in step.items()}
@@ -259,9 +255,9 @@ class ExcelHandler:
                 ExcelTestCase.COLUMN_VALUE
             ])
             df.to_excel(template_path, index=False)
-            logger.info(f"创建测试用例模板文件: {template_path}")
+            logger.debug(f"创建测试用例模板文件: {template_path}")
         else:
-            logger.info(f"测试用例模板文件已存在: {template_path}")
+            logger.debug(f"测试用例模板文件已存在: {template_path}")
 
 
 def get_excel_files(directory: str) -> List[Path]:
@@ -275,5 +271,5 @@ def get_excel_files(directory: str) -> List[Path]:
     for file in dir_path.glob("*"):
         if file.is_file() and file.suffix == '.xlsx' and not file.name.startswith('~$'):
             excel_files.append(file)
-            logger.info(f"找到Excel文件: {file}")
+            logger.debug(f"找到Excel文件: {file}")
     return excel_files

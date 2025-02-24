@@ -2,19 +2,28 @@ projects:
   demo:
     test_dir: "test_data/demo"
     environments:
+      dev: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      test: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      stage: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      prod: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+    browser_config: { "viewport": { "width": 1080, "height": 798 } }
+
+  holo_live:
+    test_dir: "test_data/hololive"
+    environments:
       dev: "http://dev.demo.com"
       test: "http://test.demo.com"
       stage: "http://stage.demo.com"
       prod: "http://prod.demo.com"
-    browser_config: {"viewport": {"width": 393, "height": 659}, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit"}
-  holo_live:
-    test_dir: "test_data/hololive"
+    browser_config: { "viewport": { "width": 393, "height": 659 }, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit" }
+  assistant:
+    test_dir: "test_data/assistant"
     environments:
       dev: "http://dev.hololive.com"
-      test: "http://test.hololive.com"
+      test: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
       stage: "http://stage.hololive.com"
-      prod: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-    browser_config: {"viewport": {"width": 1080, "height": 768}}
+      prod: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+    browser_config: { "viewport": { "width": 1920, "height": 1080 } }
 
   other_project:
     test_dir: "test_data/other_project"

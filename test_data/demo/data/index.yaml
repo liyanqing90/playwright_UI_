@@ -5,22 +5,26 @@ test_data:
       - action: steps
         value:  login_steps
       - action: goto
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex3"
+        value: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      - action: fill
+        selector: 用户名
+        value: "15011290391"
+      - action: fill
+        selector: 密码
+        value: "Aa1234qwer-"
       - action: click
-        selector: "到店领好礼"
-      - action: assertion
-        type: text
-        selector: "热门车系弹框标题"
-        value: "热门车系专场"
-      - action: store_text
-        selector: "热门车系弹框标题"
-        value: "car_title"
+        selector: 登录
       - action: click
-        selector: "热门车系关闭"
-  test_demo2:
-    description: "demo测试2"
-    steps:
-      - action: goto
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex3"
+        selector: 剧本
       - action: click
-        selector: "旧车估值"
+        selector: 灵感
+      - action: click
+        selector: 剧本
+      - action: click
+        selector: 直播
+      - action: click
+        selector: 剧本
+      - action: click
+        selector: 图片
+      - action: click
+        selector: 清空全部

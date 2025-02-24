@@ -24,7 +24,6 @@ def build_pytest_args(config):
         f"{test_dir}/cases",
         '-v',
         "-p", "no:warnings",
-        "--report-log=report.json",
         "-s",
         "--alluredir=reports/allure-results",
         "--clean-alluredir"
@@ -69,7 +68,7 @@ def show_test_summary(start_time: float):
 def main(
         marker: Optional[str] = typer.Option(None, "-m", "--marker", help="只运行特定标记的测试用例"),
         keyword: Optional[str] = typer.Option(None, "-k", "--keyword", help="只运行匹配关键字的测试用例"),
-        headed: bool = typer.Option(False, "--headed", help="是否以有头模式运行浏览器"),
+        headed: bool = typer.Option(True, "--headed", help="是否以有头模式运行浏览器"),
         browser: Browser = typer.Option(Browser.CHROMIUM, "--browser", help="指定浏览器"),
         env: Environment = typer.Option(Environment.PROD, "--env", help="指定环境"),
         project: Project = typer.Option(Project.DEMO, "--project", help="指定项目"),

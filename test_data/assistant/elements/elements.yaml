@@ -1,0 +1,129 @@
+elements:
+  请输入您的用户名: //input[@placeholder='请输入您的用户名']
+  请输入您的密码: //input[@placeholder='请输入您的密码']
+  登录按钮: .login-btn
+  图片元素: .live > img
+  第二个图片元素: div:nth-child(3) > img
+  剧本文本: text=剧本
+  角色图片: role=img
+  开始时间输入框: "#form_item_sectionList_0_startTime"
+  话题时: role=tooltip >> ul.left >> text=05
+  话题分: role=tooltip >> ul.right >> text=02
+  话题时间确定: role=tooltip >> text=确 定
+  灵感文本: text=灵感
+  不保存按钮: //button[@class='ant-btn no-save']
+  成长文本: text=成长
+  开始练习按钮: text=开始练习
+  取消练习&考试按钮: //button[@class='ant-btn button btn-cancle']
+  考试文本: text=考试
+  重新考试按钮: text=重新考试
+  #剧本库
+  我的创作: //li[contains(text(),"我的创作")]
+  共享中心: //li[contains(text(),"共享中心")]
+  script_title: "//div[@class='item-top__title']"  # 剧本标题
+  switch_script: //div[@class="item-top__switch"]  # 启用/禁用文本
+  script_duration: "//div[text()='剧本时长']/following-sibling::div"  # 剧本时长
+  topic_count: "//div[text()='话题数量']/following-sibling::div"  # 话题数量
+  last_updated: "//div[text()='最近更新时间']/following-sibling::div"  # 最近更新时间
+  preview_button: "//div[text()='预览']"  # 预览按钮
+  edit_button: //div[contains(text(),'编辑')]  # 编辑按钮
+  share_button: //div[contains(text(),'共享')]  # 共享按钮
+  delete_button: //div[contains(text(),'删除')]  # 删除按钮
+
+  #删除剧本
+  删除剧本关闭按钮: //button[@aria-label='Close' and @class='ant-modal-close']
+  删除剧本提示框标题: //div[@id='vcDialogTitle0']
+  删除删除提示文本: //div[@class='text' and contains(text(), '删除后无法恢复，确定删除该剧本吗？')]
+  删除剧本取消按钮: role=button[name='取 消']
+  删除剧本确定按钮: role=button[name='确 定']
+
+  #预览剧本库
+  剧本开始: //div[@class='progress-btn__play']
+  剧本重置: //div[@class='progress-btn__reset']
+  剧本刷新: //div[contains(text(),'刷新')]
+  关闭预览: //div[contains(text(),'关闭')]
+  #共享剧本
+  share_close_button: ".ant-modal-close"  # 关闭弹窗按钮
+  share_title: "#vcDialogTitle0"        # 弹窗标题
+  share_body_text: ".text"             # 弹窗主体文本内容
+  share_cancel_button: ".ant-modal-footer .ant-btn:first-child" # 弹窗取消按钮
+  share_confirm_button: //span[contains(text(),"确 定")] # 弹窗确认按钮
+  已共享: text="已共享"
+
+
+
+  #剧本
+  开始创作: //img[@class="writing-icon"]
+  剧本标题: //input[@id='form_item_title']
+  剧本时长: //input[@id='form_item_time']
+  剧本时长确定: //div[@class="submit"]
+  剧本时: //ul[@class="left"]//li[contains(text(),"06")]
+  剧本分: //ul[@class="right"]//li[contains(text(),"00")]
+  案例引用: //label[span[text()='案例引用']][1]
+  脚本引用: //label[span[text()='脚本引用']][1]
+  手动录入: //label[span[text()='手动录入']][1]
+  话题名称: "#form_item_sectionList_0_subject"
+  确定时间: .submit
+  生成脚本: .creat-btn
+  重新生成: //span[contains(text(),"重新生成")]
+  确定重新生成: //button[@class="ant-btn ant-btn-primary"]
+  取消重新生成: //button[@class="ant-btn"]
+  保存完整剧本: //div[@class='save-btn']
+  增加话题: div[class='add-btn']
+  调整顺序: div[class='order-btn']
+  清空全部: div[class='clear-btn']
+
+  #案例
+  第一个案例: (//li[@class='ant-list-item']//div)[1]
+  案例搜索输入框: input[placeholder="请输入要搜索的内容"]
+  案例搜索按钮: .search-icon
+  modal_close_button: "button[aria-label='Close']"  # 弹窗关闭按钮
+  modal_title: "div.ant-modal-title"  # 弹窗标题
+  modal_body_text: "div.text"  # 弹窗正文提示文本
+  modal_cancel_button: "button.ant-btn:has(span:contains('取 消'))"  # 弹窗“取消”按钮
+  modal_no_save_button: "button.no-save"  # 弹窗“不保存”按钮
+  modal_save_button: "button.ant-btn-primary"  # 弹窗“保存”按钮
+  关闭第二个话题: //div[contains(@class,'list-item')][.//div[@class='num' and text()='02']]//div[@class='close-icon']
+  关闭第三个话题: //div[contains(@class,'list-item')][.//div[@class='num' and text()='03']]//div[@class='close-icon']
+
+  #排序相关
+  order_close_button: "//button[contains(@class, 'ant-modal-close')]"  # 弹窗关闭按钮
+  order_title: //div[@id="vcDialogTitle2"] # 弹窗标题
+  order_list: "//ul[@class='list']"  # 弹窗中的列表容器
+
+  # 列表项通用定位
+  list_item: "//li[contains(@class, 'drag-wrap')]"  # 所有列表项
+  list_item_title: "//li[contains(@class, 'drag-wrap')]/div[@class='title']"  # 列表项标题
+  list_item_drag_btn: "//li[contains(@class, 'drag-wrap')]//span[@class='drag-btn']"  # 列表项拖拽按钮
+
+  # 特定列表项精准定位（按 data-id 或标题内容）
+  list_item_0: "//li[@data-id='0']"  # 第一个列表项（data-id=0）
+  list_item_1: "//li[@data-id='1']"  # 第二个列表项（data-id=1）
+  list_item_title_222: "//div[@class='title' and text()='222']"  # 标题为"222"的列表项
+
+  # 底部操作按钮
+  order_cancel_button: "//button[.//span[text()='取 消']]"  # 取消按钮
+  order_confirm_button: "//button[.//span[text()='确 定']]"  # 话题时间确定
+  #脚本相关
+  generation_title: "//div[@class='generation-wrap']//div[text()='脚本生成']"  # 脚本生成区域的标题
+  optional_script_1_title: "//div[@class='script-title']//div[text()='可选脚本1']"  # 可选脚本1的标题文本
+  第一个脚本纳入剧本: "//div[@class='script-title'][.//div[text()='可选脚本1']]//button[contains(@class, 'auto-switch')]"  # 可选脚本1对应的开关按钮
+  optional_script_1_textarea: "//div[@class='script-title'][.//div[text()='可选脚本1']]//following-sibling::div[@class='input-wrap']//textarea"  # 可选脚本1的文本输入框
+  optional_script_1_edit_button: "//div[@class='script-title'][.//div[text()='可选脚本1']]//following-sibling::div[@class='btn-box']//div[@class='btn primary' and text()='再次编辑']"  # 可选脚本1的“再次编辑”按钮
+
+  optional_script_2_title: "//div[@class='script-title']//div[text()='可选脚本2']"  # 可选脚本2的标题文本
+  optional_script_2_switch: "//div[@class='script-title'][.//div[text()='可选脚本2']]//button[contains(@class, 'auto-switch')]"  # 可选脚本2对应的开关按钮
+  optional_script_2_textarea: "//div[@class='script-title'][.//div[text()='可选脚本2']]//following-sibling::div[@class='input-wrap']//textarea"  # 可选脚本2的文本输入框
+  optional_script_2_edit_button: "//div[@class='script-title'][.//div[text()='可选脚本2']]//following-sibling::div[@class='btn-box']//div[@class='btn primary' and text()='再次编辑']"  # 可选脚本2的“再次编辑”按钮
+
+  #素材
+#素材
+  素材: text="素材"
+  素材上传按钮: //span[contains(text(),'上 传')]
+  素材通用素材: //div[@role='document']//div[1]//div[2]//div[1]//div[1]//div[1]//label[2]//span[2]
+  素材upload浏览: '#form_in_modal_url'
+  素材确认按钮: text="确 认"
+  素材筛选条件选择器输入框: ".ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector > .ant-select-selection-item"
+  素材筛选条件下拉选项: ".rc-virtual-list-holder > div > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content"
+  素材查询按钮: ".ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-btn:nth-child(2) > span"
+

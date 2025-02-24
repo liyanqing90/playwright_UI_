@@ -3,5 +3,3 @@ test_cases:
     fixtures: [ ]
     depends_on: [ ]
   - name: test_demo2
-    fixtures: [ login ]
-    depends_on: [ ]

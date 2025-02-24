@@ -1,13 +1,10 @@
 elements:
-  title: .title
-  全城比价: text=全城比价
-  对比试驾: text=对比试驾
-  旧车估值: text=旧车估值
-  送充电桩: text=送充电桩
-  到店领好礼: text=到店领好礼
-  询底价: .series-card__price > .btn:first-child
-  查看更多: text=查看更多
-  热门车系弹框标题: .fill-info-popup-header-title
-  热门车系关闭: .fill-info-popup-close
-
-
+  用户名: //input[@placeholder="请输入您的用户名"]
+  密码: //input[@placeholder="请输入您的密码"]
+  登录: role=link[name="登录"]
+  剧本: text=剧本
+  灵感: text=灵感
+  直播: text=直播
+  清空全部: text=清空全部
+  app: "#app"
+  图片: "#app >> role=img"

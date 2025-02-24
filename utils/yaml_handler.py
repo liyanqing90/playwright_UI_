@@ -9,7 +9,7 @@ from utils.logger import logger
 
 def get_yaml_files(directory: str) -> List[Path]:
     """使用 pathlib.Path 获取目录下所有的Excel文件（排除临时文件）"""
-    logger.info(f"搜索目录: {directory}")
+    logger.debug(f"搜索目录: {directory}")
     yaml_files = []
     dir_path = Path(directory)
     if not dir_path.is_dir():
@@ -63,3 +63,35 @@ class YamlHandler:
 
             result[key] = value
         return result
+
+
+
+
+
+    def save_to_yaml(self, data_dict, output_dir, filename):
+        """
+        将字典写入 YAML 文件。
+
+        Args:
+            data_dict: 要写入的字典。
+            output_dir: 输出目录的路径。
+            filename: YAML 文件的名称（不含扩展名）。
+        """
+
+
+        self.yaml.indent(mapping=2, sequence=4, offset=2)  # 可选：设置 YAML 缩进样式
+        self.yaml.preserve_quotes = True # 可选: 保留引号
+        self.yaml.default_flow_style = False  # 关键设置：禁用流式风格
+
+
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
+        filepath = Path(output_dir) / f"{filename}.yaml"
+         # 检查目录是否存在，如果不存在则创建
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        with open(filepath, 'w', encoding='utf-8') as f:
+            self.yaml.dump(data_dict, f)
+
+
+

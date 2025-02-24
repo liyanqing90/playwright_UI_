@@ -1,5 +1,11 @@
 test_cases:
-  - name: test_demo
-    fixtures: [ ]
-    depends_on: [ ]
-  - name: test_demo2
+  - name: test_create_script
+    fixtures: [ login ]
+  - name: test_script_library
+    fixtures: [ login ]
+    depends_on: [ test_create_script ]
+  - name: test_material
+    fixtures: [ login ]
+  - name: test_growth
+    fixtures: [ login ]
+
