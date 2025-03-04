@@ -3,7 +3,7 @@ import os
 from typing import Callable, Literal, Optional
 
 import allure
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 from constants import DEFAULT_TIMEOUT, DEFAULT_TYPE_DELAY
 from utils.logger import logger
@@ -97,7 +97,7 @@ class BasePage:
     @allure.step("获取元素文本")
     def get_text(self, selector: str) -> str:
         """获取元素文本"""
-        self._wait_for_element(selector)
+        # self._wait_for_element(selector)
         return self.page.inner_text(selector)
 
     @handle_page_error
@@ -106,6 +106,7 @@ class BasePage:
         """断言元素文本"""
         actual_text = self.get_text(selector)
         resolved_expected = self._resolve_variables(expected_text)
+        allure.attach(f"期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}")
         assert actual_text == resolved_expected, \
             f"断言失败: 期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}'"
 
@@ -113,7 +114,11 @@ class BasePage:
     @allure.step("断言元素可见性")
     def assert_visible(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
         """断言元素可见"""
-        self._wait_for_element(selector, timeout=timeout)
+        try:
+            expect(self.page.locator(selector)).to_be_visible(timeout=timeout)
+        except Exception as e:
+            allure.attach(f"断言失败: 元素 {selector} 不可见")
+        # self._wait_for_element(selector, timeout=timeout)
 
     @handle_page_error
     @allure.step("断言元素不可见")

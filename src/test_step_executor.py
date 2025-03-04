@@ -111,11 +111,11 @@ class StepExecutor:
             self.start_time = datetime.now()
 
             action = step.get("action", "").lower()
-            selector = self.elements.get(pre_selector := step.get("selector"), pre_selector) # 替换变量
+            pre_selector = step.get("selector")
+            selector = self.elements.get(pre_selector, pre_selector) # 替换变量
             value = replace_values_from_dict_regex(step.get("value")) # 替换变量
+            logger.debug(f"执行步骤: {action} | 选择器: {pre_selector} | 值: {value}")
             self._validate_step(action, selector)
-            logger.debug(f"执行步骤: {action} | 选择器: {selector} | 值: {value}")
-
             self._execute_action(action, selector, value, step)
 
         except Exception as e:
@@ -355,6 +355,7 @@ def replace_values_from_dict_regex( value_string):
   Returns:
     替换占位符后的字符串。
   """
+  if not value_string: return None
   variable_manager = VariableManager()
   def replace_placeholder(match):
     """正则表达式替换的回调函数，用于获取匹配到的占位符键名并替换。"""
