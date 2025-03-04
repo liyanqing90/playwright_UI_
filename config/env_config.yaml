@@ -25,6 +25,18 @@ projects:
       prod: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
     browser_config: { "viewport": { "width": 1920, "height": 1080 } }
 
+  ahoh:
+    test_dir: "test_data/ahoh"
+    environments:
+      dev: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      test: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      stage: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      prod: "http://app.ahohcrm.autohome.com.cn/v/login"
+      #店端后台 online https://ahohcrm.autohome.com.cn/#/login
+      # online-old:https://ahohcrm.app.autohome.com.cn/v/index#online：http://app.ahohcrm.autohome.com.cn/v/login #Test：http://test.crmapp.ahoh.mulan.corpautohome.com/v/index
+      #线上压测环境：http://ahohcrm-pressure.app.thallo.corpautohome.com/v/
+    browser_config: { "viewport": { "width": 393, "height": 659 }, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit" }
+
   other_project:
     test_dir: "test_data/other_project"
     environments:
