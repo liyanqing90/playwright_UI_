@@ -355,6 +355,7 @@ def replace_values_from_dict_regex( value_string):
   Returns:
     替换占位符后的字符串。
   """
+  if not value_string: return None
   variable_manager = VariableManager()
   def replace_placeholder(match):
     """正则表达式替换的回调函数，用于获取匹配到的占位符键名并替换。"""
