@@ -3,26 +3,9 @@ test_data:
     description: "demo测试"
     steps:
       - action: goto
-        value: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
-      - action: fill
-        selector: 用户名
-        value: "15011290391"
-      - action: fill
-        selector: 密码
-        value: "Aa1234qwer-"
-      - action: click
-        selector: 登录
-      - action: click
-        selector: 剧本
-      - action: click
-        selector: 灵感
-      - action: click
-        selector: 剧本
-      - action: click
-        selector: 直播
-      - action: click
-        selector: 剧本
-      - action: click
-        selector: 图片
-      - action: click
-        selector: 清空全部
+        value: "https://baidu.com"
+      - action: 验证可见
+        selector: baidu_button
+      - action: assert_text
+        value: "百度一下，你就知道"
+        selector: title
