@@ -87,7 +87,7 @@ elements:
   客户信息tab-任务信息: div[role="tablist"]>div:nth-child(2)
   客户信息tab-对客作业: div[role="tablist"]>div:nth-child(3)
   客户写备注-提交按钮: div.task-form-btn
-  客户写备注-证明截图: input[name="ScreenshotProof"]
+  客户写备注-证明截图: ".uploader-box.ScreenshotProof-box input[type='file']"
   客户写备注-跟进内容-有到店意向: xpath=//div[text()="有到店意向"]
   客户写备注-跟进内容-未联系上: xpath=//div[text()="未联系上"]
   客户写备注-跟进内容输入框输入进度: div.van-field__word-limit>span.van-field__word-num

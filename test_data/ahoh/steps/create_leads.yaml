@@ -1,0 +1,24 @@
+  steps:
+    description: APP中管家创建未到店的线索
+    create_store_unvisited_leads_steps:
+      - step_ref: login_steps
+      - action: 点击
+        selector: 底部菜单-工作
+        value: ''
+      - action: 点击
+        selector: 创建用户
+        value: ''
+      - action: 输入
+        selector: 客户姓名
+        value: 客户名称
+      - action: faker
+        data_type: mobile
+        variable_name: phone_num
+      - action: 输入
+        selector: 手机号
+        value: $<phone_num>
+      - action: 点击
+        selector: 是否已到店
+        value: ''
+      - action: 点击
+        selector: 新增用户按钮

@@ -88,9 +88,12 @@ test_data:
       - action: 输入
         selector: 客户姓名
         value: 客户名称
+      - action: faker
+        data_type: mobile
+        variable_name: phone_num
       - action: 输入
         selector: 手机号
-        value: 19xxxx
+        value: $<phone_num>
       - action: 点击
         selector: 是否已到店
         value: ''
@@ -108,7 +111,7 @@ test_data:
         value: ''
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: 前置用户手机号
+        value: $<phone_num>
       - action: 点击
         selector: 客户列表_执行搜索
         value: ''
@@ -174,7 +177,7 @@ test_data:
         value: ''
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: 前置用户手机号
+        value: $<phone_num>
       - action: 点击
         selector: 客户列表_执行搜索
         value: ''
@@ -187,9 +190,10 @@ test_data:
       - action: 点击
         selector: 客户写备注-跟进方式-微信
         value: ''
+#      - action: pause
       - action: 上传
         selector: 客户写备注-证明截图
-        value: C:\Users\liyanan13700\Desktop\test.jpg
+        value: files\ahoh\test.jpg
       - action: 点击
         selector: 购车周期-存疑
         value: ''
