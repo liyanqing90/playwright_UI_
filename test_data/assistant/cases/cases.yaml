@@ -4,6 +4,11 @@ test_cases:
   - name: test_script_library
     fixtures: [ login ]
     depends_on: [ test_create_script ]
+  - name: test_su_cai
+    fixtures: [ login ]
+  - name: test_script_library
+    fixtures: [ login ]
+    depends_on: [ test_create_script ]
   - name: test_ji_qiao
     fixtures: [ login ]
   - name: test_ling_gan
