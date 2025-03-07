@@ -4,6 +4,22 @@ test_cases:
   - name: test_script_library
     fixtures: [ login ]
     depends_on: [ test_create_script ]
+  - name: test_ji_qiao
+  - name: test_ling_gan
+    fixtures: [ login ]
+  - name: test_marketing_assistant
+  - name: test_marketing_assistant1
+  - name: test_marketing_assistant2
+  - name: test_marketing_assistant3
+  - name: test_marketing_assistant4
+  - name: test_marketing_assistant5
+  - name: test_marketing_assistant6
+  - name: test_private_message
+  - name: test_create_script
+    fixtures: [ login ]
+  - name: test_script_library
+    fixtures: [ login ]
+    depends_on: [ test_create_script ]
   - name: test_su_cai
     fixtures: [ login ]
   - name: test_script_library
