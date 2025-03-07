@@ -21,7 +21,7 @@ def build_pytest_args(config):
     test_dir = config.test_dir
 
     pytest_args = [
-        f"{test_dir}/cases",
+        f"{test_dir}/cases/",
         '-v',
         "-p", "no:warnings",
         "-s",
