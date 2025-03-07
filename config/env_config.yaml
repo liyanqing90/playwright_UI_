@@ -16,6 +16,7 @@ projects:
       stage: "http://stage.demo.com"
       prod: "http://prod.demo.com"
     browser_config: { "viewport": { "width": 393, "height": 659 }, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit" }
+
   assistant:
     test_dir: "test_data/assistant"
     environments:
