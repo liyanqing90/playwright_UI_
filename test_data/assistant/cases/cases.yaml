@@ -9,3 +9,27 @@ test_cases:
   - name: test_growth
     fixtures: [ login ]
 
+
+#个人中心
+  - name: test_Personal_Center
+    fixtures: [ login ]
+  - name: test_Assistant_Settings
+    fixtures: [ login ]
+
+#技巧
+  - name: test_skill_Failure
+    fixtures: [ login ]
+  - name: test_skill_Enable
+    fixtures: [ login ]
+  - name: test_skill_speech
+    fixtures: [ login ]
+
+#灵感
+  - name: test_Case_search
+    fixtures: [ login ]
+  - name: test_Script_search
+    fixtures: [ login ]
+  - name: test_Script_Failure
+    fixtures: [ login ]
+  - name: test_Case_Screening
+    fixtures: [ login ]
