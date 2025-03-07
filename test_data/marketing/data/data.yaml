@@ -36,3 +36,180 @@ test_data:
         selector: 清除
       - action: click
         selector: 确认选择
+        
+  test_store_info:
+    description: "门店信息"
+    steps: 
+      - action: navigate
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+      - action: assert_text
+        selector: 权益slogan
+        value: "·买贵赔差价·健康守全家"
+      - action: click
+        selector: first_image
+      - action: assert_text
+        selector: store_name
+        value: "汽车之家空间站·北京平谷车卖场"
+      - action: assert_text
+        selector: store_label
+        value: "北京市平谷区东高村镇南埝头西路37号院13幢1层"
+      - action: assert_text
+        selector: store_count_text
+        value: "本城共3家"
+      - action: assert_text
+        selector: worktime_text
+        value: "营业时间：09:00-18:00"
+  test_rights_detail:
+    description: "权益说明"
+    steps:
+      - action: navigate
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+      - action: click
+        selector: rights_detail_text
+      - action: assert_text
+        selector: navigation_bar
+        value: "买贵必赔权益说明"
+
+  test_store_list:
+    description: "门店列表"
+    steps:
+      - action: navigate
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+      - action: click
+        selector: store_count_text
+      - action: assert_text
+        selector: heading
+        value: "之家线下门店"
+      - action: click
+        selector: get_gift_button
+      - action: fill
+        selector: phone_textbox
+        value: "15011290391"
+      - action: click
+        selector: car_series_textbox
+      - action: click
+        selector: second_checkbox
+      - action: click
+        selector: first_checkbox
+      - action: click
+        selector: clear_button
+      - action: click
+        selector: seventh_checkbox
+      - action: click
+        selector: confirm_selection_button
+      - action: click
+        selector: phone_textbox
+      - action: assert_text
+        selector: heading
+        value: "领专属礼包"
+#      - action: click
+#        selector: store_name_text
+      - action: click
+        selector: dialog
+        childSelector: aion_y_text
+      - action: click
+        selector: bmw_text
+        exact: true
+      - action: click
+        selector: byd_text
+      - action: click
+        selector: second_checkbox
+      - action: click
+        selector: first_checkbox
+      - action: click
+        selector: third_checkbox
+      - action: assert_text
+        selector: toast_text
+        value: "最多可选3个车系"
+      - action: click
+        selector: confirm_car_series
+      - action: click
+        selector: immediately_get_button
+      - action: assert_text
+        selector: phoneItem-style
+        value: "已加密处理"
+      - action: assert_text
+        selector: toast_text
+        value: "请勾选用户协议"
+      - action: click
+        selector: popup_close_button
+
+
+  test_warming_gift:
+    description: "温馨礼包"
+    steps:
+      - action: navigate
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+      - action: click
+        selector: third_carousel_image
+      - action: click
+        selector: immediately_get_button
+      - action: assert_text
+        selector: get_gift_heading
+        value: "领价值1280元暖心礼"
+      - action: click
+        selector: popup_close_button
+  test_inquire_price:
+    description: "询价"
+    steps:
+      - action: navigate
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+      - action: assert_text
+        selector: first_price_button
+        value: "询底价"
+        nth: 0
+      - action: click
+        selector: first_price_button
+        nth: 0
+      - action: assert_text
+        selector: inquire_price_heading
+        value: "获取底价"
+      - action: click
+        selector: consult_button
+      - action: click
+        selector: consult_button
+      - action: assert_text
+        selector: toast_text
+        value: "请输入预约手机号"
+      - action: click
+        selector: popup_close_button
+      - action: click
+        selector: card_image
+      - action: assert_text
+        selector: store_title
+        value: "汽车之家空间站·北京平谷车卖场"
+      - action: assert_text
+        selector: store_online_text
+        value: "营业时间: 09:00-18:00"
+  test_filter:
+    description: "筛选"
+    steps:
+      - action: navigate
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+      - action: click
+        selector: 品牌
+#      - action: pause
+      - action: click
+        selector: audi_list_item
+      - action: click
+        selector: aion_list_item
+      - action: click
+        selector: bmw_list_item
+      - action: assert_text
+        selector: brand_list__btn
+        value: "确认选择 (3)"
+      - action: click
+        selector: audi_list_item
+      - action: click
+        selector: clear_button
+      - action: click
+        selector: bmw_list_item
+      - action: click
+        selector: benz_list_item
+      - action: click
+        selector: brand_list__btn
+      - action: assert_text
+        selector: brand-num
+        value: "2个品牌"
+
+

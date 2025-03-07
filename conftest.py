@@ -39,20 +39,20 @@ def browser() -> Generator[Browser, None, None]:
 
 @pytest.fixture(scope="function")
 def context(browser: Browser):
-    context_options = {}
+    # context_options = {}
     browser_config = config.browser_config
-    if "user_agent" in browser_config:
-        context_options["user_agent"] = browser_config.get("user_agent")
-    if "viewport" in browser_config:
-        context_options["viewport"] = browser_config["viewport"]
-    if "device_scale_factor" in browser_config:
-        context_options["device_scale_factor"] = browser_config.get("device_scale_factor")
-    if "is_mobile" in browser_config:
-        context_options["is_mobile"] = browser_config.get("is_mobile")
-    if "has_touch" in browser_config:
-        context_options["has_touch"] = browser_config.get("has_touch")
+    # if "user_agent" in browser_config:
+    #     context_options["user_agent"] = browser_config.get("user_agent")
+    # if "viewport" in browser_config:
+    #     context_options["viewport"] = browser_config["viewport"]
+    # if "device_scale_factor" in browser_config:
+    #     context_options["device_scale_factor"] = browser_config.get("device_scale_factor")
+    # if "is_mobile" in browser_config:
+    #     context_options["is_mobile"] = browser_config.get("is_mobile")
+    # if "has_touch" in browser_config:
+    #     context_options["has_touch"] = browser_config.get("has_touch")
 
-    context = browser.new_context(**context_options)
+    context = browser.new_context(**browser_config)
     yield context
     storage_state = context.storage_state(path='config/storage_state.json')
     context.close()
