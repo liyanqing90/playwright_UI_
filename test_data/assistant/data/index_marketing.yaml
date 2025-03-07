@@ -1,6 +1,6 @@
 test_data:
-  test_marketing_assistant:
-    description: "营销助手页面测试"
+  test_zong_kai_guan:
+    description: "营销助手页面总开关测试"
     steps:
       - action: goto
         value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
@@ -30,8 +30,8 @@ test_data:
       - action: assert_text
         value: "工作中"
         selector: 已开启
-  test_marketing_assistant1:
-    description: "营销助手页面测试"
+  test_jin_si:
+    description: "营销助手页面进私触达测试"
     steps:
       - action: goto
         value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
@@ -60,8 +60,8 @@ test_data:
       - action: assert_text
         value: "生效中"
         selector: 已生效
-  test_marketing_assistant2:
-    description: "营销助手页面测试"
+  test_qian_ke:
+    description: "营销助手页面潜客触达测试"
     steps:
       - action: goto
         value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
@@ -90,8 +90,8 @@ test_data:
       - action: assert_text
         value: "生效中"
         selector: 已生效
-  test_marketing_assistant3:
-    description: "营销助手页面测试"
+  test_wan_hui:
+    description: "营销助手页面线索挽回测试"
     steps:
       - action: goto
         value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
@@ -120,8 +120,8 @@ test_data:
       - action: assert_text
         value: "两次动态挽回生效中"
         selector: 挽回已生效
-  test_marketing_assistant4:
-    description: "营销助手页面测试"
+  test_hui_fu_lv:
+    description: "营销助手页面回复率提升测试"
     steps:
       - action: goto
         value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
@@ -150,8 +150,8 @@ test_data:
       - action: assert_text
         value: "3分钟回复率提升生效中"
         selector: 回复率提升已生效
-  test_marketing_assistant5:
-    description: "营销助手页面测试"
+  test_si_xin_hui_hua:
+    description: "营销助手页面私信会话展开测试"
     steps:
       - action: goto
         value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
@@ -178,8 +178,8 @@ test_data:
         selector: 收起会话
       - action: click
         selector: 收起会话
-  test_marketing_assistant6:
-    description: "营销助手页面测试"
+  test_liu_zi_zhuang_tai:
+    description: "营销助手页面私信会话弹窗留资状态筛选测试"
     steps:
       - action: goto
         value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
@@ -208,8 +208,8 @@ test_data:
         selector: 全部
       - action: click
         selector: 未留资
-  test_private_message:
-    description: "私信营销页面测试"
+  test_shi_fou_liu_zi:
+    description: "私信营销页面是否留资筛选测试"
     steps:
       - action: goto
         value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
