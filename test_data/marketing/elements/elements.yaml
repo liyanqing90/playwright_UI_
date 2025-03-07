@@ -14,3 +14,57 @@ elements:
   埃安 比亚迪 宝马: text=埃安 比亚迪 宝马
   清除: text=清除
   确认选择: text=确认选择
+  app_container: "#app"
+  权益slogan: //body/div[@id='app']/div[1]/div[2]/div[2]
+  store_name: div.detail-name > div
+  first_image: ".van-image__img"
+  store_label: "label"
+  navigation_bar: "role=navigation"
+  rights_detail_text: "text=权益详情"
+  store_count_text: //div[@class='detail-storenum']
+  worktime_text: "//div[@class='info-worktime']"
+  phone_textbox: "role=textbox[name='手机号码']"
+  car_series_textbox: "role=textbox[name='意向车系']"
+  second_checkbox: "li:nth-child(2) > .check-btn"
+  first_checkbox: ".check-btn"
+  clear_button: "text=清除"
+  seventh_checkbox: "li:nth-child(7) > .check-btn"
+  confirm_selection_button: "text=确认选择(1)"
+  selected_2_brands: "text=已选2个品牌"
+  heading: "role=heading"
+  store_name_text: "text=汽车之家空间站·北京平谷车卖场官方"
+  phoneItem-style: //span[@class='phoneItem-style']
+  dialog: "role=dialog"
+  aion_y_text: "text=AION Y"
+  bmw_text: "//li[contains(text(),'宝马')]"
+  byd_text: "//li[contains(text(),'比亚迪')]"
+  third_checkbox: "li:nth-child(3) > .check-btn"
+  max_3_car_text: "text=最多可选3个车系"
+  agreement_text: "text=请勾选用户协议"
+  confirm_car_series: //div[@class="select-series-box__btnbox"]
+  popup_close_button: ".fill-info-popup-close"
+  third_carousel_image: "div:nth-child(3) > .carousel-img"
+  get_gift_heading: "role=heading"
+  first_price_button: ".series-card__price > .btn"
+  inquire_price_heading: "role=heading"
+  consult_button: "role=button[name='立即咨询']"
+  reservation_phone_text: "text=请输入预约手机号"
+  card_image: ".cardimg > img"
+  store_title: //div[@class="title"]
+  store_online_text: //div[@class="online-time"]
+  first_filter_button: ".filter-button__icon"
+  audi_list_item: "role=listitem[name='奥迪']"
+  audi_list_item_div: "role=listitem[name='奥迪'] > div"
+  aion_list_item: "role=listitem[name='埃安']"
+  aion_list_item_div: "role=listitem[name='埃安'] > div"
+  bmw_list_item: "role=listitem[name='宝马']"
+  bmw_list_item_div: "role=listitem[name='宝马'] > div"
+  benz_list_item: "role=listitem[name='奔驰']"
+  benz_list_item_div: "role=listitem[name='奔驰'] > div"
+  brand_list__btn: //div[@class="brand-list__btn"]
+  get_gift_button: "text=领好礼"
+  immediately_get_button: "role=button[name='立即领取']"
+  image_role: "role=img"
+  confirm_3_text: "text=确认选择 (3)"
+  toast_text: "div.van-toast__text"
+  brand-num: //span[@class="checked-brand-num"]
