@@ -1,0 +1,28 @@
+test_data:
+  test_demo:
+    description: "demo测试"
+    steps:
+      - action: goto
+        value: "https://energyspace-c-pre.autohome.com.cn/ahoh-marketing/ahohIndex4"
+      - action: click
+        selector: 30分钟报价
+      - action: assert_text
+        selector: 极速报价
+        value: 极速报价
+      - action: assert_text
+        selector: simple_cont_text_div
+        value: 专业选车 全城低价
+      - action: click
+        selector: 意向车系
+      - action: click
+        selector: 车系列表
+      - action: assert_text
+        selector: 确认选择
+        value: 确认选择(1)
+      - action: assert_text
+        selector: 车系名称
+        value: AION S MAX
+
+
+
+

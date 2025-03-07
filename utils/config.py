@@ -30,6 +30,8 @@ class Project(str, Enum):
     ASSISTANT = "assistant"
     OTHER_PROJECT = "other_project"
     MARKETING = "marketing"
+    CHANNEL_PAGE = "channel_page"
+
 
 @singleton
 class Config(BaseSettings):

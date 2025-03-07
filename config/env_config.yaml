@@ -40,3 +40,12 @@ projects:
       stage: "http://stage.demo.com"
       prod: "http://prod.demo.com"
     browser_config: { "viewport": { "width": 393, "height": 659 }, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit" ,        user_agent='Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1',}
+
+  channel_page:
+    test_dir: "test_data/channel_page"
+    environments:
+      dev: "http://dev.demo.com"
+      test: "http://test.demo.com"
+      stage: "http://stage.demo.com"
+      prod: "http://prod.demo.com"
+    browser_config: { "viewport": { "width": 393, "height": 659 }, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit" ,        user_agent='Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1', }
