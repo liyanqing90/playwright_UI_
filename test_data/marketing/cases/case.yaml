@@ -1,2 +1,7 @@
 test_cases:
-  - name: "test_demo"
+  - name: test_store_info
+  - name: test_rights_detail
+  - name: test_store_list
+  - name: test_warming_gift
+  - name: test_inquire_price
+  - name: test_filter

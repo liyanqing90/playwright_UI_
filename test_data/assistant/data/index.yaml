@@ -72,17 +72,23 @@ test_data:
         selector: "取消练习&考试按钮"
 
 
-  test_su_cai:
+  test_material:
     description: "素材测试"
     steps:
       - action: click
-        selector: "text=素材"
+        selector: 素材
       - action: click
         selector: 素材筛选条件选择器输入框
       - action: click
         selector: 素材筛选条件下拉选项
       - action: click
         selector: 素材查询按钮
+      - action: click
+        selector: 素材删除按钮
+      - action: wait
+        value: 1
+      - action: click
+        selector: 删除确认是按钮
       - action: click
         selector: 素材
       - action: wait
@@ -94,5 +100,245 @@ test_data:
       - action: upload
         selector: 素材upload浏览
         value: files/demo/01.PNG
+      - action: wait
+        value: 1
       - action: click
         selector: 素材确认按钮
+
+
+  test_growth:
+    description: "素材测试"
+    steps:
+      - action: click
+        selector: 成长导航栏链接
+      - action: click
+        selector: 练习活动项图标
+      - action: click
+        selector: 数据概览
+      - action: click
+        selector: 成长导航栏链接
+      - action: click
+        selector: 考试第二个标签页
+      - action: click
+        selector: 考试查看按钮
+      - action: click
+        selector: 数据概览
+      - action: click
+        selector: 考试关闭按钮
+
+
+
+  test_Personal_Center:
+    description: "个人中心-账号验证"
+    steps:
+      - action: click
+        selector: 头像
+      - action: assert_text
+        value: "15233224950"
+        selector: 用户手机号
+  test_Assistant_Settings:
+    description: "个人中心-AI助手设置"
+    steps:
+      - action: click
+        selector: 头像
+      - action: click
+        selector: 用户手机号
+      - action: click
+        selector: 用户名
+      - action: click
+        selector: AI助手设置
+      - action: click
+        selector: 大字号选项
+      - action: click
+        selector: 默认字号选项
+      - action: click
+        selector: 综合信息选项
+      - action: click
+        selector: 综合信息选项
+      - action: click
+        selector: 大V观点选项
+      - action: click
+        selector: 大V观点选项
+      - action: click
+        selector: 深度解析选项
+      - action: click
+        selector: 深度解析选项
+      - action: click
+        selector: 自动解答开关
+      - action: click
+        selector: 自动解答开关
+      - action: click
+        selector: 城市选项
+      - action: wait
+        value: 1
+      - action: click
+        selector: 安庆选项
+      - action: assert_text
+        value: "安庆"
+        selector: 安庆选项
+
+  test_skill_Failure:
+    description: "技巧新增失败"
+    steps:
+      - action: click
+        selector: 技巧菜单项
+      - action: click
+        selector: 技巧新增按钮
+      - action: click
+        selector: 技巧保存按钮
+      - action: assert_text
+        value: "保 存"
+        selector: 技巧保存按钮
+      - action: assert_text
+        value: "用户已存在该类型的技巧"
+        selector: 技巧失败提示
+
+  test_skill_Enable:
+    description: "技巧启用"
+    steps:
+      - action: click
+        selector: 技巧菜单项
+      - action: click
+        selector: 技巧编辑
+      - action: wait
+        value: 1
+      - action: click
+        selector: 技巧启用技巧开关
+      - action: wait
+        value: 1
+      - action: click
+        selector: 技巧启用技巧开关
+      - action: wait
+        value: 1
+      - action: click
+        selector: 技巧保存按钮
+      - action: assert_text
+        value: "保存成功"
+        selector: 技巧提示
+
+  test_skill_speech:
+    description: "技巧话术启用"
+    steps:
+      - action: click
+        selector: 技巧菜单项
+      - action: click
+        selector: 技巧编辑
+      - action: wait
+        value: 1
+      - action: click
+        selector: 技巧展示话术开关
+      - action: wait
+        value: 1
+      - action: click
+        selector: 技巧展示话术开关
+      - action: wait
+        value: 1
+      - action: click
+        selector: 技巧保存按钮
+      - action: assert_text
+        value: "保存成功"
+        selector: 技巧提示
+
+  test_Case_search:
+    description: "灵感案例搜索"
+    steps:
+      - action: click
+        selector: 灵感菜单项
+      - action: click
+        selector: 灵感搜索输入框
+      - action: fill
+        selector: 灵感搜索输入框
+        value: "陆放车型实质上是什么车型"
+      - action: click
+        selector: 灵感搜索按钮
+      - action: click
+        selector: 灵感搜索结果
+      - action: wait
+        value: 1
+      - action: assert_text
+        selector: 灵感详情标题
+        value: "陆放车型实质上是什么车型？"
+  test_Script_search:
+    description: "灵感脚本搜索"
+    steps:
+      - action: click
+        selector: 灵感菜单项
+      - action: click
+        selector: 灵感脚本tab
+      - action: click
+        selector: 灵感搜索输入框
+      - action: fill
+        selector: 灵感搜索输入框
+        value: "22222"
+      - action: click
+        selector: 灵感搜索按钮
+      - action: click
+        selector: 灵感搜索结果
+      - action: wait
+        value: 1
+      - action: assert_text
+        selector: 灵感详情标题
+        value: "22222"
+
+
+
+  test_Script_Failure:
+    description: "脚本制作失败"
+    steps:
+      - action: click
+        selector: 灵感菜单项
+      - action: click
+        selector: 灵感制作脚本
+      - action: click
+        selector: 灵感确定
+      - action: assert_text
+        selector: 灵感失败提示
+        value: "请选择引用的原文"
+
+  test_Case_Screening:
+    description: "筛选组件"
+    steps:
+      - action: click
+        selector: 灵感菜单项
+      - action: click
+        selector: 灵感筛选组件
+      - action: click
+        selector: 灵感筛选问题意图
+      - action: wait
+        value: 1
+      - action: fill
+        selector: 灵感筛选问题意图
+        value: "找车"
+      - action: click
+        selector: 灵感筛选找车
+      - action: click
+        selector: 灵感筛选达人名称
+      - action: fill
+        selector: 灵感筛选达人名称
+        value: "唯爱丰田TOYOTA"
+      - action: click
+        selector: 灵感筛选唯爱丰田TOYOTA
+      - action: click
+        selector: 灵感筛选讲解车系
+      - action: fill
+        selector: 灵感筛选讲解车系
+        value: "丰田"
+      - action: click
+        selector: 灵感筛选丰田
+      - action: click
+        selector: 灵感筛选车系
+      - action: fill
+        selector: 灵感筛选车系
+        value: "汉兰达"
+      - action: click
+        selector: text=汉兰达
+      - action: click
+        selector: 灵感确定
+      - action: click
+        selector: 灵感搜索结果
+      - action: wait
+        value: 1
+      - action: assert_text
+        selector: 灵感详情标题
+        value: "汉兰达多少钱？10万以内性价比最高的车型是什么？"
+

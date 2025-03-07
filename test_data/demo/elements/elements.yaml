@@ -1,10 +1,3 @@
 elements:
-  用户名: //input[@placeholder="请输入您的用户名"]
-  密码: //input[@placeholder="请输入您的密码"]
-  登录: role=link[name="登录"]
-  剧本: text=剧本
-  灵感: text=灵感
-  直播: text=直播
-  清空全部: text=清空全部
-  app: "#app"
-  图片: "#app >> role=img"
+  title: //head/title
+  baidu_button: //input[@id='su']
