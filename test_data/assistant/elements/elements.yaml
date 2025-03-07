@@ -135,3 +135,53 @@ elements:
   考试第二个标签页: "text=考试 >> nth=0"
   考试查看按钮: "text=查看 >> nth=0"
   考试关闭按钮: ".exam-detail .detail-box-close"
+
+
+#个人中心
+
+  头像: .avatar
+  用户手机号: text="15233224950"
+  用户名: text="程强"
+  AI助手设置: text="AI助手设置"
+  大字号选项: label:has-text("大") >> nth=0
+  默认字号选项: label:has-text("默认")
+  综合信息选项: label:has-text("综合信息")
+  大V观点选项: label:has-text("大V观点") >> span >> nth=2
+  深度解析选项: label:has-text("深度解析") >> span >> nth=2
+  自动解答开关: div:has-text("自动解答用户评论") >> role=switch
+  城市选项: ".city"
+  安庆选项: "#item_340800"
+
+
+#技巧
+
+  技巧菜单项: text="技巧"
+  技巧新增按钮: text="新增"
+  技巧引导关注选项: ".ant-select-selection-item"
+  技巧编辑: "text=编辑 >> nth=0"
+  技巧启用技巧开关: text="启用技巧"
+  技巧展示话术开关: text="展示话术"
+  技巧保存按钮: role=button[name="保 存"]
+  技巧状态单元格: role=cell[name="未启用"]
+  技巧提示: (//span[contains(text(),'保存成功')])[1]
+  技巧失败提示 : (//span[contains(text(),'用户已存在该类型的技巧')])[1]
+
+#灵感
+  灵感菜单项: text="灵感"
+  灵感搜索输入框: css=input[type="text"]
+  灵感搜索按钮: css=.search-icon
+  灵感搜索结果: "#listId > div > div > ul > li:nth-child(1)"
+  灵感详情标题: css=#title
+  灵感脚本tab: text="找脚本"
+  灵感制作脚本: text="制作脚本"
+  灵感确定: text="确定"
+  灵感失败提示 : (//span[contains(text(),'请选择引用的原文')])[1]
+  灵感筛选组件: //span[@class='filter-icon']
+  灵感筛选问题意图: text="问题意图"
+  灵感筛选找车: text="找车"
+  灵感筛选达人名称: text="达人名称"
+  灵感筛选唯爱丰田TOYOTA: text="唯爱丰田TOYOTA"
+  灵感筛选讲解车系: text="讲解车系"
+  灵感筛选丰田: text="丰田"
+  灵感筛选车系: (//input[@id='form_item_seriesId'])[1]
+  灵感筛选验证: css="#listId"
