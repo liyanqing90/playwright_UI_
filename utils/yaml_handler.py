@@ -23,7 +23,7 @@ class YamlHandler:
     def __init__(self):
         self.yaml = YAML(typ="safe")
 
-    def load_yaml(self, file_path: str) -> Dict[str, Any]:
+    def load_yaml(self, file_path: Path) -> Dict[str, Any]:
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"YAML文件不存在: {file_path}")
 
