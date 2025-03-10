@@ -19,9 +19,10 @@ def build_pytest_args(config):
     marker = config.marker
     keyword = config.keyword
     test_dir = config.test_dir
+    test_file = config.test_file
 
     pytest_args = [
-        f"{test_dir}/cases/",
+        f"{test_dir}/cases/"+test_file,
         '-v',
         "-p", "no:warnings",
         "-s",
@@ -73,6 +74,7 @@ def main(
         env: Environment = typer.Option(Environment.PROD, "--env", help="指定环境"),
         project: Project = typer.Option(Project.DEMO, "--project", help="指定项目"),
         base_url: Optional[str] = typer.Option("", "--base-url", help="指定基础 URL"),
+        test_file: Optional[str] = typer.Option("", "--test-file", help="指定测试文件")
 ):
     config = Config(
         marker=marker,
@@ -81,7 +83,8 @@ def main(
         browser=browser,
         env=env,
         project=project,
-        base_url=base_url
+        base_url=base_url,
+        test_file = test_file +".yaml" if test_file else test_file
     )
     # 配置运行环境
     config.configure_environment()
