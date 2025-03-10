@@ -44,6 +44,7 @@ class Config(BaseSettings):
     base_url: str = ""
     test_dir: str = ""
     browser_config: Optional[dict] = None
+    test_file: str = ""
 
     class Config:
         case_sensitive = False

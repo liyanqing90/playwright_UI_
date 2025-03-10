@@ -1,11 +1,10 @@
-from src.load_data import DataConverter
+from src.load_data import LoadData
 from src.utils import singleton
 from utils.config import DirPath
 
 
 @singleton
 def run_test_data():
-    data_merger = DataConverter(DirPath().test_dir)
-    data = data_merger.convert_excel_data()
+    data = LoadData(DirPath().test_dir).return_data()
 
     return data
