@@ -24,10 +24,10 @@ def build_test_signature(fixtures: list) -> Signature:
 
 class TestCaseGenerator(pytest.Item):
 
-    def __init__(self, module: types.ModuleType, name, datas, **kw):
+    def __init__(self, module: types.ModuleType, name, test_cases, datas, **kw,):
         super().__init__(name, **kw)
         self.datas = datas
-        self.test_cases = self.datas.get("test_cases", [])
+        self.test_cases = test_cases
         self.test_data = self.datas.get("test_data", {})
         self.elements = self.datas.get("elements", {})
         self.module: types.ModuleType = module  # 动态创建的 module 模型
