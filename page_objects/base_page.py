@@ -57,7 +57,7 @@ class BasePage:
     def navigate(self, url: str):
         """导航到指定URL"""
         self.page.goto(url)
-        self.page.wait_for_load_state("domcontentloaded")
+        self.page.wait_for_load_state()
 
     @handle_page_error
     @allure.step("暂停")
@@ -101,12 +101,37 @@ class BasePage:
         return self.page.inner_text(selector)
 
     @handle_page_error
+    @allure.step("断言URL")
+    def assert_url(self, url: str):
+        """断言当前URL"""
+        assert self.page.url == url, f"断言失败: 期望URL为 '{url}', 实际URL为 '{self.page.url}'"
+
+    @handle_page_error
+    @allure.step("断言页面标题")
+    def assert_title(self, title: str):
+        """断言页面标题"""
+        assert self.page.title() == title, f"断言失败: 期望标题为 '{title}', 实际标题为 '{self.page.title()}'"
+
+    @handle_page_error
+    @allure.step("断言元素数量")
+    def assert_element_count(self, selector: str, expected_count: int):
+        """断言元素数量"""
+        try:
+            expected_count = int(expected_count)
+        except Exception as e:
+            logger.error(f"断言元素数量失败: 期望数量 '{expected_count}' 不是有效的整数")
+            raise
+        actual_count = self.get_element_count(selector)
+        assert actual_count == expected_count, \
+            f"断言失败: 期望元素数量为 {expected_count}, 实际元素数量为 {actual_count}"
+
+    @handle_page_error
     @allure.step("断言元素文本")
     def assert_text(self, selector: str, expected_text: str):
         """断言元素文本"""
         actual_text = self.get_text(selector)
         resolved_expected = self._resolve_variables(expected_text)
-        allure.attach(f"期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}")
+        allure.attach(f"期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}'")
         assert actual_text == resolved_expected, \
             f"断言失败: 期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}'"
 
@@ -384,6 +409,7 @@ class BasePage:
 
     def get_element_count(self, selector: str) -> int:
         """获取元素数量"""
+        logger.debug(f"获取元素数量: {selector}{self.page.locator(selector)}")
         return self.page.locator(selector).count()
 
     @handle_page_error
@@ -411,16 +437,19 @@ class BasePage:
             return self.page.context.cookies()
         elif action == "delete":
             self.page.context.clear_cookies()
-
+    @handle_page_error
+    @allure.step("获取元素属性")
     def get_element_attribute(self, selector: str, attribute: str) -> str:
         """获取元素属性"""
         self._wait_for_element(selector)
         return self.page.get_attribute(selector, attribute)
-
+    @handle_page_error
+    @allure.step("获取当前页面URL")
     def get_current_url(self) -> str:
         """获取当前页面URL"""
         return self.page.url
-
+    @handle_page_error
+    @allure.step("获取页面标题")
     def get_page_title(self) -> str:
         """获取页面标题"""
         return self.page.title()
