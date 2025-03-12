@@ -7,14 +7,12 @@ from ruamel.yaml import YAML
 from utils.logger import logger
 
 
-def get_yaml_files(directory: str) -> List[Path]:
-    """使用 pathlib.Path 获取目录下所有的Excel文件（排除临时文件）"""
-    logger.debug(f"搜索目录: {directory}")
-    yaml_files = []
+def get_yaml_files(directory: str) -> list[Any] | None:
+    logger.info(f"搜索目录: {directory}")
     dir_path = Path(directory)
-    if not dir_path.is_dir():
+    if not dir_path.exists() or not dir_path.is_dir():
         logger.error(f"指定的路径 {directory} 不是一个有效的目录")
-        return yaml_files
+        return None
     yaml_files = [file for file in list(dir_path.glob("**/*.yaml"))]
     return yaml_files
 
@@ -37,10 +35,11 @@ class YamlHandler:
     def load_yaml_dir(self, file_path):
         yaml_files = get_yaml_files(file_path)
         all_data = []
+        result = {}
+        if not yaml_files:
+            return result
         for yaml_file in yaml_files:
             all_data.append(self.load_yaml(yaml_file))
-
-        result = {}
         for key in set(k for d in all_data for k in d.keys()):
             value = None  # 先初始化为 None
             for d in all_data:

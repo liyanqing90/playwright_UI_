@@ -21,7 +21,11 @@ class StepAction:
 
     # 断言相关
     ASSERT_VISIBLE = ['assert_visible', '验证可见']
-    ASSERT_TEXT = ['assert_text', 'assertion', '验证文本']
+    ASSERT_TEXT = ['assert_text', 'assertion', '验证文本',"验证",'verify']
+    ASSERT_ATTRIBUTE = ['assert_attribute', '验证属性']
+    ASSERT_URL = ['assert_url', '验证URL']
+    ASSERT_TITLE = ['assert_title', '验证标题']
+    ASSERT_ELEMENT_COUNT = ['assert_element_count', '验证元素数量']
 
     # 存储相关
     STORE_VARIABLE = ['store_variable', '存储变量']
@@ -30,7 +34,6 @@ class StepAction:
 
     # 其他操作
     REFRESH = ['refresh', '刷新']
-    VERIFY = ['verify', '验证']
     PAUSE = ['pause', '暂停']
     UPLOAD = ['upload', '上传文件']
     HOVER = ['hover', '悬停']
@@ -51,7 +54,7 @@ class StepAction:
     SWITCH_WINDOW = ['switch_window', '切换窗口']
     CLOSE_WINDOW = ['close_window', '关闭窗口']
     WAIT_FOR_NEW_WINDOW = ['wait_for_new_window', '等待新窗口']
-    GET_ELEMENT_COUNT = ['get_element_count', '获取元素数量']
+    SAVE_ELEMENT_COUNT = ['save_ele_count', '存储元素数量']
     EXECUTE_SCRIPT = ['execute_script', '执行脚本']
     CAPTURE_SCREENSHOT = ['capture', '截图']
     MANAGE_COOKIES = ['cookies', 'Cookie操作']
@@ -61,12 +64,14 @@ class StepAction:
     # 不需要selector的操作
     NO_SELECTOR_ACTIONS = (
             NAVIGATE +
+            ASSERT_URL +
+            ASSERT_TITLE +
             WAIT +
             REFRESH +
             PAUSE +
             CLOSE_WINDOW +
             WAIT_FOR_NEW_WINDOW +
-            GET_ELEMENT_COUNT +
+            SAVE_ELEMENT_COUNT +
             EXECUTE_SCRIPT +
             CAPTURE_SCREENSHOT +
             MANAGE_COOKIES +
@@ -173,6 +178,17 @@ class StepExecutor:
             elif action in StepAction.ASSERT_TEXT:
                 expected = step.get('expected', value)
                 self.ui_helper.assert_text(selector, expected)
+            elif action in StepAction.ASSERT_URL:
+                expected = step.get('expected', value)
+                self.ui_helper.assert_url(selector, expected)
+
+            elif action in StepAction.ASSERT_TITLE:
+                expected = step.get('expected', value)
+                self.ui_helper.assert_title(expected)
+
+            elif action in StepAction.ASSERT_ELEMENT_COUNT:
+                expected = step.get('expected', value)
+                self.ui_helper.assert_element_count(selector, expected)
 
             elif action in StepAction.STORE_VARIABLE:
                 self.ui_helper.store_variable(step['name'], value, step.get('scope', 'global'))
@@ -191,12 +207,6 @@ class StepExecutor:
             elif action in StepAction.REFRESH:
                 self.ui_helper.refresh()
 
-
-            elif action in StepAction.VERIFY:
-                if 'expected' in step:
-                    self.ui_helper.assert_text(selector, step['expected'])
-                else:
-                    self.ui_helper.assert_visible(selector)
 
             elif action in StepAction.HOVER:
                 self.ui_helper.hover(selector)
