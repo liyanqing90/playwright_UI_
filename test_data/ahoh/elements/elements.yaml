@@ -1,4 +1,5 @@
 elements:
+  首页-登录用户姓名: div.ai-card__role>span.name
   下订信息-上牌费用输入框: input[name="registerAmount"]
   下订信息-付款凭证输入框: xpath=//input[@name="payPic"]/parent::div
   下订信息-付款日期-选择日期-确认按钮: xpath=//div[text()="选择付款时间"]/following-sibling::button
@@ -122,7 +123,7 @@ elements:
   待清洗任务填跟进页-到店时间: xpath=//input[@class="van-field__control"][@placeholder="请选择到店时间"]
   待清洗任务填跟进页-到店时间-确认按钮: button.van-picker__confirm
   待清洗任务填跟进页-到店类型-到门店: xpath=//div[@class="radio-item-text"][text()="到门店"]
-  待清洗任务填跟进页-到店诉求-全息体验: 
+  待清洗任务填跟进页-到店诉求-全息体验:
     div.FileFollowCarCheck-wrap>div>div>div.van-cell__value>div>div>div>div:nth-child(3)>span
   待清洗任务填跟进页-到店诉求-现场活动: 
     div.FileFollowCarCheck-wrap>div>div>div.van-cell__value>div>div>div>div:nth-child(2)>span
@@ -131,8 +132,8 @@ elements:
   待清洗任务填跟进页-清洗结果-有效: div.van-radio-group>div:nth-child(1)
   待清洗任务填跟进页-清洗结果-有效-用户诉求-管家回电: 
     form.van-form>div:nth-child(5)>div>div.van-cell__value>div>div>div>div:nth-child(1)
-  待清洗任务填跟进页-用户诉求-预计到店: 
-    form.van-form>div:nth-child(5)>div>div.van-cell__value>div>div>div>div:nth-child(2)
+  待清洗任务填跟进页-用户诉求-预计到店: text=预计到店
+#    form.van-form>div:nth-child(5)>div>div.van-cell__value>div>div>div>div:nth-child(2)
   待清洗任务填跟进页-管家回电-咨询内容-买车议价: form.van-form>div:nth-child(6)>div>div:nth-child(2)>div>div>div>div:nth-child(1)
   待清洗任务填跟进页-管家回电-回电时间弹窗-确认按钮: div.van-picker__toolbar>button.van-picker__confirm
   待清洗任务填跟进页-管家回电-回电时间输入框: xpath=//input[@placeholder='请选择回电时间']
@@ -159,20 +160,38 @@ elements:
   登录按钮: xpath=//button[@type="button"]
   登录账号: id=login-phoneInput
   线索详情-返回上一页: div.go-back-icon
-  线索详情页-任务信息-第一个任务的状态: span.type-status
+  线索详情页-任务信息-第一个主任务的状态: span.type-status
+  线索详情页-任务信息-第一个子任务的状态: div.title-left>div.tag
+  线索详情页-任务信息-第一个子任务取消按钮: div.bottom-btn>span.btn-cancel
+  线索详情页-任务信息-第一个子任务开始按钮: div.bottom-btn>span.btn-primary
+  #取消看舱或是取消试驾的半屏页
+  线索详情页-任务信息-第一个子任务取消原因-客户表示不需要: section.search-car-group>section:nth-child(1)
+  cancel_reason_1: text=客户表示不需要 # 选择取消原因 - 客户表示不需要
+  cancel_reason_confirm: //section[@class="common-btn submit-btn"]
+  线索详情页-任务信息-第一个子任务取消原因-半屏页标题: section.popup-header
+  线索详情页-任务信息-第一个子任务取消原因-半屏页确定按钮: //section[@class="common-btn submit-btn"]
   线索详情页-待填跟进主任务看舱子任务取消原因-客户表示不需要: section.search-car-group>section:nth-child(1)
   线索详情页-待填跟进主任务看舱子任务取消原因半屏页标题: section.popup-header
   线索详情页-待填跟进主任务看舱子任务取消原因页确定按钮: section.common-btn
-  线索详情页-待填跟进主任务看舱子任务取消按钮: div.bottom-btn>span.btn-cancel
-  线索详情页-待填跟进主任务看舱子任务开始按钮: div.bottom-btn>span.btn-primary
   线索详情页-待填跟进主任务看舱子任务状态: div.title-left>div.tag
   线索详情页-待填跟进主任务看舱子任务结束按钮: div.bottom-btn>span.btn-left-border
   线索详情页-待填跟进主任务看舱子任务车型半屏页-确定按钮: section.car-selection>section:nth-child(3)
   线索详情页-待填跟进主任务看舱子任务车型半屏页第一个车型: section.car-selection>section:nth-child(2)>section:nth-child(1)>h1.car-info
   线索详情页面-任务tab-第一个任务点击填跟进: span.follow-text
+  ##试驾任务的线索详情内容
+  线索详情页-任务tab-第一个主任务填跟进: "span.follow-text" # 填跟进
+  #线索详情页-任务tab-第一个主任务状态: "span.type-status" # 服务中
+  user_appeal: "span.label" # 用户诉求
+  线索详情页-任务tab-第一个主任务的用户诉求内容: "span.desc" # 用户诉求 Value
+  pre_time: "span.label" # 预约时间
+  pre_time_value: "span.desc" # 预约时间 Value
+  线索详情页-任务tab-第一个子任务的名称: "h4" # 门店试驾
+  add_service: "span[data-v-7d609ef8]" # 新增服务事项
+  phone_button: "div.fillInWhiteBtnForCustomer" # 打电话
   线索详情页面标题-线索状态: section.nav-title
   线索详情页面标题-线索状态2: '#app > div.app-wrapper > div > div > section > section > div >
     div > section.nav-title'
+
   订单列表-搜索: div.search-icon
   订单列表-搜索输入框: xpath=//*[@id="app"]/div/div/div/div/div[1]/div/div/div/div/div[2]/div/input
   订单列表-返回: 
