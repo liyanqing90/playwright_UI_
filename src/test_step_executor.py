@@ -35,7 +35,7 @@ class StepAction:
     # 其他操作
     REFRESH = ['refresh', '刷新']
     PAUSE = ['pause', '暂停']
-    UPLOAD = ['upload', '上传文件']
+    UPLOAD = ['upload', '上传','上传文件']
     HOVER = ['hover', '悬停']
     DOUBLE_CLICK = ['double_click', '双击']
     RIGHT_CLICK = ['right_click', '右键点击']
@@ -350,6 +350,8 @@ def generate_faker_data(data_type):
     faker = Faker()
     if data_type == 'name':
         return "新零售" + faker.uuid4().replace("-", "")[:6]
+    elif data_type == 'mobile':
+        return '18210233933'
     
     
 import re
