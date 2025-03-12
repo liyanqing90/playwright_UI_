@@ -2,8 +2,6 @@ test_data:
   test_demo:
     description: "demo测试"
     steps:
-      - action: steps
-        value:  login_steps
       - action: goto
         value: "https://baidu.com"
       - action: 验证可见
