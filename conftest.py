@@ -4,7 +4,7 @@ import time
 import types
 from datetime import datetime
 from pathlib import Path
-from typing import Generator
+from typing import Generator, Any
 
 import pytest
 from _pytest.python import Module
@@ -39,27 +39,15 @@ def browser() -> Generator[Browser, None, None]:
 
 @pytest.fixture(scope="function")
 def context(browser: Browser):
-    context_options = {}
     browser_config = config.browser_config
-    if "user_agent" in browser_config:
-        context_options["user_agent"] = browser_config.get("user_agent")
-    if "viewport" in browser_config:
-        context_options["viewport"] = browser_config["viewport"]
-    if "device_scale_factor" in browser_config:
-        context_options["device_scale_factor"] = browser_config.get("device_scale_factor")
-    if "is_mobile" in browser_config:
-        context_options["is_mobile"] = browser_config.get("is_mobile")
-    if "has_touch" in browser_config:
-        context_options["has_touch"] = browser_config.get("has_touch")
-
-    context = browser.new_context(**context_options)
+    context = browser.new_context(**browser_config)
     yield context
     storage_state = context.storage_state(path='config/storage_state.json')
     context.close()
 
 
 @pytest.fixture(scope="function")
-def page(context) -> Page:
+def page(context) -> Generator[Page, Any, None]:
     page = context.new_page()
     yield page
     page.close()
@@ -171,20 +159,20 @@ def extract_assertion_message(log_list):
 
 def pytest_collect_file(file_path: Path, parent):  # noqa
     datas = run_test_data()
-
+    yaml_handler = YamlHandler()
     if file_path.suffix in [".yaml", "xlsx"]:
-
-        py_module, module = create_py_module(file_path, parent,datas)
+        test_cases = yaml_handler.load_yaml(file_path)['test_cases']
+        py_module, module = create_py_module(file_path, parent,test_cases,datas)
         py_module._getobj = lambda: module  # 返回 pytest 模块对象
         return py_module
 
 
-def create_py_module(file_path: Path, parent,datas):
+def create_py_module(file_path: Path, parent,test_cases, datas):
     """创建并生成 py 模块"""
     py_module = Module.from_parent(parent, path=file_path)
     module = types.ModuleType(file_path.stem)  # 动态创建 module
     # 解析 YAML 并生成测试函数
-    generator = TestCaseGenerator.from_parent(parent, module=module, name=module.__name__, datas=datas)
+    generator = TestCaseGenerator.from_parent(parent, module=module, name=module.__name__,test_cases=test_cases, datas=datas)
     generator.generate()
     return py_module, module
 

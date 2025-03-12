@@ -31,16 +31,17 @@ playwright install chromium
 ```
 ### 执行命令，有头模式运行demo项目
 ```bash
-python test_runner.py --project demo
+python test_runner.py --project demo #--test-file test_cases 执行指定测试文件
 ```
 ### 生成测试报告：
 
 ```bash
 allure serve reports/allure-results
-
+```
 ## 项目结构
 
 ```
+
 playwright_UI/
 ├── config/                  # 配置文件
 │   ├── cookie.json          # Cookie配置
