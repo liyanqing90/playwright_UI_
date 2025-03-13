@@ -47,18 +47,277 @@ test_data:
         value: "·买贵赔差价·健康守全家"
       - action: click
         selector: first_image
-      - action: assert_text
+      - action: store_text
         selector: store_name
-        value: "汽车之家空间站·北京平谷车卖场"
-      - action: assert_text
+        variable_name: store_name
+      - action: store_text
         selector: store_label
-        value: "北京市平谷区东高村镇南埝头西路37号院13幢1层"
-      - action: assert_text
+        variable_name: store_label
+      - action: store_text
         selector: store_count_text
-        value: "本城共3家"
-      - action: assert_text
+        variable_name: store_count_text
+      - action: store_text
         selector: worktime_text
-        value: "营业时间：09:00-18:00"
+        variable_name: worktime_text
+      - action: store_text
+        selector: car_name
+        variable_name: car_name
+  test_car_detail_click:
+    description: "点击进入车系详情"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+      - action: click
+        selector: car_name
+      - action: assert_text
+        selector: detail_car_name
+        value: ${car_name}
+      - action: assert_text
+        selector: detail_store_title
+        value: ${store_name}
+      - action: assert_text
+        selector: detail_worktime_text
+        value: ${worktime_text}
+      - action: assert_text
+        selector: detail_store_label
+        value: ${store_label}
+  test_car_detail_goto:
+    description: "url进入车系详情"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682"
+      - action: wait
+      - action: assert_text
+        selector: detail_car_model
+        value: "2024款 1.5T 两驱Plus版 5座"
+      - action: assert_text
+        selector: detail_car_price
+        value: "24.98"
+      - action: assert_text
+        selector: detail_item_car_name
+        value: "问界M7"
+  test_car_detail_gift:
+    description: "礼包"
+    steps:
+      - action: navigate
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+      - action: assert_text
+        selector: detail_gift_title
+        value: "1280"
+      - action: click
+        selector: detail_gift_button
+      - action: assert_text
+        selector: detail_pop_title
+        value: 之家空间站购车礼包
+      - action: click
+        selector: detail_pop_btn
+      - action: assert_text
+        selector: toast_text
+        value: 请输入预约手机号
+      - action: fill
+        selector: detail_pop_phone
+        value: "15011290391"
+      - action: click
+        selector: detail_pop_btn
+      - action: assert_text
+        selector: toast_text
+        value: 请勾选用户协议
+      - action: assert_text
+        selector: detail_pop_phone_style
+        value: 已加密处理
+      - action: click
+        selector: detail_pop_close
+
+  test_detail_store_info:
+    description: "门店信息"
+    steps:
+      - action: navigate
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+      - action: click
+        selector: choice_store_info
+      - action: assert_text
+        selector: choice_text
+        value: 门店信息
+      - action: assert_text
+        selector: detail_one_store
+        value: 导航到店
+      - action: assert_text
+        selector: detail_call
+        value: 电话咨询
+      - action: assert_text
+        selector: detail_question
+        value: 在线咨询
+
+  test_detail_car_clc:
+    description: "购车计算"
+    steps:
+      - action: navigate
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+      - action: click
+        selector: choice_car_clc
+      - action: assert_text
+        selector: choice_text
+        value: 购车计算
+      - action: assert_text
+        selector: detail_car_purchase
+        value: 咨询精细分期方案
+      - action: click
+        selector: detail_car_purchase
+      - action: assert_text
+        selector: detail_pop_title
+        value: 专业管家为您讲解金融方案
+      - action: fill
+        selector: detail_pop_phone
+        value: "15011290391"
+      - action: click
+        selector: detail_pop_btn
+      - action: assert_text
+        selector: toast_text
+        value: 请勾选用户协议
+      - action: assert_text
+        selector: detail_pop_phone_style
+        value: 已加密处理
+      - action: click
+        selector: detail_pop_close
+
+  test_detail_car_trade_in:
+    description: "以旧换新"
+    steps:
+      - action: navigate
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+      - action: click
+        selector: choice_trade_in
+      - action: assert_text
+        selector: choice_text
+        value: 以旧换新
+      - action: assert_text
+        selector: detail_car_trade_in
+        value:  咨询精准报价
+      - action: click
+        selector: detail_car_trade_in
+      - action: assert_text
+        selector: detail_pop_title
+        value: 以旧换新服务
+      - action: fill
+        selector: detail_pop_phone
+        value: "15011290391"
+      - action: click
+        selector: detail_pop_btn
+      - action: assert_text
+        selector: toast_text
+        value: 请勾选用户协议
+      - action: assert_text
+        selector: detail_pop_phone_style
+        value: 已加密处理
+      - action: click
+        selector: detail_pop_close
+  test_detail_car_test_drive:
+    description: "试驾服务"
+    steps:
+      - action: navigate
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+      - action: click
+        selector: choice_test_drive
+      - action: assert_text
+        selector: choice_text
+        value: 试驾服务
+      - action: assert_text
+        selector: detail_car_test_drive
+        value:  预约对比试驾
+      - action: click
+        selector: detail_car_test_drive
+      - action: assert_text
+        selector: detail_pop_title
+        value: 一站式多品牌试驾
+      - action: fill
+        selector: detail_pop_phone
+        value: "15011290391"
+      - action: click
+        selector: detail_pop_btn
+      - action: assert_text
+        selector: toast_text
+        value: 请勾选用户协议
+      - action: assert_text
+        selector: detail_pop_phone_style
+        value: 已加密处理
+      - action: click
+        selector: detail_pop_close
+  test_detail_car_choice:
+    description: "选择车型"
+    steps:
+      - action: navigate
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+      - action: click
+        selector: choice_test_drive
+      - action: assert_text
+        selector: choice_text
+        value: 试驾服务
+      - action: click
+        selector: detail_add_compare
+      - action: assert_text
+        selector: detail_choice_car_title
+        value:  选择意向车系
+      - action: assert_text
+        selector: detail_choice_car_name
+        value:  问界M7
+      - action: click
+        selector: detail_choice_car_clear
+      - action: assert_text
+        selector: confirm_car_series
+        value:   确认选择(1)
+      - action: click
+        selector: detail_choice_car_choice_1
+      - action: click
+        selector: detail_choice_car_choice_2
+      - action: assert_text
+        selector: confirm_car_series
+        value:   确认选择(3)
+      - action: click
+        selector: confirm_car_series
+      - action: wait
+      - action: assert_element_count
+        selector: detail_selected
+        value: 2
+      - action: click
+        selector: detail_selected
+      - action: assert_element_count
+        selector: detail_selected
+        value: 1
+  test_detail_floor:
+    description: "底部"
+    steps:
+      - action: navigate
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+      - action: wait
+        value: 2
+      - action: click
+        selector: detail_floor_price
+      - action: assert_text
+        selector: detail_pop_title
+        value:  获取底价
+      - action: fill
+        selector: detail_pop_phone
+        value: "15011290391"
+      - action: click
+        selector: detail_pop_btn
+      - action: assert_text
+        selector: toast_text
+        value: 请勾选用户协议
+      - action: assert_text
+        selector: detail_pop_phone_style
+        value: 已加密处理
+      - action: click
+        selector: detail_pop_close
+      - action: click
+        selector: detail_floor_price
+      - action: click
+        selector: detail_floor_price_rule
+      - action: assert_title
+        value: 买贵必赔权益说明
+      - action: assert_text
+        selector: detail_floor_price_title
+        value:  "买贵必赔权益说明"
+
   test_rights_detail:
     description: "权益说明"
     steps:
@@ -173,14 +432,6 @@ test_data:
         value: "请输入预约手机号"
       - action: click
         selector: popup_close_button
-      - action: click
-        selector: card_image
-      - action: assert_text
-        selector: store_title
-        value: "汽车之家空间站·北京平谷车卖场"
-      - action: assert_text
-        selector: store_online_text
-        value: "营业时间: 09:00-18:00"
   test_filter:
     description: "筛选"
     steps:
