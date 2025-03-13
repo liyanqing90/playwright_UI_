@@ -15,13 +15,16 @@ test_data:
       - action: click
         selector: 意向车系
       - action: click
-        selector: 车系列表
+        selector: 选中车系
+      - action: store_text
+        selector: 选中车系
+        variable_name: 选中车系
       - action: assert_text
         selector: 确认选择
         value: 确认选择(1)
       - action: assert_text
         selector: 车系名称
-        value: AION S MAX
+        value: ${选中车系}
 
   test_insured:
     description: "30分钟报价"
@@ -32,6 +35,17 @@ test_data:
         selector: 买贵必赔
       - action: assert_url
         value: https://energyspace.m.autohome.com.cn/ahoh-marketing/insured?pvareaid=6865276&cityId=110100
+      - action: click
+        selector: 买贵必赔立即领取
+      - action: assert_text
+        selector: 暖心礼标题
+        value: 领价值1280元暖心礼
+      - action: click
+        selector: 关闭
+      - action: click
+        selector: 权益详细规则
+      - action: assert_url
+        value: https://mf.autohome.com.cn/v3/4806
 
   test_charging_stations:
     description: "送充电桩"
@@ -42,6 +56,45 @@ test_data:
         selector: 送充电桩
       - action: assert_url
         value: https://energyspace.m.autohome.com.cn/ahoh-marketing/insured?pvareaid=6865272&cityId=110100&pageType=chargingPile
+      - action: click
+        selector: 充电桩立即领取
+      - action: assert_text
+        selector: 领新春礼包标题
+        value: 领新春礼包
+      - action: click
+        selector: 领新春礼包关闭
+      - action: click
+        selector: 活动规则
+      - action: assert_url
+        value: https://mf.autohome.com.cn/v3/8167
+
+  test_old_cars:
+    description: "旧车估值"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+      - action: click
+        selector: 旧车估值
+      - action: assert_text
+        selector: 极速报价
+        value: 高价回收旧车
+      - action: click
+        selector: 我的车型
+      - action: store_text
+        selector: 车系
+        variable_name: 车系
+      - action: click
+        selector: 车系
+        variable_name: 车系
+      - action: store_text
+        selector: 车型
+        variable_name: 车型
+      - action: click
+        selector: 车型
+      - action: assert_text
+        selector: 回显车系车型
+        value: ${车系}${车型}
+
 
 
 

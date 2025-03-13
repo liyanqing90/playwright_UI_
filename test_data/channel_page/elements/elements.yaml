@@ -3,13 +3,31 @@ elements:
   极速报价: "h2.fill-info-popup-header-title" # 极速报价标题
   simple_cont_text_div: "div.simple-cont-text" # 简易内容文本
   意向车系: "#app > div.ahoh-index4.clearLabelStyle > div:nth-child(5) > div.van-popup.van-popup--round.van-popup--bottom > div > div.fill-info-popup-main > div > form > div.fill-info-form__input > div.intentional-car-series > div > div.van-cell__value.van-field__value > div" # 意向车系选择框容器
-  车系列表: "div.check-btn" # 勾选按钮的 div 元素
+  选中车系: "div.info-name" # 车型名称 AION S MAX
   确认选择: text=确认选择(1)
   车系名称: "#app > div.van-popup.van-popup--round.van-popup--bottom.select-series-popup-container.ahoh_index4 > div > div.select-series-box__list > div.select-series-box__list--series > ul > li:nth-child(1) > div.info > div.info-name" # 弹窗中第一个系列名称
 
   买贵必赔: text=买贵必赔 获取保障 # 点击买贵必赔获取保障按钮
+  买贵必赔立即领取: "button:has-text('立即领取')" # 点击立即领取按钮
+  暖心礼标题: "h2.fill-info-popup-header-title" # 领价值1280元暖心礼标题
+  暖心礼关闭: ".fill-info-popup-close" # 点击关闭弹窗按钮
+  权益详细规则: "text=权益详细规则" # 点击权益详细规则文本
 
   送充电桩: text=送充电桩 立即领取 # 点击买贵必赔获取保障按钮
+  充电桩立即领取: "button:has-text('立即领取')" # 点击立即领取按钮
+  领新春礼包标题: "h2.fill-info-popup-header-title" # 领新春礼包标题
+  领新春礼包关闭: ".fill-info-popup-close" # 点击关闭弹窗按钮
+  活动规则: "text=活动规则" # 点击活动规则文本
+
+  旧车估值: text=旧车估值 免费检测 # 点击买贵必赔获取保障按钮
+  高价回收旧车: "h2.fill-info-popup-header-title" # 高价回收旧车标题
+  我的车型: "#app > div > div:nth-child(5) > div.van-popup.van-popup--round.van-popup--bottom > div > div.fill-info-popup-main > div > form > div.fill-info-form__input > div.choose-used-model > div" # 选择已用车型
+  车系: "#app > div.van-popup.van-popup--round.van-popup--bottom.select-series-popup-container > div > div.select-series-box__list > div.select-series-box__list--series > ul > li:nth-child(1) > div.info > div.info-name" # 系列信息名称
+  车型: "#app > div.van-popup.van-popup--round.van-popup--bottom.select-series-popup-container > div > div.select-series-box__list > div.select-series-box__list-spec > div:nth-child(1) > div.name" # 系列名称
+  回显车系车型: "span.select-series--value" # 车型系列选择的值，显示已选车型
+
+
+
 
 
 
