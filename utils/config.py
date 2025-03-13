@@ -31,9 +31,8 @@ class Project(str, Enum):
     OTHER_PROJECT = "other_project"
     MARKETING = "marketing"
     CHANNEL_PAGE = "channel_page"
+    CRM_STORE_BACKEND = "crm_store_backend"
     AHOH= "ahoh"
-
-
 @singleton
 class Config(BaseSettings):
     marker: Optional[str] = None
