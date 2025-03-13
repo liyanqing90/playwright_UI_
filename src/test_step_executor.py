@@ -180,7 +180,7 @@ class StepExecutor:
                 self.ui_helper.assert_text(selector, expected)
             elif action in StepAction.ASSERT_URL:
                 expected = step.get('expected', value)
-                self.ui_helper.assert_url(selector, expected)
+                self.ui_helper.assert_url( expected)
 
             elif action in StepAction.ASSERT_TITLE:
                 expected = step.get('expected', value)
