@@ -1,0 +1,60 @@
+elements:
+  账号密码登录tab: text=账号密码登录
+  账号输入框: text=请输入账号
+  密码输入框: text=请输入密码
+  登录按钮: role=button[name="登 录"]
+
+  购车政策: text="购车政策"
+  购车政策列表: text="购车政策列表"
+  新增按钮: role=button [name="+新增"]
+  品牌下拉框: role=combobox [name="* 品牌 :"]
+  #新增购车政策: label="新增购车政策"
+  奥迪品牌: .ant-select-item-option-content
+  车系列表: role=combobox [name="* 车系 :"]
+  奥迪A4L车系: div[aria-selected="false"][title="奥迪A4L"]
+  车型列表: role=combobox [name="* 车型 :"]
+  款200万辆悦享版40TFSI时尚动感型: div[aria-selected="false"][title="289800"]
+  经销商省份: role=combobox [name="* 经销商省份 :"]
+  香港省份: div[aria-selected="false"][title="香港"]
+  经销商城市: role=combobox [name="* 经销商城市 :"]
+  香港城市: div[aria-selected="false"][title="香港"]
+  经销商区域: role=combobox [name="* 经销商区域 :"]
+  香港区域: div[aria-selected="false"][title="香港"]
+  经销商名称: role=combobox [name="* 经销商名称 :"]
+  测试宝骏经销商: div[aria-selected="false"][title="测试宝骏20150609"]
+  库存状态: //div[@_nk="OCIda8"]
+  现车标签: div[aria-selected="false"][title="现车"]
+  交货日期: //div[@_nk="OCIda9"]
+  一周交货: div[aria-selected="false"][title="1周"]
+  裸车价输入框: role=textbox [name="* 裸车价 :"]
+  DCC报价输入框: role=textbox [name="* DCC报价/线上报价 :"]
+  强制保险否: //*[@id="forceInsure"]/label[2]
+  强制上牌否: //*[@id="forcePlate"]/label[2]
+  本品本店置换: role=spinbutton [name="本品本店置换 :"]
+  形式: //div[@_nk="OCIdaa"]
+  抵扣车款: div[aria-selected="false"][title="抵扣车款"]
+  添加按钮: role=button [name="添 加"]
+  比例模式: text="比例模式"
+  首付比例: role=spinbutton [name="首付比例"]
+  免息期数: //div[@_nk="OCIdac"]
+  12期: div[aria-selected="false"][title="12期"]
+  低首付金融: role=spinbutton [name="* 低首付金融：首付低至 :"]
+  金融手续费: role=textbox [name="* 金融手续费 :"]
+  金融购车推荐方案: //textarea[@_nk="OCId9p"]
+  无绑定条件: //*[@id="bindCondition"]/label[1]
+  无特殊颜色: //*[@id="specialColor"]/label[1]
+  提交按钮: //button[@_nk="OCId36"]
+  查询按钮: role=button[name="查 询"]
+  奥迪: //div[@_nk="aPX811"]
+  奥迪A4L: //div[@_nk="aPX812"]
+  车型: //div[@_nk="aPX813"]
+  香港: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(3)
+  测试宝骏: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(4)
+  厂商指导价: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(5)
+  库存状态列: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(6)
+  交货期: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(7)
+  裸车价: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(8)
+  DCC线上报价: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(9)
+  金融手续费列: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(14)
+
+
