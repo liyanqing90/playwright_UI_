@@ -1,0 +1,23 @@
+elements:
+  用户名输入框: role=textbox[name="请输入您的用户名"]
+  密码输入框: role=textbox[name="请输入您的密码"]
+  登录按钮: role=link[name="登录"]
+  营销: text=营销
+  营销助手: text=营销助手
+  AI营销助手工作中: "div >> text=/^AI营销助手工作中$/ >> role=switch"
+  AI营销助手未开启: "div >> text=/^AI营销助手未开启$/ >> role=switch"
+  进私开关: //*[@id="app"]/main/div/div[2]/div[2]/section/div[2]/div/div[1]/div[2]/button
+  未开启: text=未开启
+  已开启: text=工作中
+  已生效: text=生效中
+  潜客开关: //*[@id="app"]/main/div/div[2]/div[2]/section/div[2]/div/div[2]/div[2]/button
+  挽回开关: //*[@id="app"]/main/div/div[2]/div[2]/section/div[2]/div/div[3]/div[2]/button
+  挽回已生效: text=两次动态挽回生效
+  回复率开关: //*[@id="app"]/main/div/div[2]/div[2]/section/div[2]/div/div[4]/div[2]/button
+  回复率提升已生效: text=3分钟回复率提升生效
+  私信会话: "text=私信会话"
+  收起会话: text=收起会话
+  私信营销: "text=私信营销"
+  全部: "text=全部"
+  未留资: ".rc-virtual-list-holder-inner > div:nth-child(2)"
+
