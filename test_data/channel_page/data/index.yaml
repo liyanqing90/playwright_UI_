@@ -22,6 +22,8 @@ test_data:
       - action: assert_text
         selector: 确认选择
         value: 确认选择(1)
+      - action: click
+        selector: 确认选择
       - action: assert_text
         selector: 车系名称
         value: ${选中车系}
@@ -41,7 +43,7 @@ test_data:
         selector: 暖心礼标题
         value: 领价值1280元暖心礼
       - action: click
-        selector: 关闭
+        selector: 暖心礼关闭
       - action: click
         selector: 权益详细规则
       - action: assert_url

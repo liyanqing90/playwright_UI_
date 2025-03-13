@@ -2,10 +2,10 @@ elements:
   30分钟报价: div.header-nav-item
   极速报价: "h2.fill-info-popup-header-title" # 极速报价标题
   simple_cont_text_div: "div.simple-cont-text" # 简易内容文本
-  意向车系: "#app > div.ahoh-index4.clearLabelStyle > div:nth-child(5) > div.van-popup.van-popup--round.van-popup--bottom > div > div.fill-info-popup-main > div > form > div.fill-info-form__input > div.intentional-car-series > div > div.van-cell__value.van-field__value > div" # 意向车系选择框容器
+  意向车系: //input[@id='van-field-2-input'] # 意向车系选择框容器
   选中车系: "div.info-name" # 车型名称 AION S MAX
-  确认选择: text=确认选择(1)
-  车系名称: "#app > div.van-popup.van-popup--round.van-popup--bottom.select-series-popup-container.ahoh_index4 > div > div.select-series-box__list > div.select-series-box__list--series > ul > li:nth-child(1) > div.info > div.info-name" # 弹窗中第一个系列名称
+  确认选择: //div[contains(text(),'确认选择(1)')]
+  车系名称: .select-series--value # 弹窗中第一个系列名称
 
   买贵必赔: text=买贵必赔 获取保障 # 点击买贵必赔获取保障按钮
   买贵必赔立即领取: "button:has-text('立即领取')" # 点击立即领取按钮
@@ -21,9 +21,9 @@ elements:
 
   旧车估值: text=旧车估值 免费检测 # 点击买贵必赔获取保障按钮
   高价回收旧车: "h2.fill-info-popup-header-title" # 高价回收旧车标题
-  我的车型: "#app > div > div:nth-child(5) > div.van-popup.van-popup--round.van-popup--bottom > div > div.fill-info-popup-main > div > form > div.fill-info-form__input > div.choose-used-model > div" # 选择已用车型
-  车系: "#app > div.van-popup.van-popup--round.van-popup--bottom.select-series-popup-container > div > div.select-series-box__list > div.select-series-box__list--series > ul > li:nth-child(1) > div.info > div.info-name" # 系列信息名称
-  车型: "#app > div.van-popup.van-popup--round.van-popup--bottom.select-series-popup-container > div > div.select-series-box__list > div.select-series-box__list-spec > div:nth-child(1) > div.name" # 系列名称
+  我的车型: .van-cell.van-field.choose-used-model-field # 选择已用车型
+  车系: //div[contains(text(),'Abarth 500新能源')] # 系列信息名称
+  车型: //div[@class='select-series-box__list-spec']//div[1]//div[1] # 系列名称
   回显车系车型: "span.select-series--value" # 车型系列选择的值，显示已选车型
 
 
