@@ -1,0 +1,187 @@
+test_data:
+  test_demo:
+    description: "demo测试"
+    steps:
+      - action: goto
+        value: "https://ahohcrm.autohome.com.cn/#/login"
+      - action: click
+        selector: "账号密码登录tab"
+      - action: click
+        selector: role=textbox[name="请输入账号"]
+      - action: fill
+        selector: role=textbox[name="请输入账号"]
+        value: "12500000000"
+      - action: click
+        selector: role=textbox[name="请输入密码"]
+      - action: fill
+        selector: role=textbox[name="请输入密码"]
+        value: "Admin123!"
+      - action: click
+        selector: "登录按钮"
+      #- action: wait_for_new_window
+
+
+  test_policy_add:
+    description: "demo测试"
+    steps:
+      - action: goto
+        value: "https://ahohcrm.autohome.com.cn/#/login"
+      - action: click
+        selector: "账号密码登录tab"
+      - action: click
+        selector: role=textbox[name="请输入账号"]
+      - action: fill
+        selector: role=textbox[name="请输入账号"]
+        value: "12500000000"
+      - action: click
+        selector: role=textbox[name="请输入密码"]
+      - action: fill
+        selector: role=textbox[name="请输入密码"]
+        value: "Admin123!"
+      - action: click
+        selector: "登录按钮"
+      - action: click
+        selector: 购车政策
+      - action: click
+        selector: 购车政策列表
+      - action: click
+        selector: 新增按钮
+      - action: click
+        selector: 品牌下拉框
+      - action: fill
+        selector: 品牌下拉框
+        value: "奥迪"
+      - action: click
+        selector: 奥迪品牌
+      - action: click
+        selector: 车系列表
+      - action: fill
+        selector: 车系列表
+        value: "A4"
+      - action: click
+        selector: 奥迪A4L车系
+      - action: click
+        selector: 车型列表
+      - action: click
+        selector: 款200万辆悦享版40TFSI时尚动感型
+      - action: click
+        selector: 经销商省份
+      - action: fill
+        selector: 经销商省份
+        value: "香港"
+      - action: click
+        selector: 香港省份
+      - action: click
+        selector: 经销商城市
+      - action: click
+        selector: 香港城市
+      - action: click
+        selector: 经销商区域
+      - action: click
+        selector: 香港区域
+      - action: click
+        selector: 经销商名称
+      - action: click
+        selector: 测试宝骏经销商
+      - action: click
+        selector: 库存状态
+      - action: click
+        selector: 现车标签
+      - action: click
+        selector: 交货日期
+      - action: click
+        selector: 一周交货
+      - action: click
+        selector: 裸车价输入框
+      - action: fill
+        selector: 裸车价输入框
+        value: "28.780"
+      - action: click
+        selector: DCC报价输入框
+      - action: fill
+        selector: DCC报价输入框
+        value: "28.780"
+      - action: click
+        selector: 强制保险否
+      - action: click
+        selector: 强制上牌否
+      - action: click
+        selector: 本品本店置换
+      - action: fill
+        selector: 本品本店置换
+        value: "100"
+      - action: click
+        selector: 形式
+      - action: click
+        selector: 抵扣车款
+      - action: click
+        selector: 添加按钮
+      - action: click
+        selector: 比例模式
+      - action: click
+        selector: 首付比例
+      - action: fill
+        selector: 首付比例
+        value: "10"
+      - action: click
+        selector: 免息期数
+      - action: click
+        selector: 12期
+      - action: click
+        selector: 低首付金融
+      - action: fill
+        selector: 低首付金融
+        value: "13"
+      - action: click
+        selector: 金融手续费
+      - action: fill
+        selector: 金融手续费
+        value: "1.000"
+      - action: click
+        selector: 金融购车推荐方案
+      - action: fill
+        selector: 金融购车推荐方案
+        value: "方案1添加"
+      - action: click
+        selector: 无绑定条件
+      - action: click
+        selector: 无特殊颜色
+      - action: click
+        selector: 提交按钮
+      - action: click
+        selector: 查询按钮
+      - action: assert_text
+        selector: 奥迪
+        value: 奥迪
+      - action: assert_text
+        selector: 奥迪A4L
+        value: 奥迪A4L
+      - action: assert_text
+        selector: 车型
+        value: 2025款 200万辆悦享版 40 TFSI 时尚动感型
+      - action: assert_text
+        selector: 香港
+        value: 香港
+      - action: assert_text
+        selector: 测试宝骏
+        value: 测试宝骏20150609
+      - action: assert_text
+        selector: 厂商指导价
+        value: "28.980"
+      - action: assert_text
+        selector: 库存状态列
+        value: 现车
+      - action: assert_text
+        selector: 交货期
+        value: 1周
+      - action: assert_text
+        selector: 裸车价
+        value: "28.780"
+      - action: assert_text
+        selector: DCC线上报价
+        value: "28.780"
+      - action: assert_text
+        selector: 金融手续费列
+        value: "1.000"
+
+
