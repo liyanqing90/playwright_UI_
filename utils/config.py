@@ -30,8 +30,8 @@ class Project(str, Enum):
     ASSISTANT = "assistant"
     OTHER_PROJECT = "other_project"
     MARKETING = "marketing"
+    CRM_STORE_BACKEND = "crm_store_backend"
     AHOH= "ahoh"
-
 
 @singleton
 class Config(BaseSettings):
