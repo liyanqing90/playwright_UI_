@@ -7,6 +7,14 @@ elements:
   确认选择: text=确认选择(1)
   车系名称: "#app > div.van-popup.van-popup--round.van-popup--bottom.select-series-popup-container.ahoh_index4 > div > div.select-series-box__list > div.select-series-box__list--series > ul > li:nth-child(1) > div.info > div.info-name" # 弹窗中第一个系列名称
 
+  买贵必赔: text=买贵必赔 获取保障 # 点击买贵必赔获取保障按钮
+
+  送充电桩: text=送充电桩 立即领取 # 点击买贵必赔获取保障按钮
+
+
+
+
+
 
 
 

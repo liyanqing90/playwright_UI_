@@ -1,9 +1,9 @@
 test_data:
-  test_demo:
-    description: "demo测试"
+  test_quick_quote:
+    description: "30分钟报价"
     steps:
       - action: goto
-        value: "https://energyspace-c-pre.autohome.com.cn/ahoh-marketing/ahohIndex4"
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
       - action: click
         selector: 30分钟报价
       - action: assert_text
@@ -22,6 +22,27 @@ test_data:
       - action: assert_text
         selector: 车系名称
         value: AION S MAX
+
+  test_insured:
+    description: "30分钟报价"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+      - action: click
+        selector: 买贵必赔
+      - action: assert_url
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/insured?pvareaid=6865276&cityId=110100
+
+  test_charging_stations:
+    description: "送充电桩"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+      - action: click
+        selector: 送充电桩
+      - action: assert_url
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/insured?pvareaid=6865272&cityId=110100&pageType=chargingPile
+
 
 
 

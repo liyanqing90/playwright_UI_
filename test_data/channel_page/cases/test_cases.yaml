@@ -1,3 +1,5 @@
 test_cases:
-  - name: test_demo
+  - name: test_quick_quote
   - name: test_insured
+  - name: test_charging_stations
+
