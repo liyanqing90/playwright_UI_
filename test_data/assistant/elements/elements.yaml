@@ -2,21 +2,9 @@ elements:
   请输入您的用户名: //input[@placeholder='请输入您的用户名']
   请输入您的密码: //input[@placeholder='请输入您的密码']
   登录按钮: .login-btn
-  图片元素: .live > img
-  第二个图片元素: div:nth-child(3) > img
-  剧本文本: text=剧本
-  角色图片: role=img
-  开始时间输入框: "#form_item_sectionList_0_startTime"
-  话题时: role=tooltip >> ul.left >> text=05
-  话题分: role=tooltip >> ul.right >> text=02
-  话题时间确定: role=tooltip >> text=确 定
-  灵感文本: text=灵感
-  不保存按钮: //button[@class='ant-btn no-save']
-  成长文本: text=成长
-  开始练习按钮: text=开始练习
-  取消练习&考试按钮: //button[@class='ant-btn button btn-cancle']
-  考试文本: text=考试
-  重新考试按钮: text=重新考试
+
+
+
   #剧本库
   我的创作: //li[contains(text(),"我的创作")]
   共享中心: //li[contains(text(),"共享中心")]
@@ -53,25 +41,36 @@ elements:
 
 
   #剧本
-  开始创作: //img[@class="writing-icon"]
+  剧本开始时间: "#form_item_sectionList_0_startTime"
+  剧本菜单: text=剧本
+  剧本开始创作: //img[@class="writing-icon"]
   剧本标题: //input[@id='form_item_title']
   剧本时长: //input[@id='form_item_time']
   剧本时长确定: //div[@class="submit"]
-  剧本时: //ul[@class="left"]//li[contains(text(),"06")]
-  剧本分: //ul[@class="right"]//li[contains(text(),"00")]
-  案例引用: //label[span[text()='案例引用']][1]
-  脚本引用: //label[span[text()='脚本引用']][1]
-  手动录入: //label[span[text()='手动录入']][1]
-  话题名称: "#form_item_sectionList_0_subject"
-  确定时间: .submit
-  生成脚本: .creat-btn
-  重新生成: //span[contains(text(),"重新生成")]
-  确定重新生成: //button[@class="ant-btn ant-btn-primary"]
-  取消重新生成: //button[@class="ant-btn"]
-  保存完整剧本: //div[@class='save-btn']
-  增加话题: div[class='add-btn']
-  调整顺序: div[class='order-btn']
-  清空全部: div[class='clear-btn']
+  话题时: role=tooltip >> ul.left >> text=00
+  话题分: role=tooltip >> ul.right >> text=02
+  话题时间确定: role=tooltip >> text=确 定
+  剧本话题时长确定: (//div[@class='submit'][contains(text(),'确 定')])[2]
+  剧本案例引用: //label[span[text()='案例引用']][1]
+  剧本脚本引用: //label[span[text()='脚本引用']][1]
+  剧本手动录入: //label[span[text()='手动录入']][1]
+  剧本话题名称: "#form_item_sectionList_0_subject"
+  剧本确定时间: .submit
+  剧本生成脚本: .creat-btn
+  剧本重新生成: //span[contains(text(),"重新生成")]
+  剧本确定重新生成: //button[@class="ant-btn ant-btn-primary"]
+  剧本取消重新生成: //button[@class="ant-btn"]
+  剧本保存完整剧本: //div[@class='save-btn']
+  剧本增加话题: div[class='add-btn']
+  剧本话题关闭: //div[@class='list-item active-item']//div[@class='close-icon']
+  剧本调整顺序: div[class='order-btn']
+  剧本清空全部: div[class='clear-btn']
+  剧本话题删除: css=".close-icon"
+  剧本保存后验证 : //span[contains(text(),'剧本保存成功')]
+  剧本启用验证: //span[contains(text(),'启用成功，已展示到直播栏目底部')]
+  剧本共享启用: (//div[@class='item-top__switch'])[2]
+  剧本共享预览关闭: (//div[contains(text(),'关闭')])[1]
+  剧本共享预览 : (//div[contains(text(),'预览')])[2]
 
   #案例
   第一个案例: (//li[@class='ant-list-item']//div)[1]
@@ -82,7 +81,7 @@ elements:
   modal_body_text: "div.text"  # 弹窗正文提示文本
   modal_cancel_button: "button.ant-btn:has(span:contains('取 消'))"  # 弹窗“取消”按钮
   modal_no_save_button: "button.no-save"  # 弹窗“不保存”按钮
-  modal_save_button: "button.ant-btn-primary"  # 弹窗“保存”按钮
+  modal_save_button: (//div[@class='btn primary'])[1] # 弹窗“保存”按钮
   关闭第二个话题: //div[contains(@class,'list-item')][.//div[@class='num' and text()='02']]//div[@class='close-icon']
   关闭第三个话题: //div[contains(@class,'list-item')][.//div[@class='num' and text()='03']]//div[@class='close-icon']
 
@@ -120,21 +119,21 @@ elements:
   素材: text="素材"
   素材上传按钮: //span[contains(text(),'上 传')]
   素材通用素材: (//input[@value='2'])[1]
+  素材常驻素材: (//input[@value='3'])[1]
   素材upload浏览: '#form_in_modal_url'
   素材确认按钮: text="确 认"
   素材筛选条件选择器输入框: //span[@class='ant-select-selection-item']
-  素材筛选条件下拉选项: text=通用素材
+  素材筛选条件下拉选项-通用: text=通用素材
+  素材筛选条件下拉选项-常驻: text=常驻素材
   素材查询按钮: "text=查询 >> nth=0"
   素材删除按钮: "text=删除 >> nth=0"
-  删除确认是按钮: //span[contains(text(),'是')]
-
-#成长-
-  成长导航栏链接: ".growUp-icon"
-  练习活动项图标: ".active .item-top__icon"
-  数据概览: text="数据概览"
-  考试第二个标签页: "text=考试 >> nth=0"
-  考试查看按钮: "text=查看 >> nth=0"
-  考试关闭按钮: ".exam-detail .detail-box-close"
+  素材删除确认是按钮: //span[contains(text(),'是')]
+  素材上传成功校验 :  (//span[contains(text(),'成功')])[1]
+  素材删除成功校验 : (//span[contains(text(),'删除成功')])[1]
+  素材未上传文件校验 : (//div[@role='alert'])[1]
+  素材名称空校验 : (//div[@role='alert'])[2]
+  素材显示开关 : (//button[@role='switch'])[1]
+  素材显示结果校验 : //span[contains(text(),'常驻素材显示不能超过1个')]
 
 
 
@@ -186,3 +185,25 @@ elements:
   灵感筛选丰田: text="丰田"
   灵感筛选车系: (//input[@id='form_item_seriesId'])[1]
   灵感筛选验证: css="#listId"
+
+
+#成长-
+  成长导航栏链接: ".growUp-icon"
+  练习活动项图标: ".active .item-top__icon"
+  数据概览: text="数据概览"
+  成长考试tab: "text=考试 >> nth=0"
+  考试查看按钮: "text=查看 >> nth=0"
+  考试关闭按钮: ".exam-detail .detail-box-close"
+  成长开始练习按钮: .start-btn
+  成长失败提示: (//span[contains(text(),'请开启麦克风权限')])[1]
+  成长确定按钮: //span[contains(text(),'确 定')]
+  成长考试开始按钮: //span[contains(text(),'开始考试')]
+  成长取消按钮: //span[contains(text(),'取 消')]
+  成长重新考试按钮: "text=重新考试 >> nth=0"
+  成长练习回放验证: //div[@class='live-text__top--title']
+  成长数据概览验证: text="发言占比"
+  成长考试数据概览验证 : //h4[contains(text(),'发言占比')]
+  成长开始日期输入框: input[placeholder='开始日期']
+  成长练习无记录 : text="无练习记录"
+  成长日期组件确定按钮: //span[contains(text(),'确 定')]
+  成长结束日期输入框: input[placeholder='结束日期']
