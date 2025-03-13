@@ -3,4 +3,3 @@ test_cases:
   - name: test_insured
   - name: test_charging_stations
   - name: test_old_cars
-
