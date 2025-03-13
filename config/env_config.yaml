@@ -23,6 +23,7 @@ projects:
       test: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
       stage: "http://stage.hololive.com"
       prod: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+    browser_config: { "viewport": { "width": 1080, "height": 798 } }
 
   ahoh:
     test_dir: "test_data/ahoh"
