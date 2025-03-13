@@ -31,6 +31,7 @@ class Project(str, Enum):
     OTHER_PROJECT = "other_project"
     MARKETING = "marketing"
     CHANNEL_PAGE = "channel_page"
+    AHOH= "ahoh"
 
 
 @singleton
