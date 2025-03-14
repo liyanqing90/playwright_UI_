@@ -273,7 +273,7 @@ class StepExecutor:
                 if 'variable_name' in step:
                     self.ui_helper.store_variable(step['variable_name'], new_page, step.get('scope', 'global'))
 
-            elif action in StepAction.GET_ELEMENT_COUNT:
+            elif action in StepAction.SAVE_ELEMENT_COUNT:
                 count = self.ui_helper.get_element_count(selector)
                 if 'variable_name' in step:
                     self.ui_helper.store_variable(step['variable_name'], str(count), step.get('scope', 'global'))
