@@ -16,6 +16,7 @@ projects:
       stage: "http://stage.demo.com"
       prod: "http://prod.demo.com"
     browser_config: { "viewport": { "width": 393, "height": 659 }, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit" }
+
   assistant:
     test_dir: "test_data/assistant"
     environments:
@@ -46,6 +47,25 @@ projects:
       prod: "http://prod.demo.com"
     browser_config: {'user_agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1', 'viewport': {'width': 393, 'height': 659}, 'device_scale_factor': 3, 'is_mobile': True, 'has_touch': True, 'default_browser_type': 'webkit'}
 
+  channel_page:
+    test_dir: "test_data/channel_page"
+    environments:
+      dev: "http://dev.demo.com"
+      test: "http://test.demo.com"
+      stage: "http://stage.demo.com"
+      prod: "http://prod.demo.com"
+    browser_config: {'user_agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1', 'viewport': {'width': 393, 'height': 659}, 'device_scale_factor': 3, 'is_mobile': True, 'has_touch': True, 'default_browser_type': 'webkit'}
+
+  crm_store_backend:
+    test_dir: "test_data/crm_store_backend"
+    environments:
+      dev: "http://dev.hololive.com"
+      test: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
+      stage: "http://stage.hololive.com"
+      prod: "https://ahohcrm.autohome.com.cn/#/login"
+    browser_config: { "viewport": { "width": 1920, "height": 1080 } }
+
+
   other_project:
     test_dir: "test_data/other_project"
     environments:
@@ -53,3 +73,4 @@ projects:
       test: "http://test.other.com"
       stage: "http://stage.other.com"
       prod: "http://prod.other.com"
+

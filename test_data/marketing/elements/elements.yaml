@@ -50,8 +50,6 @@ elements:
   consult_button: "role=button[name='立即咨询']"
   reservation_phone_text: "text=请输入预约手机号"
   card_image: ".cardimg > img"
-  store_title: //div[@class="title"]
-  store_online_text: //div[@class="online-time"]
   first_filter_button: ".filter-button__icon"
   audi_list_item: "role=listitem[name='奥迪']"
   audi_list_item_div: "role=listitem[name='奥迪'] > div"
@@ -68,3 +66,47 @@ elements:
   confirm_3_text: "text=确认选择 (3)"
   toast_text: "div.van-toast__text"
   brand-num: //span[@class="checked-brand-num"]
+  car_name: //div[@class="series-card__name"]/span[1]
+  ## detail page
+  detail_store_title: //div[@class="title"]
+  detail_worktime_text: //div[@class="online-time"]
+  detail_store_label: //div[@class="bot"]
+  detail_car_name: //div[@class="spec-select__name"]
+  detail_car_model: //div[@class="car-model-info-name"]
+  detail_car_price: //div[@class="activity-price__endprice"]
+  detail_item_car_name: //div[@class="compare-test-drive__spec"]/div/div[@class="item-name"]
+  detail_gift_title: //h3[@class="gift-packs-cont-title"]/b
+  detail_gift_button: //div[@class="gift-packs-cont-right"]
+
+  detail_pop_title: //h2[@class="fill-info-popup-header-title"]
+  detail_pop_btn: div.fill-info-form-btn
+  detail_pop_phone: "#sunInput"
+  detail_pop_phone_style: span.phoneItem-style
+  detail_pop_close: div.fill-info-popup-close
+
+  choice_text: //div[@aria-selected="true"]/span
+  choice_store_info: //span[contains(text(),"门店信息")]
+  choice_car_clc: //span[contains(text(),"购车计算")]
+  choice_trade_in: //span[contains(text(),"以旧换新")]
+  choice_test_drive: //span[contains(text(),"试驾服务")]
+
+
+  detail_one_store: //div[@class="oneStore"]
+  detail_call: //div[@class="call"]
+  detail_question: //div[@class="question"]
+
+  detail_car_purchase: .car-purchase-plan__btn
+  detail_car_trade_in: .change-new-btn-wrap
+  detail_car_test_drive: .compare-test-drive__btn
+
+  detail_add_compare: .add
+  detail_choice_car_clear: .select-series-box__selected--clear
+  detail_choice_car_title: .select-series-box__head
+  detail_choice_car_name: .not-remove
+  detail_choice_car_choice_1: (//div[@class='check-btn'])[1]
+  detail_choice_car_choice_2: (//div[@class='check-btn'])[2]
+  detail_selected: (//div[@class='item-check active'])
+
+  detail_floor_price: //div[@class="footer__right"]//div[2]
+  detail_floor_price_rule: //div[@class="base-price"]//div[contains(text(),"规则")]
+  detail_floor_price_title: .MHeader_title__CwNZs
