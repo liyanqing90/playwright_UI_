@@ -22,8 +22,9 @@ def build_pytest_args(config):
     test_file = config.test_file
 
     pytest_args = [
-        f"{test_dir}/cases/"+test_file,
+        f"{test_dir}/cases/" + test_file,
         '-v',
+        "--tb=line",
         "-p", "no:warnings",
         "-s",
         "--alluredir=reports/allure-results",
@@ -84,7 +85,7 @@ def main(
         env=env,
         project=project,
         base_url=base_url,
-        test_file = test_file +".yaml" if test_file else test_file
+        test_file=test_file + ".yaml" if test_file else test_file
     )
     # 配置运行环境
     config.configure_environment()

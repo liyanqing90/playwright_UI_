@@ -72,10 +72,10 @@ class BasePage:
         self.page.locator(selector).first.click()
 
     @handle_page_error
-    @allure.step("点击元素 {selector}")
+    @allure.step("上传文件 {file_path}")
     def upload_file(self, selector: str, file_path: str):
         """上传文件"""
-        # self._wait_for_element(selector)
+        self._wait_for_element(selector)
         self.page.locator(selector).set_input_files(file_path)
 
     @handle_page_error
@@ -104,13 +104,17 @@ class BasePage:
     @allure.step("断言URL")
     def assert_url(self, url: str):
         """断言当前URL"""
-        assert self.page.url == url, f"断言失败: 期望URL为 '{url}', 实际URL为 '{self.page.url}'"
+        actual_url = self.page.url
+        with check, allure.step("断言URL"):
+            assert actual_url == url, f"断言失败: 期望URL为 '{url}', 实际URL为 '{actual_url}'"
 
     @handle_page_error
     @allure.step("断言页面标题")
     def assert_title(self, title: str):
         """断言页面标题"""
-        assert self.page.title() == title, f"断言失败: 期望标题为 '{title}', 实际标题为 '{self.page.title()}'"
+        actual_title = self.page.title()
+        with check, allure.step("断言页面标题"):
+            assert actual_title == title, f"断言失败: 期望标题为 '{title}', 实际标题为 '{actual_title}'"
 
     @handle_page_error
     @allure.step("断言元素数量")
@@ -121,36 +125,34 @@ class BasePage:
         except Exception as e:
             logger.error(f"断言元素数量失败: 期望数量 '{expected_count}' 不是有效的整数")
             raise
+
         actual_count = self.get_element_count(selector)
-        assert actual_count == expected_count, \
-            f"断言失败: 期望元素数量为 {expected_count}, 实际元素数量为 {actual_count}"
+        with check, allure.step("断言元素数量"):
+            assert actual_count == expected_count, f"断言失败: 期望元素数量为 {expected_count}, 实际元素数量为 {actual_count}"
 
     @handle_page_error
-    @allure.step("断言元素文本")
     def assert_text(self, selector: str, expected_text: str):
         """断言元素文本"""
         actual_text = self.get_text(selector)
         resolved_expected = self._resolve_variables(expected_text)
-        allure.attach(f"期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}'")
-        assert actual_text == resolved_expected, \
-            f"断言失败: 期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}'"
+        with check, allure.step("断言元素文本"):
+            assert resolved_expected == actual_text, f"断言失败: 期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}'"
 
     @handle_page_error
-    @allure.step("断言元素可见性")
     def assert_visible(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
         """断言元素可见"""
-        try:
-            expect(self.page.locator(selector)).to_be_visible(timeout=timeout)
-        except Exception as e:
-            allure.attach(f"断言失败: 元素 {selector} 不可见")
-        # self._wait_for_element(selector, timeout=timeout)
+
+        is_visible = self.page.is_visible(selector, timeout=timeout)
+        with assume, allure.step("断言元素可见性"):
+            assert is_visible, f"断言失败: 元素 {selector} 不可见"
 
     @handle_page_error
     @allure.step("断言元素不可见")
     def assert_not_visible(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
         """断言元素不可见"""
         is_visible = self.page.is_visible(selector, timeout=timeout)
-        assert not is_visible, f"断言失败: 元素 {selector} 仍然可见"
+        with check, allure.step("断言元素不可见"):
+            assert not is_visible, f"断言失败: 元素 {selector} 仍然可见"
 
     @handle_page_error
     @allure.step("存储变量 {name}")
@@ -437,17 +439,20 @@ class BasePage:
             return self.page.context.cookies()
         elif action == "delete":
             self.page.context.clear_cookies()
+
     @handle_page_error
     @allure.step("获取元素属性")
     def get_element_attribute(self, selector: str, attribute: str) -> str:
         """获取元素属性"""
         self._wait_for_element(selector)
         return self.page.get_attribute(selector, attribute)
+
     @handle_page_error
     @allure.step("获取当前页面URL")
     def get_current_url(self) -> str:
         """获取当前页面URL"""
         return self.page.url
+
     @handle_page_error
     @allure.step("获取页面标题")
     def get_page_title(self) -> str:

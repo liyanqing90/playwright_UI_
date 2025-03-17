@@ -2,7 +2,7 @@ from datetime import datetime
 from io import StringIO
 from pathlib import Path
 from typing import Dict, Any
-from faker import Faker
+
 import allure
 
 from page_objects.base_page import base_url
@@ -21,21 +21,34 @@ class StepAction:
 
     # 断言相关
     ASSERT_VISIBLE = ['assert_visible', '验证可见']
-    ASSERT_TEXT = ['assert_text', 'assertion', '验证文本',"验证",'verify']
+    ASSERT_TEXT = ['assert_text', 'assertion', '验证文本', "验证", 'verify']
     ASSERT_ATTRIBUTE = ['assert_attribute', '验证属性']
     ASSERT_URL = ['assert_url', '验证URL']
     ASSERT_TITLE = ['assert_title', '验证标题']
     ASSERT_ELEMENT_COUNT = ['assert_element_count', '验证元素数量']
+    ASSERT_TEXT_CONTAINS = ['assert_text_contains', '验证包含文本']
+    ASSERT_URL_CONTAINS = ['assert_url_contains', '验证URL包含']
+    ASSERT_EXISTS = ['assert_exists', '验证存在']
+    ASSERT_NOT_EXISTS = ['assert_not_exists', '验证不存在']
+    ASSERT_ENABLED = ['assert_enabled', '验证启用']
+    ASSERT_DISABLED = ['assert_disabled', '验证禁用']
 
     # 存储相关
     STORE_VARIABLE = ['store_variable', '存储变量']
     STORE_TEXT = ['store_text', '存储文本']
     STORE_ATTRIBUTE = ['store_attribute', '存储属性']
 
+    # 等待相关
+    WAIT_FOR_ELEMENT_HIDDEN = ['wait_for_element_hidden', '等待元素消失']
+    WAIT_FOR_NETWORK_IDLE = ['wait_for_network_idle', '等待网络空闲']
+    WAIT_FOR_ELEMENT_CLICKABLE = ['wait_for_element_clickable', '等待元素可点击']
+    WAIT_FOR_ELEMENT_TEXT = ['wait_for_element_text', '等待元素文本']
+    WAIT_FOR_ELEMENT_COUNT = ['wait_for_element_count', '等待元素数量']
+
     # 其他操作
     REFRESH = ['refresh', '刷新']
     PAUSE = ['pause', '暂停']
-    UPLOAD = ['upload', '上传','上传文件']
+    UPLOAD = ['upload', '上传', '上传文件']
     HOVER = ['hover', '悬停']
     DOUBLE_CLICK = ['double_click', '双击']
     RIGHT_CLICK = ['right_click', '右键点击']
@@ -59,14 +72,21 @@ class StepAction:
     CAPTURE_SCREENSHOT = ['capture', '截图']
     MANAGE_COOKIES = ['cookies', 'Cookie操作']
     TAB_SWITCH = ['switch_tab', '切换标签页']
+    DOWNLOAD_FILE = ['download', '下载文件']
     DOWNLOAD_VERIFY = ['verify_download', '验证下载']
     FAKER = ['faker', '生成数据']
+    GET_ALL_ELEMENTS = ['get_all_elements', '获取所有元素']
+    KEYBOARD_SHORTCUT = ['keyboard_shortcut', '键盘快捷键']
+    KEYBOARD_PRESS = ['keyboard_press', '全局按键']
+    KEYBOARD_TYPE = ['keyboard_type', '全局输入']
     # 不需要selector的操作
     NO_SELECTOR_ACTIONS = (
             NAVIGATE +
             ASSERT_URL +
             ASSERT_TITLE +
+            ASSERT_URL_CONTAINS +
             WAIT +
+            WAIT_FOR_NETWORK_IDLE +
             REFRESH +
             PAUSE +
             CLOSE_WINDOW +
@@ -77,7 +97,10 @@ class StepAction:
             MANAGE_COOKIES +
             TAB_SWITCH +
             DOWNLOAD_VERIFY +
-            FAKER
+            FAKER +
+            KEYBOARD_SHORTCUT +
+            KEYBOARD_PRESS +
+            KEYBOARD_TYPE
     )
 
 
@@ -117,8 +140,8 @@ class StepExecutor:
 
             action = step.get("action", "").lower()
             pre_selector = step.get("selector")
-            selector = self.elements.get(pre_selector, pre_selector) # 替换变量
-            value = replace_values_from_dict_regex(step.get("value")) # 替换变量
+            selector = self.elements.get(pre_selector, pre_selector)  # 替换变量
+            value = replace_values_from_dict_regex(step.get("value"))  # 替换变量
             logger.debug(f"执行步骤: {action} | 选择器: {pre_selector} | 值: {value}")
             self._validate_step(action, selector)
             self._execute_action(action, selector, value, step)
@@ -172,15 +195,46 @@ class StepExecutor:
                 wait_time = int(float(step.get('value', 1)) * 1000) if step.get('value') else 1000
                 self.ui_helper.wait_for_timeout(wait_time)
 
+            elif action in StepAction.WAIT_FOR_NETWORK_IDLE:
+                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+                self.ui_helper.wait_for_network_idle(timeout)
+
+            elif action in StepAction.WAIT_FOR_ELEMENT_HIDDEN:
+                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+                self.ui_helper.wait_for_element_hidden(selector, timeout)
+
+            elif action in StepAction.WAIT_FOR_ELEMENT_CLICKABLE:
+                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+                self.ui_helper.wait_for_element_clickable(selector, timeout)
+
+            elif action in StepAction.WAIT_FOR_ELEMENT_TEXT:
+                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+                expected_text = step.get('expected_text', value)
+                self.ui_helper.wait_for_element_text(selector, expected_text, timeout)
+
+            elif action in StepAction.WAIT_FOR_ELEMENT_COUNT:
+                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+                expected_count = int(step.get('expected_count', value))
+                self.ui_helper.wait_for_element_count(selector, expected_count, timeout)
+
             elif action in StepAction.ASSERT_VISIBLE:
                 self.ui_helper.assert_visible(selector)
 
             elif action in StepAction.ASSERT_TEXT:
                 expected = step.get('expected', value)
                 self.ui_helper.assert_text(selector, expected)
+
+            elif action in StepAction.ASSERT_TEXT_CONTAINS:
+                expected = step.get('expected', value)
+                self.ui_helper.assert_text_contains(selector, expected)
+
             elif action in StepAction.ASSERT_URL:
                 expected = step.get('expected', value)
-                self.ui_helper.assert_url( expected)
+                self.ui_helper.assert_url(expected)
+
+            elif action in StepAction.ASSERT_URL_CONTAINS:
+                expected = step.get('expected', value)
+                self.ui_helper.assert_url_contains(expected)
 
             elif action in StepAction.ASSERT_TITLE:
                 expected = step.get('expected', value)
@@ -189,6 +243,18 @@ class StepExecutor:
             elif action in StepAction.ASSERT_ELEMENT_COUNT:
                 expected = step.get('expected', value)
                 self.ui_helper.assert_element_count(selector, expected)
+
+            elif action in StepAction.ASSERT_EXISTS:
+                self.ui_helper.assert_exists(selector)
+
+            elif action in StepAction.ASSERT_NOT_EXISTS:
+                self.ui_helper.assert_not_exists(selector)
+
+            elif action in StepAction.ASSERT_ENABLED:
+                self.ui_helper.assert_element_enabled(selector)
+
+            elif action in StepAction.ASSERT_DISABLED:
+                self.ui_helper.assert_element_disabled(selector)
 
             elif action in StepAction.STORE_VARIABLE:
                 self.ui_helper.store_variable(step['name'], value, step.get('scope', 'global'))
@@ -206,7 +272,6 @@ class StepExecutor:
 
             elif action in StepAction.REFRESH:
                 self.ui_helper.refresh()
-
 
             elif action in StepAction.HOVER:
                 self.ui_helper.hover(selector)
@@ -228,6 +293,11 @@ class StepExecutor:
                 result = self.ui_helper.get_value(selector)
                 if 'variable_name' in step:
                     self.ui_helper.store_variable(step['variable_name'], result, step.get('scope', 'global'))
+
+            elif action in StepAction.GET_ALL_ELEMENTS:
+                elements = self.ui_helper.get_all_elements(selector)
+                if 'variable_name' in step:
+                    self.ui_helper.store_variable(step['variable_name'], elements, step.get('scope', 'global'))
 
             elif action in StepAction.SCROLL_INTO_VIEW:
                 self.ui_helper.scroll_into_view(selector)
@@ -253,7 +323,6 @@ class StepExecutor:
             elif action in StepAction.ENTER_FRAME:
                 self.ui_helper.enter_frame(selector)
 
-
             elif action in StepAction.ACCEPT_ALERT:
                 text = self.ui_helper.accept_alert(selector, value)
 
@@ -277,11 +346,43 @@ class StepExecutor:
                 count = self.ui_helper.get_element_count(selector)
                 if 'variable_name' in step:
                     self.ui_helper.store_variable(step['variable_name'], str(count), step.get('scope', 'global'))
+
+            elif action in StepAction.DOWNLOAD_FILE:
+                save_path = step.get('save_path')
+                file_path = self.ui_helper.download_file(selector, save_path)
+                if 'variable_name' in step:
+                    self.ui_helper.store_variable(step['variable_name'], file_path, step.get('scope', 'global'))
+
+            elif action in StepAction.DOWNLOAD_VERIFY:
+                file_pattern = step.get('file_pattern', value)
+                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+                result = self.ui_helper.verify_download(file_pattern, timeout)
+                if 'variable_name' in step:
+                    self.ui_helper.store_variable(step['variable_name'], str(result), step.get('scope', 'global'))
+
             elif action in StepAction.FAKER:
-                value = generate_faker_data(step.get('data_type'))
+                data_type = step.get('data_type')
+                kwargs = {k: v for k, v in step.items() if k not in ['action', 'data_type', 'variable_name', 'scope']}
+
                 if 'variable_name' not in step:
                     raise ValueError("步骤缺少必要参数: variable_name")
+
+                # 直接使用ui_helper的方法
+                value = self.ui_helper.generate_faker_data(data_type, **kwargs)
                 self.ui_helper.store_variable(step['variable_name'], value, step.get('scope', 'global'))
+
+            elif action in StepAction.KEYBOARD_SHORTCUT:
+                key_combination = step.get('key_combination', value)
+                self.ui_helper.press_keyboard_shortcut(key_combination)
+
+            elif action in StepAction.KEYBOARD_PRESS:
+                key = step.get('key', value)
+                self.ui_helper.keyboard_press(key)
+
+            elif action in StepAction.KEYBOARD_TYPE:
+                text = step.get('text', value)
+                delay = int(step.get('delay', DEFAULT_TYPE_DELAY))
+                self.ui_helper.keyboard_type(text, delay)
 
     def _finalize_step(self):
         """统一后处理逻辑"""
@@ -309,23 +410,23 @@ class StepExecutor:
         try:
             # 生成时间戳
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-
-            # 1. 捕获屏幕截图
-            screenshot_path = f"./evidence/screenshots/failure_{timestamp}.png"
-            self.page.screenshot(path=screenshot_path, full_page=True)
-            allure.attach.file(
-                screenshot_path,
-                name="失败截图",
-                attachment_type=allure.attachment_type.PNG
-            )
-
-            # 2. 捕获页面HTML
-            html_content = self.page.content()
-            allure.attach(
-                html_content,
-                name="页面HTML",
-                attachment_type=allure.attachment_type.HTML
-            )
+            #
+            # # 1. 捕获屏幕截图
+            # screenshot_path = f"./evidence/screenshots/failure_{timestamp}.png"
+            # self.page.screenshot(path=screenshot_path, full_page=True)
+            # allure.attach.file(
+            #     screenshot_path,
+            #     name="失败截图",
+            #     attachment_type=allure.attachment_type.PNG
+            # )
+            #
+            # # 2. 捕获页面HTML
+            # html_content = self.page.content()
+            # allure.attach(
+            #     html_content,
+            #     name="页面HTML",
+            #     attachment_type=allure.attachment_type.HTML
+            # )
 
             # 3. 捕获步骤日志
             log_content = self._log_buffer.getvalue()
@@ -346,9 +447,17 @@ class StepExecutor:
         except Exception as e:
             logger.error(f"证据采集失败: {str(e)}")
 
-def generate_faker_data(data_type):
-    faker = Faker()
+
+def generate_faker_data(data_type, **kwargs):
+    """
+    生成Faker数据的辅助函数
+    这个函数只是为了兼容旧代码，实际调用BasePage中的方法
+    """
+    from faker import Faker
+
+    # 兼容旧的简单数据类型
     if data_type == 'name':
+        faker = Faker()
         return "新零售" + faker.uuid4().replace("-", "")[:6]
     elif data_type == 'mobile':
         return '18210233933'
@@ -356,30 +465,30 @@ def generate_faker_data(data_type):
     
 import re
 
-def replace_values_from_dict_regex( value_string):
-  """
-  使用正则表达式从字典中替换字符串中的占位符。
 
-  Args:
-    value_dict: 存储值的字典。
-    value_string: 包含占位符的字符串，占位符格式为 '$<key>'。
+def replace_values_from_dict_regex(value_string):
+    """
+    使用正则表达式从字典中替换字符串中的占位符。
 
-  Returns:
-    替换占位符后的字符串。
-  """
-  if not value_string or "$<" not in str(value_string): return value_string
-  variable_manager = VariableManager()
+    Args:
+      value_string: 包含占位符的字符串，占位符格式为 '$<key>'。
 
-  def replace_placeholder(match):
-    """正则表达式替换的回调函数，用于获取匹配到的占位符键名并替换。"""
-    placeholder_key = match.group(1) # 获取捕获组 (括号内的内容)，即占位符的键名
-    value = variable_manager.get_variable(placeholder_key) # 使用字典的 get() 方法安全地获取值
-    if value is not None:
-      return str(value) # 如果找到值，则替换为字典中的值
-    else:
-      print(f"Warning: Key '{placeholder_key}' not found in the dictionary. Placeholder will be kept.")
-      return match.group(0) # 如果键未找到，打印警告信息并保留原始占位符
+    Returns:
+      替换占位符后的字符串。
+    """
+    if not value_string or "$<" not in str(value_string): return value_string
+    variable_manager = VariableManager()
 
-  pattern = r"\$\<(\w+)\>"
-  replaced_string = re.sub(pattern, replace_placeholder, value_string)
-  return replaced_string
+    def replace_placeholder(match):
+        """正则表达式替换的回调函数，用于获取匹配到的占位符键名并替换。"""
+        placeholder_key = match.group(1)  # 获取捕获组 (括号内的内容)，即占位符的键名
+        value = variable_manager.get_variable(placeholder_key)  # 使用字典的 get() 方法安全地获取值
+        if value is not None:
+            return str(value)  # 如果找到值，则替换为字典中的值
+        else:
+            print(f"Warning: Key '{placeholder_key}' not found in the dictionary. Placeholder will be kept.")
+            return match.group(0)  # 如果键未找到，打印警告信息并保留原始占位符
+
+    pattern = r"\$\<(\w+)\>"
+    replaced_string = re.sub(pattern, replace_placeholder, value_string)
+    return replaced_string

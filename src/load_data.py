@@ -36,5 +36,6 @@ class LoadData:
 
                 test_data[case_name] = case_data
         return test_data
+
     def return_data(self):
         return self.yaml_data
