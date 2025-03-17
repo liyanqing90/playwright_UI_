@@ -1,9 +1,10 @@
 import functools
 import os
-from typing import Callable, Literal, Optional
+from typing import Callable, Literal, Optional, List
 
 import allure
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
+from pytest_check import check
 
 from constants import DEFAULT_TIMEOUT, DEFAULT_TYPE_DELAY
 from utils.logger import logger
@@ -101,7 +102,6 @@ class BasePage:
         return self.page.inner_text(selector)
 
     @handle_page_error
-    @allure.step("断言URL")
     def assert_url(self, url: str):
         """断言当前URL"""
         actual_url = self.page.url
@@ -143,7 +143,7 @@ class BasePage:
         """断言元素可见"""
 
         is_visible = self.page.is_visible(selector, timeout=timeout)
-        with assume, allure.step("断言元素可见性"):
+        with check, allure.step("断言元素可见性"):
             assert is_visible, f"断言失败: 元素 {selector} 不可见"
 
     @handle_page_error
@@ -458,3 +458,201 @@ class BasePage:
     def get_page_title(self) -> str:
         """获取页面标题"""
         return self.page.title()
+
+
+    @handle_page_error
+    def assert_text_contains(self, selector: str, expected_text: str):
+        """断言元素文本包含指定内容"""
+        actual_text = self.get_text(selector)
+        resolved_expected = self._resolve_variables(expected_text)
+
+        with check, allure.step("断言元素包含文本"):
+            assert resolved_expected in actual_text, f"断言失败: 元素文本 '{actual_text}' 不包含期望文本 '{resolved_expected}'"
+
+    @handle_page_error
+    def assert_url_contains(self, expected_url_part: str):
+        """断言当前URL包含指定内容"""
+        actual_url = self.page.url
+        resolved_expected = self._resolve_variables(expected_url_part)
+
+        with check, allure.step("断言URL包含"):
+            assert resolved_expected in actual_url, f"断言失败: 当前URL '{actual_url}' 不包含期望部分 '{resolved_expected}'"
+
+    @handle_page_error
+    def assert_exists(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+        """断言元素存在于DOM中"""
+        exists = self.page.locator(selector).count() > 0
+        with check, allure.step("断言元素存在"):
+            assert exists, f"断言失败: 元素 {selector} 不存在"
+
+
+    @handle_page_error
+    def assert_not_exists(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+        """断言元素不存在于DOM中"""
+        exists = self.page.locator(selector).count() > 0
+        with check, allure.step("断言元素不存在"):
+            assert not exists, f"断言失败: 元素 {selector} 仍然存在"
+
+    @handle_page_error
+    @allure.step("等待网络请求完成")
+    def wait_for_network_idle(self, timeout: Optional[int] = DEFAULT_TIMEOUT):
+        """等待网络请求完成"""
+        self.page.wait_for_load_state("networkidle", timeout=timeout)
+
+    @handle_page_error
+    @allure.step("等待元素可点击")
+    def wait_for_element_clickable(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+        """等待元素可点击"""
+        self._wait_for_element(selector, state="visible", timeout=timeout)
+        # 确保元素不仅可见，而且可交互（不被禁用）
+        is_enabled = not self.page.locator(selector).is_disabled()
+        if not is_enabled:
+            logger.warning(f"元素 {selector} 可见但被禁用")
+            raise TimeoutError(f"元素 {selector} 可见但被禁用")
+        return self.page.locator(selector)
+
+    @handle_page_error
+    @allure.step("等待元素包含文本 {expected_text}")
+    def wait_for_element_text(self, selector: str, expected_text: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+        """等待元素包含指定文本"""
+        self._wait_for_element(selector, timeout=timeout)
+        start_time = self.page.evaluate("() => Date.now()")
+        while True:
+            actual_text = self.get_text(selector)
+            if expected_text in actual_text:
+                return True
+
+            current_time = self.page.evaluate("() => Date.now()")
+            elapsed = (current_time - start_time) / 1000  # 转换为秒
+
+            if elapsed > timeout / 1000:
+                logger.error(f"等待元素 {selector} 包含文本 '{expected_text}' 超时，当前文本为 '{actual_text}'")
+                raise TimeoutError(f"等待元素 {selector} 包含文本 '{expected_text}' 超时")
+
+            self.page.wait_for_timeout(100)  # 等待100毫秒再检查
+
+    @handle_page_error
+    def assert_element_enabled(self, selector: str):
+        """断言元素处于启用状态（非禁用）"""
+        self._wait_for_element(selector)
+        is_disabled = self.page.locator(selector).is_disabled()
+        with check, allure.step("断言元素启用状态"):
+            assert not is_disabled, f"断言失败: 元素 {selector} 处于禁用状态"
+
+    @handle_page_error
+    def assert_element_disabled(self, selector: str):
+        """断言元素处于禁用状态"""
+        self._wait_for_element(selector)
+        is_disabled = self.page.locator(selector).is_disabled()
+        with check, allure.step("断言元素禁用状态"):
+            assert is_disabled, f"断言失败: 元素 {selector} 处于启用状态"
+
+    @handle_page_error
+    @allure.step("获取所有匹配元素")
+    def get_all_elements(self, selector: str) -> List:
+        """获取所有匹配的元素"""
+        elements = self.page.locator(selector).all()
+        logger.debug(f"找到 {len(elements)} 个匹配元素: {selector}")
+        return elements
+
+    @handle_page_error
+    @allure.step("等待元素数量")
+    def wait_for_element_count(self, selector: str, expected_count: int, timeout: Optional[int] = DEFAULT_TIMEOUT):
+        """等待元素数量达到预期值"""
+        start_time = self.page.evaluate("() => Date.now()")
+        while True:
+            actual_count = self.get_element_count(selector)
+            if actual_count == expected_count:
+                return True
+
+            current_time = self.page.evaluate("() => Date.now()")
+            elapsed = (current_time - start_time) / 1000  # 转换为秒
+
+            if elapsed > timeout / 1000:
+                logger.error(f"等待元素 {selector} 数量为 {expected_count} 超时，当前数量为 {actual_count}")
+                raise TimeoutError(f"等待元素 {selector} 数量为 {expected_count} 超时")
+
+            self.page.wait_for_timeout(100)  # 等待100毫秒再检查
+
+    @handle_page_error
+    @allure.step("下载文件")
+    def download_file(self, selector: str, save_path: Optional[str] = None) -> str:
+        """点击下载按钮并获取下载的文件路径"""
+        with self.page.expect_download() as download_info:
+            self.click(selector)
+
+        download = download_info.value
+        logger.info(f"下载文件: {download.suggested_filename}")
+
+        if save_path:
+            download.save_as(save_path)
+            return save_path
+        else:
+            # 使用默认路径
+            path = download.path()
+            return str(path)
+
+    @handle_page_error
+    @allure.step("验证文件下载")
+    def verify_download(self, file_pattern: str, timeout: int = DEFAULT_TIMEOUT) -> bool:
+        """验证文件是否已下载（通过文件名模式匹配）"""
+        import glob
+        import time
+        import os
+
+        # 获取下载目录
+        download_dir = os.path.join(os.path.expanduser("~"), "Downloads")
+        if not os.path.exists(download_dir):
+            # 尝试使用浏览器类型作为备用
+            download_dir = os.path.join("./downloads", self.page.context.browser.browser_type.name)
+            os.makedirs(download_dir, exist_ok=True)
+
+        logger.debug(f"检查下载目录: {download_dir}")
+        start_time = time.time()
+
+        while time.time() - start_time < timeout / 1000:
+            # 检查下载目录中是否有匹配的文件
+            matching_files = glob.glob(os.path.join(download_dir, file_pattern))
+            if matching_files:
+                logger.info(f"找到下载文件: {matching_files[0]}")
+                return True
+            time.sleep(0.5)
+
+        logger.error(f"未找到下载文件: {file_pattern}")
+        return False
+
+    @handle_page_error
+    @allure.step("按下键盘快捷键")
+    def press_keyboard_shortcut(self, key_combination: str):
+        """
+        按下键盘快捷键组合
+        例如: "Control+A", "Shift+ArrowDown", "Control+Shift+V"
+        """
+        keys = key_combination.split('+')
+        # 按下所有修饰键
+        for i in range(len(keys) - 1):
+            self.page.keyboard.down(keys[i])
+
+        # 按下最后一个键
+        self.page.keyboard.press(keys[-1])
+
+        # 释放所有修饰键（从后往前）
+        for i in range(len(keys) - 2, -1, -1):
+            self.page.keyboard.up(keys[i])
+
+        logger.debug(f"按下键盘快捷键: {key_combination}")
+
+    @handle_page_error
+    @allure.step("全局按键 {key}")
+    def keyboard_press(self, key: str):
+        """全局按键，不针对特定元素"""
+        self.page.keyboard.press(key)
+        logger.debug(f"全局按键: {key}")
+
+    @handle_page_error
+    @allure.step("全局输入文本 {text}")
+    def keyboard_type(self, text: str, delay: int = DEFAULT_TYPE_DELAY):
+        """全局输入文本，不针对特定元素"""
+        resolved_text = self._resolve_variables(text)
+        self.page.keyboard.type(resolved_text, delay=delay)
+        logger.debug(f"全局输入文本: {resolved_text}")

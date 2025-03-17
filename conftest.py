@@ -161,17 +161,18 @@ def pytest_collect_file(file_path: Path, parent):  # noqa
     yaml_handler = YamlHandler()
     if file_path.suffix in [".yaml", "xlsx"]:
         test_cases = yaml_handler.load_yaml(file_path)['test_cases']
-        py_module, module = create_py_module(file_path, parent,test_cases,datas)
+        py_module, module = create_py_module(file_path, parent, test_cases, datas)
         py_module._getobj = lambda: module  # 返回 pytest 模块对象
         return py_module
 
 
-def create_py_module(file_path: Path, parent,test_cases, datas):
+def create_py_module(file_path: Path, parent, test_cases, datas):
     """创建并生成 py 模块"""
     py_module = Module.from_parent(parent, path=file_path)
     module = types.ModuleType(file_path.stem)  # 动态创建 module
     # 解析 YAML 并生成测试函数
-    generator = TestCaseGenerator.from_parent(parent, module=module, name=module.__name__,test_cases=test_cases, datas=datas)
+    generator = TestCaseGenerator.from_parent(parent, module=module, name=module.__name__, test_cases=test_cases,
+                                              datas=datas)
     generator.generate()
     return py_module, module
 
