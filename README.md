@@ -25,19 +25,25 @@
 ```bash
 poetry install
 ```
+
 ### 安装驱动
+
 ```bash
 playwright install chromium
 ```
+
 ### 执行命令，有头模式运行demo项目
+
 ```bash
 python test_runner.py --project demo #--test-file test_cases 执行指定测试文件
 ```
+
 ### 生成测试报告：
 
 ```bash
 allure serve reports/allure-results
 ```
+
 ## 项目结构
 
 ```
@@ -90,6 +96,7 @@ playwright_UI/
 
 #### 用例文件结构
 ```
+
 测试用例由三个核心文件协同定义：
 
 1. `cases/cases.yaml` - 定义测试用例元数据
@@ -272,6 +279,7 @@ login_test:
 `poetry export -f requirements.txt --output requirements.txt ` #导出requirements.txt
 
 ## [点击查看录制文档](https://test-crdqcu2hkpbr.feishu.cn/docx/YpIRdgOXGo1CQdxp1cacxwGbnZd?from=from_copylink)
+
 ###
 
 助手录制命令
@@ -315,7 +323,8 @@ dont_write_input: "input#dontwrite" # 确认文本为只读
 核心任务:
 
 1. 元素定位提取: 从 elements 示例数据中，提取并列出所有 Playwright 可用的元素定位符。定位符格式必须严格符合 Playwright
-   的规范（如 text=, placeholder=, role=, xpath, css 等），且仅包含定位信息本身，不包含其他任何操作、说明或上下文。如果选择器中有# 号。需要使用引号包裹
+   的规范（如 text=, placeholder=, role=, xpath, css 等），且仅包含定位信息本身，不包含其他任何操作、说明或上下文。如果选择器中有#
+   号。需要使用引号包裹
 2. 步骤转换: 将 steps 示例数据中定义的代码步骤转换为 Playwright 的标准步骤描述。每个步骤描述应包含 action、selector（若适用）和
    value（若适用）三个属性：
 

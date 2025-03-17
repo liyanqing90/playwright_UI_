@@ -13,18 +13,19 @@ _DEFAULT_FIXTURES = ["page", "ui_helper"]
 
 def build_test_signature(fixtures: list) -> Signature:
     if not isinstance(fixtures, list):
-        raise ValueError("fixtures 必须是列表类型") # 中文错误信息
+        raise ValueError("fixtures 必须是列表类型")  # 中文错误信息
     conflict = set(fixtures) & set(_DEFAULT_FIXTURES)
     if conflict:
-        conflict_fixtures_str = ", ".join(conflict) # 将冲突的 fixtures 转换为字符串
-        raise ValueError(f"禁止覆盖默认 fixtures: {conflict_fixtures_str}。 默认 fixtures 包括: {', '.join(_DEFAULT_FIXTURES)}") # 更详细的中文错误信息，列出冲突的 fixtures 和默认 fixtures
+        conflict_fixtures_str = ", ".join(conflict)  # 将冲突的 fixtures 转换为字符串
+        raise ValueError(
+            f"禁止覆盖默认 fixtures: {conflict_fixtures_str}。 默认 fixtures 包括: {', '.join(_DEFAULT_FIXTURES)}")  # 更详细的中文错误信息，列出冲突的 fixtures 和默认 fixtures
     parameters = [Parameter(name, Parameter.POSITIONAL_OR_KEYWORD) for name in _DEFAULT_FIXTURES + fixtures]
     return Signature(parameters)
 
 
 class TestCaseGenerator(pytest.Item):
 
-    def __init__(self, module: types.ModuleType, name, test_cases, datas, **kw,):
+    def __init__(self, module: types.ModuleType, name, test_cases, datas, **kw, ):
         super().__init__(name, **kw)
         self.datas = datas
         self.test_cases = test_cases
@@ -84,7 +85,7 @@ class TestCaseGenerator(pytest.Item):
         marked_func.__signature__ = build_test_signature(fixtures)
         return marked_func
 
-    def execute_test(self, case: dict, case_data,page: Page, ui_helper, **kwargs) -> None:
+    def execute_test(self, case: dict, case_data, page: Page, ui_helper, **kwargs) -> None:
         with allure.step(f"执行用例: {case['name']}"):
             executor = CaseExecutor(case_data, self.elements)
             executor.execute_test_case(case, page, ui_helper)
