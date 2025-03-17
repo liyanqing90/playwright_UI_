@@ -73,4 +73,12 @@ projects:
       test: "http://test.other.com"
       stage: "http://stage.other.com"
       prod: "http://prod.other.com"
+  da_ping:
+    test_dir: "test_data/da_ping"
+    environments:
+      dev: "http://devapp.terra.corpautohome.com/screen/home?storeId=94084"
+      test: "https://ahohcrm-test.autohome.com.cn/screen/home?storeId=94084"
+      stage: "https://ahohcrm-test.autohome.com.cn/screen/home?storeId=94084"
+      prod: "https://ahohcrm-pre.autohome.com.cn/screen/home?storeId=3425"
+    browser_config: { "viewport": { "width": 1200, "height": 600 } }
 
