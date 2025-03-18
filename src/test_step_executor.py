@@ -167,222 +167,222 @@ class StepExecutor:
     def _execute_action(self, action: str, selector: str, value: Any = None, step: Dict[str, Any] = None) -> None:
         """执行具体操作"""
         action = action.lower()
-        with allure.step(f"执行步骤: {action}"):
-            if action in StepAction.NAVIGATE:
-                url = base_url()
-                if not value:
-                    value = url
-                if "http" not in value:
-                    value = url + value
-                self.ui_helper.navigate(value)
+        # with allure.step(f"执行步骤: {action}"):
+        if action in StepAction.NAVIGATE:
+            url = base_url()
+            if not value:
+                value = url
+            if "http" not in value:
+                value = url + value
+            self.ui_helper.navigate(value)
 
-            elif action in StepAction.PAUSE:
-                self.ui_helper.pause()
+        elif action in StepAction.PAUSE:
+            self.ui_helper.pause()
 
-            elif action in StepAction.CLICK:
-                self.ui_helper.click(selector)
+        elif action in StepAction.CLICK:
+            self.ui_helper.click(selector)
 
-            elif action in StepAction.FILL:
-                self.ui_helper.fill(selector, value)
+        elif action in StepAction.FILL:
+            self.ui_helper.fill(selector, value)
 
-            elif action in StepAction.PRESS_KEY:
-                self.ui_helper.press_key(selector, step.get('key', value))
+        elif action in StepAction.PRESS_KEY:
+            self.ui_helper.press_key(selector, step.get('key', value))
 
-            elif action in StepAction.UPLOAD:
-                self.ui_helper.upload_file(selector, value)
+        elif action in StepAction.UPLOAD:
+            self.ui_helper.upload_file(selector, value)
 
-            elif action in StepAction.WAIT:
-                wait_time = int(float(step.get('value', 1)) * 1000) if step.get('value') else 1000
-                self.ui_helper.wait_for_timeout(wait_time)
+        elif action in StepAction.WAIT:
+            wait_time = int(float(step.get('value', 1)) * 1000) if step.get('value') else 1000
+            self.ui_helper.wait_for_timeout(wait_time)
 
-            elif action in StepAction.WAIT_FOR_NETWORK_IDLE:
-                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
-                self.ui_helper.wait_for_network_idle(timeout)
+        elif action in StepAction.WAIT_FOR_NETWORK_IDLE:
+            timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+            self.ui_helper.wait_for_network_idle(timeout)
 
-            elif action in StepAction.WAIT_FOR_ELEMENT_HIDDEN:
-                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
-                self.ui_helper.wait_for_element_hidden(selector, timeout)
+        elif action in StepAction.WAIT_FOR_ELEMENT_HIDDEN:
+            timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+            self.ui_helper.wait_for_element_hidden(selector, timeout)
 
-            elif action in StepAction.WAIT_FOR_ELEMENT_CLICKABLE:
-                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
-                self.ui_helper.wait_for_element_clickable(selector, timeout)
+        elif action in StepAction.WAIT_FOR_ELEMENT_CLICKABLE:
+            timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+            self.ui_helper.wait_for_element_clickable(selector, timeout)
 
-            elif action in StepAction.WAIT_FOR_ELEMENT_TEXT:
-                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
-                expected_text = step.get('expected_text', value)
-                self.ui_helper.wait_for_element_text(selector, expected_text, timeout)
+        elif action in StepAction.WAIT_FOR_ELEMENT_TEXT:
+            timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+            expected_text = step.get('expected_text', value)
+            self.ui_helper.wait_for_element_text(selector, expected_text, timeout)
 
-            elif action in StepAction.WAIT_FOR_ELEMENT_COUNT:
-                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
-                expected_count = int(step.get('expected_count', value))
-                self.ui_helper.wait_for_element_count(selector, expected_count, timeout)
+        elif action in StepAction.WAIT_FOR_ELEMENT_COUNT:
+            timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+            expected_count = int(step.get('expected_count', value))
+            self.ui_helper.wait_for_element_count(selector, expected_count, timeout)
 
-            elif action in StepAction.ASSERT_VISIBLE:
-                self.ui_helper.assert_visible(selector)
+        elif action in StepAction.ASSERT_VISIBLE:
+            self.ui_helper.assert_visible(selector)
 
-            elif action in StepAction.ASSERT_TEXT:
-                expected = step.get('expected', value)
-                self.ui_helper.assert_text(selector, expected)
+        elif action in StepAction.ASSERT_TEXT:
+            expected = step.get('expected', value)
+            self.ui_helper.assert_text(selector, expected)
 
-            elif action in StepAction.ASSERT_TEXT_CONTAINS:
-                expected = step.get('expected', value)
-                self.ui_helper.assert_text_contains(selector, expected)
+        elif action in StepAction.ASSERT_TEXT_CONTAINS:
+            expected = step.get('expected', value)
+            self.ui_helper.assert_text_contains(selector, expected)
 
-            elif action in StepAction.ASSERT_URL:
-                expected = step.get('expected', value)
-                self.ui_helper.assert_url(expected)
+        elif action in StepAction.ASSERT_URL:
+            expected = step.get('expected', value)
+            self.ui_helper.assert_url(expected)
 
-            elif action in StepAction.ASSERT_URL_CONTAINS:
-                expected = step.get('expected', value)
-                self.ui_helper.assert_url_contains(expected)
+        elif action in StepAction.ASSERT_URL_CONTAINS:
+            expected = step.get('expected', value)
+            self.ui_helper.assert_url_contains(expected)
 
-            elif action in StepAction.ASSERT_TITLE:
-                expected = step.get('expected', value)
-                self.ui_helper.assert_title(expected)
+        elif action in StepAction.ASSERT_TITLE:
+            expected = step.get('expected', value)
+            self.ui_helper.assert_title(expected)
 
-            elif action in StepAction.ASSERT_ELEMENT_COUNT:
-                expected = step.get('expected', value)
-                self.ui_helper.assert_element_count(selector, expected)
+        elif action in StepAction.ASSERT_ELEMENT_COUNT:
+            expected = step.get('expected', value)
+            self.ui_helper.assert_element_count(selector, expected)
 
-            elif action in StepAction.ASSERT_EXISTS:
-                self.ui_helper.assert_exists(selector)
+        elif action in StepAction.ASSERT_EXISTS:
+            self.ui_helper.assert_exists(selector)
 
-            elif action in StepAction.ASSERT_NOT_EXISTS:
-                self.ui_helper.assert_not_exists(selector)
+        elif action in StepAction.ASSERT_NOT_EXISTS:
+            self.ui_helper.assert_not_exists(selector)
 
-            elif action in StepAction.ASSERT_ENABLED:
-                self.ui_helper.assert_element_enabled(selector)
+        elif action in StepAction.ASSERT_ENABLED:
+            self.ui_helper.assert_element_enabled(selector)
 
-            elif action in StepAction.ASSERT_DISABLED:
-                self.ui_helper.assert_element_disabled(selector)
+        elif action in StepAction.ASSERT_DISABLED:
+            self.ui_helper.assert_element_disabled(selector)
 
-            elif action in StepAction.STORE_VARIABLE:
-                self.ui_helper.store_variable(step['name'], value, step.get('scope', 'global'))
+        elif action in StepAction.STORE_VARIABLE:
+            self.ui_helper.store_variable(step['name'], value, step.get('scope', 'global'))
 
-            elif action in StepAction.STORE_TEXT:
-                self.ui_helper.store_text(selector, step.get('variable_name', value), step.get('scope', 'global'))
+        elif action in StepAction.STORE_TEXT:
+            self.ui_helper.store_text(selector, step.get('variable_name', value), step.get('scope', 'global'))
 
-            elif action in StepAction.STORE_ATTRIBUTE:
-                self.ui_helper.store_attribute(
-                    selector,
-                    step['attribute'],
-                    step.get('variable_name', value),
-                    step.get('scope', 'global')
-                )
+        elif action in StepAction.STORE_ATTRIBUTE:
+            self.ui_helper.store_attribute(
+                selector,
+                step['attribute'],
+                step.get('variable_name', value),
+                step.get('scope', 'global')
+            )
 
-            elif action in StepAction.REFRESH:
-                self.ui_helper.refresh()
+        elif action in StepAction.REFRESH:
+            self.ui_helper.refresh()
 
-            elif action in StepAction.HOVER:
-                self.ui_helper.hover(selector)
+        elif action in StepAction.HOVER:
+            self.ui_helper.hover(selector)
 
-            elif action in StepAction.DOUBLE_CLICK:
-                self.ui_helper.double_click(selector)
+        elif action in StepAction.DOUBLE_CLICK:
+            self.ui_helper.double_click(selector)
 
-            elif action in StepAction.RIGHT_CLICK:
-                self.ui_helper.right_click(selector)
+        elif action in StepAction.RIGHT_CLICK:
+            self.ui_helper.right_click(selector)
 
-            elif action in StepAction.SELECT:
-                self.ui_helper.select_option(selector, value)
+        elif action in StepAction.SELECT:
+            self.ui_helper.select_option(selector, value)
 
-            elif action in StepAction.DRAG_AND_DROP:
-                target = step.get('target')
-                self.ui_helper.drag_and_drop(selector, target)
+        elif action in StepAction.DRAG_AND_DROP:
+            target = step.get('target')
+            self.ui_helper.drag_and_drop(selector, target)
 
-            elif action in StepAction.GET_VALUE:
-                result = self.ui_helper.get_value(selector)
-                if 'variable_name' in step:
-                    self.ui_helper.store_variable(step['variable_name'], result, step.get('scope', 'global'))
+        elif action in StepAction.GET_VALUE:
+            result = self.ui_helper.get_value(selector)
+            if 'variable_name' in step:
+                self.ui_helper.store_variable(step['variable_name'], result, step.get('scope', 'global'))
 
-            elif action in StepAction.GET_ALL_ELEMENTS:
-                elements = self.ui_helper.get_all_elements(selector)
-                if 'variable_name' in step:
-                    self.ui_helper.store_variable(step['variable_name'], elements, step.get('scope', 'global'))
+        elif action in StepAction.GET_ALL_ELEMENTS:
+            elements = self.ui_helper.get_all_elements(selector)
+            if 'variable_name' in step:
+                self.ui_helper.store_variable(step['variable_name'], elements, step.get('scope', 'global'))
 
-            elif action in StepAction.SCROLL_INTO_VIEW:
-                self.ui_helper.scroll_into_view(selector)
+        elif action in StepAction.SCROLL_INTO_VIEW:
+            self.ui_helper.scroll_into_view(selector)
 
-            elif action in StepAction.SCROLL_TO:
-                x = int(step.get('x', 0))
-                y = int(step.get('y', 0))
-                self.ui_helper.scroll_to(x, y)
+        elif action in StepAction.SCROLL_TO:
+            x = int(step.get('x', 0))
+            y = int(step.get('y', 0))
+            self.ui_helper.scroll_to(x, y)
 
-            elif action in StepAction.FOCUS:
-                self.ui_helper.focus(selector)
+        elif action in StepAction.FOCUS:
+            self.ui_helper.focus(selector)
 
-            elif action in StepAction.BLUR:
-                self.ui_helper.blur(selector)
+        elif action in StepAction.BLUR:
+            self.ui_helper.blur(selector)
 
-            elif action in StepAction.TYPE:
-                delay = int(step.get('delay', 100))
-                self.ui_helper.type(selector, value, delay)
+        elif action in StepAction.TYPE:
+            delay = int(step.get('delay', 100))
+            self.ui_helper.type(selector, value, delay)
 
-            elif action in StepAction.CLEAR:
-                self.ui_helper.clear(selector)
+        elif action in StepAction.CLEAR:
+            self.ui_helper.clear(selector)
 
-            elif action in StepAction.ENTER_FRAME:
-                self.ui_helper.enter_frame(selector)
+        elif action in StepAction.ENTER_FRAME:
+            self.ui_helper.enter_frame(selector)
 
-            elif action in StepAction.ACCEPT_ALERT:
-                text = self.ui_helper.accept_alert(selector, value)
+        elif action in StepAction.ACCEPT_ALERT:
+            text = self.ui_helper.accept_alert(selector, value)
 
-            elif action in StepAction.DISMISS_ALERT:
-                self.ui_helper.dismiss_alert(selector)
+        elif action in StepAction.DISMISS_ALERT:
+            self.ui_helper.dismiss_alert(selector)
 
-            elif action in StepAction.SWITCH_WINDOW:
-                url = step.get('url')
-                title = step.get('title')
-                self.ui_helper.switch_window(url, title)
+        elif action in StepAction.SWITCH_WINDOW:
+            url = step.get('url')
+            title = step.get('title')
+            self.ui_helper.switch_window(url, title)
 
-            elif action in StepAction.CLOSE_WINDOW:
-                self.ui_helper.close_window()
+        elif action in StepAction.CLOSE_WINDOW:
+            self.ui_helper.close_window()
 
-            elif action in StepAction.WAIT_FOR_NEW_WINDOW:
-                new_page = self.ui_helper.wait_for_new_window()
-                if 'variable_name' in step:
-                    self.ui_helper.store_variable(step['variable_name'], new_page, step.get('scope', 'global'))
+        elif action in StepAction.WAIT_FOR_NEW_WINDOW:
+            new_page = self.ui_helper.wait_for_new_window()
+            if 'variable_name' in step:
+                self.ui_helper.store_variable(step['variable_name'], new_page, step.get('scope', 'global'))
 
-            elif action in StepAction.SAVE_ELEMENT_COUNT:
-                count = self.ui_helper.get_element_count(selector)
-                if 'variable_name' in step:
-                    self.ui_helper.store_variable(step['variable_name'], str(count), step.get('scope', 'global'))
+        elif action in StepAction.SAVE_ELEMENT_COUNT:
+            count = self.ui_helper.get_element_count(selector)
+            if 'variable_name' in step:
+                self.ui_helper.store_variable(step['variable_name'], str(count), step.get('scope', 'global'))
 
-            elif action in StepAction.DOWNLOAD_FILE:
-                save_path = step.get('save_path')
-                file_path = self.ui_helper.download_file(selector, save_path)
-                if 'variable_name' in step:
-                    self.ui_helper.store_variable(step['variable_name'], file_path, step.get('scope', 'global'))
+        elif action in StepAction.DOWNLOAD_FILE:
+            save_path = step.get('save_path')
+            file_path = self.ui_helper.download_file(selector, save_path)
+            if 'variable_name' in step:
+                self.ui_helper.store_variable(step['variable_name'], file_path, step.get('scope', 'global'))
 
-            elif action in StepAction.DOWNLOAD_VERIFY:
-                file_pattern = step.get('file_pattern', value)
-                timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
-                result = self.ui_helper.verify_download(file_pattern, timeout)
-                if 'variable_name' in step:
-                    self.ui_helper.store_variable(step['variable_name'], str(result), step.get('scope', 'global'))
+        elif action in StepAction.DOWNLOAD_VERIFY:
+            file_pattern = step.get('file_pattern', value)
+            timeout = int(step.get('timeout', DEFAULT_TIMEOUT))
+            result = self.ui_helper.verify_download(file_pattern, timeout)
+            if 'variable_name' in step:
+                self.ui_helper.store_variable(step['variable_name'], str(result), step.get('scope', 'global'))
 
-            elif action in StepAction.FAKER:
-                data_type = step.get('data_type')
-                kwargs = {k: v for k, v in step.items() if k not in ['action', 'data_type', 'variable_name', 'scope']}
+        elif action in StepAction.FAKER:
+            data_type = step.get('data_type')
+            kwargs = {k: v for k, v in step.items() if k not in ['action', 'data_type', 'variable_name', 'scope']}
 
-                if 'variable_name' not in step:
-                    raise ValueError("步骤缺少必要参数: variable_name")
+            if 'variable_name' not in step:
+                raise ValueError("步骤缺少必要参数: variable_name")
 
-                # 直接使用ui_helper的方法
-                value = self.ui_helper.generate_faker_data(data_type, **kwargs)
-                self.ui_helper.store_variable(step['variable_name'], value, step.get('scope', 'global'))
+            # 直接使用ui_helper的方法
+            value = self.ui_helper.generate_faker_data(data_type, **kwargs)
+            self.ui_helper.store_variable(step['variable_name'], value, step.get('scope', 'global'))
 
-            elif action in StepAction.KEYBOARD_SHORTCUT:
-                key_combination = step.get('key_combination', value)
-                self.ui_helper.press_keyboard_shortcut(key_combination)
+        elif action in StepAction.KEYBOARD_SHORTCUT:
+            key_combination = step.get('key_combination', value)
+            self.ui_helper.press_keyboard_shortcut(key_combination)
 
-            elif action in StepAction.KEYBOARD_PRESS:
-                key = step.get('key', value)
-                self.ui_helper.keyboard_press(key)
+        elif action in StepAction.KEYBOARD_PRESS:
+            key = step.get('key', value)
+            self.ui_helper.keyboard_press(key)
 
-            elif action in StepAction.KEYBOARD_TYPE:
-                text = step.get('text', value)
-                delay = int(step.get('delay', DEFAULT_TYPE_DELAY))
-                self.ui_helper.keyboard_type(text, delay)
+        elif action in StepAction.KEYBOARD_TYPE:
+            text = step.get('text', value)
+            delay = int(step.get('delay', DEFAULT_TYPE_DELAY))
+            self.ui_helper.keyboard_type(text, delay)
 
     def _finalize_step(self):
         """统一后处理逻辑"""

@@ -11,7 +11,7 @@ test_cases:
   - name: test_car_detail_gift
   - name: test_detail_store_info
   - name: test_detail_car_clc
-  - name: test_detail_car_trade_in
+  - name: test_detail_car_trade_quotation
   - name: test_detail_car_test_drive
   - name: test_detail_car_choice
   - name: test_detail_floor

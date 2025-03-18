@@ -27,7 +27,35 @@ def handle_page_error(func: Callable) -> Callable:
 
     return wrapper
 
+def attach_screenshot(page: Page, name="screenshot"):
+    """将屏幕截图添加到 Allure 报告，并处理可能出现的异常."""
+    screenshot = page.screenshot()
+    allure.attach(screenshot, name=name, attachment_type=allure.attachment_type.PNG)
+def check_and_screenshot(description="Assertion"):
+    """
+    装饰器，用于捕获断言失败并进行截图。
+    Args:
+        description: 断言的描述，用于 Allure 报告。
+    """
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(self,*args, **kwargs):
+            # page: Page = kwargs.get('page') or (args[0] if args and isinstance(args[0], Page) else None) # 尝试从 args 或 kwargs 获取 page
+            # if not page:
+            #     raise ValueError("Page object not found. Ensure 'page' fixture is used or passed as argument.")
+            try:
+                func(*args, **kwargs)  # 执行被装饰的函数（断言）
+            except AssertionError as e:
+                logger.warning(f"断言失败: {e}") #记录断言失败
+                attach_screenshot(self.page, f"{description} Failed")
 
+                check.fail(f"{description} Failed: {e}")
+            except Exception as e:  # 捕获其他异常，例如页面关闭
+                logger.error(f"其他异常: {e}") #记录其他异常
+                attach_screenshot(self.page, f"{description} Error") #尝试截图，但可能失败
+                check.fail(f"{description} Error: {e}")  # 标记为失败，但不停止
+        return wrapper
+    return decorator
 def base_url():
     return os.environ.get('BASE_URL')
 
@@ -130,13 +158,17 @@ class BasePage:
         with check, allure.step("断言元素数量"):
             assert actual_count == expected_count, f"断言失败: 期望元素数量为 {expected_count}, 实际元素数量为 {actual_count}"
 
-    @handle_page_error
+    @check_and_screenshot(description="断言文本")
+    # @check.check_func
+    # @allure.step("断言元素文本")
     def assert_text(self, selector: str, expected_text: str):
         """断言元素文本"""
         actual_text = self.get_text(selector)
         resolved_expected = self._resolve_variables(expected_text)
-        with check, allure.step("断言元素文本"):
+        # with check, allure.step(f"断言元素文本{resolved_expected}=={actual_text}"):
+        with allure.step("断言"):
             assert resolved_expected == actual_text, f"断言失败: 期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}'"
+
 
     @handle_page_error
     def assert_visible(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
