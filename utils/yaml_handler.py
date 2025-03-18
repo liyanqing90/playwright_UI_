@@ -8,7 +8,6 @@ from utils.logger import logger
 
 
 def get_yaml_files(directory: str) -> list[Any] | None:
-    logger.info(f"搜索目录: {directory}")
     dir_path = Path(directory)
     if not dir_path.exists() or not dir_path.is_dir():
         logger.error(f"指定的路径 {directory} 不是一个有效的目录")

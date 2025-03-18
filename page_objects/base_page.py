@@ -28,6 +28,43 @@ def handle_page_error(func: Callable) -> Callable:
     return wrapper
 
 
+def attach_screenshot(page: Page, name="screenshot"):
+    """将屏幕截图添加到 Allure 报告，并处理可能出现的异常."""
+    screenshot = page.screenshot()
+    allure.attach(screenshot, name=name, attachment_type=allure.attachment_type.PNG)
+
+
+def check_and_screenshot(description="Assertion"):
+    """
+    装饰器，用于捕获断言失败并进行截图。
+    Args:
+        description: 断言的描述，用于 Allure 报告。
+    """
+
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(self, *args, **kwargs):
+            try:
+                return func(self, *args, **kwargs)  # 执行被装饰的函数（断言）
+            except AssertionError as e:
+                logger.error(f"断言失败: {e}")  # 记录断言失败
+                screenshot = self.page.screenshot()
+                with allure.step(f"{description} 失败❌"):
+                    allure.attach(screenshot, attachment_type=allure.attachment_type.PNG)
+                check.fail(f"断言失败: {e}")
+            except Exception as e:  # 捕获其他异常，例如页面关闭
+                logger.error(f"其他异常: {e}")  # 记录其他异常
+                screenshot = self.page.screenshot()
+                with allure.step(f"{description} 错误❌"):
+                    allure.attach(screenshot, name="[失败] 异常截图", attachment_type=allure.attachment_type.PNG)
+                    allure.attach(str(e), name="[失败] 异常信息", attachment_type=allure.attachment_type.TEXT)
+                check.fail(f"其他异常: {e}")  # 标记为失败，但不停止
+
+        return wrapper
+
+    return decorator
+
+
 def base_url():
     return os.environ.get('BASE_URL')
 
@@ -76,7 +113,6 @@ class BasePage:
     @allure.step("上传文件 {file_path}")
     def upload_file(self, selector: str, file_path: str):
         """上传文件"""
-        self._wait_for_element(selector)
         self.page.locator(selector).set_input_files(file_path)
 
     @handle_page_error
@@ -101,22 +137,25 @@ class BasePage:
         # self._wait_for_element(selector)
         return self.page.inner_text(selector)
 
-    @handle_page_error
+    @check_and_screenshot()
+    @allure.step("断言URL")
     def assert_url(self, url: str):
         """断言当前URL"""
         actual_url = self.page.url
-        with check, allure.step("断言URL"):
-            assert actual_url == url, f"断言失败: 期望URL为 '{url}', 实际URL为 '{actual_url}'"
+        assert actual_url == url, f"断言失败: 期望URL为 '{url}', 实际URL为 '{actual_url}'"
+        allure.attach(f"断言成功: 期望URL为 '{url}', 实际URL为 '{actual_url}'", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
 
-    @handle_page_error
+    @check_and_screenshot()
     @allure.step("断言页面标题")
     def assert_title(self, title: str):
         """断言页面标题"""
         actual_title = self.page.title()
-        with check, allure.step("断言页面标题"):
-            assert actual_title == title, f"断言失败: 期望标题为 '{title}', 实际标题为 '{actual_title}'"
+        assert actual_title == title, f"断言失败: 期望标题为 '{title}', 实际标题为 '{actual_title}'"
+        allure.attach(f"断言成功: 期望标题为 '{title}', 实际标题为 '{actual_title}'", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
 
-    @handle_page_error
+    @check_and_screenshot()
     @allure.step("断言元素数量")
     def assert_element_count(self, selector: str, expected_count: int):
         """断言元素数量"""
@@ -127,32 +166,85 @@ class BasePage:
             raise
 
         actual_count = self.get_element_count(selector)
-        with check, allure.step("断言元素数量"):
-            assert actual_count == expected_count, f"断言失败: 期望元素数量为 {expected_count}, 实际元素数量为 {actual_count}"
+        assert actual_count == expected_count, f"断言失败: 期望元素数量为 {expected_count}, 实际元素数量为 {actual_count}"
+        allure.attach(f"断言成功: 期望元素数量为 {expected_count}, 实际元素数量为 {actual_count}", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
 
-    @handle_page_error
-    def assert_text(self, selector: str, expected_text: str):
-        """断言元素文本"""
+    @check_and_screenshot()
+    @allure.step("断言元素包含文本")
+    def assert_text_contains(self, selector: str, expected_text: str):
+        """断言元素文本包含指定内容"""
         actual_text = self.get_text(selector)
         resolved_expected = self._resolve_variables(expected_text)
-        with check, allure.step("断言元素文本"):
-            assert resolved_expected == actual_text, f"断言失败: 期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}'"
+        assert resolved_expected in actual_text, f"断言失败: 元素文本 '{actual_text}' 不包含期望文本 '{resolved_expected}'"
+        allure.attach(f"断言成功: 元素文本 '{actual_text}' 包含期望文本 '{resolved_expected}'", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
+
+    @check_and_screenshot()
+    @allure.step("断言URL包含")
+    def assert_url_contains(self, expected_url_part: str):
+        """断言当前URL包含指定内容"""
+        actual_url = self.page.url
+        resolved_expected = self._resolve_variables(expected_url_part)
+        assert resolved_expected in actual_url, f"断言失败: 当前URL '{actual_url}' 不包含期望部分 '{resolved_expected}'"
+        allure.attach(f"断言成功: 当前URL '{actual_url}' 包含期望部分 '{resolved_expected}'", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
+
+    @check_and_screenshot()
+    @allure.step("断言元素存在")
+    def assert_exists(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+        """断言元素存在于DOM中"""
+        exists = self.page.locator(selector).count() > 0
+        assert exists, f"断言失败: 元素 {selector} 不存在"
+        allure.attach(f"断言成功: 元素 {selector} 存在", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
+
+    @check_and_screenshot()
+    @allure.step("断言元素不存在")
+    def assert_not_exists(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+        """断言元素不存在于DOM中"""
+        exists = self.page.locator(selector).count() > 0
+        assert not exists, f"断言失败: 元素 {selector} 仍然存在"
+        allure.attach(f"断言成功: 元素 {selector} 不存在", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
+
+    @check_and_screenshot()
+    @allure.step("断言元素启用状态")
+    def assert_element_enabled(self, selector: str):
+        """断言元素处于启用状态（非禁用）"""
+        self._wait_for_element(selector)
+        is_disabled = self.page.locator(selector).is_disabled()
+        assert not is_disabled, f"断言失败: 元素 {selector} 处于禁用状态"
+        allure.attach(f"断言成功: 元素 {selector} 处于启用状态", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
+
+    @check_and_screenshot()
+    @allure.step("断言元素禁用状态")
+    def assert_element_disabled(self, selector: str):
+        """断言元素处于禁用状态"""
+        self._wait_for_element(selector)
+        is_disabled = self.page.locator(selector).is_disabled()
+        assert is_disabled, f"断言失败: 元素 {selector} 处于启用状态"
+        allure.attach(f"断言成功: 元素 {selector} 处于禁用状态", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
 
     @handle_page_error
+    @allure.step("断言元素可见性")
     def assert_visible(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
         """断言元素可见"""
-
         is_visible = self.page.is_visible(selector, timeout=timeout)
-        with check, allure.step("断言元素可见性"):
-            assert is_visible, f"断言失败: 元素 {selector} 不可见"
+        assert is_visible, f"断言失败: 元素 {selector} 不可见"
+        allure.attach(f"断言成功: 元素 {selector} 可见", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
 
-    @handle_page_error
+    @check_and_screenshot()
     @allure.step("断言元素不可见")
     def assert_not_visible(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
         """断言元素不可见"""
         is_visible = self.page.is_visible(selector, timeout=timeout)
-        with check, allure.step("断言元素不可见"):
-            assert not is_visible, f"断言失败: 元素 {selector} 仍然可见"
+        assert not is_visible, f"断言失败: 元素 {selector} 仍然可见"
+        allure.attach(f"断言成功: 元素 {selector} 不可见", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
 
     @handle_page_error
     @allure.step("存储变量 {name}")
@@ -459,7 +551,6 @@ class BasePage:
         """获取页面标题"""
         return self.page.title()
 
-
     @handle_page_error
     def assert_text_contains(self, selector: str, expected_text: str):
         """断言元素文本包含指定内容"""
@@ -484,7 +575,6 @@ class BasePage:
         exists = self.page.locator(selector).count() > 0
         with check, allure.step("断言元素存在"):
             assert exists, f"断言失败: 元素 {selector} 不存在"
-
 
     @handle_page_error
     def assert_not_exists(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):

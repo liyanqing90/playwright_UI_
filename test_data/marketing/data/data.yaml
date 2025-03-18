@@ -36,10 +36,10 @@ test_data:
         selector: 清除
       - action: click
         selector: 确认选择
-        
+
   test_store_info:
     description: "门店信息"
-    steps: 
+    steps:
       - action: navigate
         value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
       - action: assert_text
@@ -89,10 +89,10 @@ test_data:
       - action: wait
       - action: assert_text
         selector: detail_car_model
-        value: "2024款 1.5T 两驱Plus版 5座"
+        value: "2024款 1.5T 后驱Plus版 5座"
       - action: assert_text
         selector: detail_car_price
-        value: "24.98"
+        value: "24.98万"
       - action: assert_text
         selector: detail_item_car_name
         value: "问界M7"
@@ -179,7 +179,6 @@ test_data:
         value: 已加密处理
       - action: click
         selector: detail_pop_close
-
   test_detail_car_trade_in:
     description: "以旧换新"
     steps:
@@ -191,8 +190,73 @@ test_data:
         selector: choice_text
         value: 以旧换新
       - action: assert_text
+        selector: detail_new_name
+        value: 2024款 1.5T 后驱Plus版 5座1
+      - action: click
+        selector: detail_old_btn
+      - action: click
+        selector: detail_old_my-car
+      - action: store_text
+        selector: detail_old_brand_first_brand
+        variable_name: 旧品牌
+      - action: click
+        selector: detail_old_brand_first_brand
+      - action: store_text
+        selector: detail_car_series_1_series
+        variable_name: 旧车系
+      - action: click
+        selector: detail_car_series_1_series
+      - action: store_text
+        selector: detail_car_1_car
+        variable_name: 旧车型
+      - action: click
+        selector: detail_car_1_car
+      - action: click
+        selector: detail_old_address
+      - action: store_text
+        selector: detail_address_1_hot
+        variable_name: 旧城市
+      - action: click
+        selector: detail_address_1_hot
+      - action: store_text
+        selector: detail_address_country_1
+        variable_name: 旧地区
+      - action: click
+        selector: detail_address_country_1
+      - action: click
+        selector: detail_old_time
+      - action: click
+        selector: detail_time_confirm
+      - action: click
+        selector: detail_old_mileage
+      - action: click
+        selector: detail_mileage_confirm
+      - action: assert_text
+        selector: detail_old_car_text
+        value: ${旧车系} ${旧车型}
+      - action: assert_text
+        selector: detail_old_address_text
+        value: ${旧城市}-${旧地区}
+      - action: click
+        selector: detail_old_confirm
+
+
+
+
+
+  test_detail_car_trade_quotation:
+    description: "以旧换新"
+    steps:
+      - action: navigate
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+      - action: click
+        selector: choice_trade_in
+      - action: assert_text
+        selector: choice_text
+        value: 以旧换新
+      - action: assert_text
         selector: detail_car_trade_in
-        value:  咨询精准报价
+        value: 咨询精准报价
       - action: click
         selector: detail_car_trade_in
       - action: assert_text
@@ -223,7 +287,7 @@ test_data:
         value: 试驾服务
       - action: assert_text
         selector: detail_car_test_drive
-        value:  预约对比试驾
+        value: 预约对比试驾
       - action: click
         selector: detail_car_test_drive
       - action: assert_text
@@ -256,22 +320,22 @@ test_data:
         selector: detail_add_compare
       - action: assert_text
         selector: detail_choice_car_title
-        value:  选择意向车系
+        value: 选择意向车系
       - action: assert_text
         selector: detail_choice_car_name
-        value:  问界M7
+        value: 问界M7
       - action: click
         selector: detail_choice_car_clear
       - action: assert_text
         selector: confirm_car_series
-        value:   确认选择(1)
+        value: 确认选择(1)
       - action: click
         selector: detail_choice_car_choice_1
       - action: click
         selector: detail_choice_car_choice_2
       - action: assert_text
         selector: confirm_car_series
-        value:   确认选择(3)
+        value: 确认选择(3)
       - action: click
         selector: confirm_car_series
       - action: wait
@@ -294,7 +358,7 @@ test_data:
         selector: detail_floor_price
       - action: assert_text
         selector: detail_pop_title
-        value:  获取底价
+        value: 获取底价
       - action: fill
         selector: detail_pop_phone
         value: "15011290391"
@@ -316,7 +380,7 @@ test_data:
         value: 买贵必赔权益说明
       - action: assert_text
         selector: detail_floor_price_title
-        value:  "买贵必赔权益说明"
+        value: "买贵必赔权益说明"
 
   test_rights_detail:
     description: "权益说明"
@@ -361,8 +425,8 @@ test_data:
       - action: assert_text
         selector: heading
         value: "领专属礼包"
-#      - action: click
-#        selector: store_name_text
+      #      - action: click
+      #        selector: store_name_text
       - action: click
         selector: dialog
         childSelector: aion_y_text
@@ -439,7 +503,7 @@ test_data:
         value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
       - action: click
         selector: 品牌
-#      - action: pause
+      #      - action: pause
       - action: click
         selector: audi_list_item
       - action: click

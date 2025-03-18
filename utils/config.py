@@ -32,8 +32,8 @@ class Project(str, Enum):
     MARKETING = "marketing"
     CHANNEL_PAGE = "channel_page"
     CRM_STORE_BACKEND = "crm_store_backend"
-    AHOH= "ahoh"
-    DA_PING ="da_ping"
+    AHOH = "ahoh"
+    DA_PING = "da_ping"
 
 
 @singleton

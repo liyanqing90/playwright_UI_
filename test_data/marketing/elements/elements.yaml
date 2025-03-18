@@ -98,6 +98,56 @@ elements:
   detail_car_purchase: .car-purchase-plan__btn
   detail_car_trade_in: .change-new-btn-wrap
   detail_car_test_drive: .compare-test-drive__btn
+  detail_new_name: .change-new-main-new-name
+  detail_old_btn: .change-new-main-old-btn
+  detail_old_my-car: //div[@class="old-info-selectFrom"]//div[1]
+  detail_old_address: //div[@class="old-info-selectFrom"]//div[2]
+  detail_old_time: //div[@class="old-info-selectFrom"]//div[3]
+  detail_old_mileage: //div[@class="old-info-selectFrom"]//div[4]
+  detail_old_confirm: //span[contains(text(),"免费估值")]
+  detail_old_close: .common-popup-close
+  detail_old_car_text: (//p[@class='cont-right'])[1]/span
+  detail_old_address_text: (//p[@class='cont-right'])[2]/span
+  detail_old_time_text: (//p[@class='cont-right'])[3]/span
+  detail_old_mileage_text: (//p[@class='cont-right'])[4]/span
+
+  detail_old_brand_close: (//i[@class='v-athm-auto-icon__close van-icon van-icon-cross'])[1]
+  detail_old_car-series_close: (//i[@class='v-athm-auto-icon__close van-icon van-icon-cross'])[1]
+  detail_old_car_close: (//i[@class='v-athm-auto-icon__close van-icon van-icon-cross'])[2]
+  detail_old_brand_title: (//header[@class='v-athm-auto__header'])[1]//span
+  detail_old_car-series_title: (//header[@class='v-athm-auto__header'])[1]//span
+  detail_old_car_title: (//header[@class='v-athm-auto__header'])[1]//span
+
+  detail_old_brand_first_brand: //ul[@class="ul-hot"]//li[1]
+  detail_old_brand_D: //li[normalize-space()="D"]
+  detail_old_brand_大众: //ul[@class="ul-base"]//span[contains(text(),"大众")]
+
+  detail_car_series_1_car_fac: //div[@class="van-tab van-tab--active"]
+  detail_car_series_2_car_fac: (//div[@role='tab'])[6]
+  detail_car_series_1_series: //section[@class="v-athm-auto v-athm-auto-second v-athm-auto-series show"]//ul[1]//li[1]
+
+  detail_car_1_car: //section[@class="v-athm-auto v-athm-auto-third show"]//ul[1]//li[1]
+
+  detail_address_title: //div[@class="van-nav-bar__title van-ellipsis"]
+  detail_address_close: //div[@class="van-nav-bar__right"]
+  detail_address_1_hot: (//div[@class='van-cell'])[1]
+
+  detail_address_city_back: .van-nav-bar__left
+  detail_address_city_title: (//div[@class="van-nav-bar__title van-ellipsis"])[1]
+  detail_address_city_close: (//div[@class='van-nav-bar__right'])[1]
+  detail_address-country_title: //div[@class="pop-choose-county van-popup van-popup--round van-popup--right-bottom"]//div[@class="van-nav-bar__content"]//div[1]
+  detail_address-country_close: (//div[@class='van-nav-bar__right'])[2]
+  detail_address_country_back: (//div[@class='van-nav-bar__left'])[1]
+  detail_address_country_1: ((//div[@class='index-barwrap'])[2]//div[@class="van-cell__title"])[1]
+  detail_time_pop_time: div[class="licensing-time-pop van-popup van-popup--round van-popup--bottom"] div[class="van-nav-bar__title van-ellipsis"]
+  detail_time_pop_close:  (//i[@class='van-icon van-icon-cross'])[1]
+  detail_time_confirm: (//div[@class='pop-bottom-btn'])[1]
+
+  detail_mileage_title: (//div[@class='van-nav-bar__content'])[2]/div[1]
+  detail_mileage_close: (//div[@class='van-nav-bar__right'])[2]
+  detail_mileage_confirm: (//div[@class='pop-bottom-btn'])[2]
+  detail_del_old: (//div[@class='van-button__content'])[1]
+  detail_new_price: //div[@class="change-new-main-price-title"]
 
   detail_add_compare: .add
   detail_choice_car_clear: .select-series-box__selected--clear

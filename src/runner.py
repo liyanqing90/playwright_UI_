@@ -1,7 +1,6 @@
 import types
 from inspect import Parameter, Signature
 
-import allure
 import pytest
 from playwright.async_api import Page
 
@@ -86,9 +85,8 @@ class TestCaseGenerator(pytest.Item):
         return marked_func
 
     def execute_test(self, case: dict, case_data, page: Page, ui_helper, **kwargs) -> None:
-        with allure.step(f"执行用例: {case['name']}"):
-            executor = CaseExecutor(case_data, self.elements)
-            executor.execute_test_case(case, page, ui_helper)
+        executor = CaseExecutor(case_data, self.elements)
+        executor.execute_test_case(case, page, ui_helper)
 
     def runtest(self):
         """
