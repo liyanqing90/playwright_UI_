@@ -89,8 +89,12 @@ test_data:
         selector: 素材
       - action: click
         selector: 素材上传按钮
+      - action: wait
+        value: 2
       - action: click
         selector: 素材通用素材
+      - action: wait
+        value: 5
       - action: upload
         selector: 素材upload浏览
         value: files/demo/01.PNG
@@ -288,13 +292,11 @@ test_data:
         value: "22222"
       - action: click
         selector: 灵感搜索按钮
-      - action: click
-        selector: 灵感搜索结果
       - action: wait
         value: 1
       - action: assert_text
-        selector: 灵感详情标题
-        value: "22222"
+        selector: 灵感脚本搜索空验证
+        value: "未查询到相关内容，请重新输入关键词"
 
 
 
@@ -573,7 +575,7 @@ test_data:
         selector: 剧本话题名称
       - action: fill
         selector: 剧本话题名称
-        value: "话题名称自动化脚本引用"
+        value: "话题名称自动化手动录入"
       - action: click
         selector: 关闭第三个话题
       - action: click
@@ -608,24 +610,22 @@ test_data:
       - action: click
         selector: switch_script
 
-  test_share_open:
-    description: "剧本共享启用"
+  test_script_del_topics:
+    description: "剧本创作-手动录入"
     steps:
       - action: click
         selector: 剧本菜单
       - action: click
-        selector: 共享中心
-      - action: wait
-        value: 2
+        selector: 剧本开始创作
       - action: click
-        selector: 剧本共享启用
+        selector: 剧本手动录入2
+      - action: click
+        selector: 关闭第二个话题
       - action: assert_text
-        value: "启用成功，已展示到直播栏目底部"
-        selector: 剧本启用验证
-      - action: wait
-        value: 10
+        value: "确认要删除该话题吗？"
+        selector: 剧本第二话题删除验证
       - action: click
-        selector: 剧本共享启用
+        selector: 删除剧本确定按钮
 
   test_share_pre:
     description: "剧本共享预览"
@@ -663,3 +663,158 @@ test_data:
 
 
 
+  test_script_add_topics:
+    description: "剧本创作-增加话题"
+    steps:
+      - action: click
+        selector: 剧本菜单
+      - action: click
+        selector: 剧本开始创作
+      - action: wait
+        value: 1
+      - action: click
+        selector: 剧本增加话题
+      - action: assert_text
+        value: "04"
+        selector: 剧本增加话题验证
+
+  test_script_clear_all:
+    description: "剧本创作-清空全部"
+    steps:
+      - action: click
+        selector: 剧本菜单
+      - action: click
+        selector: 剧本开始创作
+      - action: wait
+        value: 1
+      - action: click
+        selector: 剧本增加话题
+      - action: click
+        selector: 剧本手动录入
+      - action: click
+        selector: 剧本开始时间
+      - action: click
+        selector: "话题时"
+      - action: click
+        selector: "话题分"
+      - action: click
+        selector: "话题时间确定"
+      - action: click
+        selector: 剧本话题名称
+      - action: fill
+        selector: 剧本话题名称
+        value: "话题名称自动化脚本引用"
+      - action: click
+        selector: 剧本清空全部
+      - action: click
+        selector: 剧本编辑不保存
+      - action: 验证可见
+        selector: 剧本开始创作
+
+  test_script_leave:
+    description: "剧本创作中离开页面"
+    steps:
+      - action: click
+        selector: 剧本菜单
+      - action: click
+        selector: 剧本开始创作
+      - action: wait
+        value: 1
+      - action: click
+        selector: 剧本增加话题
+      - action: click
+        selector: 剧本手动录入
+      - action: click
+        selector: 剧本开始时间
+      - action: click
+        selector: "话题时"
+      - action: click
+        selector: "话题分"
+      - action: click
+        selector: "话题时间确定"
+      - action: click
+        selector: 剧本话题名称
+      - action: fill
+        selector: 剧本话题名称
+        value: "话题名称自动化脚本引用"
+      - action: click
+        selector: 素材
+      - action: wait
+        value: 1
+      - action: 验证可见
+        selector: 剧本编辑中离开验证
+      - action: assert_text
+        value: "检测到当前剧本未保存，离开前，请确认是否保存当前更新的内容？"
+        selector: 剧本编辑中离开验证
+      - action: click
+        selector: 剧本编辑不保存
+
+  test_script_failure:
+    description: "剧本创作失败"
+    steps:
+      - action: click
+        selector: 剧本菜单
+      - action: click
+        selector: 剧本开始创作
+      - action: wait
+        value: 1
+      - action: click
+        selector: 剧本保存完整剧本
+      - action: assert_text
+        value: "请选择时长"
+        selector: 剧本空保存验证
+
+  test_script_edit:
+    description: "剧本创作-重新编辑"
+    steps:
+      - action: click
+        selector: 剧本菜单
+      - action: click
+        selector: edit_button
+      - action: click
+        selector: 剧本开始时间
+      - action: click
+        selector: "话题时"
+      - action: click
+        selector: "话题分"
+      - action: click
+        selector: "话题时间确定"
+      - action: click
+        selector: 剧本话题名称
+      - action: fill
+        selector: 剧本话题名称
+        value: "再次编辑标题"
+      - action: click
+        selector: 剧本再次编辑
+      - action: click
+        selector: optional_script_1_textarea
+      - action: fill
+        selector: optional_script_1_textarea
+        value: "再次编辑测试"
+      - action: wait
+        value: 1
+      - action: click
+        selector: modal_save_button
+      - action: click
+        selector: 剧本保存完整剧本
+      - action: assert_text
+        value: "剧本保存成功"
+        selector: 剧本保存后验证
+
+  test_script_del:
+    description: "剧本创作-删除"
+    steps:
+      - action: click
+        selector: 剧本菜单
+      - action: click
+        selector: delete_button
+      - action: assert_text
+        value: "删除后无法恢复，确定删除该剧本吗？"
+        selector: 删除删除提示文本
+      - action: wait
+        value: 2
+      - action: click
+        selector: 删除剧本确定按钮
+      - action: assert_text
+        value: "删除成功"
+        selector: 剧本删除成功提示验证
