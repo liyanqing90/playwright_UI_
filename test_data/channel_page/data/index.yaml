@@ -97,6 +97,41 @@ test_data:
         selector: 回显车系车型
         value: ${车系}${车型}
 
+  test_store_information:
+    description: "门店信息"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+      - action: click
+        selector: 空间站名称
+      - action: click
+        selector: 取消
+      - action: assert_text
+        selector: 空间站名称
+        value: 汽车之家空间站·北京站
+      - action: click
+        selector: 空间站地址
+      - action: click
+        selector: 取消
+      - action: assert_text
+        selector: 空间站地址
+        value: 北辰亚运村汽车交易市场内综合交易大厅
+      - action: click
+        selector: 营业执照
+
+  test_gold_sales:
+    description: "金牌买手"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+      - action: click
+        selector: 金牌销售
+      - action: assert_url
+        value: https://work.weixin.qq.com/ca/cawcde008b52661817?customer_channel=6866165
+
+
+
+
 
 
 

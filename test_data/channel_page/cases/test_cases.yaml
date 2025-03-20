@@ -1,5 +1,8 @@
-test_cases:
-  - name: test_quick_quote
-  - name: test_insured
-  - name: test_charging_stations
-  - name: test_old_cars
+#test_cases:
+#  - name: test_quick_quote
+#  - name: test_insured
+#  - name: test_charging_stations
+#  - name: test_old_cars
+  - name: test_store_information
+  - name: test_gold_sales
+
