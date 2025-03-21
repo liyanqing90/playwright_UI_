@@ -383,7 +383,7 @@ class StepExecutor:
                 raise ValueError("步骤缺少必要参数: variable_name")
 
             # 直接使用ui_helper的方法
-            value = self.ui_helper.generate_faker_data(data_type, **kwargs)
+            value = generate_faker_data(data_type, **kwargs)
             self.ui_helper.store_variable(step['variable_name'], value, step.get('scope', 'global'))
 
         elif action in StepAction.KEYBOARD_SHORTCUT:
