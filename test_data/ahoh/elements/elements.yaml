@@ -1,5 +1,6 @@
 elements:
   首页-登录用户姓名: div.ai-card__role>span.name
+  下订信息-保存按钮: div.orderConfirm-header-right
   下订信息-上牌费用输入框: input[name="registerAmount"]
   下订信息-付款凭证输入框: div.uploader-box.payPic-box[data-v-acd976af] input.van-uploader__input
 #  xpath=//input[@name="payPic"]/parent::div
@@ -24,6 +25,8 @@ elements:
   下订信息-录音文件日期面板中的今天: div.van-calendar__body>div:last-child>div.van-calendar__days>div:nth-child(1)
   下订信息-录音文件日期面板年月子标题: div.van-calendar__header>div.van-calendar__header-subtitle
   下订信息-录音文件日期面板按钮-确定: section.policy-dropdown-btn>section.confirm
+  下订信息-录音文件日期面板-2024年3月1日: //div[@class='van-calendar__month'][./div[@class='van-calendar__month-title' and contains(text(),'2024年3月')]]//div[@class='van-calendar__day'][1]
+  下订信息-录音文件日期面板-2024年7月1日: //div[@class='van-calendar__month'][./div[@class='van-calendar__month-title' and contains(text(),'2024年7月')]]//div[@class='van-calendar__day'][1]
   下订信息-录音文件输入框: xpath=//input[@name="soundList"]/parent::div
   下订信息-提交审核按钮: xpath=//section[@class="personalForm-btn"]/span[2]
   下订信息-提车日期-选择日期-确认按钮: button.van-picker__confirm
@@ -109,6 +112,7 @@ elements:
     div.van-list>div:nth-child(1)>div.customer-card>div.footContainer>div:nth-child(1)
   客户列表查询结果第一条填跟进按钮: 
     xpath=//*[@id="app"]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div[2]/div[4]
+  客户详情-线索id: div.detailcard-cont-item-bottom>div:nth-child(2)>div.detailcard-cont-value
   客户姓名: input[name="customName"]
   客户详情页面点击填跟进: xpath=//*[@class="follow-text"]
   客户跟进详情页-任务类型: div.work-content>div:nth-child(1)>span.record-call-value
@@ -221,3 +225,30 @@ elements:
   选择车系页-确定按钮: div.operation-btn-big
   选择车系页标题: span.header-title
   验收测试文本: xpath=//*[@id="login"]/section[2]/span
+
+  订单卡片-确认函按钮: xpath=//div[@class="common-btn submit-debounce brandPolicyType-confirm-btn"]
+  确认函签署-页面标题: div.non-keyBrand-Confirm-header-title
+  确认函签署填写信息页-身份证输入框: xpath=//input[@name='identityCard']
+  确认函签署填写信息页-购买车型选择框: text=购买车型
+  确认函签署填写信息页-选择车型页标题: span.header-title
+  确认函签署填写信息页-选择车型页第一项: div.spec-name-list>div:nth-child(1)
+  确认函签署填写信息页-选择车型的半屏页-确定按钮: div.operation-btn-big
+  确认函签署填写信息页-指导价输入框: input[name='specPrice']
+  确认函签署填写信息页-发票价格输入框: input[name='invoiceAmount']
+  确认函签署填写信息页-合同日期输入框: input[name='contractDate']
+  确认函签署填写信息页-合同日期半屏页标题: div[class='van-picker__title van-ellipsis']
+  确认函签署填写信息页-合同日期半屏页-确任按钮: button.van-picker__confirm
+  确认函签署填写信息页-合同日期半屏页-底部确定按钮: div.non-keyBrand-Confirm-bottom-btn-text
+  确认函预览-标题: div.h2
+  确认函预览-客户名称: div.buy-car-info>p:nth-child(2)>span:nth-child(2)
+  确认函预览-手机号: div.buy-car-info>p:nth-child(3)>span:nth-child(2)
+  确认函预览-身份证号: div.buy-car-info>p:nth-child(4)>span:nth-child(2)
+  确认函预览-购买车辆品牌: div.buy-car-info>p:nth-child(5)>span:nth-child(2)
+  确认函预览-购买车辆MSRP(官方指导价): div.buy-car-info>p:nth-child(8)>span:nth-child(2)
+  确认函预览-购买车辆价格(发票价): div.buy-car-info>p:nth-child(9)>span:nth-child(2)
+  确认函预览-分享客户微信按钮: div.confirmation-button>button:nth-child(2)
+  确认函预览-短信按钮: div.confirmation-button>button:nth-child(1)
+  确认函预览-邀请信息-复制文本: text=复制文本
+
+
+
