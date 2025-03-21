@@ -66,6 +66,7 @@ class StepAction:
     ENTER_FRAME = ['enter_frame', '进入框架']
     ACCEPT_ALERT = ['accept_alert', '接受弹框']
     DISMISS_ALERT = ['dismiss_alert', '取消弹框']
+    EXPECT_POPUP = ['expect_popup', '弹出tab']
     SWITCH_WINDOW = ['switch_window', '切换窗口']
     CLOSE_WINDOW = ['close_window', '关闭窗口']
     WAIT_FOR_NEW_WINDOW = ['wait_for_new_window', '等待新窗口']
@@ -340,10 +341,13 @@ class StepExecutor:
         elif action in StepAction.DISMISS_ALERT:
             self.ui_helper.dismiss_alert(selector)
 
+        elif action in StepAction.EXPECT_POPUP:
+            action = step.get("real_action", "click")
+            variable_name = step.get('variable_name', value)
+            self.ui_helper.expect_popup(action, selector,variable_name)
+
         elif action in StepAction.SWITCH_WINDOW:
-            url = step.get('url')
-            title = step.get('title')
-            self.ui_helper.switch_window(url, title)
+            self.ui_helper.switch_window(value)
 
         elif action in StepAction.CLOSE_WINDOW:
             self.ui_helper.close_window()
