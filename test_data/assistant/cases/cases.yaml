@@ -1,11 +1,6 @@
 test_cases:
-  - name: test_create_script
-    fixtures: [ login ]
-  - name: test_script_library
-    fixtures: [ login ]
-    depends_on: [ test_create_script ]
 
-# 素材
+ ##素材
   - name: test_material_search
     fixtures: [ login ]
   - name: test_material_upload
@@ -34,18 +29,6 @@ test_cases:
   - name: test_hui_fu_zhuang_tai
   - name: test_qi_zhi_shi_jian
   - name: test_chong_zhi
-
-  - name: test_create_script
-    fixtures: [ login ]
-  - name: test_script_library
-    fixtures: [ login ]
-    depends_on: [ test_create_script ]
-  - name: test_su_cai
-    fixtures: [ login ]
-  - name: test_script_library
-    fixtures: [ login ]
-    depends_on: [ test_create_script ]
-
 
 
 #个人中心
@@ -94,9 +77,21 @@ test_cases:
     fixtures: [ login ]
   - name: test_script_open
     fixtures: [ login ]
-  - name: test_share_open
+  - name: test_script_del_topics
     fixtures: [ login ]
   - name: test_share_pre
     fixtures: [ login ]
   - name: test_script_pre
+    fixtures: [ login ]
+  - name: test_script_add_topics
+    fixtures: [ login ]
+  - name: test_script_clear_all
+    fixtures: [ login ]
+  - name: test_script_leave
+    fixtures: [ login ]
+  - name: test_script_failure
+    fixtures: [ login ]
+  - name: test_script_edit
+    fixtures: [ login ]
+  - name: test_script_del
     fixtures: [ login ]

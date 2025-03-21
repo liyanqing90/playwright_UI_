@@ -54,6 +54,7 @@ elements:
   剧本案例引用: //label[span[text()='案例引用']][1]
   剧本脚本引用: //label[span[text()='脚本引用']][1]
   剧本手动录入: //label[span[text()='手动录入']][1]
+  剧本手动录入2: (//label[span[text()='手动录入']])[2]
   剧本话题名称: "#form_item_sectionList_0_subject"
   剧本确定时间: .submit
   剧本生成脚本: .creat-btn
@@ -68,10 +69,17 @@ elements:
   剧本话题删除: css=".close-icon"
   剧本保存后验证 : //span[contains(text(),'剧本保存成功')]
   剧本启用验证: //span[contains(text(),'启用成功，已展示到直播栏目底部')]
-  剧本共享启用: (//div[@class='item-top__switch'])[2]
+  剧本共享启用: //div[4]//div[1]//div[1]//div[1]//div[2]//button[1]
   剧本共享预览关闭: (//div[contains(text(),'关闭')])[1]
-  剧本共享预览 : (//div[contains(text(),'预览')])[2]
-
+  剧本共享预览 : (//div[contains(text(),'预览')])[4]
+  剧本增加话题验证: //div[normalize-space()='04']
+  剧本编辑不保存: //span[contains(text(),'不保存')]
+  剧本编辑中离开验证: //div[@class='text']
+  剧本空保存验证: //div[@class='content-title']//div[@role='alert']
+  剧本再次编辑: //div[@class='btn primary']
+  剧本删除成功提示验证: //span[contains(text(),'删除成功')]
+  剧本第二话题: //label[@class='ant-radio-wrapper ant-radio-wrapper-checked']//span[2]
+  剧本第二话题删除验证: (//div[@class='text'])[1]
   #案例
   第一个案例: (//li[@class='ant-list-item']//div)[1]
   案例搜索输入框: input[placeholder="请输入要搜索的内容"]
@@ -140,8 +148,8 @@ elements:
 #个人中心
 
   头像: .avatar
-  用户手机号: text="15233224950"
-  用户名: text="程强"
+  用户手机号: text="15011290391"
+  用户名: text="李彦卿"
   AI助手设置: text="AI助手设置"
   大字号选项: label:has-text("大") >> nth=0
   默认字号选项: label:has-text("默认")
@@ -185,6 +193,7 @@ elements:
   灵感筛选丰田: text="丰田"
   灵感筛选车系: (//input[@id='form_item_seriesId'])[1]
   灵感筛选验证: css="#listId"
+  灵感脚本搜索空验证: //div[@class='no-data__content scriptcon sourcecon']
 
 
 #成长-
