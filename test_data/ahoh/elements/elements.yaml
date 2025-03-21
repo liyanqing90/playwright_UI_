@@ -1,14 +1,17 @@
 elements:
   首页-登录用户姓名: div.ai-card__role>span.name
+  下订信息-保存按钮: div.orderConfirm-header-right
   下订信息-上牌费用输入框: input[name="registerAmount"]
-  下订信息-付款凭证输入框: xpath=//input[@name="payPic"]/parent::div
+  下订信息-付款凭证输入框: div.uploader-box.payPic-box[data-v-acd976af] input.van-uploader__input
+#  xpath=//input[@name="payPic"]/parent::div
   下订信息-付款日期-选择日期-确认按钮: xpath=//div[text()="选择付款时间"]/following-sibling::button
   下订信息-付款日期输入框: 
     xpath=//*[@id="scrolltarget"]/div/div[2]/div/section/form/div[4]/div[2]/div/input
   下订信息-企业代码: input[name="socialCode"]
   下订信息-公户: div.select-buyertype-main>div>div:nth-child(2)
   下订信息-其他项: xpath=//span[text()="其他"]
-  下订信息-合同凭证输入框: xpath=//input[@name="contractPic"]/parent::div
+  下订信息-合同凭证输入框: div.uploader-box.contractPic-box[data-v-acd976af] div.van-uploader__upload input.van-uploader__input
+#  xpath=//input[@name="contractPic"]/parent::div
   下订信息-合同日期-选择日期-确认按钮: xpath=//div[text()="选择合同日期"]/following-sibling::button
   下订信息-合同日期输入框: 
     xpath=//*[@id="scrolltarget"]/div/div[2]/div/section/form/div[3]/div[2]/div/input
@@ -22,6 +25,8 @@ elements:
   下订信息-录音文件日期面板中的今天: div.van-calendar__body>div:last-child>div.van-calendar__days>div:nth-child(1)
   下订信息-录音文件日期面板年月子标题: div.van-calendar__header>div.van-calendar__header-subtitle
   下订信息-录音文件日期面板按钮-确定: section.policy-dropdown-btn>section.confirm
+  下订信息-录音文件日期面板-2024年3月1日: //div[@class='van-calendar__month'][./div[@class='van-calendar__month-title' and contains(text(),'2024年3月')]]//div[@class='van-calendar__day'][1]
+  下订信息-录音文件日期面板-2024年7月1日: //div[@class='van-calendar__month'][./div[@class='van-calendar__month-title' and contains(text(),'2024年7月')]]//div[@class='van-calendar__day'][1]
   下订信息-录音文件输入框: xpath=//input[@name="soundList"]/parent::div
   下订信息-提交审核按钮: xpath=//section[@class="personalForm-btn"]/span[2]
   下订信息-提车日期-选择日期-确认按钮: button.van-picker__confirm
@@ -36,8 +41,8 @@ elements:
   下订信息-车型输入框: xpath=//input[@placeholder="请选择车型"]/parent::div
   下订信息-选择录音-确定按钮: section.audios-wrapper>div>div.form-btn>section
   下订信息-选择录音-第一条录音: section.audio-player-list>div:nth-child(1)>div>span
-  下订信息-选择车系: '#app > div:nth-child(7) > div > div.order-specSelect-content > div >
-    div.spec-name-list > div:nth-child(1)'
+  下订信息-选择车系: div.spec-name-list>div:nth-child(1)
+#  app>div:nth-child(7)>div>div.order-specSelect-content>div>div.spec-name-list>div:nth-child(1)
   下订成功-返回: xpath=//*[@id="app"]/div/div/div/section/section/div/div/section[1]/div
   任务填跟进-下订车系选择第一个: div.series-name-left
   任务填跟进页-下订车系: span.no-selected-audios
@@ -56,7 +61,7 @@ elements:
   任务填跟进页-跟进结果-战败-二级战败因素弹框-第一个选项: div.commonFileCheck-popup-content-scroll>div:nth-child(1)
   任务填跟进页-跟进结果-战败-二级战败因素输入框: xpath=//input[contains(@placeholder, '因素')]
   任务填跟进页面标题: div.van-popup--full>div>section>div>div>section.nav-title
-  任务详情-推送按钮: div.customerDetail-foot>div:nth-child(2)
+  任务详情-推送按钮: div.customerDetail-foot>div:nth-child(2)>img
   全屏页页面标题: section.nav-title
   全部订单: div.fun-button__item-order
   切换登录方式: section.login-cut
@@ -67,7 +72,8 @@ elements:
     xpath=//*[@id="app"]/div[2]/section[1]/section[2]/div[1]/form/div[5]/div[2]/section/div/div[2]/div/div/section/section/section[2]
   到店诉求-试乘试驾: xpath=//section[text()="试乘试驾"]
   发票信息-返回上一页: div.go-back-icon
-  发票信息页-上传发票: div.invoice-info-upload-wrap
+  发票信息页-上传发票: div[data-v-c75feaa3] input.van-uploader__input[type='file'][accept='image/*'][multiple]
+#  div.invoice-info-upload-wrap
   发票信息页-上传发票文案: p.invoice-upload-txt
   发票信息页-确认发票二次确认弹窗取消按钮: button.van-dialog__cancel
   发票信息页-确认发票二次确认弹窗文案: div.invoice-dialog-title
@@ -106,6 +112,7 @@ elements:
     div.van-list>div:nth-child(1)>div.customer-card>div.footContainer>div:nth-child(1)
   客户列表查询结果第一条填跟进按钮: 
     xpath=//*[@id="app"]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div[2]/div[4]
+  客户详情-线索id: div.detailcard-cont-item-bottom>div:nth-child(2)>div.detailcard-cont-value
   客户姓名: input[name="customName"]
   客户详情页面点击填跟进: xpath=//*[@class="follow-text"]
   客户跟进详情页-任务类型: div.work-content>div:nth-child(1)>span.record-call-value
@@ -138,10 +145,13 @@ elements:
   待清洗任务填跟进页-管家回电-回电时间弹窗-确认按钮: div.van-picker__toolbar>button.van-picker__confirm
   待清洗任务填跟进页-管家回电-回电时间输入框: xpath=//input[@placeholder='请选择回电时间']
   手机号: id=customMobile
-  推送-添加车型按钮: section.confirm
+  推送-添加车型按钮: //section[@class="filter-btn confirm"]
+  推送-选择推送车型半屏页-删除按钮: text=删除
+#    section.confirm
   推送-确定选择按钮: div.submit-btn-box>section
+  推送-选择推送车型半屏页: section.push-lead-content>section.popup-header #点击推送按钮出现的半屏页
   推送-确认推送: div.confirm-btn
-  推送-选择宝马5系车型: xpath=//span[text()="2024款 525Li M运动套装"]
+  推送-选择筛选的第一个车型: section.search-car-group>section:nth-child(1)
   推送-选择所属经销商: xpath=//input[@placeholder="请选择经销商"]
   推送-选择推送车型: xpath=//*[@class="car-name"]
   推送-选择车型输入框: xpath=//input[@type="search"]
@@ -215,3 +225,30 @@ elements:
   选择车系页-确定按钮: div.operation-btn-big
   选择车系页标题: span.header-title
   验收测试文本: xpath=//*[@id="login"]/section[2]/span
+
+  订单卡片-确认函按钮: xpath=//div[@class="common-btn submit-debounce brandPolicyType-confirm-btn"]
+  确认函签署-页面标题: div.non-keyBrand-Confirm-header-title
+  确认函签署填写信息页-身份证输入框: xpath=//input[@name='identityCard']
+  确认函签署填写信息页-购买车型选择框: text=购买车型
+  确认函签署填写信息页-选择车型页标题: span.header-title
+  确认函签署填写信息页-选择车型页第一项: div.spec-name-list>div:nth-child(1)
+  确认函签署填写信息页-选择车型的半屏页-确定按钮: div.operation-btn-big
+  确认函签署填写信息页-指导价输入框: input[name='specPrice']
+  确认函签署填写信息页-发票价格输入框: input[name='invoiceAmount']
+  确认函签署填写信息页-合同日期输入框: input[name='contractDate']
+  确认函签署填写信息页-合同日期半屏页标题: div[class='van-picker__title van-ellipsis']
+  确认函签署填写信息页-合同日期半屏页-确任按钮: button.van-picker__confirm
+  确认函签署填写信息页-合同日期半屏页-底部确定按钮: div.non-keyBrand-Confirm-bottom-btn-text
+  确认函预览-标题: div.h2
+  确认函预览-客户名称: div.buy-car-info>p:nth-child(2)>span:nth-child(2)
+  确认函预览-手机号: div.buy-car-info>p:nth-child(3)>span:nth-child(2)
+  确认函预览-身份证号: div.buy-car-info>p:nth-child(4)>span:nth-child(2)
+  确认函预览-购买车辆品牌: div.buy-car-info>p:nth-child(5)>span:nth-child(2)
+  确认函预览-购买车辆MSRP(官方指导价): div.buy-car-info>p:nth-child(8)>span:nth-child(2)
+  确认函预览-购买车辆价格(发票价): div.buy-car-info>p:nth-child(9)>span:nth-child(2)
+  确认函预览-分享客户微信按钮: div.confirmation-button>button:nth-child(2)
+  确认函预览-短信按钮: div.confirmation-button>button:nth-child(1)
+  确认函预览-邀请信息-复制文本: text=复制文本
+
+
+

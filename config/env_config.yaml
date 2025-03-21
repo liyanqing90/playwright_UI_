@@ -36,7 +36,7 @@ projects:
       #店端后台 online https://ahohcrm.autohome.com.cn/#/login
       # online-old:https://ahohcrm.app.autohome.com.cn/v/index#online：http://app.ahohcrm.autohome.com.cn/v/login #Test：http://test.crmapp.ahoh.mulan.corpautohome.com/v/index
       #线上压测环境：http://ahohcrm-pressure.app.thallo.corpautohome.com/v/
-    browser_config: { "viewport": { "width": 393, "height": 659 }, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit" }
+    browser_config: { "viewport": { "width": 393, "height": 489 }, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit" }
 
   marketing:
     test_dir: "test_data/marketing"
