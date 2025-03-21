@@ -33,9 +33,41 @@ elements:
   空白区域: //body
 
   金牌销售: //div[@class='store-sales-cont-name'] # 点击“金牌销售”
-  text_全城询底价_专业帮买车_click: "page.get_by_text(\"全城询底价 专业帮买车\").click()" # 点击“全城询底价 专业帮买车”
-  text_电话_click: "page.get_by_text(\"电话\").click()" # 点击“电话”
-  text_真实在线报价_click: "page.get_by_text(\"真实在线报价\").click()" # 点击“真实在线报价”
+  买手文案: //div[@class='store-sales-cont-tip'] # 点击“全城询底价 专业帮买车”
+  电话: div[class='store-sales-contact-phone'] span
+  报价: //div[@class='store-sales-contact-online']/span
+
+  买车意向: .filter-title
+  品牌: //span[contains(text(),'品牌')]
+  字母导航: span[data-index='H']
+  置顶字母导航: .van-index-anchor.van-index-anchor--sticky.van-hairline--bottom
+  哈弗: //li[@title='哈弗']//div[@class='brand-list__part--check']
+  极狐: //li[@title='ARCFOX极狐']//div[@class='brand-list__part--check']
+  零跑: //li[@title='零跑汽车']//div[@class='brand-list__part--check']
+  确认按钮: //div[@class='brand-list__btn']//div//div[1]
+  清除: .checked-brand__clear
+  已选品牌数量: //span[@class='checked-brand-num']
+
+  车卡优惠金额: (//div[@class='max-discount-tag tag'])[1]/span
+  获取底价: (//div[contains(text(),'获取底价')])[1]
+  留资弹窗优惠金额: h3[class='car-card-deals-title'] span[class='color']
+  关闭: //div[@class='fill-info-popup-close']
+
+  车系名称: //div[@class='series-card-name']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

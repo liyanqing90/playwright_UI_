@@ -124,10 +124,132 @@ test_data:
     steps:
       - action: goto
         value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
-      - action: click
+      - action: assert_text
         selector: 金牌销售
+        value: 金牌销售
+      - action: assert_text
+        selector: 买手文案
+        value: 全城询底价 专业帮买车
+      - action: assert_text
+        selector: 电话
+        value: 电话
+      - action: assert_text
+        selector: 报价
+        value: 真实在线报价
+      - action: expect_popup
+        selector: //div[@class="store-sales-cont"]
+        variable_name: pop_index
       - action: assert_url
         value: https://work.weixin.qq.com/ca/cawcde008b52661817?customer_channel=6866165
+      - action: close_window
+      - action: assert_url
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100
+      - action: wait
+      - action: expect_popup
+        selector: //div[@class='store-sales-contact-online']
+        variable_name: pop_index
+      - action: assert_url
+        value: https://work.weixin.qq.com/ca/cawcde0ceb320e0488?customer_channel=6865378
+      - action: close_window
+      - action: assert_url
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100
+
+  test_brand_screening:
+    description: "品牌筛选"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+      - action: assert_text
+        selector: 买车意向
+        value: 您的买车意向是？
+      - action: click
+        selector: 品牌
+      - action: click
+        selector: 字母导航
+      - action: store_text
+        selector: 字母导航
+        variable_name: 字母导航
+      - action: store_text
+        selector: 置顶字母导航
+        variable_name: 置顶字母导航
+      - action: assert_text
+        selector: 置顶字母导航
+        value: ${字母导航}
+      - action: click
+        selector: 哈弗
+      - action: click
+        selector: 极狐
+      - action: click
+        selector: 零跑
+      - action: assert_text
+        selector: 确认按钮
+        value: 确认选择 (3)
+      - action: click
+        selector: 清除
+      - action: assert_text
+        selector: 确认按钮
+        value: 确认选择
+      - action: click
+        selector: 哈弗
+      - action: click
+        selector: 极狐
+      - action: click
+        selector: 零跑
+      - action: click
+        selector: 确认按钮
+      - action: assert_text
+        selector: 已选品牌数量
+        value: 3个品牌
+
+  test_car_card:
+    description: "车卡"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+      - action: store_text
+        selector: 车卡优惠金额
+        variable_name: 车卡优惠金额
+      - action: click
+        selector: 获取底价
+      - action: store_text
+        selector: 留资弹窗优惠金额
+        variable_name: 留资弹窗优惠金额
+      - action: assert_text
+        selector: 留资弹窗优惠金额
+        value: ${车卡优惠金额}
+      - action: click
+        selector: 关闭
+      - action: expect_popup
+        selector: //div[@class='highlight-price-contact']
+        variable_name: pop_index
+      - action: assert_url
+        value: https://work.weixin.qq.com/ca/cawcde96c9ccc668a9?customer_channel=6866154
+      - action: close_window
+      - action: assert_url
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100
+
+  test_car_details:
+    description: "车系详情"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+      - action: store_text
+        selector: 车系名称
+        variable_name: 车系名称
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
