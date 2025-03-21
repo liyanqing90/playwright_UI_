@@ -5,6 +5,7 @@ from typing import Dict, Any
 
 import allure
 
+from constants import DEFAULT_TYPE_DELAY, DEFAULT_TIMEOUT
 from page_objects.base_page import base_url
 from utils.logger import logger
 from utils.variable_manager import VariableManager
@@ -32,6 +33,7 @@ class StepAction:
     ASSERT_NOT_EXISTS = ['assert_not_exists', '验证不存在']
     ASSERT_ENABLED = ['assert_enabled', '验证启用']
     ASSERT_DISABLED = ['assert_disabled', '验证禁用']
+    ASSERT_VALUE = ['assert_value', '验证值']
 
     # 存储相关
     STORE_VARIABLE = ['store_variable', '存储变量']
@@ -256,6 +258,15 @@ class StepExecutor:
         elif action in StepAction.ASSERT_DISABLED:
             self.ui_helper.assert_element_disabled(selector)
 
+        elif action in StepAction.ASSERT_ATTRIBUTE:
+            attribute = step.get('attribute')
+            expected = step.get('expected', value)
+            self.ui_helper.assert_attribute(selector, attribute, expected)
+
+        elif action in StepAction.ASSERT_VALUE:
+            expected = step.get('expected', value)
+            self.ui_helper.assert_value(selector, expected)
+
         elif action in StepAction.STORE_VARIABLE:
             self.ui_helper.store_variable(step['name'], value, step.get('scope', 'global'))
 
@@ -461,8 +472,10 @@ def generate_faker_data(data_type, **kwargs):
         return "新零售" + faker.uuid4().replace("-", "")[:6]
     elif data_type == 'mobile':
         return '18210233933'
-    
-    
+    else:
+        raise "不支持的类型"
+
+
 import re
 
 
