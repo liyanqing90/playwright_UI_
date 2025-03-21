@@ -72,6 +72,7 @@ def base_url():
 class BasePage:
     def __init__(self, page: Page):
         self.page = page
+        self.pages = [self.page]
         self.variable_manager = VariableManager()
         self._setup_page_handlers()
 
@@ -258,7 +259,8 @@ class BasePage:
 
     @check_and_screenshot()
     @allure.step("断言元素属性值")
-    def assert_attribute(self,selector: str, attribute: str, expected_value: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+    def assert_attribute(self, selector: str, attribute: str, expected_value: str,
+                         timeout: Optional[int] = DEFAULT_TIMEOUT):
         """断言元素属性值"""
         self._wait_for_element(selector)
         actual_value = self.page.locator(selector).get_attribute(attribute, timeout=timeout)
@@ -270,7 +272,8 @@ class BasePage:
         self._wait_for_element(selector)
         actual_value = self.page.locator(selector).input_value(timeout=timeout)
         assert actual_value == expected_value, f"断言失败: 元素 {selector} 的值应为 '{expected_value}', 实际值为 '{actual_value}'"
-        allure.attach(f"断言成功: 元素 {selector} 的值应为 '{expected_value}', 实际值为 '{actual_value}'", name="断言结果",
+        allure.attach(f"断言成功: 元素 {selector} 的值应为 '{expected_value}', 实际值为 '{actual_value}'",
+                      name="断言结果",
                       attachment_type=allure.attachment_type.TEXT)
 
     @check_and_screenshot()
@@ -280,8 +283,6 @@ class BasePage:
         self._wait_for_element(selector)
         actual_value = self.page.locator(selector).is_checked(timeout=timeout)
         assert actual_value, f"断言失败: 元素 {selector} 未被选中"
-
-
 
     @handle_page_error
     @allure.step("存储变量 {name}")
@@ -501,17 +502,25 @@ class BasePage:
         return dialog_message
 
     @handle_page_error
+    @allure.step("弹出tab")
+    def expect_popup(self, action, selector, variable_name, scope="global"):
+        with self.page.expect_popup() as popup_info:
+            # 这里需要执行触发弹出的操作，可以递归调用
+            if action == "click":
+                self.click(selector)
+        new_page = popup_info.value
+        self.pages.append(new_page)
+        self.page = new_page
+        self.store_variable(variable_name, len(self.pages) - 1, scope)
+
+    @handle_page_error
     @allure.step("切换窗口")
-    def switch_window(self, url_contains: str = None, title_contains: str = None):
+    def switch_window(self, value=0):
         """切换到指定窗口"""
-        pages = self.page.context.pages
-        for page in pages:
-            if url_contains and url_contains in page.url:
-                self.page = page
-                return
-            if title_contains and title_contains in page.title():
-                self.page = page
-                return
+        if value < 0 or value >= len(self.pages):
+            raise ValueError("无效的窗口索引")
+        """切换到指定窗口"""
+        self.page = self.pages[value]
         raise ValueError("未找到匹配的窗口")
 
     @handle_page_error
@@ -563,11 +572,15 @@ class BasePage:
             required = {"name", "value", "url"}
             if not required.issubset(kwargs):
                 raise ValueError("添加Cookie缺少必要参数: name, value, url")
-            self.page.context.add_cookies([kwargs])
+            self.page.context.add_cookies(**kwargs)
+
         elif action == "get":
             return self.page.context.cookies()
         elif action == "delete":
             self.page.context.clear_cookies()
+        else:
+            raise ValueError("无效的Cookie操作")
+        return True
 
     @handle_page_error
     @allure.step("获取元素属性")
