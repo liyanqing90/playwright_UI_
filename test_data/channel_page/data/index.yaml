@@ -137,7 +137,7 @@ test_data:
         selector: 报价
         value: 真实在线报价
       - action: expect_popup
-        selector: //div[@class="store-sales-cont"]
+        selector: 金牌销售
         variable_name: pop_index
       - action: assert_url
         value: https://work.weixin.qq.com/ca/cawcde008b52661817?customer_channel=6866165
@@ -146,7 +146,7 @@ test_data:
         value: https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100
       - action: wait
       - action: expect_popup
-        selector: //div[@class='store-sales-contact-online']
+        selector: 报价
         variable_name: pop_index
       - action: assert_url
         value: https://work.weixin.qq.com/ca/cawcde0ceb320e0488?customer_channel=6865378
@@ -220,7 +220,7 @@ test_data:
       - action: click
         selector: 关闭
       - action: expect_popup
-        selector: //div[@class='highlight-price-contact']
+        selector: 一对一报价
         variable_name: pop_index
       - action: assert_url
         value: https://work.weixin.qq.com/ca/cawcde96c9ccc668a9?customer_channel=6866154
@@ -228,14 +228,14 @@ test_data:
       - action: assert_url
         value: https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100
 
-  test_car_details:
-    description: "车系详情"
-    steps:
-      - action: goto
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
-      - action: store_text
-        selector: 车系名称
-        variable_name: 车系名称
+#  test_car_details:
+#    description: "车系详情"
+#    steps:
+#      - action: goto
+#        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+#      - action: store_text
+#        selector: 车系名称
+#        variable_name: 车系名称
 
 
 

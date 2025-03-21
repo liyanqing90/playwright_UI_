@@ -52,8 +52,10 @@ elements:
   获取底价: (//div[contains(text(),'获取底价')])[1]
   留资弹窗优惠金额: h3[class='car-card-deals-title'] span[class='color']
   关闭: //div[@class='fill-info-popup-close']
+  一对一报价: //div[@class='highlight-price-contact']
 
-  车系名称: //div[@class='series-card-name']
+
+#  车系名称: //div[@class='series-card-name']
 
 
 
