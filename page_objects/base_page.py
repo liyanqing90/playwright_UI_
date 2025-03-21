@@ -256,6 +256,33 @@ class BasePage:
         allure.attach(f"断言成功: 元素 {selector} 不可见", name="断言结果",
                       attachment_type=allure.attachment_type.TEXT)
 
+    @check_and_screenshot()
+    @allure.step("断言元素属性值")
+    def assert_attribute(self,selector: str, attribute: str, expected_value: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+        """断言元素属性值"""
+        self._wait_for_element(selector)
+        actual_value = self.page.locator(selector).get_attribute(attribute, timeout=timeout)
+
+    @check_and_screenshot()
+    @allure.step("assert value")
+    def assert_value(self, selector: str, expected_value: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+        """断言元素属性值"""
+        self._wait_for_element(selector)
+        actual_value = self.page.locator(selector).input_value(timeout=timeout)
+        assert actual_value == expected_value, f"断言失败: 元素 {selector} 的值应为 '{expected_value}', 实际值为 '{actual_value}'"
+        allure.attach(f"断言成功: 元素 {selector} 的值应为 '{expected_value}', 实际值为 '{actual_value}'", name="断言结果",
+                      attachment_type=allure.attachment_type.TEXT)
+
+    @check_and_screenshot()
+    @allure.step("assert checked")
+    def assert_checked(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+        """断言元素已选择"""
+        self._wait_for_element(selector)
+        actual_value = self.page.locator(selector).is_checked(timeout=timeout)
+        assert actual_value, f"断言失败: 元素 {selector} 未被选中"
+
+
+
     @handle_page_error
     @allure.step("存储变量 {name}")
     def store_variable(self, name: str, value: str, scope: str = "global"):
