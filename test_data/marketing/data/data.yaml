@@ -191,7 +191,7 @@ test_data:
         value: 以旧换新
       - action: assert_text
         selector: detail_new_name
-        value: 2024款 1.5T 后驱Plus版 5座1
+        value: 2024款 1.5T 后驱Plus版 5座
       - action: click
         selector: detail_old_btn
       - action: click
@@ -239,6 +239,97 @@ test_data:
         value: ${旧城市}-${旧地区}
       - action: click
         selector: detail_old_confirm
+      - action: assert_text
+        selector: detail_old_name
+        value: ${旧车型}
+      - action: click
+        selector: detail_old_del
+      - action: assert_visible
+        selector: detail_old_btn
+
+  test_detail_car_trade_in_pop:
+    description: "以旧换新"
+    steps:
+      - action: navigate
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+      - action: click
+        selector: choice_trade_in
+      - action: assert_text
+        selector: choice_text
+        value: 以旧换新
+      - action: click
+        selector: detail_old_btn
+      - action: wait_for_network_idle
+      - action: assert_visible
+        selector: detail_old_填写车型
+      - action: assert_visible
+        selector: detail_old_选择地址
+      - action: assert_visible
+        selector: detail_old_选择时间
+      - action: assert_visible
+        selector: detail_old_选择里程
+      - action: click
+        selector: detail_old_close
+      - action: assert_visible
+        selector: detail_old_btn
+
+  test_detail_car_trade_in_brand:
+    description: "以旧换新"
+    steps:
+      - action: navigate
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+      - action: click
+        selector: choice_trade_in
+      - action: assert_text
+        selector: choice_text
+        value: 以旧换新
+      - action: click
+        selector: detail_old_btn
+      - action: click
+        selector: detail_old_my-car
+      - action: assert_text
+        selector: detail_old_brand_title
+        value: 选择旧车品牌
+      - action: click
+        selector: detail_old_brand_close
+      - action: assert_text
+        selector: detail_brand_hot
+        value: 热门品牌
+      - action: click
+        selector: detail_old_my-car
+      - action: click
+        selector: detail_old_brand_D
+      - action: click
+        selector: detail_old_brand_大众
+      - action: assert_text
+        selector: detail_old_car_series_title
+        value: 选择旧车车系
+      - action: assert_text
+        selector: detail_car_series_1_car_fac
+        value: 一汽-大众
+      - action: click
+        selector: detail_car_series_back
+      - action: wait
+      - action: click
+        selector: detail_old_brand_大众
+      - action: wait
+      - action: click
+        selector: detail_car_series_2_car_fac
+      - action: click
+        selector: //span[normalize-space()="Arteon"]
+      - action: assert_text
+        selector: detail_car_title
+        value: 选择旧车车型
+      - action: click
+        selector: detail_car_back
+      - action: wait
+      - action: click
+        selector: detail_car_series_1_series
+      - action: click
+        selector: detail_car_1_car
+
+
+
 
 
 
