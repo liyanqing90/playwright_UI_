@@ -228,14 +228,62 @@ test_data:
       - action: assert_url
         value: https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100
 
-#  test_car_details:
-#    description: "车系详情"
-#    steps:
-#      - action: goto
-#        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
-#      - action: store_text
-#        selector: 车系名称
-#        variable_name: 车系名称
+  test_car_details:
+    description: "车系详情"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+      - action: store_text
+        selector: 车卡车系名称
+        variable_name: 车卡车系名称
+      - action: click
+        selector: 车卡车系名称
+      - action: store_text
+        selector: 详情车系名称
+        variable_name: 详情车系名称
+      - action: assert_text
+        selector: 详情车系名称
+        value: ${车卡车系名称}
+      - action: assert_text
+        selector: 门店信息
+        value: 门店信息
+      - action: assert_text
+        selector: 购车计算
+        value: 购车计算
+      - action: assert_text
+        selector: 以旧换新
+        value: 以旧换新
+      - action: assert_text
+        selector: 试驾服务
+        value: 试驾服务
+
+  test_car_details_info:
+    description: "门店信息"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+      - action: click
+        selector: 车卡车系名称
+      - action: click
+        selector: 门店信息
+      - action: assert_text
+        selector: detail_one_store
+        value: 导航到店
+      - action: assert_text
+        selector: detail_call
+        value: 电话咨询
+      - action: assert_text
+        selector: detail_question
+        value: 在线咨询
+
+
+
+
+
+
+
+
+
 
 
 

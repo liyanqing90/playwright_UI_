@@ -54,8 +54,24 @@ elements:
   关闭: //div[@class='fill-info-popup-close']
   一对一报价: //div[@class='highlight-price-contact']
 
+  车卡车系名称: (//div[@class='series-card-name'])[1]
+  车卡: (//div[@we-com-info='[object Object]'])[3]
+  详情车系名称: //div[@class='spec-select__name']
+  门店信息: //span[contains(text(),"门店信息")]
+  购车计算: //span[contains(text(),'购车计算')]
+  以旧换新: //span[contains(text(),'以旧换新')]
+  试驾服务: //span[contains(text(),'试驾服务')]
 
-#  车系名称: //div[@class='series-card-name']
+  choice_text: //div[@aria-selected="true"]/span
+  choice_car_clc: //span[contains(text(),"购车计算")]
+  choice_trade_in: //span[contains(text(),"以旧换新")]
+  choice_test_drive: //span[contains(text(),"试驾服务")]
+  detail_one_store: //div[@class="oneStore"]
+  detail_call: //div[@class="call"]
+  detail_question: //div[@class="question"]
+
+
+
 
 
 

@@ -1,5 +1,4 @@
 test_cases:
-  - name: test_demo
-    fixtures: [ ]
-    depends_on: [ ]
-  - name: test_demo2
+#  - name: test_banner
+  - name: test_store_information
+
