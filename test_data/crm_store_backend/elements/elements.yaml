@@ -50,12 +50,12 @@ elements:
   新建列表数据车型: //div[@_nk="aPX813"]
   新建列表数据香港: //td[contains(text(),'香港')]
   新建列表数据测试宝骏: //td[contains(text(),'测试宝骏20150609')]
-  新建列表数据厂商指导价: .ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-row-hover
-  新建列表数据库存状态列: //td[@class='ant-table-cell ant-table-cell-row-hover'][contains(text(),'现车')]
-  新建列表数据交货期: //td[@class='ant-table-cell ant-table-cell-row-hover'][contains(text(),'1周')]
+  新建列表数据厂商指导价: (//td[normalize-space()='28.980'])[1]
+  新建列表数据库存状态列: (//td[@class='ant-table-cell'][contains(text(),'现车')])[1]
+  新建列表数据交货期: (//td[@class='ant-table-cell'][contains(text(),'1周')])[1]
   新建列表数据裸车价: (//td[@class='ant-table-cell'][normalize-space()='28.780'])[1]
   新建列表数据DCC线上报价: (//td[@class='ant-table-cell'][normalize-space()='28.780'])[2]
-  新建列表数据金融手续费列: //td[@class='ant-table-cell ant-table-cell-row-hover'][normalize-space()='1.000']
+  新建列表数据金融手续费列: (//td[@class='ant-table-cell'][normalize-space()='1.000'])[1]
 
   停用按钮: (//span[contains(text(),'停用')])[1]
   确认按钮: role=button[name="是"]
