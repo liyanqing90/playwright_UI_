@@ -36,6 +36,8 @@
         selector: 车型筛选框
       - action: click
         selector: 选择车型
+      - action: click
+        selector: 查询按钮
 
     list_add_data_steps: #列表新建数据验证
       - action: assert_text

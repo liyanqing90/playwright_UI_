@@ -201,42 +201,42 @@ test_data:
       - action: assert_text
         selector: 新建详情交货日期
         value: 1周
-#      - action: assert_text
-#        selector: 新建详情DCC报价
-#        value: "28.780"
-#      - action: assert_text
-#        selector: 新建详情裸车价
-#        value: "28.780"
+      - action: 验证值
+        selector: 新建详情DCC报价
+        value: "28.780"
+      - action: 验证值
+        selector: 新建详情裸车价
+        value: "28.780"
       - action: assert_text
         selector: 强制保险否
         value: 否
       - action: assert_text
         selector: 强制上牌否
         value: 否
-#      - action: assert_text
-#        selector: 新建详情本品本店置换
-#        value: "100"
+      - action: 验证值
+        selector: 新建详情本品本店置换
+        value: "100"
       - action: assert_text
         selector: 新建详情比例模式
         value: 比例模式
       - action: assert_text
         selector: 新建详情形式
         value: 抵扣车款
-#      - action: assert_text
-#        selector: 新建详情首付比例
-#        value: "10"
+      - action: 验证值
+        selector: 新建详情首付比例
+        value: "10"
       - action: assert_text
         selector: 新建详情免息期数
         value: "12期"
-#      - action: assert_text
-#        selector: 新建详情低首付金融
-#        value: "13"
-#      - action: assert_text
-#        selector: 新建详情金融手续费
-#        value: "1.000"
-#      - action: assert_text
-#        selector: 新建详情金融购车推荐方案
-#        value: 方案1添加
+      - action: 验证值
+        selector: 新建详情低首付金融
+        value: "13"
+      - action: 验证值
+        selector: 新建详情金融手续费
+        value: "1.000"
+      - action: 验证值
+        selector: 新建详情金融购车推荐方案
+        value: 方案1添加
       - action: assert_text
         selector: 无绑定条件
         value: 无
