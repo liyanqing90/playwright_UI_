@@ -18,3 +18,5 @@ test_data:
         selector: 图片
       - action: click
         selector: 清空全部
+
+
