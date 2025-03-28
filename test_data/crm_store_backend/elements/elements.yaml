@@ -1,14 +1,14 @@
 elements:
   账号密码登录tab: text=账号密码登录
-  账号输入框: text=请输入账号
-  密码输入框: text=请输入密码
+  账号输入框: //input[@id='phone']
+  密码输入框: //input[@id='password']
   登录按钮: role=button[name="登 录"]
 
   购车政策: text="购车政策"
   购车政策列表: text="购车政策列表"
+
   新增按钮: role=button [name="+新增"]
-  品牌下拉框: role=combobox [name="* 品牌 :"]
-  #新增购车政策: label="新增购车政策"
+  品牌下拉框: //input[@id='brandInfo']
   奥迪品牌: .ant-select-item-option-content
   车系列表: role=combobox [name="* 车系 :"]
   奥迪A4L车系: div[aria-selected="false"][title="奥迪A4L"]
@@ -44,17 +44,69 @@ elements:
   无绑定条件: //*[@id="bindCondition"]/label[1]
   无特殊颜色: //*[@id="specialColor"]/label[1]
   提交按钮: //button[@_nk="OCId36"]
-  查询按钮: role=button[name="查 询"]
-  奥迪: //div[@_nk="aPX811"]
-  奥迪A4L: //div[@_nk="aPX812"]
-  车型: //div[@_nk="aPX813"]
-  香港: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(3)
-  测试宝骏: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(4)
-  厂商指导价: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(5)
-  库存状态列: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(6)
-  交货期: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(7)
-  裸车价: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(8)
-  DCC线上报价: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(9)
-  金融手续费列: tbody[class="ant-table-tbody"]>tr:nth-child(2)>td:nth-child(14)
 
+  新建列表数据奥迪: //div[@_nk="aPX811"]
+  新建列表数据奥迪A4L: //div[@_nk="aPX812"]
+  新建列表数据车型: //div[@_nk="aPX813"]
+  新建列表数据香港: //td[contains(text(),'香港')]
+  新建列表数据测试宝骏: //td[contains(text(),'测试宝骏20150609')]
+  新建列表数据厂商指导价: (//td[normalize-space()='28.980'])[1]
+  新建列表数据库存状态列: (//td[@class='ant-table-cell'][contains(text(),'现车')])[1]
+  新建列表数据交货期: (//td[@class='ant-table-cell'][contains(text(),'1周')])[1]
+  新建列表数据裸车价: (//td[@class='ant-table-cell'][normalize-space()='28.780'])[1]
+  新建列表数据DCC线上报价: (//td[@class='ant-table-cell'][normalize-space()='28.780'])[2]
+  新建列表数据金融手续费列: (//td[@class='ant-table-cell'][normalize-space()='1.000'])[1]
 
+  停用按钮: (//span[contains(text(),'停用')])[1]
+  确认按钮: role=button[name="是"]
+  启用状态筛选项: role=combobox[name="启用状态 :"]
+  停用选项: text=停用
+
+  查询按钮: //span[contains(text(),'查 询')]
+  第一行: //div[contains(text(),'2025款 200万辆悦享版 40 TFSI 时尚动感型')]
+  状态: (//span[contains(text(),'启用')])[1]
+
+  编辑按钮: (//span[contains(text(),'编辑')])[1]
+  #x详情元素
+  新建详情品牌: span[title='奥迪']
+  新建详情车系: span[title='奥迪A4L']
+  新建详情车型: span[title='289800']
+  新建详情经销商省份: (//span[@title='香港'][contains(text(),'香港')])[1]
+  新建详情经销商城市: (//span[@title='香港'][contains(text(),'香港')])[2]
+  新建详情经销商区域: (//span[@title='香港'][contains(text(),'香港')])[3]
+  新建详情经销商名称: span[title='测试宝骏20150609']
+  新建详情库存状态: span[title='现车']
+  新建详情交货日期: span[title='1周']
+  新建详情裸车价: (//input[@id='nakedPrice'])[1]
+  新建详情DCC报价: //input[@id='salesPrice']
+  新建详情强制保险: //div[5]//div[3]
+  新建详情强制上牌: (//input[@value='0'])[2]
+  新建详情本品本店置换: //input[@id='sameProductSameStoreReplacement']
+  新建详情形式: span[title='抵扣车款']
+  新建详情比例模式: span[title='比例模式']
+  新建详情首付比例: input[placeholder='首付比例']
+  新建详情免息期数: span[title='12期']
+  新建详情低首付金融: (//input[@id='downPayment'])[1]
+  新建详情金融手续费: //input[@id='financialPoundage']
+  新建详情金融购车推荐方案: textarea[class='ant-input']
+  新建详情无绑定条件: (//span[@class='ant-radio ant-radio-checked'])[3]
+  新建详情无特殊颜色: (//input[@value='0'])[4]
+  新建详情提交按钮: //span[contains(text(),'提 交')]
+  新建详情取消按钮: //span[contains(text(),'取 消')]
+
+  删除按钮: (//span[contains(text(),'删除')])[1]
+  确认删除: //span[contains(text(),'是')]
+
+  经销商省份筛选框: //input[@id='provinceId']
+  选择经销商省份: //div[contains(@title,'香港')]//div[1]
+  经销商城市筛选框: //input[@id='cityId']
+  选择经销商城市: (//div[contains(text(),'香港')])[2]
+  经销商区域筛选框: //input[@id='countyId']
+  选择经销商区域: (//div[contains(@class,'ant-select-item-option-content')][contains(text(),'香港')])[3]
+  品牌筛选框: //input[@id='brandId']
+  选择品牌: div[title='奥迪'] div[class='ant-select-item-option-content']
+  车系筛选框: //input[@id='seriesId']
+  选择车系: //div[contains(@title,'奥迪A4L')]//div[1]
+  车型筛选框: //input[@id='specId']
+  选择车型: //div[contains(@title,'2025款 200万辆悦享版 40 TFSI 时尚动感型')]//div[1]
+  暂无数据: (//div[contains(@class,'ant-empty-description')][contains(text(),'暂无数据')])[1]
