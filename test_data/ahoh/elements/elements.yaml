@@ -1,6 +1,8 @@
 elements:
   首页-登录用户姓名: div.ai-card__role>span.name
   下订信息-保存按钮: div.orderConfirm-header-right
+  下订信息-基础信息-展开: div.van-cell__value
+  下订信息-上牌城市: input[name="registerCityName"]
   下订信息-上牌费用输入框: input[name="registerAmount"]
   下订信息-付款凭证输入框: div.uploader-box.payPic-box[data-v-acd976af] input.van-uploader__input
 #  xpath=//input[@name="payPic"]/parent::div
@@ -151,10 +153,11 @@ elements:
   推送-确定选择按钮: div.submit-btn-box>section
   推送-选择推送车型半屏页: section.push-lead-content>section.popup-header #点击推送按钮出现的半屏页
   推送-确认推送: div.confirm-btn
+  推送-选择车型页搜索框搜索: section.car-selection .van-search.reset-search .van-field.van-search__field.reset-search .van-field__left-icon
   推送-选择筛选的第一个车型: section.search-car-group>section:nth-child(1)
   推送-选择所属经销商: xpath=//input[@placeholder="请选择经销商"]
   推送-选择推送车型: xpath=//*[@class="car-name"]
-  推送-选择车型输入框: xpath=//input[@type="search"]
+  推送-选择车型输入框: input[placeholder="请输入车型"]
   推送-选择车型页标题: section.popup-header
   推送-选择随机经销商: section.dealer-list-box
   推送经销商弹框-取消按钮: div.footer-btn-box>:nth-child(1)
@@ -170,7 +173,8 @@ elements:
   登录按钮: xpath=//button[@type="button"]
   登录账号: id=login-phoneInput
   线索详情-返回上一页: div.go-back-icon
-  线索详情页-任务信息-第一个主任务的状态: span.type-status
+  线索详情-任务信息-第一个主任务的名称: .instore-info-main > .instore-info-item-card:first-child .type-label
+  线索详情页-任务信息-第一个主任务的状态: span.type-status  #.instore-info-main > .instore-info-item-card:first-child .type-status
   线索详情页-任务信息-第一个子任务的状态: div.title-left>div.tag
   线索详情页-任务信息-第一个子任务取消按钮: div.bottom-btn>span.btn-cancel
   线索详情页-任务信息-第一个子任务开始按钮: div.bottom-btn>span.btn-primary
@@ -199,8 +203,7 @@ elements:
   add_service: "span[data-v-7d609ef8]" # 新增服务事项
   phone_button: "div.fillInWhiteBtnForCustomer" # 打电话
   线索详情页面标题-线索状态: section.nav-title
-  线索详情页面标题-线索状态2: '#app > div.app-wrapper > div > div > section > section > div >
-    div > section.nav-title'
+  线索详情页面标题-线索状态2: #app > div.app-wrapper > div > div > section > section > div >div>section.nav-title
 
   订单列表-搜索: div.search-icon
   订单列表-搜索输入框: xpath=//*[@id="app"]/div/div/div/div/div[1]/div/div/div/div/div[2]/div/input
@@ -213,6 +216,13 @@ elements:
   订单卡片-填写信息按钮: div#app > div > div > div > div > div:nth-of-type(2) > div > div >
     div:nth-of-type(2) > div > div > div > div:nth-of-type(4) > div:nth-of-type(2)
     > div:nth-of-type(3)
+  订单列表第一个卡片-三个点: .orderListcard > .listcard:first-child .van-popover__wrapper
+  订单卡片-取消下订选项: div.van-popover__action
+  取消下订确认弹窗确认取消文案: div.van-dialog__content>div
+  取消下订确认弹窗转跟进任务文案:  div.van-dialog__content>p
+  取消下订确认弹窗-确认按钮: div[class="van-hairline--top van-dialog__footer"]>button:nth-child(2)
+  取消下订确认弹窗-取消按钮: div[class="van-hairline--top van-dialog__footer"]>button:nth-child(1)
+
   订单卡片第一个-发票状态: 
     div.orderListcard>div:nth-child(1)>div.listcont>div.listcard-cont>div:nth-child(5)>div.listcard-cont-value
   试驾车系选择框: section[placeholder="请选择试驾车系"]
@@ -249,6 +259,3 @@ elements:
   确认函预览-分享客户微信按钮: div.confirmation-button>button:nth-child(2)
   确认函预览-短信按钮: div.confirmation-button>button:nth-child(1)
   确认函预览-邀请信息-复制文本: text=复制文本
-
-
-
