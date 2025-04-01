@@ -1,14 +1,13 @@
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 import allure
 
 from constants import DEFAULT_TYPE_DELAY, DEFAULT_TIMEOUT
 from page_objects.base_page import base_url
 from utils.logger import logger
-from utils.variable_manager import VariableManager
 
 
 class StepAction:
@@ -20,7 +19,7 @@ class StepAction:
     PRESS_KEY = ['press_key', '按键']
     WAIT = ['wait', '等待']
 
-    #执行Python文件
+    # 执行Python文件
     EXECUTE_PYTHON = ['execute_python', '执行Python']
     # 断言相关
     ASSERT_VISIBLE = ['assert_visible', '验证可见']
@@ -84,6 +83,12 @@ class StepAction:
     KEYBOARD_SHORTCUT = ['keyboard_shortcut', '键盘快捷键']
     KEYBOARD_PRESS = ['keyboard_press', '全局按键']
     KEYBOARD_TYPE = ['keyboard_type', '全局输入']
+
+    # 流程控制操作
+    USE_MODULE = ['use_module', '使用模块']
+    IF_CONDITION = ['if', '如果']
+    FOR_EACH = ['for_each', '循环']
+
     # 不需要selector的操作
     NO_SELECTOR_ACTIONS = (
             NAVIGATE +
@@ -106,7 +111,10 @@ class StepAction:
             FAKER +
             KEYBOARD_SHORTCUT +
             KEYBOARD_PRESS +
-            KEYBOARD_TYPE
+            KEYBOARD_TYPE +
+            USE_MODULE +
+            IF_CONDITION +
+            FOR_EACH
     )
 
 
@@ -116,7 +124,7 @@ class StepExecutor:
         self.has_error = None
         self.page = page
         self.ui_helper = ui_helper
-        self.elements = elements
+        self.elements = elements or {}
         self.start_time = None
         self.step_has_error = False  # 步骤错误状态
         self._log_buffer = StringIO()  # 步骤日志缓存
@@ -133,21 +141,65 @@ class StepExecutor:
             a.lower() for a in StepAction.NO_SELECTOR_ACTIONS
         }
 
+        # 初始化变量管理器
+        from utils.variable_manager import VariableManager
+        self.variable_manager = VariableManager()
+
+        # 初始化项目名称
+        self.project_name = None
+
+        # 已加载的模块缓存
+        self.modules_cache = {}
+
     @staticmethod
     def _prepare_evidence_dir():
         """创建截图存储目录"""
         Path("./evidence/screenshots").mkdir(parents=True, exist_ok=True)
         # 日志handler ID        Path("./evidence/screenshots").mkdir(parents=True, exist_ok=True)
 
+    def setup(self, elements: Dict[str, Any] = None):
+        """设置元素定义，在测试开始前调用"""
+        if elements:
+            self.elements = elements
+
+    def execute_steps(self, steps: List[Dict[str, Any]], project_name: str = None) -> None:
+        """
+        执行多个测试步骤
+        
+        Args:
+            steps: 测试步骤列表
+            project_name: 项目名称，用于加载模块
+        """
+        self.project_name = project_name
+        for step in steps:
+            try:
+                self.execute_step(step)
+            except Exception as e:
+                logger.error(f"步骤执行失败: {e}")
+                if step.get("continue_on_failure", False):
+                    logger.warning(f"忽略错误并继续执行")
+                    continue
+                raise
+
     def execute_step(self, step: Dict[str, Any]) -> None:
         try:
-
             self.start_time = datetime.now()
+
+            # 检查是否为流程控制步骤
+            if "use_module" in step:
+                self._execute_module(step)
+                return
+            elif "if" in step:
+                self._execute_condition(step)
+                return
+            elif "for_each" in step:
+                self._execute_loop(step)
+                return
 
             action = step.get("action", "").lower()
             pre_selector = step.get("selector")
             selector = self.elements.get(pre_selector, pre_selector)  # 替换变量
-            value = replace_values_from_dict_regex(step.get("value"))  # 替换变量
+            value = self._replace_variables(step.get("value"))  # 替换变量
             logger.debug(f"执行步骤: {action} | 选择器: {pre_selector} | 值: {value}")
             self._validate_step(action, selector)
             self._execute_action(action, selector, value, step)
@@ -169,6 +221,302 @@ class StepExecutor:
         if (action not in self._NO_SELECTOR_ACTIONS and
                 not selector):
             raise ValueError(f"操作 {action} 需要提供selector参数")
+
+    def _execute_module(self, step: Dict[str, Any]) -> None:
+        """
+        执行模块引用
+        
+        Args:
+            step: 包含use_module字段的步骤
+        """
+        module_name = step["use_module"]
+        params = step.get("params", {})
+        description = step.get("description", f"执行模块 {module_name}")
+
+        logger.info(f"开始执行模块: {module_name} {description}")
+
+        # 处理参数中的变量
+        processed_params = {}
+        for key, value in params.items():
+            processed_params[key] = self._replace_variables(value)
+
+        # 加载模块步骤
+        try:
+            # 尝试从缓存中获取模块
+            if self.modules_cache.get(module_name):
+                module_data = self.modules_cache[module_name]
+            else:
+                # 获取模块路径
+                if self.project_name:
+                    module_path = os.path.join("test_data", self.project_name, "modules", f"{module_name}.yaml")
+                else:
+                    test_dir = os.environ.get('TEST_DIR', 'test_data')
+                    module_path = os.path.join(test_dir, "modules", f"{module_name}.yaml")
+
+                if not os.path.exists(module_path):
+                    module_path = module_path.replace(".yaml", ".yml")
+
+                # 加载YAML文件
+                from utils.yaml_handler import YamlHandler
+                yaml_handler = YamlHandler()
+                module_data = yaml_handler.load_yaml(module_path)
+
+                # 缓存模块数据
+                self.modules_cache[module_name] = module_data
+
+            # 获取步骤列表
+            if "steps" in module_data:
+                steps = module_data["steps"]
+            elif module_data:
+                # 获取第一个键对应的值
+                first_key = next(iter(module_data))
+                steps = module_data[first_key]
+            else:
+                raise ValueError(f"模块 '{module_name}' 中没有找到步骤")
+
+            # 替换参数
+            processed_steps = self._replace_module_params(steps, processed_params)
+
+            # 执行模块步骤
+            with allure.step(f"执行模块: {module_name}"):
+                for module_step in processed_steps:
+                    self.execute_step(module_step)
+
+            logger.info(f"模块 '{module_name}' 执行完成")
+        except Exception as e:
+            logger.error(f"执行模块 '{module_name}' 失败: {e}")
+            raise
+
+    def _replace_module_params(self, steps: List[Dict[str, Any]], params: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """
+        替换模块步骤中的参数
+        
+        Args:
+            steps: 模块步骤列表
+            params: 参数字典
+            
+        Returns:
+            处理后的步骤列表
+        """
+        import copy
+        processed_steps = copy.deepcopy(steps)
+
+        def replace_in_value(value):
+            if isinstance(value, str):
+                # 替换参数引用，格式为 ${param_name}
+                for param_name, param_value in params.items():
+                    placeholder = "${" + param_name + "}"
+                    if placeholder in value:
+                        value = value.replace(placeholder, str(param_value))
+            return value
+
+        def process_step_dict(step_dict):
+            for key, value in step_dict.items():
+                if isinstance(value, dict):
+                    process_step_dict(value)
+                elif isinstance(value, list):
+                    for i, item in enumerate(value):
+                        if isinstance(item, dict):
+                            process_step_dict(item)
+                        else:
+                            value[i] = replace_in_value(item)
+                else:
+                    step_dict[key] = replace_in_value(value)
+
+        for step in processed_steps:
+            process_step_dict(step)
+
+        return processed_steps
+
+    def _execute_condition(self, step: Dict[str, Any]) -> None:
+        """
+        执行条件分支
+        
+        Args:
+            step: 包含if字段的步骤
+        """
+        condition = step["if"]
+        then_steps = step.get("then", [])
+        else_steps = step.get("else", [])
+        description = step.get("description", "条件分支")
+
+        # 计算条件表达式
+        # 先获取原始表达式内容用于日志
+        original_condition = condition
+        
+        # 提取表达式内容（如果是${{...}}格式）
+        if condition.startswith("${{") and condition.endswith("}}"):
+            expr_content = condition[3:-2].strip()
+            # 替换变量得到可读的表达式
+            readable_expr = self._replace_variables(expr_content)
+        else:
+            readable_expr = self._replace_variables(condition)
+        
+        # 计算条件结果
+        condition_result = self._evaluate_expression(condition)
+
+        with allure.step(f"条件分支: {description} ({readable_expr} = {condition_result})"):
+            if condition_result:
+                logger.info(f"条件 '{readable_expr}' 为真，执行THEN分支")
+                for then_step in then_steps:
+                    self.execute_step(then_step)
+            else:
+                logger.info(f"条件 '{readable_expr}' 为假，执行ELSE分支")
+                for else_step in else_steps:
+                    self.execute_step(else_step)
+
+    def _execute_loop(self, step: Dict[str, Any]) -> None:
+        """
+        执行循环
+        
+        Args:
+            step: 包含for_each字段的步骤
+        """
+        items = step["for_each"]
+        as_var = step.get("as", "item")
+        do_steps = step.get("do", [])
+        description = step.get("description", "循环")
+
+        # 处理循环项，可能是变量引用或直接值
+        if isinstance(items, str) and items.startswith("${") and items.endswith("}"):
+            var_name = items[2:-1]
+            items_value = self.variable_manager.get_variable(var_name)
+        else:
+            items_value = items
+
+        # 确保循环项是可迭代的
+        if not isinstance(items_value, (list, tuple, dict)):
+            if isinstance(items_value, str):
+                try:
+                    # 尝试解析为JSON
+                    items_value = json.loads(items_value)
+                except json.JSONDecodeError:
+                    # 如果不是JSON，则转为列表
+                    items_value = [items_value]
+            else:
+                items_value = [items_value]
+
+        # 如果是字典，则遍历键
+        if isinstance(items_value, dict):
+            items_value = list(items_value.keys())
+
+        with allure.step(f"循环: {description} (迭代 {len(items_value)} 个项)"):
+            for i, item in enumerate(items_value):
+                logger.info(f"循环项 {i + 1}/{len(items_value)}: {item}")
+
+                # 设置循环变量
+                self.variable_manager.set_variable(as_var, item, "test_case")
+
+                # 执行循环体
+                for do_step in do_steps:
+                    self.execute_step(do_step)
+
+    def _evaluate_expression(self, expression: str) -> bool:
+        """
+        计算表达式的值
+        
+        Args:
+            expression: 表达式字符串，如 "${{ ${count} > 5 }}"
+            
+        Returns:
+            表达式的布尔结果
+        """
+        # 检查是否是表达式格式
+        if not (expression.startswith("${{") and expression.endswith("}}")):
+            # 不是表达式，直接返回表达式值的布尔性
+            return bool(self._replace_variables(expression))
+
+        # 提取表达式内容
+        expr_content = expression[3:-2].strip()
+
+        # 替换所有变量引用
+        expr_content = self._replace_variables(expr_content)
+
+        # 安全计算表达式
+        try:
+            # 为了安全起见，我们需要确保字符串值被正确引用
+            # 创建一个安全的执行环境
+            safe_globals = {"__builtins__": {}}
+            
+            # 尝试将表达式中的字符串值用引号括起来
+            # 这是一个简单的方法，可能需要更复杂的解析来处理所有情况
+            if '==' in expr_content or '!=' in expr_content:
+                parts = []
+                if '==' in expr_content:
+                    parts = expr_content.split('==')
+                    operator = '=='
+                else:
+                    parts = expr_content.split('!=')
+                    operator = '!='
+                    
+                if len(parts) == 2:
+                    left = parts[0].strip()
+                    right = parts[1].strip()
+                    
+                    # 如果左右两边不是已经被引号括起来的，且不是纯数字，则添加引号
+                    if not (left.startswith('"') and left.endswith('"')) and not (left.startswith("'") and left.endswith("'")):
+                        try:
+                            float(left)  # 尝试转换为数字
+                        except ValueError:
+                            left = f"'{left}'"  # 不是数字，添加引号
+                            
+                    if not (right.startswith('"') and right.endswith('"')) and not (right.startswith("'") and right.endswith("'")):
+                        try:
+                            float(right)  # 尝试转换为数字
+                        except ValueError:
+                            right = f"'{right}'"  # 不是数字，添加引号
+                    
+                    expr_content = f"{left} {operator} {right}"
+            
+            # 执行表达式
+            result = eval(expr_content, safe_globals)
+            return bool(result)
+        except Exception as e:
+            logger.error(f"表达式计算错误: {expr_content} - {e}")
+            return False
+
+    def _replace_variables(self, value: Any) -> Any:
+        """
+        替换值中的变量引用
+        
+        Args:
+            value: 原始值，可能包含变量引用 ${var_name}
+            
+        Returns:
+            替换后的值
+        """
+        if value is None:
+            return value
+
+        if isinstance(value, (int, float, bool)):
+            return value
+
+        if isinstance(value, str):
+            # 处理完整的变量引用，如 ${var_name}
+            if value.startswith("${") and value.endswith("}") and value.count("${") == 1:
+                var_name = value[2:-1]
+                return self.variable_manager.get_variable(var_name)
+
+            # 替换内嵌变量引用
+            import re
+            pattern = r'\${([^{}]+)}'
+            
+            def replace_var(match):
+                var_name = match.group(1)
+                var_value = self.variable_manager.get_variable(var_name)
+                return str(var_value) if var_value is not None else match.group(0)
+            
+            # 使用正则表达式替换所有变量引用
+            result = re.sub(pattern, replace_var, value)
+            return result
+
+        if isinstance(value, list):
+            return [self._replace_variables(item) for item in value]
+
+        if isinstance(value, dict):
+            return {k: self._replace_variables(v) for k, v in value.items()}
+
+        return value
 
     def _execute_action(self, action: str, selector: str, value: Any = None, step: Dict[str, Any] = None) -> None:
         """执行具体操作"""
@@ -272,18 +620,21 @@ class StepExecutor:
             self.ui_helper.assert_value(selector, expected)
 
         elif action in StepAction.STORE_VARIABLE:
-            self.ui_helper.store_variable(step['name'], value, step.get('scope', 'global'))
+            var_name = step.get('name', 'temp_var')
+            var_value = step.get('value')
+            scope = step.get('scope', 'global')
+            # 存储变量
+            self.variable_manager.set_variable(var_name, var_value, scope)
+            logger.info(f"已存储变量 {var_name}={var_value} (scope={scope})")
 
         elif action in StepAction.STORE_TEXT:
-            self.ui_helper.store_text(selector, step.get('variable_name', value), step.get('scope', 'global'))
-
-        elif action in StepAction.STORE_ATTRIBUTE:
-            self.ui_helper.store_attribute(
-                selector,
-                step['attribute'],
-                step.get('variable_name', value),
-                step.get('scope', 'global')
-            )
+            var_name = step.get('variable_name', 'text_var')
+            scope = step.get('scope', 'global')
+            # 获取元素文本
+            text = self.ui_helper.get_text(selector)
+            # 存储文本
+            self.variable_manager.set_variable(var_name, text, scope)
+            logger.info(f"已存储元素文本 {var_name}={text} (scope={scope})")
 
         elif action in StepAction.REFRESH:
             self.ui_helper.refresh()
@@ -347,7 +698,7 @@ class StepExecutor:
         elif action in StepAction.EXPECT_POPUP:
             action = step.get("real_action", "click")
             variable_name = step.get('variable_name', value)
-            self.ui_helper.expect_popup(action, selector,variable_name)
+            self.ui_helper.expect_popup(action, selector, variable_name)
 
         elif action in StepAction.SWITCH_WINDOW:
             self.ui_helper.switch_window(value)
@@ -488,32 +839,6 @@ def generate_faker_data(data_type, **kwargs):
 import re
 
 
-def replace_values_from_dict_regex(value_string):
-    """
-    使用正则表达式从字典中替换字符串中的占位符。
-
-    Args:
-      value_string: 包含占位符的字符串，占位符格式为 '$<key>'。
-
-    Returns:
-      替换占位符后的字符串。
-    """
-    if not value_string or "$<" not in str(value_string): return value_string
-    variable_manager = VariableManager()
-
-    def replace_placeholder(match):
-        """正则表达式替换的回调函数，用于获取匹配到的占位符键名并替换。"""
-        placeholder_key = match.group(1)  # 获取捕获组 (括号内的内容)，即占位符的键名
-        value = variable_manager.get_variable(placeholder_key)  # 使用字典的 get() 方法安全地获取值
-        if value is not None:
-            return str(value)  # 如果找到值，则替换为字典中的值
-        else:
-            print(f"Warning: Key '{placeholder_key}' not found in the dictionary. Placeholder will be kept.")
-            return match.group(0)  # 如果键未找到，打印警告信息并保留原始占位符
-
-    pattern = r"\$\<(\w+)\>"
-    replaced_string = re.sub(pattern, replace_placeholder, value_string)
-    return replaced_string
 def run_dynamic_script_from_path(file_path: Path):
     """
     从 Path 对象表示的文件路径动态地导入和执行一个 Python 模块。
@@ -546,4 +871,3 @@ def run_dynamic_script_from_path(file_path: Path):
         print(e)  # 直接打印 FileNotFoundError 异常信息
     except Exception as e:
         print(f"导入或执行模块 {file_path} 时发生错误：{e}")
-

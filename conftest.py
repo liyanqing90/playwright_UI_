@@ -4,11 +4,11 @@ import time
 import types
 from datetime import datetime
 from pathlib import Path
-from typing import Generator, Any
+from typing import Generator, Any, List
 
 import pytest
 from _pytest.python import Module
-from playwright.sync_api import Browser, sync_playwright, Page
+from playwright.sync_api import Page, Browser, sync_playwright
 
 from page_objects.base_page import BasePage
 from src.case_utils import run_test_data
@@ -24,6 +24,255 @@ DINGTALK_SECRET = "SECa7e01bee3a34e05d1b57297a95b8920d8c257088979c49fa0b50889fd6
 
 config = Config()
 
+# 存储测试依赖关系
+test_dependencies = {}
+# 存储已完成的测试
+completed_tests = set()
+
+
+def pytest_addoption(parser):
+    """添加命令行参数支持"""
+    parser.addoption(
+        "--group",
+        action="store",
+        default=None,
+        help="指定要运行的测试用例组"
+    )
+
+
+def analyze_test_dependencies(items):
+    """
+    分析测试用例之间的依赖关系
+    
+    Args:
+        items: 收集到的测试项列表
+    """
+    global test_dependencies
+    test_dependencies = {}
+
+    # 第一次遍历，收集所有测试用例的依赖关系
+    for item in items:
+        nodeid = item.nodeid
+
+        # 检查前置条件标记
+        depends_on_marker = item.get_closest_marker("depends_on")
+        if depends_on_marker:
+            dependencies = depends_on_marker.args
+            test_dependencies[nodeid] = dependencies
+        else:
+            test_dependencies[nodeid] = []
+
+    logger.debug(f"测试依赖关系: {test_dependencies}")
+
+    # 检测循环依赖
+    def check_cycle(test_id, path=None):
+        if path is None:
+            path = []
+
+        if test_id in path:
+            cycle_path = path[path.index(test_id):] + [test_id]
+            raise ValueError(f"检测到循环依赖: {' -> '.join(cycle_path)}")
+
+        path = path + [test_id]
+        for dep in test_dependencies.get(test_id, []):
+            check_cycle(dep, path)
+
+    # 对所有测试用例检查循环依赖
+    for test_id in test_dependencies:
+        check_cycle(test_id)
+
+
+def get_executable_tests(items) -> List:
+    """
+    获取当前可执行的测试用例列表（所有依赖项都已完成）
+    
+    Args:
+        items: 收集到的测试项列表
+        
+    Returns:
+        可执行的测试项列表
+    """
+    global test_dependencies, completed_tests
+
+    executable_tests = []
+
+    for item in items:
+        nodeid = item.nodeid
+
+        # 如果测试已完成，跳过
+        if nodeid in completed_tests:
+            continue
+
+        # 检查依赖项是否都已完成
+        dependencies = test_dependencies.get(nodeid, [])
+        if all(dep in completed_tests for dep in dependencies):
+            executable_tests.append(item)
+
+    return executable_tests
+
+
+def pytest_collection_modifyitems(config, items):
+    """
+    修改收集到的测试项，支持分组执行、依赖关系处理和优先级排序
+    """
+    # 指定的测试组
+    group_name = config.getoption("--group")
+    if group_name:
+        # 根据指定组过滤测试用例
+        selected_items = []
+        deselected_items = []
+
+        for item in items:
+            # 检查marker中是否有group标记
+            marker = item.get_closest_marker("group")
+            if marker and group_name in marker.args:
+                selected_items.append(item)
+            else:
+                deselected_items.append(item)
+
+        # 更新items
+        if deselected_items:
+            config.hook.pytest_deselected(items=deselected_items)
+            items[:] = selected_items
+
+    # 分析测试用例依赖关系
+    analyze_test_dependencies(items)
+
+    # 如果使用xdist并行执行，在此处不进行依赖处理，由xdist插件处理
+    if hasattr(config, 'workerinput') or (hasattr(config.option, 'numprocesses')):
+        # 仅根据优先级排序测试项
+        items.sort(key=lambda x: get_test_priority(x), reverse=True)
+    else:
+        # 根据依赖关系和优先级排序，确保依赖项先执行
+        items[:] = sort_items_by_dependency_and_priority(items)
+
+
+def sort_items_by_dependency_and_priority(items):
+    """
+    根据依赖关系和优先级排序测试项
+    
+    Args:
+        items: 测试项列表
+        
+    Returns:
+        排序后的测试项列表
+    """
+    global test_dependencies
+
+    # 创建依赖图
+    dependency_graph = {item.nodeid: set(test_dependencies.get(item.nodeid, [])) for item in items}
+
+    # 获取所有测试ID
+    all_tests = set(dependency_graph.keys())
+
+    # 将项目转换为字典，方便查找
+    items_dict = {item.nodeid: item for item in items}
+
+    # 按拓扑排序（考虑依赖关系）和优先级排序测试项
+    sorted_items = []
+    visited = set()
+
+    # 定义拓扑排序递归函数（考虑优先级）
+    def visit(node_id):
+        if node_id in visited:
+            return
+        if node_id in all_tests:  # 确保节点存在于收集的测试中
+            visited.add(node_id)
+
+            # 先访问所有依赖项
+            deps = dependency_graph.get(node_id, set())
+
+            # 根据优先级排序依赖项
+            sorted_deps = sorted(
+                [dep for dep in deps if dep in all_tests],
+                key=lambda x: get_test_priority(items_dict.get(x)),
+                reverse=True
+            )
+
+            for dep in sorted_deps:
+                visit(dep)
+
+            # 添加当前节点
+            if node_id in items_dict:
+                sorted_items.append(items_dict[node_id])
+
+    # 按优先级排序起始节点
+    start_nodes = sorted(
+        all_tests,
+        key=lambda x: get_test_priority(items_dict.get(x)),
+        reverse=True
+    )
+
+    # 执行拓扑排序
+    for node in start_nodes:
+        visit(node)
+
+    # 确保所有测试项都被包含
+    for item in items:
+        if item not in sorted_items:
+            sorted_items.append(item)
+
+    return sorted_items
+
+
+def get_test_priority(item) -> int:
+    """
+    获取测试项的优先级
+    
+    Args:
+        item: 测试项
+        
+    Returns:
+        优先级值，默认为0，数值越大优先级越高
+    """
+    # 检查是否有priority标记
+    marker = item.get_closest_marker("priority")
+    if marker and marker.args:
+        try:
+            return int(marker.args[0])
+        except (ValueError, TypeError):
+            pass
+    return 0
+
+
+@pytest.hookimpl(tryfirst=True)
+def pytest_runtest_setup(item):
+    """
+    测试执行前的设置，检查依赖项是否已完成
+    """
+    global test_dependencies, completed_tests
+
+    nodeid = item.nodeid
+    dependencies = test_dependencies.get(nodeid, [])
+
+    # 检查依赖项是否都已完成
+    for dep in dependencies:
+        if dep not in completed_tests:
+            pytest.skip(f"依赖的测试 {dep} 尚未完成")
+
+
+@pytest.hookimpl(trylast=True)
+def pytest_runtest_teardown(item, nextitem):
+    """
+    测试执行后的清理，标记测试为已完成
+    """
+    global completed_tests
+
+    # 如果测试通过，标记为已完成
+    # 注意：这里可能需要调整，以根据实际测试结果来处理
+    nodeid = item.nodeid
+
+    # 根据测试结果决定是否标记为已完成
+    if hasattr(item, '_report_sections'):
+        for report in [rep for rep in item._report_sections if rep[0] == 'call']:
+            if report[1] == 'passed':
+                completed_tests.add(nodeid)
+                logger.debug(f"测试 {nodeid} 已完成")
+    else:
+        # 如果无法确定结果，保守起见也标记为已完成
+        completed_tests.add(nodeid)
+        logger.debug(f"测试 {nodeid} 已完成（无法确定结果）")
+
 
 @pytest.fixture(scope="session")
 def browser() -> Generator[Browser, None, None]:
@@ -37,19 +286,71 @@ def browser() -> Generator[Browser, None, None]:
 
 
 @pytest.fixture(scope="function")
-def context(browser: Browser):
-    browser_config = config.browser_config
-    context = browser.new_context(**browser_config)
-    yield context
-    storage_state = context.storage_state(path='config/storage_state.json')
-    context.close()
+def context(browser):
+    """创建浏览器上下文"""
+    context_options = config.browser_config or {}
+    browser_context = browser.new_context(**context_options)
+    yield browser_context
+    # 测试结束后关闭上下文
+    browser_context.close()
 
 
 @pytest.fixture(scope="function")
 def page(context) -> Generator[Page, Any, None]:
+    """
+    创建页面，function级别的fixture
+    """
     page = context.new_page()
     yield page
     page.close()
+
+
+@pytest.fixture(scope="function")
+def screenshot_fixture(request, page):
+    """
+    截图管理fixture，使用Playwright原生的截图功能
+    仅在测试失败时捕获截图
+    """
+    # 执行测试用例
+    yield
+
+    # 如果测试失败，捕获截图
+    if request.node.rep_call.failed if hasattr(request.node, "rep_call") else False:
+        test_name = request.node.name
+        logger.info(f"测试用例 {test_name} 失败，捕获截图")
+
+        # 创建截图目录
+        screenshot_dir = "reports/screenshots"
+        os.makedirs(screenshot_dir, exist_ok=True)
+
+        # 生成截图文件名
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        screenshot_path = os.path.join(screenshot_dir, f"failure_{test_name}_{timestamp}.png")
+
+        try:
+            # 使用Playwright的截图功能
+            page.screenshot(
+                path=screenshot_path,
+                full_page=True,  # 捕获完整页面
+                timeout=5000  # 5秒超时
+            )
+            logger.info(f"失败截图已保存: {screenshot_path}")
+        except Exception as e:
+            logger.error(f"保存失败截图时出错: {e}")
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """
+    pytest hook，用于获取测试结果状态
+    供screenshot_fixture使用
+    """
+    # 执行hook的其余部分
+    outcome = yield
+    rep = outcome.get_result()
+
+    # 设置测试节点的rep_call属性
+    setattr(item, f"rep_{rep.when}", rep)
 
 
 def read_cookies():
@@ -160,10 +461,12 @@ def pytest_collect_file(file_path: Path, parent):  # noqa
     datas = run_test_data()
     yaml_handler = YamlHandler()
     if file_path.suffix in [".yaml", "xlsx"]:
-        test_cases = yaml_handler.load_yaml(file_path)['test_cases']
-        py_module, module = create_py_module(file_path, parent, test_cases, datas)
-        py_module._getobj = lambda: module  # 返回 pytest 模块对象
-        return py_module
+        if test_data := yaml_handler.load_yaml(file_path):
+            test_cases = test_data['test_cases']
+            py_module, module = create_py_module(file_path, parent, test_cases, datas)
+            py_module._getobj = lambda: module  # 返回 pytest 模块对象
+            return py_module
+    return None
 
 
 def create_py_module(file_path: Path, parent, test_cases, datas):
