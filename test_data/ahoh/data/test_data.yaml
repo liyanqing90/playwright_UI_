@@ -1546,8 +1546,92 @@ test_data:
         value: $<lead_id>
       - action: 点击
         selector: 订单卡片-填写信息按钮
-      - action: 验证
+      - action: 点击
+        selector: 下订信息-基础信息-展开
+      - action: 验证值
         selector: 下订信息-企业代码
-        value: QYDM12345678901234
+        value: $<ahoh_oder_socialCode>
+      - action: 验证值
+        selector: 下订信息-上牌城市
+        value: $<ahoh_order_registerCityName>
+      - action: 验证值
+        selector: 下订信息-上牌城市
+        value: 香港
 
+  test_生成当日个户用户订单，取消下订:
+    description: 生成订单，取消订单
+    steps:
+      - step_ref: login_steps
+      - step_ref: create_store_unvisited_leads_steps
+      - action: 刷新
+      - step_ref: create_order
+      - action: 刷新
+      - action: 点击
+        selector: 全部订单
+      - action: 点击
+        selector: 订单列表-搜索
+      - action: 输入
+        selector: 订单列表-搜索输入框
+        value: $<lead_id>
+      - action: 点击
+        selector: 订单列表第一个卡片-三个点
+      - action: 验证文本
+        selector: 订单卡片-取消下订选项
+        value: 取消下订
+      - action: 点击
+        selector: 订单卡片-取消下订选项
+      - action: 验证文本
+        selector:  取消下订确认弹窗确认取消文案
+        value: $<ahoh_cancelOrder_confirmText>
+      - action: 验证文本
+        selector:  取消下订确认弹窗转跟进任务文案
+        value: $<ahoh_cancelOrder_TaskText>
+      - action: 点击
+        selector: 取消下订确认弹窗-确认按钮
+      - action: 刷新
+      - action: 点击
+        selector: 底部菜单-客户
+      - action: 点击
+        selector: 客户列表-搜索
+      - action: 输入
+        selector: 客户列表查询条件输入框
+        value: $<lead_id>
+      - action: 点击
+        selector: 客户列表_执行搜索
+      - action: 点击
+        selector: 客户列表查询结果第一条填跟进按钮
+      - action: 等待
+        value: 1
+      - action: 验证
+        selector: 线索详情-任务信息-第一个主任务的名称
+        value: 持续跟进
+      - action: 点击
+        selector: 线索详情页面-任务tab-第一个任务点击填跟进
+      - action: 验证
+        selector: 任务填跟进页面标题
+        value: 持续跟进任务
+      - action: 点击
+        selector: 购车周期-存疑
+      - action: 点击
+        selector: 任务填跟进页-跟进结果-战败
+      - action: 点击
+        selector: 任务填跟进页-跟进结果-战败-一级战败因素选项
+      - action: 点击
+        selector: 任务填跟进页-跟进结果-战败-二级战败因素输入框
+      - action: 点击
+        selector: 任务填跟进页-跟进结果-战败-二级战败因素弹框-第一个选项
+      - action: 点击
+        selector: 任务填跟进页-二级战败因素弹框-确认按钮
+      - action: 点击
+        selector: 任务填跟进页-提交跟进记录按钮
+      - action: 等待
+        value: 1
+      - action: 验证
+        selector: 线索详情页面标题-线索状态
+        value: 战败
+      - action: 刷新
+        selector: ''
+      - action: 验证
+        selector: 底部菜单-工作
+        value: 工作
 

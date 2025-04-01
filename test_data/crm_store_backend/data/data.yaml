@@ -24,22 +24,7 @@ test_data:
   test_policy_add:
     description: "demo测试"
     steps:
-      - action: goto
-        value: "https://ahohcrm.autohome.com.cn/#/login"
-      - action: click
-        selector: "账号密码登录tab"
-      - action: click
-        selector: role=textbox[name="请输入账号"]
-      - action: fill
-        selector: role=textbox[name="请输入账号"]
-        value: "12500000000"
-      - action: click
-        selector: role=textbox[name="请输入密码"]
-      - action: fill
-        selector: role=textbox[name="请输入密码"]
-        value: "Admin123!"
-      - action: click
-        selector: "登录按钮"
+      - step_ref: login_steps
       - action: click
         selector: 购车政策
       - action: click
@@ -150,38 +135,163 @@ test_data:
         selector: 提交按钮
       - action: click
         selector: 查询按钮
+      - step_ref: list_add_data_steps
+
+  test_policy_deactivate:
+    description: "demo测试"
+    steps:
+      - step_ref: login_steps
+      - action: click
+        selector: 购车政策
+      - action: click
+        selector: 购车政策列表
+      - step_ref: filter_steps
+      - action: click
+        selector: 停用按钮
+      - action: click
+        selector: 确认按钮
+      - action: click
+        selector: 启用状态筛选项
+      - action: click
+        selector: 停用选项
+      - action: click
+        selector: 查询按钮
       - action: assert_text
-        selector: 奥迪
-        value: 奥迪
-      - action: assert_text
-        selector: 奥迪A4L
-        value: 奥迪A4L
-      - action: assert_text
-        selector: 车型
+        selector: 第一行
         value: 2025款 200万辆悦享版 40 TFSI 时尚动感型
       - action: assert_text
-        selector: 香港
+        selector: 状态
+        value: 启用
+
+  test_policy_details:
+    description: "demo测试"
+    steps:
+      - step_ref: login_steps
+      - action: click
+        selector: 购车政策
+      - action: click
+        selector: 购车政策列表
+      - step_ref: filter_steps
+      - action: click
+        selector: 编辑按钮
+      - action: assert_text
+        selector: 新建详情品牌
+        value: "奥迪"
+      - action: assert_text
+        selector: 新建详情车系
+        value: 奥迪A4L
+      - action: assert_text
+        selector: 新建详情车型
+        value: 2025款 200万辆悦享版 40 TFSI 时尚动感型
+      - action: assert_text
+        selector: 新建详情经销商省份
         value: 香港
       - action: assert_text
-        selector: 测试宝骏
+        selector: 新建详情经销商城市
+        value: 香港
+      - action: assert_text
+        selector: 新建详情经销商区域
+        value: 香港
+      - action: assert_text
+        selector: 新建详情经销商名称
         value: 测试宝骏20150609
       - action: assert_text
-        selector: 厂商指导价
-        value: "28.980"
-      - action: assert_text
-        selector: 库存状态列
+        selector: 新建详情库存状态
         value: 现车
       - action: assert_text
-        selector: 交货期
+        selector: 新建详情交货日期
         value: 1周
-      - action: assert_text
-        selector: 裸车价
+      - action: 验证值
+        selector: 新建详情DCC报价
+        value: "28.780"
+      - action: 验证值
+        selector: 新建详情裸车价
         value: "28.780"
       - action: assert_text
-        selector: DCC线上报价
-        value: "28.780"
+        selector: 强制保险否
+        value: 否
       - action: assert_text
-        selector: 金融手续费列
+        selector: 强制上牌否
+        value: 否
+      - action: 验证值
+        selector: 新建详情本品本店置换
+        value: "100"
+      - action: assert_text
+        selector: 新建详情比例模式
+        value: 比例模式
+      - action: assert_text
+        selector: 新建详情形式
+        value: 抵扣车款
+      - action: 验证值
+        selector: 新建详情首付比例
+        value: "10"
+      - action: assert_text
+        selector: 新建详情免息期数
+        value: "12期"
+      - action: 验证值
+        selector: 新建详情低首付金融
+        value: "13"
+      - action: 验证值
+        selector: 新建详情金融手续费
         value: "1.000"
+      - action: 验证值
+        selector: 新建详情金融购车推荐方案
+        value: 方案1添加
+      - action: assert_text
+        selector: 无绑定条件
+        value: 无
+      - action: assert_text
+        selector: 无特殊颜色
+        value: 无
+      - action: assert_text
+        selector: 新建详情提交按钮
+        value: 提 交
+      - action: assert_text
+        selector: 新建详情取消按钮
+        value: 取 消
 
 
+  test_policy_delete:
+    description: "demo测试"
+    steps:
+      - step_ref: login_steps
+      - action: click
+        selector: 购车政策
+      - action: click
+        selector: 购车政策列表
+      - action: click
+        selector: 删除按钮
+      - action: click
+        selector: 确认删除
+      - action: click
+        selector: 查询按钮
+      - step_ref: filter_steps
+      - action: click
+        selector: 查询按钮
+      - action: assert_text
+        selector: 暂无数据
+        value: 暂无数据
+
+  test_policy_filter:
+    description: "demo测试"
+    steps:
+      - step_ref: login_steps
+      - action: click
+        selector: 购车政策
+      - action: click
+        selector: 购车政策列表
+      - step_ref: filter_steps
+      - action: click
+        selector: 查询按钮
+      - action: assert_text
+        selector: 新建列表数据奥迪
+        value: 奥迪
+      - action: assert_text
+        selector: 新建列表数据奥迪A4L
+        value: 奥迪A4L
+      - action: assert_text
+        selector: 新建列表数据车型
+        value: 2025款 200万辆悦享版 40 TFSI 时尚动感型
+      - action: assert_text
+        selector: 新建列表数据香港
+        value: 香港
