@@ -8,13 +8,12 @@ from typing import Generator, Any, List
 
 import pytest
 from _pytest.python import Module
-from playwright.sync_api import Page
+from playwright.sync_api import Page, Browser, sync_playwright
 
 from page_objects.base_page import BasePage
 from src.case_utils import run_test_data
 from src.runner import TestCaseGenerator
 from src.test_step_executor import StepExecutor
-from utils.browser_pool import BrowserPool
 from utils.config import Config
 from utils.dingtalk_notifier import ReportNotifier
 from utils.logger import logger
@@ -24,7 +23,6 @@ DINGTALK_TOKEN = "636325ecf2302baf112f74ac54d8ef991de9b307c00bd168d3f2baa7df7f91
 DINGTALK_SECRET = "SECa7e01bee3a34e05d1b57297a95b8920d8c257088979c49fa0b50889fd60c570c"
 
 config = Config()
-browser_pool = BrowserPool()
 
 # 存储测试依赖关系
 test_dependencies = {}
@@ -277,43 +275,23 @@ def pytest_runtest_teardown(item, nextitem):
 
 
 @pytest.fixture(scope="session")
-def browser_pool_fixture() -> Generator[BrowserPool, Any, None]:
+def browser() -> Generator[Browser, None, None]:
     """
-    返回浏览器资源池实例，session级别的fixture
+    创建浏览器实例，session 级别的 fixture
     """
-    try:
-        # 浏览器池已经在模块导入时初始化
-        yield browser_pool
-    finally:
-        # 测试会话结束时关闭资源池
-        browser_pool.shutdown()
+    with sync_playwright() as playwright:
+        browser = getattr(playwright, config.browser).launch(headless=not config.headed)
+        yield browser
+        browser.close()
 
 
 @pytest.fixture(scope="function")
-def browser(browser_pool_fixture: BrowserPool):
-    """
-    获取浏览器实例，function级别的fixture
-    使用浏览器资源池而非直接创建新实例
-    """
-    browser_instance, is_new = browser_pool_fixture.get_browser()
-    logger.debug(f"获取浏览器实例, 是否新创建: {is_new}")
-    yield browser_instance.browser
-    # 使用完后将浏览器实例标记为空闲，而非关闭
-    browser_pool_fixture.release_browser(browser_instance)
-
-
-@pytest.fixture(scope="function")
-def context(browser_pool_fixture: BrowserPool):
-    """
-    创建浏览器上下文，function级别的fixture
-    直接从浏览器池获取上下文，不需要browser参数
-    """
-    browser_context = browser_pool_fixture.create_browser_context(
-        context_options=config.browser_config
-    )
+def context(browser):
+    """创建浏览器上下文"""
+    context_options = config.browser_config or {}
+    browser_context = browser.new_context(**context_options)
     yield browser_context
-    # 上下文关闭时，browser_pool会自动通过回调处理资源释放
-    storage_state = browser_context.storage_state(path='config/storage_state.json')
+    # 测试结束后关闭上下文
     browser_context.close()
 
 

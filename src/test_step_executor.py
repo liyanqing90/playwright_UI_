@@ -1,14 +1,13 @@
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 import allure
 
 from constants import DEFAULT_TYPE_DELAY, DEFAULT_TIMEOUT
 from page_objects.base_page import base_url
 from utils.logger import logger
-from utils.variable_manager import VariableManager
 
 
 class StepAction:
