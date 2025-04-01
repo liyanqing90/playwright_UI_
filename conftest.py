@@ -461,11 +461,11 @@ def pytest_collect_file(file_path: Path, parent):  # noqa
     datas = run_test_data()
     yaml_handler = YamlHandler()
     if file_path.suffix in [".yaml", "xlsx"]:
-        logger.debug("文件名", file_path)
-        test_cases = yaml_handler.load_yaml(file_path)['test_cases']
-        py_module, module = create_py_module(file_path, parent, test_cases, datas)
-        py_module._getobj = lambda: module  # 返回 pytest 模块对象
-        return py_module
+        if test_data := yaml_handler.load_yaml(file_path):
+            test_cases = test_data['test_cases']
+            py_module, module = create_py_module(file_path, parent, test_cases, datas)
+            py_module._getobj = lambda: module  # 返回 pytest 模块对象
+            return py_module
     return None
 
 
