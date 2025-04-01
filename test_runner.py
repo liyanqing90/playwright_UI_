@@ -121,7 +121,6 @@ def main(
         project=project,
         base_url=base_url,
         test_file=test_file + ".yaml" if test_file and not test_file.endswith(('.yaml', '.yml')) else test_file,
-        no_parallel=no_parallel
     )
 
     # 配置运行环境
