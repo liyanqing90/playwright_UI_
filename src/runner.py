@@ -7,7 +7,7 @@ from playwright.async_api import Page
 from src.test_case_executor import CaseExecutor
 from utils.logger import logger
 
-_DEFAULT_FIXTURES = ["page", "ui_helper"]
+_DEFAULT_FIXTURES = ["page", "ui_helper", "screenshot_fixture"]
 
 
 def build_test_signature(fixtures: list) -> Signature:

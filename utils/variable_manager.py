@@ -7,7 +7,14 @@ from typing import Any, Dict
 class VariableManager:
     """变量管理器，用于存储和管理测试用例间的变量"""
 
-    def __init__(self, storage_file: str = None):
+    def __new__(cls, storage_mode: str = "file", storage_file: str = None):
+        """单例模式实现"""
+        if cls._instance is None:
+            cls._instance = super(VariableManager, cls).__new__(cls)
+            cls._instance._initialize(storage_mode, storage_file)
+        return cls._instance
+
+    def _initialize(self, storage_mode: str = "memory", storage_file: str = None):
         """
         初始化变量管理器
         Args:

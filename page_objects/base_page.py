@@ -338,7 +338,7 @@ class BasePage:
                 break
 
             var_name = result[start + 2:end]
-            var_value = self.variable_manager.get_variable(var_name, "global", "")
+            var_value = self.variable_manager.get_variable(var_name, "global")
             result = result[:start] + str(var_value) + result[end + 1:]
 
         return result
