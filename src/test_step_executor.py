@@ -341,15 +341,27 @@ class StepExecutor:
         description = step.get("description", "条件分支")
 
         # 计算条件表达式
+        # 先获取原始表达式内容用于日志
+        original_condition = condition
+        
+        # 提取表达式内容（如果是${{...}}格式）
+        if condition.startswith("${{") and condition.endswith("}}"):
+            expr_content = condition[3:-2].strip()
+            # 替换变量得到可读的表达式
+            readable_expr = self._replace_variables(expr_content)
+        else:
+            readable_expr = self._replace_variables(condition)
+        
+        # 计算条件结果
         condition_result = self._evaluate_expression(condition)
 
-        with allure.step(f"条件分支: {description} ({condition} = {condition_result})"):
+        with allure.step(f"条件分支: {description} ({readable_expr} = {condition_result})"):
             if condition_result:
-                logger.info(f"条件 '{condition}' 为真，执行THEN分支")
+                logger.info(f"条件 '{readable_expr}' 为真，执行THEN分支")
                 for then_step in then_steps:
                     self.execute_step(then_step)
             else:
-                logger.info(f"条件 '{condition}' 为假，执行ELSE分支")
+                logger.info(f"条件 '{readable_expr}' 为假，执行ELSE分支")
                 for else_step in else_steps:
                     self.execute_step(else_step)
 
@@ -422,8 +434,42 @@ class StepExecutor:
 
         # 安全计算表达式
         try:
-            # 禁止使用 __builtins__ 避免安全问题
-            result = eval(expr_content, {"__builtins__": {}})
+            # 为了安全起见，我们需要确保字符串值被正确引用
+            # 创建一个安全的执行环境
+            safe_globals = {"__builtins__": {}}
+            
+            # 尝试将表达式中的字符串值用引号括起来
+            # 这是一个简单的方法，可能需要更复杂的解析来处理所有情况
+            if '==' in expr_content or '!=' in expr_content:
+                parts = []
+                if '==' in expr_content:
+                    parts = expr_content.split('==')
+                    operator = '=='
+                else:
+                    parts = expr_content.split('!=')
+                    operator = '!='
+                    
+                if len(parts) == 2:
+                    left = parts[0].strip()
+                    right = parts[1].strip()
+                    
+                    # 如果左右两边不是已经被引号括起来的，且不是纯数字，则添加引号
+                    if not (left.startswith('"') and left.endswith('"')) and not (left.startswith("'") and left.endswith("'")):
+                        try:
+                            float(left)  # 尝试转换为数字
+                        except ValueError:
+                            left = f"'{left}'"  # 不是数字，添加引号
+                            
+                    if not (right.startswith('"') and right.endswith('"')) and not (right.startswith("'") and right.endswith("'")):
+                        try:
+                            float(right)  # 尝试转换为数字
+                        except ValueError:
+                            right = f"'{right}'"  # 不是数字，添加引号
+                    
+                    expr_content = f"{left} {operator} {right}"
+            
+            # 执行表达式
+            result = eval(expr_content, safe_globals)
             return bool(result)
         except Exception as e:
             logger.error(f"表达式计算错误: {expr_content} - {e}")
@@ -452,15 +498,16 @@ class StepExecutor:
                 return self.variable_manager.get_variable(var_name)
 
             # 替换内嵌变量引用
-            pattern = r'\$([^}]+)}'
-            matches = re.findall(pattern, value)
-            result = value
-
-            for match in matches:
-                var_value = self.variable_manager.get_variable(match)
-                if var_value is not None:
-                    result = result.replace(f"${{{match}}}", str(var_value))
-
+            import re
+            pattern = r'\${([^{}]+)}'
+            
+            def replace_var(match):
+                var_name = match.group(1)
+                var_value = self.variable_manager.get_variable(var_name)
+                return str(var_value) if var_value is not None else match.group(0)
+            
+            # 使用正则表达式替换所有变量引用
+            result = re.sub(pattern, replace_var, value)
             return result
 
         if isinstance(value, list):
