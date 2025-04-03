@@ -1,7 +1,6 @@
 elements:
   用户名输入框: role=textbox[name="请输入您的用户名"]
   密码输入框: role=textbox[name="请输入您的密码"]
-  登录按钮: role=link[name="登录"]
   营销: text=营销
   营销助手: text=营销助手
   AI营销助手工作中: "div >> text=/^AI营销助手工作中$/ >> role=switch"
@@ -29,3 +28,12 @@ elements:
   结束日期: role=textbox[name="结束日期"]
   结束日期选择: role=textbox[name="结束日期"] >> title=-03-07 >> div
   重置按钮: role=button[name="重置"]
+  转人工会话: "text=转人工会话"
+  全部会话: "text=全部会话"
+  触达状态: "div:nth-child(2) > div:nth-child(2) > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector"
+  已触达未回复: ".rc-virtual-list-holder-inner > div:nth-child(3)"
+  断言已触达未回复: 'locator("#app div").filter(has_text=re.compile(r"^已触达未回复$"))'
+  所属地区: //*[@id="app"]/main/div/div[2]/div[2]/form/div[1]/div[3]/div[2]/div/div/div/div/span[2]
+  北京: "text=北京"
+  意向车系输入框: "role=textbox[name='意向车系 :']"
+  查询按钮: "role=button[name='查 询']"
