@@ -27,5 +27,70 @@ test_data:
       - action: assert_text
         selector: 门店地址
         value: 北辰亚运村汽车交易市场内综合交易大厅
+      - action: assert_text
+        selector: 电话
+        value: 电话
+      - action: assert_text
+        selector: 咨询
+        value: 咨询
+
+  test_store_list:
+    description: "门店列表"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex3?cityId=110100"
+      - action: click
+        selector: 更多按钮
+      - action: assert_text
+        selector: 门店列表弹窗标题
+        value: 之家线下门店
+      - action: click
+        selector: 门店列表弹窗关闭
+      - action: store_text
+        selector: 门店地址
+        variable_name: 门店地址
+      - action: click
+        selector: 更多按钮
+      - action: assert_text
+        selector: 列表门店
+        value: 汽车之家空间站·北京站
+      - action: assert_text
+        selector: 列表门店地址
+        value: ${门店地址}
+
+  test_satellite_stores:
+    description: "卫星店校验"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex3?cityId=110100"
+      - action: click
+        selector: 更多按钮
+      - action: click
+        selector: 平谷车卖场
+      - action: assert_url
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex3?cityId=110100"
+      - action: click
+        selector: 更多按钮
+      - action: click
+        selector: 丰台车卖场
+      - action: assert_url
+        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4822
+
+  test_stores_ceremony:
+    description: "到店礼"
+    steps:
+      - action: goto
+        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex3?cityId=110100"
+      - action: click
+        selector: 更多按钮
+      - action: click
+        selector: 到店礼
+
+
+
+
+
 
 

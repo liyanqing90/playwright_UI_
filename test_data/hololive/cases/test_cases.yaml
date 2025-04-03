@@ -1,4 +1,9 @@
 test_cases:
-#  - name: test_banner
+  - name: test_banner
   - name: test_store_information
+  - name: test_store_list
+  - name: test_satellite_stores
+
+
+
 
