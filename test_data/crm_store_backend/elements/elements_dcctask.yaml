@@ -1,8 +1,5 @@
 elements:
-  账号密码登录tab: text=账号密码登录
-  账号输入框: //input[@id='phone']
-  密码输入框: //input[@id='password']
-  登录按钮: role=button[name="登 录"]
+
 
   线索&工单管理: role=complementary >> text=线索&工单管理
   主任务列表: text=主任务列表

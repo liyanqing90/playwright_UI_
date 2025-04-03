@@ -1,11 +1,5 @@
 elements:
-  账号密码登录tab: text=账号密码登录
-  账号输入框: //input[@id='phone']
-  密码输入框: //input[@id='password']
-  登录按钮: role=button[name="登 录"]
 
-
-  线索&工单管理: role=complementary >> text=线索&工单管理
   线索管理:  text=线索管理
   线索管理筛选手机号输入框: //input[@id='basic_userPhone']
   线索管理筛选查询按钮: text="查 询"
