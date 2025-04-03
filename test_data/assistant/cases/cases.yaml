@@ -1,11 +1,6 @@
 test_cases:
-  - name: test_create_script
-    fixtures: [ login ]
-  - name: test_script_library
-    fixtures: [ login ]
-    depends_on: [ test_create_script ]
 
-# 素材
+  ##素材
   - name: test_material_search
     fixtures: [ login ]
   - name: test_material_upload
@@ -18,7 +13,7 @@ test_cases:
     fixtures: [ login ]
 
 
-#  营销
+  #  营销
   - name: test_ji_qiao
     fixtures: [ login ]
   - name: test_ling_gan
@@ -36,16 +31,13 @@ test_cases:
   - name: test_chong_zhi
 
 
-
-
-
-#个人中心
+  #个人中心
   - name: test_Personal_Center
     fixtures: [ login ]
   - name: test_Assistant_Settings
     fixtures: [ login ]
 
-#技巧
+  #技巧
   - name: test_skill_Failure
     fixtures: [ login ]
   - name: test_skill_Enable
@@ -53,7 +45,7 @@ test_cases:
   - name: test_skill_speech
     fixtures: [ login ]
 
-#灵感
+  #灵感
   - name: test_Case_search
     fixtures: [ login ]
   - name: test_Script_search
@@ -64,7 +56,7 @@ test_cases:
     fixtures: [ login ]
 
 
-#成长
+  #成长
   - name: test_growth_fail_practice
     fixtures: [ login ]
   - name: test_growth_fail_exam
@@ -76,7 +68,7 @@ test_cases:
   - name: test_growth_exam
     fixtures: [ login ]
 
-# 剧本
+  # 剧本
   - name: test_script_creation_1
     fixtures: [ login ]
   - name: test_script_creation_2
@@ -85,9 +77,21 @@ test_cases:
     fixtures: [ login ]
   - name: test_script_open
     fixtures: [ login ]
-  - name: test_share_open
+  - name: test_script_del_topics
     fixtures: [ login ]
   - name: test_share_pre
     fixtures: [ login ]
   - name: test_script_pre
+    fixtures: [ login ]
+  - name: test_script_add_topics
+    fixtures: [ login ]
+  - name: test_script_clear_all
+    fixtures: [ login ]
+  - name: test_script_leave
+    fixtures: [ login ]
+  - name: test_script_failure
+    fixtures: [ login ]
+  - name: test_script_edit
+    fixtures: [ login ]
+  - name: test_script_del
     fixtures: [ login ]

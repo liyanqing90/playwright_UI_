@@ -45,12 +45,12 @@ test_data:
         selector: 收藏案例
       - action: click
         selector: 确定
-#      - action: click
-#        selector: 未查询到内容
-#      - action: click
-#        selector: 取消
-#      - action: click
-#        selector: 未查询到内容
+      #      - action: click
+      #        selector: 未查询到内容
+      #      - action: click
+      #        selector: 取消
+      #      - action: click
+      #        selector: 未查询到内容
       - action: click
         selector: 筛选图标
       - action: click

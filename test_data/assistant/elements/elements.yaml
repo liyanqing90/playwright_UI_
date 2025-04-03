@@ -67,11 +67,11 @@ elements:
   剧本调整顺序: div[class='order-btn']
   剧本清空全部: div[class='clear-btn']
   剧本话题删除: css=".close-icon"
-  剧本保存后验证 : //span[contains(text(),'剧本保存成功')]
+  剧本保存后验证: //span[contains(text(),'剧本保存成功')]
   剧本启用验证: //span[contains(text(),'启用成功，已展示到直播栏目底部')]
   剧本共享启用: //div[4]//div[1]//div[1]//div[1]//div[2]//button[1]
   剧本共享预览关闭: (//div[contains(text(),'关闭')])[1]
-  剧本共享预览 : (//div[contains(text(),'预览')])[4]
+  剧本共享预览: (//div[contains(text(),'预览')])[4]
   剧本增加话题验证: //div[normalize-space()='04']
   剧本编辑不保存: //span[contains(text(),'不保存')]
   剧本编辑中离开验证: //div[@class='text']
@@ -123,7 +123,7 @@ elements:
   optional_script_2_textarea: "//div[@class='script-title'][.//div[text()='可选脚本2']]//following-sibling::div[@class='input-wrap']//textarea"  # 可选脚本2的文本输入框
   optional_script_2_edit_button: "//div[@class='script-title'][.//div[text()='可选脚本2']]//following-sibling::div[@class='btn-box']//div[@class='btn primary' and text()='再次编辑']"  # 可选脚本2的“再次编辑”按钮
 
-#素材
+  #素材
   素材: text="素材"
   素材上传按钮: //span[contains(text(),'上 传')]
   素材通用素材: (//input[@value='2'])[1]
@@ -136,16 +136,16 @@ elements:
   素材查询按钮: "text=查询 >> nth=0"
   素材删除按钮: "text=删除 >> nth=0"
   素材删除确认是按钮: //span[contains(text(),'是')]
-  素材上传成功校验 :  (//span[contains(text(),'成功')])[1]
-  素材删除成功校验 : (//span[contains(text(),'删除成功')])[1]
-  素材未上传文件校验 : (//div[@role='alert'])[1]
-  素材名称空校验 : (//div[@role='alert'])[2]
-  素材显示开关 : (//button[@role='switch'])[1]
-  素材显示结果校验 : //span[contains(text(),'常驻素材显示不能超过1个')]
+  素材上传成功校验: (//span[contains(text(),'成功')])[1]
+  素材删除成功校验: (//span[contains(text(),'删除成功')])[1]
+  素材未上传文件校验: (//div[@role='alert'])[1]
+  素材名称空校验: (//div[@role='alert'])[2]
+  素材显示开关: (//button[@role='switch'])[1]
+  素材显示结果校验: //span[contains(text(),'常驻素材显示不能超过1个')]
 
 
 
-#个人中心
+  #个人中心
 
   头像: .avatar
   用户手机号: text="15011290391"
@@ -161,7 +161,7 @@ elements:
   安庆选项: "#item_340800"
 
 
-#技巧
+  #技巧
 
   技巧菜单项: text="技巧"
   技巧新增按钮: text="新增"
@@ -172,9 +172,9 @@ elements:
   技巧保存按钮: role=button[name="保 存"]
   技巧状态单元格: role=cell[name="未启用"]
   技巧提示: (//span[contains(text(),'保存成功')])[1]
-  技巧失败提示 : (//span[contains(text(),'用户已存在该类型的技巧')])[1]
+  技巧失败提示: (//span[contains(text(),'用户已存在该类型的技巧')])[1]
 
-#灵感
+  #灵感
   灵感菜单项: text="灵感"
   灵感搜索输入框: css=input[type="text"]
   灵感搜索按钮: css=.search-icon
@@ -183,7 +183,7 @@ elements:
   灵感脚本tab: text="找脚本"
   灵感制作脚本: text="制作脚本"
   灵感确定: text="确定"
-  灵感失败提示 : (//span[contains(text(),'请选择引用的原文')])[1]
+  灵感失败提示: (//span[contains(text(),'请选择引用的原文')])[1]
   灵感筛选组件: //span[@class='filter-icon']
   灵感筛选问题意图: text="问题意图"
   灵感筛选找车: text="找车"
@@ -196,7 +196,7 @@ elements:
   灵感脚本搜索空验证: //div[@class='no-data__content scriptcon sourcecon']
 
 
-#成长-
+  #成长-
   成长导航栏链接: ".growUp-icon"
   练习活动项图标: ".active .item-top__icon"
   数据概览: text="数据概览"
@@ -211,8 +211,8 @@ elements:
   成长重新考试按钮: "text=重新考试 >> nth=0"
   成长练习回放验证: //div[@class='live-text__top--title']
   成长数据概览验证: text="发言占比"
-  成长考试数据概览验证 : //h4[contains(text(),'发言占比')]
+  成长考试数据概览验证: //h4[contains(text(),'发言占比')]
   成长开始日期输入框: input[placeholder='开始日期']
-  成长练习无记录 : text="无练习记录"
+  成长练习无记录: text="无练习记录"
   成长日期组件确定按钮: //span[contains(text(),'确 定')]
   成长结束日期输入框: input[placeholder='结束日期']

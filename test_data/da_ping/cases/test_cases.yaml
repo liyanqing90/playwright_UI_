@@ -1,5 +1,5 @@
 test_cases:
-#  - name: test_360_degree_panoram
+  #  - name: test_360_degree_panoram
   #测试360全景图
   - name: test_Car_sales_rankings
   #测试销量榜单
