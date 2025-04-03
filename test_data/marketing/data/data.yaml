@@ -259,7 +259,7 @@ test_data:
         value: 以旧换新
       - action: click
         selector: detail_old_btn
-      - action: wait_for_network_idle
+      - action: wait
       - action: assert_visible
         selector: detail_old_填写车型
       - action: assert_visible
