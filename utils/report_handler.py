@@ -17,16 +17,12 @@ class ReportHandler:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         name = name or f"screenshot_{timestamp}"
         screenshot = self.page.screenshot()
-        allure.attach(
-            screenshot,
-            name=name,
-            attachment_type=allure.attachment_type.PNG
-        )
+        allure.attach(screenshot, name=name, attachment_type=allure.attachment_type.PNG)
 
     def attach_page_source(self):
         """添加页面源码到报告"""
         allure.attach(
             self.page.content(),
             name="page_source",
-            attachment_type=allure.attachment_type.HTML
+            attachment_type=allure.attachment_type.HTML,
         )

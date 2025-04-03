@@ -38,7 +38,7 @@
 ### 安装依赖
 
 ```bash
-uv pip install .
+poetry install .
 ```
 
 ### 安装驱动
@@ -50,7 +50,7 @@ playwright install chromium
 ### 执行命令，有头模式运行demo项目
 
 ```bash
-uv run test_runner.py --project demo #--test-file test_cases 执行指定测试文件
+Python test_runner.py --project demo #--test-file test_cases 执行指定测试文件
 ```
 
 ### 生成测试报告：
