@@ -18,18 +18,19 @@ app = typer.Typer()
 def build_pytest_args(config: Config) -> List[str]:
     """
     构建pytest运行参数
-    
+
     Args:
         config: 测试配置对象
-        
+
     Returns:
         pytest命令行参数列表
     """
     pytest_args = [
         f"{config.test_dir}/cases/{config.test_file}",
-        '-v',
+        "-v",
         "--tb=line",
-        "-p", "no:warnings",
+        "-p",
+        "no:warnings",
         "-s",
         "--alluredir=reports/allure-results",
         "--clean-alluredir",
@@ -51,7 +52,7 @@ def build_pytest_args(config: Config) -> List[str]:
 def display_run_configuration(config: Config) -> None:
     """
     显示测试运行配置信息
-    
+
     Args:
         config: 测试配置对象
     """
@@ -79,7 +80,7 @@ def display_run_configuration(config: Config) -> None:
 def show_test_summary(start_time: float) -> None:
     """
     显示测试运行摘要信息
-    
+
     Args:
         start_time: 测试开始时间戳
     """
@@ -98,15 +99,19 @@ def show_test_summary(start_time: float) -> None:
 
 @app.command()
 def main(
-        marker: Optional[str] = typer.Option(None, "-m", "--marker", help="只运行特定标记的测试用例"),
-        keyword: Optional[str] = typer.Option(None, "-k", "--keyword", help="只运行匹配关键字的测试用例"),
-        headed: bool = typer.Option(True, "--headed", help="是否以有头模式运行浏览器"),
-        browser: Browser = typer.Option(Browser.CHROMIUM, "--browser", help="指定浏览器"),
-        env: Environment = typer.Option(Environment.PROD, "--env", help="指定环境"),
-        project: Project = typer.Option(Project.DEMO, "--project", help="指定项目"),
-        base_url: Optional[str] = typer.Option("", "--base-url", help="指定基础 URL"),
-        test_file: Optional[str] = typer.Option("", "--test-file", help="指定测试文件"),
-        no_parallel: bool = typer.Option(False, "--no-parallel", help="禁用并行执行"),
+    marker: Optional[str] = typer.Option(
+        None, "-m", "--marker", help="只运行特定标记的测试用例"
+    ),
+    keyword: Optional[str] = typer.Option(
+        None, "-k", "--keyword", help="只运行匹配关键字的测试用例"
+    ),
+    headed: bool = typer.Option(True, "--headed", help="是否以有头模式运行浏览器"),
+    browser: Browser = typer.Option(Browser.CHROMIUM, "--browser", help="指定浏览器"),
+    env: Environment = typer.Option(Environment.PROD, "--env", help="指定环境"),
+    project: Project = typer.Option(Project.DEMO, "--project", help="指定项目"),
+    base_url: Optional[str] = typer.Option("", "--base-url", help="指定基础 URL"),
+    test_file: Optional[str] = typer.Option("", "--test-file", help="指定测试文件"),
+    no_parallel: bool = typer.Option(False, "--no-parallel", help="禁用并行执行"),
 ):
     """
     测试运行入口函数
@@ -120,7 +125,11 @@ def main(
         env=env,
         project=project,
         base_url=base_url,
-        test_file=test_file + ".yaml" if test_file and not test_file.endswith(('.yaml', '.yml')) else test_file,
+        test_file=(
+            test_file + ".yaml"
+            if test_file and not test_file.endswith((".yaml", ".yml"))
+            else test_file
+        ),
     )
 
     # 配置运行环境
@@ -152,5 +161,5 @@ def main(
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     typer.run(main)

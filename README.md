@@ -12,6 +12,21 @@
 - 灵活的变量管理和数据驱动
 - 详细的操作日志和失败截图
 - 集成Allure测试报告
+- 性能优化功能：
+    - 浏览器资源池：减少浏览器启动开销，支持复用和健康检查
+    - 智能截图策略：仅在测试失败时截图，支持压缩和区域截图
+    - 日志轮转机制：自动归档和清理日志，减少存储占用
+
+### 数据驱动能力增强
+
+本框架提供了强大的数据驱动能力，支持以下特性：
+
+- 变量管理：支持全局变量、测试用例级变量和临时变量
+- 表达式计算：支持条件判断、数学运算等
+- 丰富的操作：支持40+种UI操作类型
+- 模块化组件：可复用的测试步骤片段
+- 条件分支：支持if-then-else流程控制
+- 循环结构：支持for_each处理数据集合
 
 ## 安装
 
@@ -23,7 +38,7 @@
 ### 安装依赖
 
 ```bash
-poetry install
+uv pip install .
 ```
 
 ### 安装驱动
@@ -35,7 +50,7 @@ playwright install chromium
 ### 执行命令，有头模式运行demo项目
 
 ```bash
-python test_runner.py --project demo #--test-file test_cases 执行指定测试文件
+uv run test_runner.py --project demo #--test-file test_cases 执行指定测试文件
 ```
 
 ### 生成测试报告：
@@ -415,3 +430,230 @@ steps:
 - 示例数据仅用于演示，请不要将其作为输入进行处理。 你应该使用这些示例数据进行转换，并按照指定的格式输出结果。
 - 如果某个步骤不需要 selector 或 value 属性，则省略这些属性。
 - 请将 wait 步骤的 action 保留为 wait, 不要转换为 playwright 的 api
+
+```
+
+# Playwright UI 自动化测试框架增强文档
+
+## 新增功能概述
+
+我们对原有 Playwright UI 自动化测试框架进行了一系列增强，使其更加灵活、可维护、高效。主要新增功能包括：
+
+1. **模块化测试片段系统**：支持将常用测试步骤封装为可重用模块
+2. **条件分支执行**：支持在测试用例中使用 if-then-else 条件分支
+3. **循环执行**：支持循环遍历数据列表执行重复操作
+4. **增强的变量管理**：支持全局/测试用例/临时多级作用域变量
+5. **自适应等待策略**：智能等待页面元素，提高测试稳定性
+
+## 使用指南
+
+### 模块化测试片段
+
+模块化测试片段允许将常用操作封装为可重用模块，减少重复编写相同步骤的工作。
+
+#### 定义模块
+
+在 `test_data/<项目>/modules/` 目录下创建 YAML 文件，定义可重用的步骤：
+
+```yaml
+# test_data/demo/modules/login.yaml
+steps:
+  - action: navigate
+    value: "/login"
+    description: "打开登录页面"
+  
+  - action: fill
+    selector: "username_input"
+    value: "${username}"
+    description: "输入用户名"
+  
+  - action: fill
+    selector: "password_input"
+    value: "${password}"
+    description: "输入密码"
+  
+  - action: click
+    selector: "login_button"
+    description: "点击登录按钮"
+```
+
+#### 使用模块
+
+在测试用例中引用模块：
+
+```yaml
+# test_data/demo/data/test.yaml
+login_test:
+  steps:
+    - use_module: login
+      params:
+        username: "test_user"
+        password: "password123"
+      description: "使用登录模块"
+
+    - action: assert_text
+      selector: "welcome_message"
+      expected: "欢迎回来"
+      description: "验证登录成功"
+```
+
+### 条件分支
+
+条件分支允许基于条件执行不同的测试步骤，增加测试用例的灵活性。
+
+```yaml
+# 条件分支示例
+- if: "${{ ${user_type} == 'admin' }}"
+  then:
+    - action: click
+      selector: "admin_panel"
+      description: "点击管理员面板"
+  else:
+    - action: click
+      selector: "user_dashboard"
+      description: "点击用户仪表盘"
+```
+
+### 循环执行
+
+循环执行允许对列表中的数据项执行重复操作，适用于批量处理场景。
+
+```yaml
+# 循环执行示例
+- action: store_variable
+  name: "product_ids"
+  value: [ 1, 2, 3 ]
+  scope: "test_case"
+  description: "设置产品ID列表"
+
+- for_each: "${product_ids}"
+  as: "product_id"
+  do:
+    - action: click
+      selector: "product_${product_id}_view"
+      description: "查看产品${product_id}详情"
+
+    - action: click
+      selector: "add_to_cart_button"
+      description: "添加到购物车"
+```
+
+### 变量管理
+
+框架支持多级作用域的变量管理，包括全局变量、测试用例变量和临时变量。
+
+```yaml
+# 设置变量
+- action: store_variable
+  name: "username"
+  value: "test_user"
+  scope: "global"  # global, test_case, temp
+  description: "存储用户名"
+
+# 使用变量
+- action: fill
+  selector: "username_input"
+  value: "${username}"
+  description: "输入用户名"
+
+# 变量表达式计算
+- if: "${{ ${count} > 5 }}"
+  then:
+  # 当 count 大于 5 时执行的步骤
+```
+
+### 自适应等待策略
+
+框架提供了智能的等待机制，可以根据页面加载情况自动调整等待时间，提高测试的稳定性。
+
+```yaml
+# 基础等待示例
+- action: wait_for_element_visible
+  selector: "product_details"
+  timeout: 5000  # 毫秒
+  description: "等待产品详情加载"
+
+# 网络等待示例
+- action: wait_for_network_idle
+  timeout: 5000
+  description: "等待网络请求完成"
+```
+
+## 完整示例
+
+以下是一个综合使用上述功能的完整测试用例示例：
+
+```yaml
+# test_data/demo/data/complex_test.yaml
+complex_shopping_test:
+  steps:
+    # 登录
+    - use_module: login
+      params:
+        username: "test_user"
+        password: "password123"
+      description: "登录系统"
+
+    # 设置筛选价格范围
+    - action: store_variable
+      name: "min_price"
+      value: 100
+      scope: "test_case"
+      description: "设置最低价格"
+
+    # 使用价格筛选
+    - use_module: filter_by_price
+      params:
+        min_price: "${min_price}"
+        max_price: 500
+      description: "筛选价格范围产品"
+
+    # 检查筛选结果并执行不同操作
+    - if: "${{ ${filtered_products_count} > 0 }}"
+      then:
+        # 如果有产品，循环添加到购物车
+        - for_each: "${product_ids}"
+          as: "product_id"
+          do:
+            - action: click
+              selector: "product_${product_id}_view"
+              description: "查看产品详情"
+
+            - action: click
+              selector: "add_to_cart_button"
+              description: "添加到购物车"
+      else:
+        # 如果没有产品，记录信息
+        - action: store_variable
+          name: "search_message"
+          value: "在价格范围内没有找到产品"
+          scope: "global"
+          description: "记录搜索结果信息"
+```
+
+## 最佳实践
+
+1. **模块化组织测试步骤**：将常用操作封装为模块，提高代码复用率
+2. **使用变量存储中间状态**：合理使用变量保存和传递测试中的状态数据
+3. **添加详细描述**：为每个步骤添加清晰的描述，便于理解和调试
+4. **合理使用等待策略**：选择适当的等待方式确保测试稳定性
+5. **分层管理元素选择器**：将元素选择器集中管理，便于维护
+
+## 性能优化功能使用说明
+
+### 优化并行执行
+
+
+```bash
+# 按测试组运行
+python -m pytest --group=smoke
+
+# 使用测试优先级
+@pytest.mark.priority(10)  # 高优先级
+def test_critical_feature():
+    # 测试代码
+
+@pytest.mark.priority(1)   # 低优先级
+def test_minor_feature():
+    # 测试代码
+```
