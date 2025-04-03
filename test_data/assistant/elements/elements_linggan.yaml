@@ -6,7 +6,6 @@ elements:
   开播时间: "role=textbox[name='开播时间']"
   日期_02_01: "role=textbox[name='开播时间'] >> text=-02-01 >> div"
   日期: "ant-picker-cell-inner"
-  结束日期: "role=textbox[name='结束日期']"
   日期_02_07: "role=textbox[name='结束日期'] >> text=-02-07 >> div"
   开播时间输入框: role=textbox[name="开播时间"]
   结束日期输入框: role=textbox[name="结束日期"]
