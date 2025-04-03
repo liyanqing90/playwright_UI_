@@ -12,18 +12,20 @@ def login():
         "Accept-Language": "zh-CN,zh;q=0.9",
         "Content-Type": "application/json;charset=UTF-8",
         "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36",
-        "Host": "auth.autohome.com.cn"
+        "Host": "auth.autohome.com.cn",
     }
     login_data = {
         "account": "12500000002",
         "certificate": "Admin123!",
         "certificateType": 0,
         "productType": "product_ahoh",
-        "appNo": "A00064"
+        "appNo": "A00064",
     }
 
     try:
-        login_response = requests.post(login_url, headers=login_headers, data=json.dumps(login_data))
+        login_response = requests.post(
+            login_url, headers=login_headers, data=json.dumps(login_data)
+        )
         login_response.raise_for_status()  # 抛出 HTTPError 异常，以处理失败的状态码
 
         login_json = login_response.json()
@@ -51,19 +53,24 @@ def create_lead(sso_token):
         "content-type": "application/json;charset=UTF-8",
         "host": "ahohcrm.autohome.com.cn",
         "origin": "http://app.ahohcrm.autohome.com.cn",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
     }
     create_lead_data = {
         "userNameEncrypt": "接口创建",
         "userPhoneEncrypt": "18210233933",
-        "pvareaid": "6858691"
+        "pvareaid": "6858691",
     }
 
     try:
-        create_lead_headers["sso_token"] = sso_token  # 将 sso_token 添加到创建线索接口的请求头
+        create_lead_headers["sso_token"] = (
+            sso_token  # 将 sso_token 添加到创建线索接口的请求头
+        )
 
-        create_lead_response = requests.post(create_lead_url, headers=create_lead_headers,
-                                             data=json.dumps(create_lead_data))
+        create_lead_response = requests.post(
+            create_lead_url,
+            headers=create_lead_headers,
+            data=json.dumps(create_lead_data),
+        )
         create_lead_response.raise_for_status()  # 抛出 HTTPError 异常
 
         create_lead_json = create_lead_response.json()

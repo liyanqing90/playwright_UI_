@@ -59,7 +59,7 @@ test_data:
         selector: 素材筛选条件下拉选项-常驻
       - action: click
         selector: 素材查询按钮
-      - action:  click
+      - action: click
         selector: 素材显示开关
       - action: assert_text
         selector: 素材显示结果校验
@@ -491,7 +491,7 @@ test_data:
       - action: click
         selector: 剧本生成脚本
       - action: wait
-        value:  40
+        value: 40
       - action: click
         selector: 第一个脚本纳入剧本
       - action: click

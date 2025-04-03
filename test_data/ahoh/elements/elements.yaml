@@ -7,7 +7,7 @@ elements:
   下订信息-付款凭证输入框: div.uploader-box.payPic-box[data-v-acd976af] input.van-uploader__input
 #  xpath=//input[@name="payPic"]/parent::div
   下订信息-付款日期-选择日期-确认按钮: xpath=//div[text()="选择付款时间"]/following-sibling::button
-  下订信息-付款日期输入框: 
+  下订信息-付款日期输入框:
     xpath=//*[@id="scrolltarget"]/div/div[2]/div/section/form/div[4]/div[2]/div/input
   下订信息-企业代码: input[name="socialCode"]
   下订信息-公户: div.select-buyertype-main>div>div:nth-child(2)
@@ -15,7 +15,7 @@ elements:
   下订信息-合同凭证输入框: div.uploader-box.contractPic-box[data-v-acd976af] div.van-uploader__upload input.van-uploader__input
 #  xpath=//input[@name="contractPic"]/parent::div
   下订信息-合同日期-选择日期-确认按钮: xpath=//div[text()="选择合同日期"]/following-sibling::button
-  下订信息-合同日期输入框: 
+  下订信息-合同日期输入框:
     xpath=//*[@id="scrolltarget"]/div/div[2]/div/section/form/div[3]/div[2]/div/input
   下订信息-合同类型-线上合同: xpath=//div[text()="线上合同"]
   下订信息-开票价格输入框: input[name="invoiceAmount"]
@@ -34,7 +34,7 @@ elements:
   下订信息-提车日期-选择日期-确认按钮: button.van-picker__confirm
   下订信息-提车日期输入框: input[placeholder="请选择提车日期"]
   下订信息-月供输入框: input[name="monthlyPayment"]
-  下订信息-购车总价输入框: 
+  下订信息-购车总价输入框:
     xpath=//*[@id="scrolltarget"]/div/div[2]/div/section/form/div[1]/div[2]/div/input
   下订信息-购车类型-下一步按钮: div.operation-btn-big
   下订信息-贷款期数输入框: div.van-radio-group:nth-child(1)>div:nth-child(1)
@@ -68,9 +68,9 @@ elements:
   全部订单: div.fun-button__item-order
   切换登录方式: section.login-cut
   创建用户: div.adduser-btn
-  到店类型-到门店: 
+  到店类型-到门店:
     xpath=//*[@id="app"]/div[2]/section[1]/section[2]/div[1]/form/div[5]/div[1]/section/div/div[2]/div/div/section/section/section[1]
-  到店诉求-现场活动: 
+  到店诉求-现场活动:
     xpath=//*[@id="app"]/div[2]/section[1]/section[2]/div[1]/form/div[5]/div[2]/section/div/div[2]/div/div/section/section/section[2]
   到店诉求-试乘试驾: xpath=//section[text()="试乘试驾"]
   发票信息-返回上一页: div.go-back-icon
@@ -86,12 +86,12 @@ elements:
   发票已上传页-发票已上传请校验真实性文案: div.home-content>section:nth-child(1)>div.invoice-info-desc-success
   发票已上传页-已确认按钮: div.invoice-footer-operation>div
   同意协议: xpath=//*[@class="van-checkbox__icon van-checkbox__icon--round"]
-  客户信息-对客作业-全部tab-最新记录-备注: 
+  客户信息-对客作业-全部tab-最新记录-备注:
     div.detailFollow-conter>div:nth-child(2)>div>div.detailFollow-middle>div.record-item>div.records-content-call>span.record-call-value
-  客户信息-对客作业-全部tab-最新记录-跟进内容: 
+  客户信息-对客作业-全部tab-最新记录-跟进内容:
     div.detailFollow-conter>div:nth-child(2)>div>div.detailFollow-middle>div.record-item>div.record-type>div:nth-child(3)>span:nth-child(2)
   客户信息-对客作业-全部tab-最新记录-跟进卡片: div.detailFollow-conter-item>div:nth-child(1)
-  客户信息-对客作业-全部tab-最新记录-跟进方式: 
+  客户信息-对客作业-全部tab-最新记录-跟进方式:
     div.detailFollow-conter>div:nth-child(2)>div>div.detailFollow-middle>div.record-item>div.record-type>div:nth-child(2)>span:nth-child(2)
   客户信息tab-任务信息: div[role="tablist"]>div:nth-child(2)
   客户信息tab-对客作业: div[role="tablist"]>div:nth-child(3)
@@ -110,9 +110,9 @@ elements:
   客户列表_执行搜索: xpath=//*[@class="van-badge__wrapper van-icon van-icon-search"]
   客户列表搜索页后退箭头: img.search-left-icons
   客户列表查询条件输入框: xpath=//*[@id="app"]/div/div/div/div/div[1]/div/div/div/div/div[2]/div/input
-  客户列表查询结果第一条写备注按钮: 
+  客户列表查询结果第一条写备注按钮:
     div.van-list>div:nth-child(1)>div.customer-card>div.footContainer>div:nth-child(1)
-  客户列表查询结果第一条填跟进按钮: 
+  客户列表查询结果第一条填跟进按钮:
     xpath=//*[@id="app"]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div[2]/div[4]
   客户详情-线索id: div.detailcard-cont-item-bottom>div:nth-child(2)>div.detailcard-cont-value
   客户姓名: input[name="customName"]
@@ -134,15 +134,15 @@ elements:
   待清洗任务填跟进页-到店类型-到门店: xpath=//div[@class="radio-item-text"][text()="到门店"]
   待清洗任务填跟进页-到店诉求-全息体验:
     div.FileFollowCarCheck-wrap>div>div>div.van-cell__value>div>div>div>div:nth-child(3)>span
-  待清洗任务填跟进页-到店诉求-现场活动: 
+  待清洗任务填跟进页-到店诉求-现场活动:
     div.FileFollowCarCheck-wrap>div>div>div.van-cell__value>div>div>div>div:nth-child(2)>span
   待清洗任务填跟进页-清洗结果-无效: div.van-radio-group>div:nth-child(3)
   待清洗任务填跟进页-清洗结果-无效-无效原因选择框: input[placeholder="请选择无效原因"]
   待清洗任务填跟进页-清洗结果-有效: div.van-radio-group>div:nth-child(1)
-  待清洗任务填跟进页-清洗结果-有效-用户诉求-管家回电: 
+  待清洗任务填跟进页-清洗结果-有效-用户诉求-管家回电:
     form.van-form>div:nth-child(5)>div>div.van-cell__value>div>div>div>div:nth-child(1)
   待清洗任务填跟进页-用户诉求-预计到店: text=预计到店
-#    form.van-form>div:nth-child(5)>div>div.van-cell__value>div>div>div>div:nth-child(2)
+  #    form.van-form>div:nth-child(5)>div>div.van-cell__value>div>div>div>div:nth-child(2)
   待清洗任务填跟进页-管家回电-咨询内容-买车议价: form.van-form>div:nth-child(6)>div>div:nth-child(2)>div>div>div>div:nth-child(1)
   待清洗任务填跟进页-管家回电-回电时间弹窗-确认按钮: div.van-picker__toolbar>button.van-picker__confirm
   待清洗任务填跟进页-管家回电-回电时间输入框: xpath=//input[@placeholder='请选择回电时间']
@@ -207,11 +207,11 @@ elements:
 
   订单列表-搜索: div.search-icon
   订单列表-搜索输入框: xpath=//*[@id="app"]/div/div/div/div/div[1]/div/div/div/div/div[2]/div/input
-  订单列表-返回: 
+  订单列表-返回:
     section.home-wrap>section.nav-bar-box>div.nav-bar-content-wraper>div.nav-bar-content>section.nav-left
-  订单列表页面标题: 
+  订单列表页面标题:
     section.home-wrap>section.nav-bar-box>div.nav-bar-content-wraper>div.nav-bar-content>section.nav-title
-  订单卡片-上传发票/查看发票按钮: 
+  订单卡片-上传发票/查看发票按钮:
     xpath=id("app")/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[4]/div[2]/div[1]
   订单卡片-填写信息按钮: div#app > div > div > div > div > div:nth-of-type(2) > div > div >
     div:nth-of-type(2) > div > div > div > div:nth-of-type(4) > div:nth-of-type(2)
@@ -223,7 +223,7 @@ elements:
   取消下订确认弹窗-确认按钮: div[class="van-hairline--top van-dialog__footer"]>button:nth-child(2)
   取消下订确认弹窗-取消按钮: div[class="van-hairline--top van-dialog__footer"]>button:nth-child(1)
 
-  订单卡片第一个-发票状态: 
+  订单卡片第一个-发票状态:
     div.orderListcard>div:nth-child(1)>div.listcont>div.listcard-cont>div:nth-child(5)>div.listcard-cont-value
   试驾车系选择框: section[placeholder="请选择试驾车系"]
   购车周期-存疑: xpath=//div[@class="radio-item-text"][text()="存疑"]
