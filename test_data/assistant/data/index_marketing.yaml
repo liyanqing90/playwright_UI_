@@ -275,7 +275,7 @@ test_data:
         selector: 结束日期
         value: "2025-03-07"
   test_chong_zhi:
-    description: "营销助手页面私信会话弹窗回复状态筛选测试"
+    description: "营销助手页面私信会话弹窗重置测试"
     steps:
       - action: goto
         value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
@@ -309,6 +309,36 @@ test_data:
       - action: assert_text
         value: "全部"
         selector: 全部
+  test_hui_hua_tab:
+    description: "营销助手页面私信会话弹窗会话列表tab测试"
+    steps:
+      - action: goto
+        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
+      - action: click
+        selector: 用户名输入框
+      - action: fill
+        selector: 用户名输入框
+        value: "李福田"
+      - action: click
+        selector: 密码输入框
+      - action: fill
+        selector: 密码输入框
+        value: "Qwer!1234"
+      - action: click
+        selector: 登录按钮
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 私信会话
+      - action: click
+        selector: 转人工会话
+      - action: click
+        selector: 全部会话
+      - action: assert_text
+        value: "全部"
+        selector: 全部
   test_shi_fou_liu_zi:
     description: "私信营销页面是否留资筛选测试"
     steps:
@@ -334,3 +364,95 @@ test_data:
         selector: 全部
       - action: click
         selector: 未留资
+      - action: assert_text
+        value: "未留资"
+        selector: 未留资
+  test_chu_da_zhuang_tai:
+    description: "私信营销页面触达状态筛选测试"
+    steps:
+      - action: goto
+        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
+      - action: click
+        selector: 用户名输入框
+      - action: fill
+        selector: 用户名输入框
+        value: "李福田"
+      - action: click
+        selector: 密码输入框
+      - action: fill
+        selector: 密码输入框
+        value: "Qwer!1234"
+      - action: click
+        selector: 登录按钮
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 私信营销
+      - action: click
+        selector: 触达状态
+      - action: click
+        selector: 已触达未回复
+#      - action: assert_text
+#        value: "已触达未回复"
+#        selector: 断言已触达未回复
+  test_suo_shu_di_qu:
+    description: "私信营销页面所属地区筛选测试"
+    steps:
+      - action: goto
+        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
+      - action: click
+        selector: 用户名输入框
+      - action: fill
+        selector: 用户名输入框
+        value: "李福田"
+      - action: click
+        selector: 密码输入框
+      - action: fill
+        selector: 密码输入框
+        value: "Qwer!1234"
+      - action: click
+        selector: 登录按钮
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 私信营销
+      - action: click
+        selector: 所属地区
+      - action: click
+        selector: 北京
+      - action: assert_text
+        value: "北京"
+        selector: 北京
+  test_yi_xiang_che_xi:
+    description: "私信营销页面意向车系筛选测试"
+    steps:
+      - action: goto
+        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
+      - action: click
+        selector: 用户名输入框
+      - action: fill
+        selector: 用户名输入框
+        value: "李福田"
+      - action: click
+        selector: 密码输入框
+      - action: fill
+        selector: 密码输入框
+        value: "Qwer!1234"
+      - action: click
+        selector: 登录按钮
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 私信营销
+      - action: click
+        selector: 所属地区
+      - action: click
+        selector: 意向车系输入框
+      - action: fill
+        selector: 意向车系输入框
+        value: "宝马"
+      - action: click
+        selector: 查询按钮
+#      - action: assert_text
+#        value: "宝马"
+#        selector: 意向车系输入框
