@@ -59,6 +59,19 @@ Python test_runner.py --project demo #--test-file test_cases 执行指定测试�
 allure serve reports/allure-results
 ```
 
+
+### 检查用例名、用例数据、elements重复
+
+```bash
+python check_duplicates.python
+```
+
+### 格式化代码
+```bash
+poetry run black .
+```
+
+
 ## 项目结构
 
 ```
