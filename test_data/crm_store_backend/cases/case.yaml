@@ -2,3 +2,9 @@ test_cases:
   #- name: test_demo
 
   - name: test_policy_add
+  - name: test_policy_details
+  - name: test_policy_deactivate
+  - name: test_policy_filter
+  - name: test_policy_delete
+
+
