@@ -4,14 +4,14 @@ from pathlib import Path
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))
     directories = [
-        'config',
-        'page_objects',
-        'test_cases',
-        'test_scripts',
-        'utils',
-        'reports',
-        'reports/allure-results',
-        'logs'
+        "config",
+        "page_objects",
+        "test_cases",
+        "test_scripts",
+        "utils",
+        "reports",
+        "reports/allure-results",
+        "logs",
     ]
 
     for directory in directories:

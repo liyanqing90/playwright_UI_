@@ -30,8 +30,9 @@ poetry-core = "^2.0.1"
 faker = "^37.0.0"
 pytest-playwright = "^0.7.0"
 pytest-check = "^2.5.0"
-
+black = "^25.1.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+

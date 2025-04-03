@@ -28,7 +28,7 @@ class CaseExecutor:
         self.executed_fixtures: Set[str] = set()
 
     def execute_test_case(self, case: Dict[str, Any], page, ui_helper) -> None:
-        case_name = case["name"]
+        # case_name = case["name"]
 
         # # 执行测试用例前的准备工作
         # self._setup_test_environment(case)

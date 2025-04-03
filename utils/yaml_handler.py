@@ -24,12 +24,12 @@ class YamlHandler:
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"YAML文件不存在: {file_path}")
 
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             try:
 
                 return self.yaml.load(f)
-            except:
-                raise Exception(f"YAML文件解析错误: ")
+            except Exception:
+                raise Exception(f"YAML文件解析错误: {file_path}")
 
     def load_yaml_dir(self, file_path):
         yaml_files = get_yaml_files(file_path)
@@ -59,7 +59,9 @@ class YamlHandler:
                             # 字典合并，如果需要复杂的合并逻辑，可以在这里修改
                             value.update(d[key])
                         elif isinstance(value, list):
-                            value.append(d[key])  # 处理当key对应多个值，但是其中出现不是list或者dict的情况
+                            value.append(
+                                d[key]
+                            )  # 处理当key对应多个值，但是其中出现不是list或者dict的情况
 
                 result[key] = value
         return result
@@ -84,5 +86,5 @@ class YamlHandler:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             self.yaml.dump(data_dict, f)

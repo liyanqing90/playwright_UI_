@@ -24,7 +24,7 @@ class VariableManager:
     def _initialize(self, storage_mode: str = "memory", storage_file: str = None):
         """
         初始化变量存储
-        
+
         Args:
             storage_mode: 存储模式，可选值：memory, file
             storage_file: 文件存储模式下的存储文件路径
@@ -36,12 +36,14 @@ class VariableManager:
         self.variables = {
             "global": {},  # 全局变量，跨测试用例持久化
             "test_case": {},  # 测试用例级别变量，仅在当前测试用例内有效
-            "temp": {}  # 临时变量，用于特定操作内部使用
+            "temp": {},  # 临时变量，用于特定操作内部使用
         }
 
         # 文件存储模式的配置
         if storage_file is None:
-            storage_file = str(Path(__file__).parent.parent / "test_data" / "variables.json")
+            storage_file = str(
+                Path(__file__).parent.parent / "test_data" / "variables.json"
+            )
         self.storage_file = storage_file
 
         # 如果是文件存储模式，则加载文件中的变量
@@ -52,11 +54,13 @@ class VariableManager:
         """从存储文件加载变量"""
         if os.path.exists(self.storage_file):
             try:
-                with open(self.storage_file, 'r', encoding='utf-8') as f:
+                with open(self.storage_file, "r", encoding="utf-8") as f:
                     file_variables = json.load(f)
                     # 确保文件中的变量结构符合预期
                     for scope in ["global", "test_case", "temp"]:
-                        if scope in file_variables and isinstance(file_variables[scope], dict):
+                        if scope in file_variables and isinstance(
+                            file_variables[scope], dict
+                        ):
                             self.variables[scope] = file_variables[scope]
                         else:
                             self.variables[scope] = {}
@@ -76,16 +80,18 @@ class VariableManager:
         """保存变量到存储文件"""
         if self.storage_mode == "file":
             try:
-                with open(self.storage_file, 'w', encoding='utf-8') as f:
+                with open(self.storage_file, "w", encoding="utf-8") as f:
                     json.dump(self.variables, f, ensure_ascii=False, indent=2)
                 self.logger.debug(f"变量已保存到文件: {self.storage_file}")
             except Exception as e:
                 self.logger.error(f"保存变量到文件失败: {str(e)}")
 
-    def set_storage_mode(self, mode: Literal["memory", "file"], storage_file: str = None):
+    def set_storage_mode(
+        self, mode: Literal["memory", "file"], storage_file: str = None
+    ):
         """
         设置存储模式
-        
+
         Args:
             mode: 存储模式，可选值：memory, file
             storage_file: 文件存储模式下的存储文件路径
@@ -123,7 +129,7 @@ class VariableManager:
     def clear_scope(self, scope: str = "test_case"):
         """
         清除指定作用域的所有变量
-        
+
         Args:
             scope: 变量作用域，默认为test_case
         """
@@ -140,7 +146,7 @@ class VariableManager:
     def set_variable(self, name: str, value: Any, scope: str = "test_case"):
         """
         设置变量
-        
+
         Args:
             name: 变量名
             value: 变量值
@@ -164,16 +170,18 @@ class VariableManager:
         if self.storage_mode == "file":
             self._save_variables_to_file()
 
-        self.logger.debug(f"设置变量 '{name}' = '{value}' (作用域: {scope}, 原值: {old_value})")
+        self.logger.debug(
+            f"设置变量 '{name}' = '{value}' (作用域: {scope}, 原值: {old_value})"
+        )
 
     def get_variable(self, name: str, default: Any = None) -> Any:
         """
         获取变量值，优先级：test_case > global > temp
-        
+
         Args:
             name: 变量名
             default: 如果变量不存在，返回的默认值
-            
+
         Returns:
             变量值，如果不存在则返回默认值
         """
@@ -186,15 +194,17 @@ class VariableManager:
         self.logger.debug(f"未找到变量 '{name}'，返回默认值: {default}")
         return default
 
-    def get_variable_from_scope(self, name: str, scope: str = "global", default: Any = None) -> Any:
+    def get_variable_from_scope(
+        self, name: str, scope: str = "global", default: Any = None
+    ) -> Any:
         """
         从指定作用域获取变量值
-        
+
         Args:
             name: 变量名
             scope: 变量作用域
             default: 如果变量不存在，返回的默认值
-            
+
         Returns:
             变量值，如果不存在则返回默认值
         """
@@ -207,11 +217,11 @@ class VariableManager:
     def remove_variable(self, name: str, scope: Optional[str] = None) -> bool:
         """
         删除变量
-        
+
         Args:
             name: 变量名
             scope: 变量作用域，如果为None则尝试从所有作用域中删除
-            
+
         Returns:
             是否成功删除至少一个变量
         """
@@ -243,10 +253,10 @@ class VariableManager:
     def list_variables(self, scope: Optional[str] = None) -> Dict[str, Any]:
         """
         列出变量
-        
+
         Args:
             scope: 变量作用域，如果为None则列出所有作用域的变量
-            
+
         Returns:
             变量字典
         """
@@ -267,19 +277,21 @@ class VariableManager:
     def export_variables(self, scope: Optional[str] = None) -> Dict[str, Any]:
         """
         导出变量，用于持久化或共享
-        
+
         Args:
             scope: 变量作用域，如果为None则导出所有作用域的变量
-            
+
         Returns:
             变量字典
         """
         return self.list_variables(scope)
 
-    def import_variables(self, variables: Dict[str, Any], scope: str = "global", overwrite: bool = True):
+    def import_variables(
+        self, variables: Dict[str, Any], scope: str = "global", overwrite: bool = True
+    ):
         """
         导入变量
-        
+
         Args:
             variables: 要导入的变量字典
             scope: 导入到的作用域
