@@ -7,6 +7,8 @@ test_cases:
   - name: test_gold_sales
   - name: test_brand_screening
   - name: test_car_card
-#  - name: test_car_details
+  - name: test_car_details
+  - name: test_car_details_info
+
 
 
