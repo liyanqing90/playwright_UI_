@@ -2,7 +2,7 @@ test_data:
   test_demo:
     description: "demo测试"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: "图片元素"
       - action: click

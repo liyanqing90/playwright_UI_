@@ -126,7 +126,7 @@ class StepAction:
 
 
 def _replace_module_params(
-        steps: List[Dict[str, Any]], params: Dict[str, Any]
+    steps: List[Dict[str, Any]], params: Dict[str, Any]
 ) -> List[Dict[str, Any]]:
     """
     替换模块步骤中的参数
@@ -300,7 +300,7 @@ class StepExecutor:
             else:
                 # 获取模块路径和数据
                 module_data = self._find_module(module_name)
-                
+
                 # 缓存模块数据
                 self.modules_cache[module_name] = module_data
 
@@ -326,39 +326,39 @@ class StepExecutor:
         except Exception as e:
             logger.error(f"执行模块 '{module_name}' 失败: {e}")
             raise
-            
+
     def _find_module(self, module_name: str) -> Dict[str, Any]:
         """
         查找并加载模块数据
-        
+
         Args:
             module_name: 模块名称
-            
+
         Returns:
             模块数据
-            
+
         Raises:
             ValueError: 如果找不到模块
         """
-        from utils.yaml_handler import YamlHandler, get_yaml_files
+        from utils.yaml_handler import YamlHandler
         from pathlib import Path
-        
+
         yaml_handler = YamlHandler()
-        
+
         # 确定模块目录
         if self.project_name:
             modules_dir = Path("test_data") / self.project_name / "modules"
         else:
             test_dir = os.environ.get("TEST_DIR", "test_data")
             modules_dir = Path(test_dir) / "modules"
-               
+
         # 如果没有找到直接匹配的文件，使用load_yaml_dir加载整个目录
         all_modules = yaml_handler.load_yaml_dir(modules_dir)
-        
+
         # 检查是否有匹配的模块名
         if module_name in all_modules:
             return {module_name: all_modules[module_name]}
-                
+
         # 如果所有尝试都失败，抛出错误
         raise ValueError(f"找不到模块: {module_name}")
 
@@ -520,7 +520,7 @@ class StepExecutor:
         替换值中的变量引用
 
         Args:
-            value: 原始值，可能包含变量引用 ${var_name}
+            value: 原始值，可能包含变量引用 ${var_name} 或 $<var_name>
 
         Returns:
             替换后的值
@@ -532,22 +532,35 @@ class StepExecutor:
             return value
 
         if isinstance(value, str):
-            # 处理完整的变量引用，如 ${var_name}
+            # 处理完整的变量引用，如 ${var_name} 或 $<var_name>
             if (
                 value.startswith("${")
                 and value.endswith("}")
                 and value.count("${") == 1
+            ) or (
+                value.startswith("$<")
+                and value.endswith(">")
+                and value.count("$<") == 1
             ):
-                var_name = value[2:-1]
+
+                if value.startswith("${"):
+                    var_name = value[2:-1]
+                else:  # value.startswith("$<")
+                    var_name = value[2:-1]
+
                 return self.variable_manager.get_variable(var_name)
 
             # 替换内嵌变量引用
             import re
 
-            pattern = r"\${([^{}]+)}"
+            # 同时匹配 ${var_name} 和 $<var_name> 两种模式
+            pattern = r"\${([^{}]+)}|\$<([^<>]+)>"
 
             def replace_var(match):
-                var_name = match.group(1)
+                # 获取匹配的组，第一个组是 ${} 形式，第二个组是 $<> 形式
+                var_name = (
+                    match.group(1) if match.group(1) is not None else match.group(2)
+                )
                 var_value = self.variable_manager.get_variable(var_name)
                 return str(var_value) if var_value is not None else match.group(0)
 
@@ -802,7 +815,7 @@ class StepExecutor:
                 raise ValueError("步骤缺少必要参数: variable_name")
 
             # 直接使用ui_helper的方法
-            value = self.ui_helper.generate_faker_data(data_type, **kwargs)
+            value = generate_faker_data(data_type, **kwargs)
             self.ui_helper.store_variable(
                 step["variable_name"], value, step.get("scope", "global")
             )

@@ -2,20 +2,9 @@ test_data:
   test_zong_kai_guan:
     description: "营销助手页面总开关测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login
+
+
       - action: click
         selector: 营销
       - action: click

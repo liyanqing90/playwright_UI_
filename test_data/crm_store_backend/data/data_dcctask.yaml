@@ -2,7 +2,7 @@ test_data:
   test_dcc_task_search:
     description: "线索&工单管理-主任务列表-组合搜索1"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -124,7 +124,7 @@ test_data:
   test_dcc_task_list:
     description: "线索&工单管理-主任务列表-列表验证"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -202,7 +202,7 @@ test_data:
   test_dcc_task_search_status:
     description: "线索&工单管理-线索管理-各任务状态搜索"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -259,7 +259,7 @@ test_data:
   test_dcc_task_search_type:
     description: "线索&工单管理-线索管理-各任务类型搜索"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -329,7 +329,7 @@ test_data:
   test_dcc_task_detail:
     description: "线索&工单管理-主任务列表-任务详情"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -405,7 +405,7 @@ test_data:
   test_dcc_task_new_detail:
     description: "线索&工单管理-主任务列表-任务详情"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click

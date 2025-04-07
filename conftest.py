@@ -246,9 +246,9 @@ def login(page, ui_helper, request):
     yaml = YamlHandler()
     test_dir = os.environ.get("TEST_DIR")
     elements = yaml.load_yaml_dir(f"{test_dir}/elements/").get("elements")
-    login_steps = yaml.load_yaml_dir(f"{test_dir}/steps/").get("steps").get("login")
+    login_modules = yaml.load_yaml_dir(f"{test_dir}/modules/").get("login")
     step_executor = StepExecutor(page, ui_helper, elements)
-    for step in login_steps:
+    for step in login_modules:
         step_executor.execute_step(step)
 
     return None

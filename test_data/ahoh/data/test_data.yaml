@@ -406,7 +406,7 @@ test_data:
   test_待清洗的线索-对客作业-跟进方式见面和微信+查看跟进详情:
     description: 待清洗的线索-对客作业-跟进方式见面和微信+查看跟进详情--已调通
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: 点击
         selector: 底部菜单-工作
 
@@ -606,8 +606,8 @@ test_data:
   test_创建试驾任务和取消任务:
     description: 创建试驾任务和取消任务--已调通
     steps:
-      - step_ref: login_steps
-      - step_ref: create_store_testDriveTask_lead_steps
+      - use_module: login_steps
+      - use_module: create_store_testDriveTask_lead_steps
 
       - action: 点击
         selector: 底部菜单-客户
@@ -711,8 +711,8 @@ test_data:
   test_取消看舱:
     description: 取消看舱--已调通
     steps:
-      - step_ref: login_steps
-      - step_ref: create_store_unvisited_leads_steps
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
       - action: 刷新
         selector: ''
 
@@ -816,8 +816,8 @@ test_data:
   test_清洗任务填跟进:
     description: 清洗任务填跟进--已调通
     steps:
-      - step_ref: login_steps
-      - step_ref: create_store_unvisited_leads_steps
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
       - action: 刷新
         selector: ''
 
@@ -879,8 +879,8 @@ test_data:
   test_清洗任务生成的管家回电任务填跟进:
     description: test_清洗任务生成的管家回电任务填跟进--已调通
     steps:
-      - step_ref: login_steps
-      - step_ref: create_store_unvisited_leads_steps
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
       - action: 刷新
         selector: ''
 
@@ -969,8 +969,8 @@ test_data:
   test_管家回电任务生成的再联系任务跟进:
     description: 再联系任务填跟进-线索战败--已调通
     steps:
-      - step_ref: login_steps
-      - step_ref: create_store_unvisited_leads_steps
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
       - action: 刷新
         selector: ''
 
@@ -1086,8 +1086,8 @@ test_data:
   test_看舱任务完成:
     description: 看舱任务完成--已调通
     steps:
-      - step_ref: login_steps
-      - step_ref: create_store_unvisited_leads_steps
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
       - action: 刷新
         selector: ''
 
@@ -1200,8 +1200,8 @@ test_data:
   test_生成当日公户用户订单，提交审核全流程:
     description: 生成当日公户用户订单，提交审核全流程--已调通
     steps:
-      - step_ref: login_steps
-      - step_ref: create_store_unvisited_leads_steps
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
       - action: 刷新
         selector: ''
         
@@ -1436,10 +1436,10 @@ test_data:
   test_生成当日个户用户订单，常规品牌发起确认函:
     description: 生成当日个户用户订单，常规品牌发起确认函--已调通
     steps:
-      - step_ref: login_steps
-      - step_ref: create_store_unvisited_leads_steps
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
       - action: 刷新
-      - step_ref: create_order_steps
+      - use_module: create_order_steps
       - action: 刷新
       - action: 点击
         selector: 底部菜单-工作
@@ -1530,10 +1530,10 @@ test_data:
   test_生成当日个户用户订单，订单暂存:
     description: 生成当日个户用户订单，订单暂存--调试中
     steps:
-      - step_ref: login_steps
-      - step_ref: create_store_unvisited_leads_steps
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
       - action: 刷新
-      - step_ref: create_order_savaDraft
+      - use_module: create_order_savaDraft
       - action: 刷新
       - action: 点击
         selector: 底部菜单-工作
@@ -1561,10 +1561,10 @@ test_data:
   test_生成当日个户用户订单，取消下订:
     description: 生成订单，取消订单
     steps:
-      - step_ref: login_steps
-      - step_ref: create_store_unvisited_leads_steps
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
       - action: 刷新
-      - step_ref: create_order
+      - use_module: create_order
       - action: 刷新
       - action: 点击
         selector: 全部订单
@@ -1582,10 +1582,10 @@ test_data:
         selector: 订单卡片-取消下订选项
       - action: 验证文本
         selector:  取消下订确认弹窗确认取消文案
-        value: $<ahoh_cancelOrder_confirmText>
+        value: 确定取消下订吗?
       - action: 验证文本
         selector:  取消下订确认弹窗转跟进任务文案
-        value: $<ahoh_cancelOrder_TaskText>
+        value: 此订单将转为今日跟进任务
       - action: 点击
         selector: 取消下订确认弹窗-确认按钮
       - action: 刷新
