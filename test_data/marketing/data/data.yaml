@@ -3,7 +3,7 @@ test_data:
     description: "demo测试"
     steps:
       - action: goto
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4"
+        value: "/ahoh-marketing/ahohIndex4"
       - action: click
         selector: 汽车之家空间站·北京站
       - action: click
@@ -41,7 +41,7 @@ test_data:
     description: "门店信息"
     steps:
       - action: navigate
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+        value: "/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
       - action: assert_text
         selector: 权益slogan
         value: "·买贵赔差价·健康守全家"
@@ -66,7 +66,7 @@ test_data:
     description: "点击进入车系详情"
     steps:
       - action: goto
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+        value: "/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
       - action: click
         selector: car_name
       - action: assert_text
@@ -85,7 +85,7 @@ test_data:
     description: "url进入车系详情"
     steps:
       - action: goto
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682"
+        value: "/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682"
       - action: wait
       - action: assert_text
         selector: detail_car_model
@@ -100,7 +100,7 @@ test_data:
     description: "礼包"
     steps:
       - action: navigate
-        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: assert_text
         selector: detail_gift_title
         value: "1280"
@@ -132,7 +132,7 @@ test_data:
     description: "门店信息"
     steps:
       - action: navigate
-        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_store_info
       - action: assert_text
@@ -152,7 +152,7 @@ test_data:
     description: "购车计算"
     steps:
       - action: navigate
-        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_car_clc
       - action: assert_text
@@ -183,7 +183,7 @@ test_data:
     description: "以旧换新"
     steps:
       - action: navigate
-        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_trade_in
       - action: assert_text
@@ -251,7 +251,7 @@ test_data:
     description: "以旧换新"
     steps:
       - action: navigate
-        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_trade_in
       - action: assert_text
@@ -277,7 +277,7 @@ test_data:
     description: "以旧换新"
     steps:
       - action: navigate
-        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_trade_in
       - action: assert_text
@@ -339,7 +339,7 @@ test_data:
     description: "以旧换新"
     steps:
       - action: navigate
-        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_trade_in
       - action: assert_text
@@ -370,7 +370,7 @@ test_data:
     description: "试驾服务"
     steps:
       - action: navigate
-        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_test_drive
       - action: assert_text
@@ -401,7 +401,7 @@ test_data:
     description: "选择车型"
     steps:
       - action: navigate
-        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_test_drive
       - action: assert_text
@@ -477,7 +477,7 @@ test_data:
     description: "权益说明"
     steps:
       - action: navigate
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+        value: "/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
       - action: click
         selector: rights_detail_text
       - action: assert_text
@@ -488,7 +488,7 @@ test_data:
     description: "门店列表"
     steps:
       - action: navigate
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+        value: "/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
       - action: click
         selector: store_count_text
       - action: assert_text
@@ -553,7 +553,7 @@ test_data:
     description: "温馨礼包"
     steps:
       - action: navigate
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+        value: "/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
       - action: click
         selector: third_carousel_image
       - action: click
@@ -567,7 +567,7 @@ test_data:
     description: "询价"
     steps:
       - action: navigate
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+        value: "/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
       - action: assert_text
         selector: first_price_button
         value: "询底价"
@@ -591,7 +591,7 @@ test_data:
     description: "筛选"
     steps:
       - action: navigate
-        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+        value: "/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
       - action: click
         selector: 品牌
       #      - action: pause
