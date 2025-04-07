@@ -442,7 +442,7 @@ test_data:
     description: "底部"
     steps:
       - action: navigate
-        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=82&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: wait
         value: 2
       - action: click
@@ -617,5 +617,39 @@ test_data:
       - action: assert_text
         selector: brand-num
         value: "2个品牌"
+  test_check_level:
+    description: 检查等级
+    steps:
+      - action: goto
+        value: /ahoh-marketing/carStore?rimCityId=110100&storeCode=4682
+      - action: click
+        selector: level
+      - action: click
+        selector: level_轿车
+      - action: monitor_request
+        url_pattern: /api/gateway/feed/search/seriesAndSort
+        selector: level_btn
+        action_type: click
+        assert_params:
+          $.level: [1]
+  test_check_energy:
+    description: 检查能源
+    steps:
+      - action: goto
+        value: /ahoh-marketing/carStore?rimCityId=110100&storeCode=4682
+      - action: click
+        selector: level
+      - action: click
+        selector: level_纯电动
+      - action: click
+        selector: level_btn
+      - action: click
+        selector: first_card
+      - action: assert_text
+        selector: detail_energy
+        expected: 纯电动
+
+
+
 
 

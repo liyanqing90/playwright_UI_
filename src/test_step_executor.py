@@ -807,10 +807,8 @@ class StepExecutor:
         elif action in StepAction.MONITOR_REQUEST:
             # 获取参数
             url_pattern = step.get("url_pattern", value)
-            selector = step.get("selector", selector)
             action_type = step.get("action_type", "click")
             assert_params = step.get("assert_params")
-            timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
             variable_name = step.get("variable_name")
             scope = step.get("scope", "global")
 
@@ -837,9 +835,9 @@ class StepExecutor:
             request_data = self.ui_helper.monitor_action_request(
                 url_pattern=url_pattern,
                 selector=selector,
-                action_type=action_type,
+                action=action_type,
                 assert_params=assert_params,
-                timeout=timeout,
+                timeout=DEFAULT_TIMEOUT,
             )
 
             # 如果提供了变量名，存储捕获数据

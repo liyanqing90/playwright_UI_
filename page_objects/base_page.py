@@ -931,7 +931,6 @@ class BasePage:
         action: str = "click",
         assert_params: Dict[str, Any] = None,
         timeout: int = DEFAULT_TIMEOUT,
-        **kwargs,
     ):
         """
         监测操作触发的请求并验证参数
@@ -955,11 +954,11 @@ class BasePage:
                 if action == "click":
                     self.click(selector)
                 elif action == "fill":
-                    self.fill(selector, kwargs.get("value", ""))
+                    self.fill(selector)
                 elif action == "press_key":
-                    self.press_key(selector, kwargs.get("key", "Enter"))
+                    self.press_key(selector)
                 elif action == "select":
-                    self.select_option(selector, kwargs.get("value", ""))
+                    self.select_option(selector)
                 else:
                     logger.warning(f"不支持的操作类型: {action}，将执行默认点击操作")
                     self.click(selector)
