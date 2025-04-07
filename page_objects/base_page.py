@@ -931,6 +931,7 @@ class BasePage:
         action: str = "click",
         assert_params: Dict[str, Any] = None,
         timeout: int = DEFAULT_TIMEOUT,
+        **kwargs,
     ):
         """
         监测操作触发的请求并验证参数
@@ -938,10 +939,10 @@ class BasePage:
         Args:
             url_pattern: URL匹配模式，如 "**/api/user/**"
             selector: 要操作的元素选择器
-            action: 要执行的操作，如 "click", "fill" 等
+            action: 要执行的操作，如 "click", "goto" 等
             assert_params: 要验证的参数列表，格式为 [{"$.path.to.field": expected_value}, ...]
             timeout: 等待超时时间(毫秒)
-            **kwargs: 其他操作参数，如 fill 操作的 value
+            **kwargs: 其他操作参数，如 goto 操作的 value
 
         Returns:
             捕获的请求数据
@@ -959,6 +960,8 @@ class BasePage:
                     self.press_key(selector)
                 elif action == "select":
                     self.select_option(selector)
+                elif action == "goto":
+                    self.navigate(kwargs.get("value"))
                 else:
                     logger.warning(f"不支持的操作类型: {action}，将执行默认点击操作")
                     self.click(selector)
@@ -1052,11 +1055,13 @@ class BasePage:
                 if action == "click":
                     self.click(selector)
                 elif action == "fill":
-                    self.fill(selector, kwargs.get("value", ""))
+                    self.fill(selector)
                 elif action == "press_key":
-                    self.press_key(selector, kwargs.get("key", "Enter"))
+                    self.press_key(selector)
                 elif action == "select":
-                    self.select_option(selector, kwargs.get("value", ""))
+                    self.select_option(selector)
+                elif action == "goto":
+                    self.navigate(kwargs.get("value"))
                 else:
                     logger.warning(f"不支持的操作类型: {action}，将执行默认点击操作")
                     self.click(selector)
