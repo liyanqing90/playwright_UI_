@@ -18,7 +18,7 @@ log_format = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> [<level>{level}</level>]
 logger.add(
     sink=lambda msg: print(msg),
     format=log_format,  # 使用通用格式
-    level="INFO",
+    level="ERROR",
     colorize=True,
 )
 # 添加文件输出 (DEBUG 级别及以上)

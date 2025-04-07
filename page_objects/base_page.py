@@ -1,6 +1,7 @@
 import functools
+import json
 import os
-from typing import Callable, Literal, Optional, List
+from typing import Callable, Literal, Optional, List, Any, Dict
 
 import allure
 from playwright.sync_api import Page
@@ -9,6 +10,7 @@ from pytest_check import check
 from constants import DEFAULT_TIMEOUT, DEFAULT_TYPE_DELAY
 from utils.logger import logger
 from utils.variable_manager import VariableManager
+from jsonpath_ng import parse
 
 
 def handle_page_error(func: Callable) -> Callable:
@@ -919,3 +921,227 @@ class BasePage:
         resolved_text = self._resolve_variables(text)
         self.page.keyboard.type(resolved_text, delay=delay)
         logger.debug(f"全局输入文本: {resolved_text}")
+
+    @handle_page_error
+    @allure.step("监测操作触发的请求")
+    def monitor_action_request(
+        self,
+        url_pattern: str,
+        selector: str,
+        action: str = "click",
+        assert_params: Dict[str, Any] = None,
+        timeout: int = DEFAULT_TIMEOUT,
+    ):
+        """
+        监测操作触发的请求并验证参数
+
+        Args:
+            url_pattern: URL匹配模式，如 "**/api/user/**"
+            selector: 要操作的元素选择器
+            action: 要执行的操作，如 "click", "fill" 等
+            assert_params: 要验证的参数列表，格式为 [{"$.path.to.field": expected_value}, ...]
+            timeout: 等待超时时间(毫秒)
+            **kwargs: 其他操作参数，如 fill 操作的 value
+
+        Returns:
+            捕获的请求数据
+        """
+        logger.info(f"开始监测请求: {url_pattern}, 操作: {action} 元素: {selector}")
+
+        try:
+            with self.page.expect_request(url_pattern, timeout=timeout) as request_info:
+                # 执行操作
+                if action == "click":
+                    self.click(selector)
+                elif action == "fill":
+                    self.fill(selector)
+                elif action == "press_key":
+                    self.press_key(selector)
+                elif action == "select":
+                    self.select_option(selector)
+                else:
+                    logger.warning(f"不支持的操作类型: {action}，将执行默认点击操作")
+                    self.click(selector)
+
+                # 等待请求完成
+                request = request_info.value
+                logger.info(f"捕获到请求: {request.url}")
+
+                # 获取请求数据
+                if request.method in ["POST", "PUT", "PATCH"]:
+                    try:
+                        request_data = request.post_data_json()
+                    except Exception:
+                        request_data = json.loads(request.post_data)
+                    logger.info(f"请求数据 (解析为JSON): {request_data}")
+                else:
+                    # 对于GET请求，获取URL参数
+                    from urllib.parse import urlparse, parse_qs
+
+                    parsed_url = urlparse(request.url)
+                    request_data = parse_qs(parsed_url.query)
+
+                    # 将单项列表值转换为单个值
+                    for key, value in request_data.items():
+                        if isinstance(value, list) and len(value) == 1:
+                            request_data[key] = value[0]
+
+                    logger.info(f"请求参数: {request_data}")
+
+                # 构建完整的请求信息
+                captured_data = {
+                    "url": request.url,
+                    "method": request.method,
+                    "data": request_data,
+                    "headers": {k: v for k, v in request.headers.items()},
+                }
+
+                # 验证参数（如果需要）
+                logger.info(f"捕获到请求: {assert_params}")
+                if assert_params and request_data:
+                    # 处理断言参数
+                    for jsonpath_expr, expected_value in assert_params.items():
+                        self._verify_jsonpath(
+                            request_data, jsonpath_expr, expected_value
+                        )
+
+            return captured_data
+
+        except Exception as e:
+            logger.error(f"监测请求失败: {e}")
+            screenshot = self.page.screenshot()
+            allure.attach(
+                screenshot,
+                name="请求捕获失败截图",
+                attachment_type=allure.attachment_type.PNG,
+            )
+            raise
+
+    @handle_page_error
+    @allure.step("监测操作触发的响应")
+    def monitor_action_response(
+        self,
+        url_pattern: str,
+        selector: str,
+        action: str = "click",
+        assert_params: Dict[str, Any] = None,
+        timeout: int = DEFAULT_TIMEOUT,
+        **kwargs,
+    ):
+        """
+        监测操作触发的响应并验证参数
+
+        Args:
+            url_pattern: URL匹配模式，如 "**/api/user/**"
+            selector: 要操作的元素选择器
+            action: 要执行的操作，如 "click", "fill" 等
+            assert_params: 要验证的参数列表，格式为 [{"$.path.to.field": expected_value}, ...]
+            timeout: 等待超时时间(毫秒)
+            **kwargs: 其他操作参数，如 fill 操作的 value
+
+        Returns:
+            捕获的响应数据
+        """
+        logger.info(f"开始监测响应: {url_pattern}, 操作: {action} 元素: {selector}")
+
+        try:
+            with self.page.expect_response(
+                url_pattern, timeout=timeout
+            ) as response_info:
+                # 执行操作
+                if action == "click":
+                    self.click(selector)
+                elif action == "fill":
+                    self.fill(selector, kwargs.get("value", ""))
+                elif action == "press_key":
+                    self.press_key(selector, kwargs.get("key", "Enter"))
+                elif action == "select":
+                    self.select_option(selector, kwargs.get("value", ""))
+                else:
+                    logger.warning(f"不支持的操作类型: {action}，将执行默认点击操作")
+                    self.click(selector)
+
+                # 等待响应完成
+                response = response_info.value
+                logger.info(f"捕获到响应: {response.url}, 状态码: {response.status}")
+
+                # 获取响应数据
+                try:
+                    response_data = response.json()
+                    logger.info(f"响应数据: {response_data}")
+
+                    # 验证参数（如果需要）
+                    if assert_params and response_data:
+                        # 处理断言参数
+                        for jsonpath_expr, expected_value in assert_params.items():
+                            self._verify_jsonpath(
+                                response_data, jsonpath_expr, expected_value
+                            )
+
+                    return response_data
+
+                except Exception as e:
+                    logger.error(f"处理响应数据失败: {e}")
+                    raise
+
+        except Exception as e:
+            logger.error(f"监测响应失败: {e}")
+            screenshot = self.page.screenshot()
+            allure.attach(
+                screenshot,
+                name="响应捕获失败截图",
+                attachment_type=allure.attachment_type.PNG,
+            )
+            raise
+
+    def _verify_jsonpath(self, data, jsonpath_expr, expected_value):
+        """
+        验证JSONPath表达式的值是否符合预期
+
+        Args:
+            data: 要验证的数据
+            jsonpath_expr: JSONPath表达式
+            expected_value: 期望值
+        """
+
+        # 解析 jsonpath 表达式
+        jsonpath_expr = jsonpath_expr.strip()
+        expr = parse(jsonpath_expr)
+
+        # 查找匹配的值
+        matches = [value.value for value in expr.find(data)][0]
+
+        if not matches:
+            logger.error(f"JSONPath {jsonpath_expr} 未找到匹配项")
+            raise ValueError(f"JSONPath {jsonpath_expr} 未找到匹配项，当前数据: {data}")
+
+        # 处理变量替换
+        resolved_expected = self._resolve_variables(expected_value)
+
+        # 执行断言
+        with check, allure.step(f"验证参数 {jsonpath_expr}"):
+            if isinstance(matches, list) and isinstance(resolved_expected, list):
+                # 列表比较
+                assert sorted([str(x) for x in matches]) == sorted(
+                    [str(x) for x in resolved_expected]
+                ), f"断言失败: 参数 {jsonpath_expr} 期望值为 '{resolved_expected}', 实际值为 '{matches}'"
+            elif isinstance(matches, list):
+                # 检查列表中是否包含期望值
+                expected_str = str(resolved_expected)
+                found = any(str(item) == expected_str for item in matches)
+                assert (
+                    found
+                ), f"断言失败: 参数 {jsonpath_expr} 期望包含值 '{resolved_expected}', 实际值为 '{matches}'"
+            else:
+                # 单值比较
+                assert str(matches) == str(
+                    resolved_expected
+                ), f"断言失败: 参数 {jsonpath_expr} 期望值为 '{resolved_expected}', 实际值为 '{matches}'"
+
+        allure.attach(
+            f"断言成功: 参数 {jsonpath_expr} 匹配期望值 {resolved_expected}",
+            name="断言结果",
+            attachment_type=allure.attachment_type.TEXT,
+        )
+
+        logger.info(f"参数验证成功: {jsonpath_expr} 匹配期望值 {resolved_expected}")

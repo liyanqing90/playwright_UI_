@@ -1,5 +1,7 @@
 test_cases:
   - name: test_store_info
+  - name: test_check_level
+  - name: test_check_energy
   - name: test_rights_detail
   - name: test_store_list
   - name: test_warming_gift

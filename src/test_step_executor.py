@@ -92,6 +92,10 @@ class StepAction:
     IF_CONDITION = ["if", "如果"]
     FOR_EACH = ["for_each", "循环"]
 
+    # 接口监测相关
+    MONITOR_REQUEST = ["monitor_request", "监测请求"]
+    MONITOR_RESPONSE = ["monitor_response", "监测响应"]
+
     # 不需要selector的操作
     NO_SELECTOR_ACTIONS = (
         NAVIGATE
@@ -798,6 +802,94 @@ class StepExecutor:
             self.ui_helper.keyboard_type(text, delay)
         elif action in StepAction.EXECUTE_PYTHON:
             run_dynamic_script_from_path(value)
+
+        # 监测请求
+        elif action in StepAction.MONITOR_REQUEST:
+            # 获取参数
+            url_pattern = step.get("url_pattern", value)
+            action_type = step.get("action_type", "click")
+            assert_params = step.get("assert_params")
+            variable_name = step.get("variable_name")
+            scope = step.get("scope", "global")
+
+            # 其他可能的参数
+            kwargs = {}
+            if action_type == "fill" and "value" in step:
+                kwargs["value"] = step.get("value")
+            elif action_type == "press_key" and "key" in step:
+                kwargs["key"] = step.get("key")
+            elif action_type == "select" and "value" in step:
+                kwargs["value"] = step.get("value")
+
+            # 检查URL格式
+            if (
+                url_pattern
+                and "http" not in url_pattern
+                and not url_pattern.startswith("*")
+            ):
+                if url_pattern.startswith("/"):
+                    url_pattern = f"**{url_pattern}**"
+                else:
+                    url_pattern = f"**/{url_pattern}**"
+            # 调用监测方法
+            request_data = self.ui_helper.monitor_action_request(
+                url_pattern=url_pattern,
+                selector=selector,
+                action=action_type,
+                assert_params=assert_params,
+                timeout=DEFAULT_TIMEOUT,
+            )
+
+            # 如果提供了变量名，存储捕获数据
+            if variable_name:
+                self.variable_manager.set_variable(variable_name, request_data, scope)
+                logger.info(f"已存储请求数据到变量 {variable_name}")
+
+        # 监测响应
+        elif action in StepAction.MONITOR_RESPONSE:
+            # 获取参数
+            url_pattern = step.get("url_pattern", value)
+            selector = step.get("selector", selector)
+            action_type = step.get("action_type", "click")
+            assert_params = step.get("assert_params")
+            timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
+            variable_name = step.get("variable_name")
+            scope = step.get("scope", "global")
+
+            # 其他可能的参数
+            kwargs = {}
+            if action_type == "fill" and "value" in step:
+                kwargs["value"] = step.get("value")
+            elif action_type == "press_key" and "key" in step:
+                kwargs["key"] = step.get("key")
+            elif action_type == "select" and "value" in step:
+                kwargs["value"] = step.get("value")
+
+            # 检查URL格式
+            if (
+                url_pattern
+                and "http" not in url_pattern
+                and not url_pattern.startswith("*")
+            ):
+                if url_pattern.startswith("/"):
+                    url_pattern = f"**{url_pattern}**"
+                else:
+                    url_pattern = f"**/{url_pattern}**"
+
+            # 调用监测方法
+            response_data = self.ui_helper.monitor_action_response(
+                url_pattern,
+                selector,
+                action_type,
+                assert_params,
+                timeout,
+                **kwargs,
+            )
+
+            # 如果提供了变量名，存储捕获数据
+            if variable_name:
+                self.variable_manager.set_variable(variable_name, response_data, scope)
+                logger.info(f"已存储响应数据到变量 {variable_name}")
 
     def _finalize_step(self):
         """统一后处理逻辑"""
