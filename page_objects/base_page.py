@@ -1116,7 +1116,7 @@ class BasePage:
         # 查找匹配的值
         matches = [value.value for value in expr.find(data)][0]
 
-        if not matches:
+        if expected_value and not matches:
             logger.error(f"JSONPath {jsonpath_expr} 未找到匹配项")
             raise ValueError(f"JSONPath {jsonpath_expr} 未找到匹配项，当前数据: {data}")
 
