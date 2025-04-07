@@ -2,7 +2,7 @@ test_data:
   test_lead_mange_search_lead:
     description: "线索&工单管理-线索管理-线索id搜索"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -23,7 +23,7 @@ test_data:
   test_lead_mange_search_phone:
     description: "线索&工单管理-线索管理-手机号搜索"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -44,7 +44,7 @@ test_data:
   test_lead_mange_detail:
     description: "线索&工单管理-线索管理-查看详情"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -76,7 +76,7 @@ test_data:
   test_lead_mange_search_1:
     description: "线索&工单管理-线索管理-组合搜索1"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -191,7 +191,7 @@ test_data:
   test_lead_mange_search_status:
     description: "线索&工单管理-线索管理-各状态搜索"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -328,7 +328,7 @@ test_data:
   test_lead_mange_search_source:
     description: "线索&工单管理-线索管理-来源搜索"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -428,7 +428,7 @@ test_data:
   test_lead_mange_list:
     description: "线索&工单管理-线索管理-线索id搜索"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -480,7 +480,7 @@ test_data:
   test_lead_mange_Revert_assign:
     description: "线索&工单管理-线索管理-重新分配"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -513,7 +513,7 @@ test_data:
   test_lead_mange_batch_assign:
     description: "线索&工单管理-线索管理-批量分配"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -543,7 +543,7 @@ test_data:
   test_lead_mange_new_detail1:
     description: "线索&工单管理-线索管理-线索id查看详情-待清洗任务验证"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -626,7 +626,7 @@ test_data:
   test_lead_mange_new_detail2:
     description: "线索&工单管理-线索管理-线索id查看详情-待回电任务验证"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -685,7 +685,7 @@ test_data:
   test_lead_mange_new_detail3:
     description: "线索&工单管理-线索管理-线索id查看详情-持续跟进任务验证"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -743,7 +743,7 @@ test_data:
   test_lead_mange_new_detail4:
     description: "线索&工单管理-线索管理-线索id查看详情-待接待任务验证"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -804,7 +804,7 @@ test_data:
   test_lead_mange_new_detail_follow:
     description: "线索&工单管理-线索管理-线索id查看详情-对客作业列表信息验证"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click
@@ -892,7 +892,7 @@ test_data:
   test_lead_mange_new_detail_follow_detail:
     description: "线索&工单管理-线索管理-线索id查看详情-对客作业列表-任务详情信息验证"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 线索&工单管理
       - action: click

@@ -5,8 +5,8 @@ test_data:
     steps:
 #      - action: execute_python
 #        value:  files/ahoh/createLeadsInterface.py
-      - step_ref: login_steps
-      - step_ref: create_store_unvisited_leads_steps
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
       - action: 刷新
       - action: 点击
         selector: 底部菜单-客户

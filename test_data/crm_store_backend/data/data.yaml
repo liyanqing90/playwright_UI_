@@ -24,7 +24,7 @@ test_data:
   test_policy_add:
     description: "demo测试"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 购车政策
       - action: click
@@ -135,17 +135,17 @@ test_data:
         selector: 提交按钮
       - action: click
         selector: 查询按钮
-      - step_ref: list_add_data_steps
+      - use_module: list_add_data_steps
 
   test_policy_deactivate:
     description: "demo测试"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 购车政策
       - action: click
         selector: 购车政策列表
-      - step_ref: filter_steps
+      - use_module: filter_steps
       - action: click
         selector: 停用按钮
       - action: click
@@ -166,12 +166,12 @@ test_data:
   test_policy_details:
     description: "demo测试"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 购车政策
       - action: click
         selector: 购车政策列表
-      - step_ref: filter_steps
+      - use_module: filter_steps
       - action: click
         selector: 编辑按钮
       - action: assert_text
@@ -254,7 +254,7 @@ test_data:
   test_policy_delete:
     description: "demo测试"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 购车政策
       - action: click
@@ -265,7 +265,7 @@ test_data:
         selector: 确认删除
       - action: click
         selector: 查询按钮
-      - step_ref: filter_steps
+      - use_module: filter_steps
       - action: click
         selector: 查询按钮
       - action: assert_text
@@ -275,12 +275,12 @@ test_data:
   test_policy_filter:
     description: "demo测试"
     steps:
-      - step_ref: login_steps
+      - use_module: login_steps
       - action: click
         selector: 购车政策
       - action: click
         selector: 购车政策列表
-      - step_ref: filter_steps
+      - use_module: filter_steps
       - action: click
         selector: 查询按钮
       - action: assert_text

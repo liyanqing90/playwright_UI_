@@ -94,7 +94,7 @@ test_data:
         selector: edit_button
       - action: click
         selector: 清空全部
-      - step_ref: delete_script
+      - use_module: delete_script
 
 
 

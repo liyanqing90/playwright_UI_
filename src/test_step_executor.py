@@ -126,7 +126,7 @@ class StepAction:
 
 
 def _replace_module_params(
-        steps: List[Dict[str, Any]], params: Dict[str, Any]
+    steps: List[Dict[str, Any]], params: Dict[str, Any]
 ) -> List[Dict[str, Any]]:
     """
     替换模块步骤中的参数
@@ -300,13 +300,13 @@ class StepExecutor:
             else:
                 # 获取模块路径和数据
                 module_data = self._find_module(module_name)
-                
+
                 # 缓存模块数据
                 self.modules_cache[module_name] = module_data
 
             # 获取步骤列表
-            if "steps" in module_data:
-                steps = module_data["steps"]
+            if "modules" in module_data:
+                steps = module_data["modules"]
             elif module_data:
                 # 获取第一个键对应的值
                 first_key = next(iter(module_data))
@@ -326,39 +326,39 @@ class StepExecutor:
         except Exception as e:
             logger.error(f"执行模块 '{module_name}' 失败: {e}")
             raise
-            
+
     def _find_module(self, module_name: str) -> Dict[str, Any]:
         """
         查找并加载模块数据
-        
+
         Args:
             module_name: 模块名称
-            
+
         Returns:
             模块数据
-            
+
         Raises:
             ValueError: 如果找不到模块
         """
         from utils.yaml_handler import YamlHandler, get_yaml_files
         from pathlib import Path
-        
+
         yaml_handler = YamlHandler()
-        
+
         # 确定模块目录
         if self.project_name:
             modules_dir = Path("test_data") / self.project_name / "modules"
         else:
             test_dir = os.environ.get("TEST_DIR", "test_data")
             modules_dir = Path(test_dir) / "modules"
-               
+
         # 如果没有找到直接匹配的文件，使用load_yaml_dir加载整个目录
         all_modules = yaml_handler.load_yaml_dir(modules_dir)
-        
+
         # 检查是否有匹配的模块名
         if module_name in all_modules:
             return {module_name: all_modules[module_name]}
-                
+
         # 如果所有尝试都失败，抛出错误
         raise ValueError(f"找不到模块: {module_name}")
 
