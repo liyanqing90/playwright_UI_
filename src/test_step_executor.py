@@ -125,6 +125,51 @@ class StepAction:
     )
 
 
+def _replace_module_params(
+        steps: List[Dict[str, Any]], params: Dict[str, Any]
+) -> List[Dict[str, Any]]:
+    """
+    替换模块步骤中的参数
+
+    Args:
+        steps: 模块步骤列表
+        params: 参数字典
+
+    Returns:
+        处理后的步骤列表
+    """
+    import copy
+
+    processed_steps = copy.deepcopy(steps)
+
+    def replace_in_value(value):
+        if isinstance(value, str):
+            # 替换参数引用，格式为 ${param_name}
+            for param_name, param_value in params.items():
+                placeholder = "${" + param_name + "}"
+                if placeholder in value:
+                    value = value.replace(placeholder, str(param_value))
+        return value
+
+    def process_step_dict(step_dict):
+        for key, value in step_dict.items():
+            if isinstance(value, dict):
+                process_step_dict(value)
+            elif isinstance(value, list):
+                for i, item in enumerate(value):
+                    if isinstance(item, dict):
+                        process_step_dict(item)
+                    else:
+                        value[i] = replace_in_value(item)
+            else:
+                step_dict[key] = replace_in_value(value)
+
+    for step in processed_steps:
+        process_step_dict(step)
+
+    return processed_steps
+
+
 class StepExecutor:
 
     def __init__(self, page, ui_helper, elements: Dict[str, Any]):
@@ -253,26 +298,9 @@ class StepExecutor:
             if self.modules_cache.get(module_name):
                 module_data = self.modules_cache[module_name]
             else:
-                # 获取模块路径
-                if self.project_name:
-                    module_path = os.path.join(
-                        "test_data", self.project_name, "modules", f"{module_name}.yaml"
-                    )
-                else:
-                    test_dir = os.environ.get("TEST_DIR", "test_data")
-                    module_path = os.path.join(
-                        test_dir, "modules", f"{module_name}.yaml"
-                    )
-
-                if not os.path.exists(module_path):
-                    module_path = module_path.replace(".yaml", ".yml")
-
-                # 加载YAML文件
-                from utils.yaml_handler import YamlHandler
-
-                yaml_handler = YamlHandler()
-                module_data = yaml_handler.load_yaml(module_path)
-
+                # 获取模块路径和数据
+                module_data = self._find_module(module_name)
+                
                 # 缓存模块数据
                 self.modules_cache[module_name] = module_data
 
@@ -287,7 +315,7 @@ class StepExecutor:
                 raise ValueError(f"模块 '{module_name}' 中没有找到步骤")
 
             # 替换参数
-            processed_steps = self._replace_module_params(steps, processed_params)
+            processed_steps = _replace_module_params(steps, processed_params)
 
             # 执行模块步骤
             with allure.step(f"执行模块: {module_name}"):
@@ -298,50 +326,41 @@ class StepExecutor:
         except Exception as e:
             logger.error(f"执行模块 '{module_name}' 失败: {e}")
             raise
-
-    def _replace_module_params(
-        self, steps: List[Dict[str, Any]], params: Dict[str, Any]
-    ) -> List[Dict[str, Any]]:
+            
+    def _find_module(self, module_name: str) -> Dict[str, Any]:
         """
-        替换模块步骤中的参数
-
+        查找并加载模块数据
+        
         Args:
-            steps: 模块步骤列表
-            params: 参数字典
-
+            module_name: 模块名称
+            
         Returns:
-            处理后的步骤列表
+            模块数据
+            
+        Raises:
+            ValueError: 如果找不到模块
         """
-        import copy
-
-        processed_steps = copy.deepcopy(steps)
-
-        def replace_in_value(value):
-            if isinstance(value, str):
-                # 替换参数引用，格式为 ${param_name}
-                for param_name, param_value in params.items():
-                    placeholder = "${" + param_name + "}"
-                    if placeholder in value:
-                        value = value.replace(placeholder, str(param_value))
-            return value
-
-        def process_step_dict(step_dict):
-            for key, value in step_dict.items():
-                if isinstance(value, dict):
-                    process_step_dict(value)
-                elif isinstance(value, list):
-                    for i, item in enumerate(value):
-                        if isinstance(item, dict):
-                            process_step_dict(item)
-                        else:
-                            value[i] = replace_in_value(item)
-                else:
-                    step_dict[key] = replace_in_value(value)
-
-        for step in processed_steps:
-            process_step_dict(step)
-
-        return processed_steps
+        from utils.yaml_handler import YamlHandler, get_yaml_files
+        from pathlib import Path
+        
+        yaml_handler = YamlHandler()
+        
+        # 确定模块目录
+        if self.project_name:
+            modules_dir = Path("test_data") / self.project_name / "modules"
+        else:
+            test_dir = os.environ.get("TEST_DIR", "test_data")
+            modules_dir = Path(test_dir) / "modules"
+               
+        # 如果没有找到直接匹配的文件，使用load_yaml_dir加载整个目录
+        all_modules = yaml_handler.load_yaml_dir(modules_dir)
+        
+        # 检查是否有匹配的模块名
+        if module_name in all_modules:
+            return {module_name: all_modules[module_name]}
+                
+        # 如果所有尝试都失败，抛出错误
+        raise ValueError(f"找不到模块: {module_name}")
 
     def _execute_condition(self, step: Dict[str, Any]) -> None:
         """
