@@ -305,8 +305,8 @@ class StepExecutor:
                 self.modules_cache[module_name] = module_data
 
             # 获取步骤列表
-            if "modules" in module_data:
-                steps = module_data["modules"]
+            if "steps" in module_data:
+                steps = module_data["steps"]
             elif module_data:
                 # 获取第一个键对应的值
                 first_key = next(iter(module_data))
@@ -340,7 +340,7 @@ class StepExecutor:
         Raises:
             ValueError: 如果找不到模块
         """
-        from utils.yaml_handler import YamlHandler, get_yaml_files
+        from utils.yaml_handler import YamlHandler
         from pathlib import Path
 
         yaml_handler = YamlHandler()
@@ -520,7 +520,7 @@ class StepExecutor:
         替换值中的变量引用
 
         Args:
-            value: 原始值，可能包含变量引用 ${var_name}
+            value: 原始值，可能包含变量引用 ${var_name} 或 $<var_name>
 
         Returns:
             替换后的值
@@ -532,22 +532,35 @@ class StepExecutor:
             return value
 
         if isinstance(value, str):
-            # 处理完整的变量引用，如 ${var_name}
+            # 处理完整的变量引用，如 ${var_name} 或 $<var_name>
             if (
                 value.startswith("${")
                 and value.endswith("}")
                 and value.count("${") == 1
+            ) or (
+                value.startswith("$<")
+                and value.endswith(">")
+                and value.count("$<") == 1
             ):
-                var_name = value[2:-1]
+
+                if value.startswith("${"):
+                    var_name = value[2:-1]
+                else:  # value.startswith("$<")
+                    var_name = value[2:-1]
+
                 return self.variable_manager.get_variable(var_name)
 
             # 替换内嵌变量引用
             import re
 
-            pattern = r"\${([^{}]+)}"
+            # 同时匹配 ${var_name} 和 $<var_name> 两种模式
+            pattern = r"\${([^{}]+)}|\$<([^<>]+)>"
 
             def replace_var(match):
-                var_name = match.group(1)
+                # 获取匹配的组，第一个组是 ${} 形式，第二个组是 $<> 形式
+                var_name = (
+                    match.group(1) if match.group(1) is not None else match.group(2)
+                )
                 var_value = self.variable_manager.get_variable(var_name)
                 return str(var_value) if var_value is not None else match.group(0)
 
@@ -802,7 +815,7 @@ class StepExecutor:
                 raise ValueError("步骤缺少必要参数: variable_name")
 
             # 直接使用ui_helper的方法
-            value = self.ui_helper.generate_faker_data(data_type, **kwargs)
+            value = generate_faker_data(data_type, **kwargs)
             self.ui_helper.store_variable(
                 step["variable_name"], value, step.get("scope", "global")
             )

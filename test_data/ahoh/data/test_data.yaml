@@ -1582,10 +1582,10 @@ test_data:
         selector: 订单卡片-取消下订选项
       - action: 验证文本
         selector:  取消下订确认弹窗确认取消文案
-        value: $<ahoh_cancelOrder_confirmText>
+        value: 确定取消下订吗?
       - action: 验证文本
         selector:  取消下订确认弹窗转跟进任务文案
-        value: $<ahoh_cancelOrder_TaskText>
+        value: 此订单将转为今日跟进任务
       - action: 点击
         selector: 取消下订确认弹窗-确认按钮
       - action: 刷新
