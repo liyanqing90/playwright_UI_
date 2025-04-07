@@ -838,6 +838,8 @@ class StepExecutor:
                 action=action_type,
                 assert_params=assert_params,
                 timeout=DEFAULT_TIMEOUT,
+                value=value,
+                **kwargs,
             )
 
             # 如果提供了变量名，存储捕获数据
@@ -878,11 +880,12 @@ class StepExecutor:
 
             # 调用监测方法
             response_data = self.ui_helper.monitor_action_response(
-                url_pattern,
-                selector,
-                action_type,
-                assert_params,
-                timeout,
+                url_pattern=url_pattern,
+                selector=selector,
+                action=action_type,
+                assert_params=assert_params,
+                timeout=DEFAULT_TIMEOUT,
+                value=value,
                 **kwargs,
             )
 
