@@ -4,13 +4,14 @@ import os
 from typing import Callable, Literal, Optional, List, Any, Dict
 
 import allure
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 from pytest_check import check
 
 from constants import DEFAULT_TIMEOUT, DEFAULT_TYPE_DELAY
 from utils.logger import logger
 from utils.variable_manager import VariableManager
 from jsonpath_ng import parse
+import re
 
 
 def handle_page_error(func: Callable) -> Callable:
@@ -58,6 +59,7 @@ def check_and_screenshot(description="Assertion"):
                         screenshot, attachment_type=allure.attachment_type.PNG
                     )
                 check.fail(f"断言失败: {e}")
+                return None
             except Exception as e:  # 捕获其他异常，例如页面关闭
                 logger.error(f"其他异常: {e}")  # 记录其他异常
                 screenshot = self.page.screenshot()
@@ -73,6 +75,7 @@ def check_and_screenshot(description="Assertion"):
                         attachment_type=allure.attachment_type.TEXT,
                     )
                 check.fail(f"其他异常: {e}")  # 标记为失败，但不停止
+                return None
 
         return wrapper
 
@@ -163,9 +166,7 @@ class BasePage:
     def assert_url(self, url: str):
         """断言当前URL"""
         actual_url = self.page.url
-        assert (
-            actual_url == url
-        ), f"断言失败: 期望URL为 '{url}', 实际URL为 '{actual_url}'"
+        expect(self.page).to_have_url(url)
         allure.attach(
             f"断言成功: 期望URL为 '{url}', 实际URL为 '{actual_url}'",
             name="断言结果",
@@ -176,13 +177,11 @@ class BasePage:
     @allure.step("断言元素文本")
     def assert_text(self, selector: str, expected_text: str):
         """断言元素文本"""
-        actual_text = self.get_text(selector)
         resolved_expected = self._resolve_variables(expected_text)
-        assert (
-            resolved_expected == actual_text
-        ), f"断言失败: 期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}'"
+        actual_text = self.get_text(selector)
+        expect(self.page.locator(selector)).to_have_text(resolved_expected)
         allure.attach(
-            f"断言成功: 期望文本为 '{resolved_expected}', 实际文本为 '{actual_text}'",
+            f"断言成功: 元素 {selector} 的文本\n期望: '{resolved_expected}'\n实际: '{actual_text}'",
             name="断言结果",
             attachment_type=allure.attachment_type.TEXT,
         )
@@ -192,9 +191,7 @@ class BasePage:
     def assert_title(self, title: str):
         """断言页面标题"""
         actual_title = self.page.title()
-        assert (
-            actual_title == title
-        ), f"断言失败: 期望标题为 '{title}', 实际标题为 '{actual_title}'"
+        expect(self.page).to_have_title(title)
         allure.attach(
             f"断言成功: 期望标题为 '{title}', 实际标题为 '{actual_title}'",
             name="断言结果",
@@ -213,12 +210,10 @@ class BasePage:
             )
             raise
 
-        actual_count = self.get_element_count(selector)
-        assert (
-            actual_count == expected_count
-        ), f"断言失败: 期望元素数量为 {expected_count}, 实际元素数量为 {actual_count}"
+        actual_count = self.page.locator(selector).count()
+        expect(self.page.locator(selector)).to_have_count(expected_count)
         allure.attach(
-            f"断言成功: 期望元素数量为 {expected_count}, 实际元素数量为 {actual_count}",
+            f"断言成功: 元素 {selector} 的数量\n期望: {expected_count}\n实际: {actual_count}",
             name="断言结果",
             attachment_type=allure.attachment_type.TEXT,
         )
@@ -227,13 +222,11 @@ class BasePage:
     @allure.step("断言元素包含文本")
     def assert_text_contains(self, selector: str, expected_text: str):
         """断言元素文本包含指定内容"""
-        actual_text = self.get_text(selector)
         resolved_expected = self._resolve_variables(expected_text)
-        assert (
-            resolved_expected in actual_text
-        ), f"断言失败: 元素文本 '{actual_text}' 不包含期望文本 '{resolved_expected}'"
+        actual_text = self.get_text(selector)
+        expect(self.page.locator(selector)).to_contain_text(resolved_expected)
         allure.attach(
-            f"断言成功: 元素文本 '{actual_text}' 包含期望文本 '{resolved_expected}'",
+            f"断言成功: 元素 {selector} 包含文本\n期望包含: '{resolved_expected}'\n实际文本: '{actual_text}'",
             name="断言结果",
             attachment_type=allure.attachment_type.TEXT,
         )
@@ -242,39 +235,33 @@ class BasePage:
     @allure.step("断言URL包含")
     def assert_url_contains(self, expected_url_part: str):
         """断言当前URL包含指定内容"""
-        actual_url = self.page.url
         resolved_expected = self._resolve_variables(expected_url_part)
-        assert (
-            resolved_expected in actual_url
-        ), f"断言失败: 当前URL '{actual_url}' 不包含期望部分 '{resolved_expected}'"
+        actual_url = self.page.url
+        expect(self.page).to_have_url(re.compile(f".*{re.escape(resolved_expected)}.*"))
         allure.attach(
-            f"断言成功: 当前URL '{actual_url}' 包含期望部分 '{resolved_expected}'",
+            f"断言成功: URL包含指定内容\n期望包含: '{resolved_expected}'\n实际URL: '{actual_url}'",
             name="断言结果",
             attachment_type=allure.attachment_type.TEXT,
         )
 
     @check_and_screenshot()
     @allure.step("断言元素存在")
-    def assert_exists(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+    def assert_exists(self, selector: str):
         """断言元素存在于DOM中"""
-        exists = self.page.locator(selector).count() > 0
-        assert exists, f"断言失败: 元素 {selector} 不存在"
+        expect(self.page.locator(selector)).to_be_attached()
         allure.attach(
-            f"断言成功: 元素 {selector} 存在",
+            f"断言成功: 元素 {selector} 存在于DOM中",
             name="断言结果",
             attachment_type=allure.attachment_type.TEXT,
         )
 
     @check_and_screenshot()
     @allure.step("断言元素不存在")
-    def assert_not_exists(
-        self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT
-    ):
+    def assert_not_exists(self, selector: str):
         """断言元素不存在于DOM中"""
-        exists = self.page.locator(selector).count() > 0
-        assert not exists, f"断言失败: 元素 {selector} 仍然存在"
+        expect(self.page.locator(selector)).not_to_be_attached()
         allure.attach(
-            f"断言成功: 元素 {selector} 不存在",
+            f"断言成功: 元素 {selector} 不存在于DOM中",
             name="断言结果",
             attachment_type=allure.attachment_type.TEXT,
         )
@@ -283,9 +270,7 @@ class BasePage:
     @allure.step("断言元素启用状态")
     def assert_element_enabled(self, selector: str):
         """断言元素处于启用状态（非禁用）"""
-        self._wait_for_element(selector)
-        is_disabled = self.page.locator(selector).is_disabled()
-        assert not is_disabled, f"断言失败: 元素 {selector} 处于禁用状态"
+        expect(self.page.locator(selector)).to_be_enabled()
         allure.attach(
             f"断言成功: 元素 {selector} 处于启用状态",
             name="断言结果",
@@ -296,21 +281,18 @@ class BasePage:
     @allure.step("断言元素禁用状态")
     def assert_element_disabled(self, selector: str):
         """断言元素处于禁用状态"""
-        self._wait_for_element(selector)
-        is_disabled = self.page.locator(selector).is_disabled()
-        assert is_disabled, f"断言失败: 元素 {selector} 处于启用状态"
+        expect(self.page.locator(selector)).to_be_disabled()
         allure.attach(
             f"断言成功: 元素 {selector} 处于禁用状态",
             name="断言结果",
             attachment_type=allure.attachment_type.TEXT,
         )
 
-    @handle_page_error
+    @check_and_screenshot()
     @allure.step("断言元素可见性")
-    def assert_visible(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+    def assert_visible(self, selector: str):
         """断言元素可见"""
-        is_visible = self.page.is_visible(selector, timeout=timeout)
-        assert is_visible, f"断言失败: 元素 {selector} 不可见"
+        expect(self.page.locator(selector)).to_be_visible()
         allure.attach(
             f"断言成功: 元素 {selector} 可见",
             name="断言结果",
@@ -319,12 +301,9 @@ class BasePage:
 
     @check_and_screenshot()
     @allure.step("断言元素不可见")
-    def assert_not_visible(
-        self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT
-    ):
+    def assert_not_visible(self, selector: str):
         """断言元素不可见"""
-        is_visible = self.page.is_visible(selector, timeout=timeout)
-        assert not is_visible, f"断言失败: 元素 {selector} 仍然可见"
+        expect(self.page.locator(selector)).not_to_be_visible()
         allure.attach(
             f"断言成功: 元素 {selector} 不可见",
             name="断言结果",
@@ -333,49 +312,39 @@ class BasePage:
 
     @check_and_screenshot()
     @allure.step("断言元素属性值")
-    def assert_attribute(
-        self,
-        selector: str,
-        attribute: str,
-        expected_value: str,
-        timeout: Optional[int] = DEFAULT_TIMEOUT,
-    ):
+    def assert_attribute(self, selector: str, attribute: str, expected_value: str):
         """断言元素属性值"""
-        self._wait_for_element(selector)
-        actual_value = self.page.locator(selector).get_attribute(
-            attribute, timeout=timeout
-        )
-        assert (
-            actual_value == expected_value
-        ), f"断言失败: 元素 {selector} 的属性 '{attribute}' 应为 '{expected_value}', 实际值为 '{actual_value}'"
-
-    @check_and_screenshot()
-    @allure.step("assert value")
-    def assert_value(
-        self,
-        selector: str,
-        expected_value: str,
-        timeout: Optional[int] = DEFAULT_TIMEOUT,
-    ):
-        """断言元素属性值"""
-        self._wait_for_element(selector)
-        actual_value = self.page.locator(selector).input_value(timeout=timeout)
-        assert (
-            actual_value == expected_value
-        ), f"断言失败: 元素 {selector} 的值应为 '{expected_value}', 实际值为 '{actual_value}'"
+        actual_value = self.page.get_attribute(selector, attribute)
+        expect(self.page.locator(selector)).to_have_attribute(attribute, expected_value)
         allure.attach(
-            f"断言成功: 元素 {selector} 的值应为 '{expected_value}', 实际值为 '{actual_value}'",
+            f"断言成功: 元素 {selector} 的属性 {attribute}\n期望值: '{expected_value}'\n实际值: '{actual_value}'",
             name="断言结果",
             attachment_type=allure.attachment_type.TEXT,
         )
 
     @check_and_screenshot()
-    @allure.step("assert checked")
-    def assert_checked(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
+    @allure.step("断言元素值")
+    def assert_value(self, selector: str, expected_value: str):
+        """断言元素值"""
+        resolved_expected = self._resolve_variables(expected_value)
+        actual_value = self.page.input_value(selector)
+        expect(self.page.locator(selector)).to_have_value(resolved_expected)
+        allure.attach(
+            f"断言成功: 元素 {selector} 的值\n期望: '{resolved_expected}'\n实际: '{actual_value}'",
+            name="断言结果",
+            attachment_type=allure.attachment_type.TEXT,
+        )
+
+    @check_and_screenshot()
+    @allure.step("断言元素已选中")
+    def assert_checked(self, selector: str):
         """断言元素已选择"""
-        self._wait_for_element(selector)
-        actual_value = self.page.locator(selector).is_checked(timeout=timeout)
-        assert actual_value, f"断言失败: 元素 {selector} 未被选中"
+        expect(self.page.locator(selector)).to_be_checked()
+        allure.attach(
+            f"断言成功: 元素 {selector} 已被选中",
+            name="断言结果",
+            attachment_type=allure.attachment_type.TEXT,
+        )
 
     @handle_page_error
     @allure.step("存储变量 {name}")
@@ -699,44 +668,6 @@ class BasePage:
         return self.page.title()
 
     @handle_page_error
-    def assert_text_contains(self, selector: str, expected_text: str):
-        """断言元素文本包含指定内容"""
-        actual_text = self.get_text(selector)
-        resolved_expected = self._resolve_variables(expected_text)
-
-        with check, allure.step("断言元素包含文本"):
-            assert (
-                resolved_expected in actual_text
-            ), f"断言失败: 元素文本 '{actual_text}' 不包含期望文本 '{resolved_expected}'"
-
-    @handle_page_error
-    def assert_url_contains(self, expected_url_part: str):
-        """断言当前URL包含指定内容"""
-        actual_url = self.page.url
-        resolved_expected = self._resolve_variables(expected_url_part)
-
-        with check, allure.step("断言URL包含"):
-            assert (
-                resolved_expected in actual_url
-            ), f"断言失败: 当前URL '{actual_url}' 不包含期望部分 '{resolved_expected}'"
-
-    @handle_page_error
-    def assert_exists(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
-        """断言元素存在于DOM中"""
-        exists = self.page.locator(selector).count() > 0
-        with check, allure.step("断言元素存在"):
-            assert exists, f"断言失败: 元素 {selector} 不存在"
-
-    @handle_page_error
-    def assert_not_exists(
-        self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT
-    ):
-        """断言元素不存在于DOM中"""
-        exists = self.page.locator(selector).count() > 0
-        with check, allure.step("断言元素不存在"):
-            assert not exists, f"断言失败: 元素 {selector} 仍然存在"
-
-    @handle_page_error
     @allure.step("等待网络请求完成")
     def wait_for_network_idle(self, timeout: Optional[int] = DEFAULT_TIMEOUT):
         """等待网络请求完成"""
@@ -784,22 +715,6 @@ class BasePage:
                 )
 
             self.page.wait_for_timeout(100)  # 等待100毫秒再检查
-
-    @handle_page_error
-    def assert_element_enabled(self, selector: str):
-        """断言元素处于启用状态（非禁用）"""
-        self._wait_for_element(selector)
-        is_disabled = self.page.locator(selector).is_disabled()
-        with check, allure.step("断言元素启用状态"):
-            assert not is_disabled, f"断言失败: 元素 {selector} 处于禁用状态"
-
-    @handle_page_error
-    def assert_element_disabled(self, selector: str):
-        """断言元素处于禁用状态"""
-        self._wait_for_element(selector)
-        is_disabled = self.page.locator(selector).is_disabled()
-        with check, allure.step("断言元素禁用状态"):
-            assert is_disabled, f"断言失败: 元素 {selector} 处于启用状态"
 
     @handle_page_error
     @allure.step("获取所有匹配元素")
@@ -1150,3 +1065,45 @@ class BasePage:
         )
 
         logger.info(f"参数验证成功: {jsonpath_expr} 匹配期望值 {resolved_expected}")
+
+    @check_and_screenshot()
+    @allure.step("断言元素有多个值")
+    def assert_values(self, selector: str, expected_values: List[str]):
+        """断言元素有多个值（适用于多选框等）"""
+        resolved_values = [self._resolve_variables(val) for val in expected_values]
+        actual_values = self.page.locator(selector).evaluate(
+            "el => Array.from(el.selectedOptions).map(o => o.value)"
+        )
+        expect(self.page.locator(selector)).to_have_values(resolved_values)
+        allure.attach(
+            f"断言成功: 元素 {selector} 的值\n期望: {resolved_values}\n实际: {actual_values}",
+            name="断言结果",
+            attachment_type=allure.attachment_type.TEXT,
+        )
+
+    @check_and_screenshot()
+    @allure.step("断言元素有精确文本")
+    def assert_exact_text(self, selector: str, expected_text: str):
+        """断言元素有精确的文本（不包括子元素文本）"""
+        resolved_expected = self._resolve_variables(expected_text)
+        actual_text = self.page.locator(selector).inner_text()
+        expect(self.page.locator(selector)).to_have_text(
+            resolved_expected, use_inner_text=True
+        )
+        allure.attach(
+            f"断言成功: 元素 {selector} 的精确文本\n期望: '{resolved_expected}'\n实际: '{actual_text}'",
+            name="断言结果",
+            attachment_type=allure.attachment_type.TEXT,
+        )
+
+    @check_and_screenshot()
+    @allure.step("断言元素匹配文本正则")
+    def assert_text_matches(self, selector: str, pattern: str):
+        """断言元素文本匹配正则表达式"""
+        actual_text = self.get_text(selector)
+        expect(self.page.locator(selector)).to_have_text(re.compile(pattern))
+        allure.attach(
+            f"断言成功: 元素 {selector} 的文本匹配正则\n正则模式: '{pattern}'\n实际文本: '{actual_text}'",
+            name="断言结果",
+            attachment_type=allure.attachment_type.TEXT,
+        )
