@@ -39,6 +39,8 @@ class StepAction:
     ASSERT_DISABLED = ["assert_disabled", "验证禁用"]
     ASSERT_VALUE = ["assert_value", "验证值"]
 
+    ASSERT_HAVE_VALUES = ["assert_have_values", "验证多个值"]
+
     # 存储相关
     STORE_VARIABLE = ["store_variable", "存储变量"]
     STORE_TEXT = ["store_text", "存储文本"]
@@ -925,6 +927,19 @@ class StepExecutor:
             if variable_name:
                 self.variable_manager.set_variable(variable_name, response_data, scope)
                 logger.info(f"已存储响应数据到变量 {variable_name}")
+
+        # 保留 ASSERT_HAVE_VALUES，因为它是独特的功能
+        elif action in StepAction.ASSERT_HAVE_VALUES:
+            expected_values = step.get("expected_values", value)
+            if isinstance(expected_values, str):
+                # 尝试解析为JSON数组
+                try:
+                    import json
+                    expected_values = json.loads(expected_values)
+                except Exception:
+                    # 如果不是JSON，则分割字符串
+                    expected_values = expected_values.split(",")
+            self.ui_helper.assert_values(selector, expected_values)
 
     def _finalize_step(self):
         """统一后处理逻辑"""
