@@ -9,10 +9,10 @@ elements:
   未开启: text=未开启
   已开启: text=工作中
   已生效: text=生效中
-  潜客开关: //*[@id="app"]/main/div/div[2]/div[2]/section/div[2]/div/div[2]/div[2]/button
-  挽回开关: //*[@id="app"]/main/div/div[2]/div[2]/section/div[2]/div/div[3]/div[2]/button
+  潜客开关: "div:nth-child(2) > .item > .item-right"
+  挽回开关: "div:nth-child(3) > .item > .item-right"
   挽回已生效: text=两次动态挽回生效
-  回复率开关: //*[@id="app"]/main/div/div[2]/div[2]/section/div[2]/div/div[4]/div[2]/button
+  回复率开关: "div:nth-child(4) > .item > .item-right"
   回复率提升已生效: text=3分钟回复率提升生效
   私信会话: "text=私信会话"
   收起会话: text=收起会话
@@ -37,3 +37,9 @@ elements:
   北京: "text=北京"
   意向车系输入框: "role=textbox[name='意向车系 :']"
   查询按钮: "role=button[name='查 询']"
+  私信重置: //*[@id="app"]/main/div/div[2]/div[2]/form/div[2]/button[1]/span
+  私信开始日期: //*[@id="app"]/main/div/div[2]/div[2]/div[1]/div[2]/div/div/div[1]/input
+  线索管理: "text=线索管理"
+  全部线索数: "text=全部线索数"
+  30天: "text=30天"
+  关闭图标: "role=img[name='close-circle'] >> svg"

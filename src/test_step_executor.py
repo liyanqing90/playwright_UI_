@@ -885,7 +885,6 @@ class StepExecutor:
         elif action in StepAction.MONITOR_RESPONSE:
             # 获取参数
             url_pattern = step.get("url_pattern", value)
-            selector = step.get("selector", selector)
             action_type = step.get("action_type", "click")
             assert_params = step.get("assert_params")
             timeout = int(step.get("timeout", DEFAULT_TIMEOUT))

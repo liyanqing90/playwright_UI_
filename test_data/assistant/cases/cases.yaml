@@ -1,6 +1,6 @@
 test_cases:
 
-  ##素材
+  #素材
   - name: test_material_search
     fixtures: [ login ]
   - name: test_material_upload
@@ -29,7 +29,16 @@ test_cases:
   - name: test_hui_fu_zhuang_tai
   - name: test_qi_zhi_shi_jian
   - name: test_chong_zhi
-
+  - name: test_hui_hua_tab
+  - name: test_shi_fou_liu_zi
+  - name: test_chu_da_zhuang_tai
+  - name: test_suo_shu_di_qu
+  - name: test_yi_xiang_che_xi
+  - name: test_si_xin_chong_zhi
+  - name: test_si_xin_ri_qi
+  - name: test_xian_suo_zong_lan
+  - name: test_xian_suo_ri_qi
+  - name: test_xian_suo_lie_biao
 
   #个人中心
   - name: test_Personal_Center
