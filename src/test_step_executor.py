@@ -934,6 +934,7 @@ class StepExecutor:
                 # 尝试解析为JSON数组
                 try:
                     import json
+
                     expected_values = json.loads(expected_values)
                 except Exception:
                     # 如果不是JSON，则分割字符串

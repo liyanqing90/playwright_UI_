@@ -2,9 +2,7 @@ test_data:
   test_zong_kai_guan:
     description: "营销助手页面总开关测试"
     steps:
-      - use_module: login
-
-
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -22,20 +20,7 @@ test_data:
   test_jin_si:
     description: "营销助手页面进私触达测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -52,20 +37,7 @@ test_data:
   test_qian_ke:
     description: "营销助手页面潜客触达测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -82,20 +54,7 @@ test_data:
   test_wan_hui:
     description: "营销助手页面线索挽回测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -112,20 +71,7 @@ test_data:
   test_hui_fu_lv:
     description: "营销助手页面回复率提升测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -142,20 +88,7 @@ test_data:
   test_si_xin_hui_hua:
     description: "营销助手页面私信会话展开测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -170,20 +103,7 @@ test_data:
   test_liu_zi_zhuang_tai:
     description: "营销助手页面私信会话弹窗留资状态筛选测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -203,20 +123,7 @@ test_data:
   test_hui_fu_zhuang_tai:
     description: "营销助手页面私信会话弹窗回复状态筛选测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -233,20 +140,7 @@ test_data:
   test_qi_zhi_shi_jian:
     description: "营销助手页面私信会话弹窗起止时间筛选测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -266,20 +160,7 @@ test_data:
   test_chong_zhi:
     description: "营销助手页面私信会话弹窗重置测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -301,20 +182,7 @@ test_data:
   test_hui_hua_tab:
     description: "营销助手页面私信会话弹窗会话列表tab测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -331,20 +199,7 @@ test_data:
   test_shi_fou_liu_zi:
     description: "私信营销页面是否留资筛选测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -359,20 +214,7 @@ test_data:
   test_chu_da_zhuang_tai:
     description: "私信营销页面触达状态筛选测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -381,26 +223,18 @@ test_data:
         selector: 触达状态
       - action: click
         selector: 已触达未回复
-#      - action: assert_text
-#        value: "已触达未回复"
-#        selector: 断言已触达未回复
+      - action: click
+        selector: 查询按钮
+      - action: monitor_request
+        url_pattern: /api/aim/reach/user/list/page
+        action_type: click
+        selector: 查询按钮
+        assert_params:
+          $.reachStatus: "1"
   test_suo_shu_di_qu:
     description: "私信营销页面所属地区筛选测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -415,20 +249,7 @@ test_data:
   test_yi_xiang_che_xi:
     description: "私信营销页面意向车系筛选测试"
     steps:
-      - action: goto
-        value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-      - action: click
-        selector: 用户名输入框
-      - action: fill
-        selector: 用户名输入框
-        value: "李福田"
-      - action: click
-        selector: 密码输入框
-      - action: fill
-        selector: 密码输入框
-        value: "Qwer!1234"
-      - action: click
-        selector: 登录按钮
+      - use_module: login_futian
       - action: click
         selector: 营销
       - action: click
@@ -442,6 +263,98 @@ test_data:
         value: "宝马"
       - action: click
         selector: 查询按钮
-#      - action: assert_text
-#        value: "宝马"
-#        selector: 意向车系输入框
+      - action: monitor_request
+        url_pattern: /api/aim/reach/user/list/page
+        selector: 查询按钮
+        action_type: click
+        assert_params:
+          $.preferSeriesName: "宝马"
+  test_si_xin_chong_zhi:
+    description: "私信营销页面重置按钮测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 私信营销
+      - action: click
+        selector: 触达状态
+      - action: click
+        selector: 已触达未回复
+      - action: click
+        selector: 所属地区
+      - action: click
+        selector: 北京
+      - action: click
+        selector: 意向车系输入框
+      - action: fill
+        selector: 意向车系输入框
+        value: "宝马"
+      - action: click
+        selector: 查询按钮
+      - action: click
+        selector: 私信重置
+      - action: monitor_request
+        url_pattern: /api/aim/reach/user/list/page
+        selector: 私信重置
+        action_type: click
+        assert_params:
+          $.preferSeriesName: null
+  test_si_xin_ri_qi:
+    description: "私信营销页面日期组件测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 私信营销
+      - action: click
+        selector: 私信开始日期
+      - action: fill
+        selector: 私信开始日期
+        value: "2025-04-01 19:43"
+      - action: click
+        selector: 结束日期
+      - action: fill
+        selector: 结束日期
+        value: "2025-04-07 19:43"
+      - action: click
+        selector: 查询按钮
+  test_xian_suo_zong_lan:
+    description: "线索管理页面线索总览测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 线索管理
+      - action: assert_text
+        value: "全部线索数"
+        selector: 全部线索数
+  test_xian_suo_ri_qi:
+    description: "线索管理页面日期组件测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 线索管理
+      - action: click
+        selector: 30天
+      - action: assert_text
+        value: "30天"
+        selector: 30天
+  test_xian_suo_lie_biao:
+    description: "线索管理页面列表展示测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 线索管理
+      - action: click
+        url_pattern: /api/aim/leads/page?BUserId=9250
+        selector: 关闭图标
+        action_type: click
+        assert_params:
+          $.result[1].sourceName: "抖音"

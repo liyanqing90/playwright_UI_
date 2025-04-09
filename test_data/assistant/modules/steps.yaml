@@ -1,25 +1,26 @@
+login_base: #保留步骤名
+  - action: goto
+    value: ""
+  - action: fill
+    selector: "请输入您的用户名"
+    value: ${user_name}
+  - action: fill
+    selector: "请输入您的密码"
+    value: ${password}
+  - action: click
+    selector: "登录按钮"
+
+
 login: #保留步骤名
-  - action: goto
-    value: ""
-  - action: fill
-    selector: "请输入您的用户名"
-    value: "15011290391"
-  - action: fill
-    selector: "请输入您的密码"
-    value: "Aa1234qwer-"
-  - action: click
-    selector: "登录按钮"
+  - use_module: login_base
+    params:
+      user_name: 15011290391
+      password: Aa1234qwer-
 login_steps:
-  - action: goto
-    value: ""
-  - action: fill
-    selector: "请输入您的用户名"
-    value: "15011290391"
-  - action: fill
-    selector: "请输入您的密码"
-    value: "Aa1234qwer-"
-  - action: click
-    selector: "登录按钮"
+  - use_module: login_base
+    params:
+      user_name: 15011290391
+      password: Aa1234qwer-
 create_script:
   - action: click
     selector: 剧本文本
