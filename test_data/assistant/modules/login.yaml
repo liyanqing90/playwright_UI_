@@ -1,21 +1,5 @@
-#login:
-#  - use_module: login_user
-#    params:
-#      username: "李福田"
-#      password: "Qwer!1234"
-
-login_user:
-  - action: goto
-    value: "https://tauth.autohome.com.cn/fe/zt/sso/login?appId=app_h5_live-assistant&productType=product_ahoh&backUrl=https%3A%2F%2Fenergyspace-c-test.autohome.com.cn%2Flive-assistant%2Fassistant"
-  - action: click
-    selector: 用户名输入框
-  - action: fill
-    selector: 用户名输入框
-    value: ${username}
-  - action: click
-    selector: 密码输入框
-  - action: fill
-    selector: 密码输入框
-    value: ${password}
-  - action: click
-    selector: 登录按钮
+login_futian:
+  - use_module: login_base
+    params:
+      user_name: 李福田
+      password: Qwer!1234

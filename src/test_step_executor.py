@@ -885,7 +885,6 @@ class StepExecutor:
         elif action in StepAction.MONITOR_RESPONSE:
             # 获取参数
             url_pattern = step.get("url_pattern", value)
-            selector = step.get("selector", selector)
             action_type = step.get("action_type", "click")
             assert_params = step.get("assert_params")
             timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
@@ -935,6 +934,7 @@ class StepExecutor:
                 # 尝试解析为JSON数组
                 try:
                     import json
+
                     expected_values = json.loads(expected_values)
                 except Exception:
                     # 如果不是JSON，则分割字符串
