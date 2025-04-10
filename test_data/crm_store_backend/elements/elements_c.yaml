@@ -1,0 +1,34 @@
+elements:
+  账号密码登录tab: text=账号密码登录
+  账号输入框: //input[@id='phone']
+  密码输入框: //input[@id='password']
+  登录按钮: role=button[name="登 录"]
+
+  车系配置: //span[@class='ant-menu-title-content']//div
+  新建: (//button[@type='button'])[3]
+  点击查看/修改: //div[@class='ant-col ant-col-16 ant-form-item-control']//button[@type='button']
+  展开: (//span[@class='ant-tree-switcher ant-tree-switcher_close'])[1]
+  奥迪A8: //div[4]//span[3]//span[1]
+  右移: span[aria-label='right']
+  确定: //span[contains(text(),'确 定')]
+  品牌类别C: //input[@value='C']
+  直推车否: //input[@value='0']
+  序号: //input[@placeholder='1-99999']
+  提交: //span[contains(text(),'提 交')]
+
+  筛选车系: //input[@id='basic_seriesName']
+  查询: //span[contains(text(),'查 询')]
+  修改: //span[contains(text(),'修改')]
+  已选中: (//span[@class='ant-tree-checkbox-inner'])[460]
+  左移: //span[@aria-label='left']
+  奥迪A6: //div[8]//span[3]//span[1]
+
+
+
+
+
+
+
+
+
+
