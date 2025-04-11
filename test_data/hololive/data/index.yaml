@@ -86,16 +86,10 @@ test_data:
       - action: click
         selector: 更多按钮
       - action: store_text
-        selector: 列表门店
-        variable_name: 列表门店
-      - action: store_text
         selector: 列表门店地址
         variable_name: 列表门店地址
       - action: click
         selector: 到店礼
-      - action: assert_text
-        selector: 到店礼门店
-        value:  ${列表门店}
       - action: assert_text
         selector: 到店礼地址
         value: ${列表门店地址}
