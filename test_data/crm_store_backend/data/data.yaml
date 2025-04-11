@@ -20,7 +20,7 @@ test_data:
         selector: "登录按钮"
       #- action: wait_for_new_window
 
-
+#添加购车政策
   test_policy_add:
     description: "demo测试"
     steps:
@@ -137,6 +137,7 @@ test_data:
         selector: 查询按钮
       - use_module: list_add_data_steps
 
+#停用政策
   test_policy_deactivate:
     description: "demo测试"
     steps:
@@ -163,6 +164,7 @@ test_data:
         selector: 状态
         value: 启用
 
+#新建详情
   test_policy_details:
     description: "demo测试"
     steps:
@@ -250,7 +252,7 @@ test_data:
         selector: 新建详情取消按钮
         value: 取 消
 
-
+#删除政策
   test_policy_delete:
     description: "demo测试"
     steps:
@@ -270,6 +272,7 @@ test_data:
         selector: 暂无数据
         value: 暂无数据
 
+#筛选
   test_policy_filter:
     description: "demo测试"
     steps:
@@ -294,6 +297,7 @@ test_data:
         selector: 新建列表数据香港
         value: 香港
 
+#编辑政策
   test_policy_edit:
     description: "demo测试"
     steps:
@@ -384,6 +388,7 @@ test_data:
         selector: 编辑列表数据库存状态列
         value: "预订"
 
+#重置筛选
   test_policy_reset:
     description: "demo测试"
     steps:

@@ -46,8 +46,8 @@ elements:
   提交按钮: //span[contains(text(),'提 交')]
 
   新建列表数据奥迪: (//div[contains(text(),'奥迪')])[1]
-  新建列表数据奥迪A4L: //div[contains(text(),'奥迪A4L')]
-  新建列表数据车型: //div[contains(text(),'2025款 200万辆悦享版 40 TFSI 时尚动感型')]
+  新建列表数据奥迪A4L: (//div[contains(text(),'奥迪A4L')])[1]
+  新建列表数据车型: (//div[contains(text(),'2025款 200万辆悦享版 40 TFSI 时尚动感型')])[1]
   新建列表数据香港: //td[contains(text(),'香港')]
   新建列表数据测试宝骏: //td[contains(text(),'测试宝骏20150609')]
   新建列表数据厂商指导价: (//td[normalize-space()='28.980'])[1]
@@ -63,14 +63,14 @@ elements:
   停用选项: text=停用
 
   查询按钮: //span[contains(text(),'查 询')]
-  第一行: //div[contains(text(),'2025款 200万辆悦享版 40 TFSI 时尚动感型')]
+  第一行: (//div[contains(text(),'2025款 200万辆悦享版 40 TFSI 时尚动感型')])[1]
   状态: (//span[contains(text(),'启用')])[1]
 
   编辑按钮: (//span[contains(text(),'编辑')])[1]
   #x详情元素
-  新建详情品牌: span[title='奥迪']
-  新建详情车系: span[title='奥迪A4L']
-  新建详情车型: span[title='289800']
+  新建详情品牌: (//div[@class="ant-col ant-col-16 ant-form-item-control"])[1]
+  新建详情车系: (//div[@class="ant-col ant-col-16 ant-form-item-control"])[2]
+  新建详情车型: (//div[@class="ant-col ant-col-16 ant-form-item-control"])[3]
   新建详情经销商省份: (//span[@title='香港'][contains(text(),'香港')])[1]
   新建详情经销商城市: (//span[@title='香港'][contains(text(),'香港')])[2]
   新建详情经销商区域: (//span[@title='香港'][contains(text(),'香港')])[3]
