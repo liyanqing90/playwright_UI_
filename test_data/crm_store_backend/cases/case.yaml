@@ -1,7 +1,6 @@
 test_cases:
   #- name: test_demo
 
-
   - name: test_policy_add #添加
   - name: test_policy_details #新建详情
   - name: test_policy_deactivate #停用
