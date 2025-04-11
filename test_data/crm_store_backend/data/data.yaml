@@ -259,13 +259,11 @@ test_data:
         selector: 购车政策
       - action: click
         selector: 购车政策列表
+      - use_module: filter_steps
       - action: click
         selector: 删除按钮
       - action: click
         selector: 确认删除
-      - action: click
-        selector: 查询按钮
-      - use_module: filter_steps
       - action: click
         selector: 查询按钮
       - action: assert_text
@@ -295,3 +293,111 @@ test_data:
       - action: assert_text
         selector: 新建列表数据香港
         value: 香港
+
+  test_policy_edit:
+    description: "demo测试"
+    steps:
+      - use_module: login_steps
+      - action: click
+        selector: 购车政策
+      - action: click
+        selector: 购车政策列表
+      - use_module: filter_steps
+      - action: click
+        selector: 编辑按钮
+      - action: click
+        selector: 编辑库存状态输入框
+      - action: click
+        selector: 预定标签
+      - action: click
+        selector: 编辑交货日期输入框
+      - action: click
+        selector: 3月以上交货日期
+      - action: click
+        selector: 裸车价输入框
+      - action: clear
+        selector: 裸车价输入框
+      - action: fill
+        selector: 裸车价输入框
+        value: "28.880"
+      - action: click
+        selector: DCC报价输入框
+      - action: clear
+        selector: DCC报价输入框
+      - action: fill
+        selector: DCC报价输入框
+        value: "28.880"
+      - action: click
+        selector: 强制保险是
+      - action: click
+        selector: 强制上牌是
+      - action: click
+        selector: 上牌费输入框
+      - action: fill
+        selector: 上牌费输入框
+        value: "0.400"
+      - action: click
+        selector: 本品本店置换
+      - action: fill
+        selector: 本品本店置换
+        value: "200"
+      - action: click
+        selector: 编辑形式输入框
+      - action: click
+        selector: 单独兑现
+      - action: click
+        selector: 删除金融方案
+      - action: click
+        selector: 低首付金融
+      - action: clear
+        selector: 低首付金融
+      - action: fill
+        selector: 低首付金融
+        value: "15"
+      - action: click
+        selector: 金融手续费
+      - action: clear
+        selector: 金融手续费
+      - action: fill
+        selector: 金融手续费
+        value: "0.900"
+      - action: click
+        selector: 金融购车推荐方案
+      - action: clear
+        selector: 金融购车推荐方案
+      - action: click
+        selector: 有绑定条件
+      - action: click
+        selector: 有特殊颜色
+      - action: click
+        selector: 颜色选择框
+      - action: click
+        selector: 阿科纳白
+      - action: click
+        selector: 颜色价格输入框
+      - action: fill
+        selector: 颜色价格输入框
+        value: "1.000"
+      - action: click
+        selector: 提交按钮
+      - action: assert_text
+        selector: 编辑列表数据库存状态列
+        value: "预订"
+
+  test_policy_reset:
+    description: "demo测试"
+    steps:
+      - use_module: login_steps
+      - action: click
+        selector: 购车政策
+      - action: click
+        selector: 购车政策列表
+      - use_module: filter_steps
+      - action: click
+        selector: 重置按钮
+      - action: assert_text
+        selector: 重置后经销商省份筛选框为默认值
+        value: "请选择经销商省份"
+      - action: assert_text
+        selector: 列表第二行数据序号
+        value: "2"
