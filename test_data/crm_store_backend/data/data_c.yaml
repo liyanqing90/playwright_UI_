@@ -28,7 +28,6 @@ test_data:
         selector: 序号
         value: "6"
 
-
   test_series_update:
     description: "修改车系"
     steps:
@@ -57,6 +56,117 @@ test_data:
       - action: click
         selector: 确定
 
+  test_series_screen:
+    description: "筛选车系"
+    steps:
+      - use_module: login_steps
+      - action: click
+        selector: 车系配置
+      - action: click
+        selector: 位置下拉框
+      - action: click
+        selector: 频道页车源列表位置
+      - action: store_text
+        selector: 频道页车源列表位置
+        variable_name: 频道页车源列表位置
+      - action: fill
+        selector: 车系输入框
+        value: "奥迪A6L"
+      - action: click
+        selector: 品牌
+      - action: click
+        selector: 品牌筛选
+      - action: store_text
+        selector: 品牌筛选
+        variable_name: 品牌筛选
+      - action: click
+        selector: 主推筛选
+      - action: click
+        selector: 是主推
+      - action: store_text
+        selector: 是主推
+        variable_name: 是主推
+      - action: click
+        selector: 品牌类别
+      - action: click
+        selector: 品牌类别筛选C
+      - action: store_text
+        selector: 品牌类别筛选C
+        variable_name: 品牌类别筛选C
+      - action: click
+        selector: 启用状态
+      - action: click
+        selector: 启用
+      - action: click
+        selector: 筛选查询
+      - action: assert_text
+        selector: 列表位置
+        value: ${频道页车源列表位置}
+      - action: assert_text
+        selector: 列表品牌
+        value: ${品牌筛选}
+      - action: assert_text
+        selector: 列表车系
+        value: "奥迪A6L"
+      - action: assert_text
+        selector: 列表类别
+        value: ${品牌类别筛选C}
+      - action: assert_text
+        selector: 列表主推
+        value: ${是主推}
+
+  test_screen_reset:
+    description: "筛选重置"
+    steps:
+      - use_module: login_steps
+      - action: click
+        selector: 车系配置
+      - action: click
+        selector: 位置下拉框
+      - action: click
+        selector: 频道页车源列表位置
+      - action: fill
+        selector: 车系输入框
+        value: "奥迪A6L"
+      - action: assert_value
+        selector: 车系输入框
+        value: "奥迪A6L"
+      - action: click
+        selector: 品牌
+      - action: click
+        selector: 品牌筛选
+      - action: click
+        selector: 主推筛选
+      - action: click
+        selector: 是主推
+      - action: click
+        selector: 品牌类别
+      - action: click
+        selector: 品牌类别筛选C
+      - action: click
+        selector: 启用状态
+      - action: click
+        selector: 启用
+      - action: click
+        selector: 重置
+      - action: assert_value
+        selector: 位置下拉框
+        value: ""
+      - action: assert_value
+        selector: 车系输入框
+        value: ""
+      - action: assert_value
+        selector: 品牌
+        value: ""
+      - action: assert_value
+        selector: 主推筛选
+        value: ""
+      - action: assert_value
+        selector: 品牌类别
+        value: ""
+      - action: assert_value
+        selector: 启用状态
+        value: ""
 
 
 
