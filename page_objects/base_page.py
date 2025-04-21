@@ -186,6 +186,18 @@ class BasePage:
             attachment_type=allure.attachment_type.TEXT,
         )
 
+    @allure.step("硬断言元素文本")
+    def hard_assert_text(self, selector: str, expected_text: str):
+        """断言元素文本"""
+        resolved_expected = self._resolve_variables(expected_text)
+        actual_text = self.get_text(selector)
+        expect(self.page.locator(selector)).to_have_text(resolved_expected)
+        allure.attach(
+            f"断言成功: 元素 {selector} 的文本\n期望: '{resolved_expected}'\n实际: '{actual_text}'",
+            name="断言结果",
+            attachment_type=allure.attachment_type.TEXT,
+        )
+
     @check_and_screenshot()
     @allure.step("断言页面标题")
     def assert_title(self, title: str):
