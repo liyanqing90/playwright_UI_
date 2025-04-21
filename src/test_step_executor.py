@@ -238,6 +238,8 @@ class StepExecutor:
                 raise
 
     def execute_step(self, step: Dict[str, Any]) -> None:
+        if not step:
+            return
         try:
             self.start_time = datetime.now()
 
@@ -1023,6 +1025,10 @@ def generate_faker_data(data_type, **kwargs):
         return "新零售" + faker.uuid4().replace("-", "")[:6]
     elif data_type == "mobile":
         return "18210233933"
+    elif data_type == "datetime":
+        import datetime
+        today = datetime.date.today()
+        return today.strftime("%Y-%m-%d")
     else:
         raise "不支持的类型"
 

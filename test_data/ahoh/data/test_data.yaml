@@ -1433,13 +1433,14 @@ test_data:
 
 
 
-  test_生成当日个户用户订单，常规品牌发起确认函:
-    description: 生成当日个户用户订单，常规品牌发起确认函--已调通
+  test_生成当日公户用户订单，常规品牌发起确认函:
+    description: 生成当日公户用户订单，常规品牌发起确认函--已调通
     steps:
       - use_module: login_steps
       - use_module: create_store_unvisited_leads_steps
       - action: 刷新
       - use_module: create_order_steps
+      - use_module: fill_company_non_priority_order_info
       - action: 刷新
       - action: 点击
         selector: 底部菜单-工作
@@ -1527,8 +1528,8 @@ test_data:
       - action: 点击
         selector: 确认函预览-邀请信息-复制文本
 
-  test_生成当日个户用户订单，订单暂存:
-    description: 生成当日个户用户订单，订单暂存--调试中
+  test_生成当日公户用户订单，订单暂存:
+    description: 生成当日公户用户订单，订单暂存--调试中
     steps:
       - use_module: login_steps
       - use_module: create_store_unvisited_leads_steps
@@ -1558,7 +1559,7 @@ test_data:
         selector: 下订信息-上牌城市
         value: 香港
 
-  test_生成当日个户用户订单，取消下订:
+  test_生成订单，取消下订:
     description: 生成订单，取消订单
     steps:
       - use_module: login_steps
@@ -1635,3 +1636,142 @@ test_data:
         selector: 底部菜单-工作
         value: 工作
 
+  # 查看确认函详情，leadId=20030958350411
+  test_生成当日个户用户订单，常规品牌发起确认函:
+    description: 生成当日个户用户订单，常规品牌发起确认函--调试完成
+    steps:
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
+      - action: 刷新
+      - use_module: create_order_steps
+      - use_module: fill_personal_non_priority_order_info
+      - action: 刷新
+      - use_module: fill_personal_non_priority_order_confirm_document
+
+  # 查看确认函详情，leadId=27210999150178
+  test_查看常规品牌确认函详情:
+    description: 个户常规品牌查看确认函详情
+    steps:
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
+      - action: 刷新
+      - use_module: create_order_steps
+#      - use_module: fill_personal_non_priority_order_info
+      - action: 刷新
+      - use_module: fill_personal_non_priority_order_confirm_document
+      - action: 刷新
+      - action: 点击
+        selector: 全部订单
+      - action: 点击
+        selector: 订单列表-搜索
+      - action: 输入
+        selector: 订单列表-搜索输入框
+        value: $<lead_id>
+#        value: '27210999150178'
+      - action: 点击
+        selector: 订单列表第一个卡片
+      - action: 验证文本
+        selector: 订单详情-确认函tab
+        value: 确认函
+      - action: 验证文本
+        selector: 订单详情-确认函客户姓名
+        value: 客户名称
+      - action: 验证文本
+        selector: 订单详情-确认函客户手机号
+        value: 182****3933
+      - action: 验证文本
+        selector: 订单详情-确认函身份证号
+        value: 31011019560416545X
+      - action: 验证文本
+        selector: 订单详情-确认函购买车型
+        value: 新海狮X30L CNG-2023款 70L CNG财富版客车6/7座无空调SWCC15M
+      - action: 等待
+        value: 1
+      - action: 验证文本
+        selector: 订单详情-确认函厂商指导价
+        value: 厂商指导价
+      - action: 验证文本
+        selector: 订单详情-确认函发票价
+        value: 发票价
+      - action: 验证文本
+        selector: 订单详情-确认函合同日期
+        value: 合同日期
+
+  test_查看常规品牌有确认函的订单信息:
+    description: 个户常规品牌已提交确认函,查看订单详情
+    steps:
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
+      - action: 刷新
+      - use_module: create_order_steps
+      - use_module: fill_personal_non_priority_order_info
+      - action: 刷新
+      - use_module: fill_personal_non_priority_order_confirm_document
+      - action: 刷新
+      - action: 点击
+        selector: 全部订单
+      - action: 点击
+        selector: 订单列表-搜索
+      - action: 输入
+        selector: 订单列表-搜索输入框
+        value: $<lead_id>
+#        value: '27210999150178'
+      - action: 点击
+        selector: 订单列表第一个卡片
+      - action: 验证文本
+        selector: 订单详情-订单信息tab
+        value: 订单信息
+      - action: 点击
+        selector: 订单详情-订单信息tab
+        value: 订单信息
+      - action: 验证文本
+        selector: 订单详情-基础信息-上牌城市
+        value: 香港
+      - action: 验证文本
+        selector: 订单详情-基础信息-开票价格
+        value: 300001元
+      - action: 验证文本
+        selector: 订单详情-基础信息-店内上牌
+        value: 是
+      - action: 验证文本
+        selector: 订单详情-基础信息-上牌费用
+        value: 2000元
+      - action: 验证文本
+        selector: 订单详情-基础信息-店内投保商业保险
+        value: 是
+      - action: 验证文本
+        selector: 订单详情-基础信息-是否贷款
+        value: 是
+      - action: 验证文本
+        selector: 订单详情-基础信息-贷款额度
+        value: 2000元
+      - action: 验证文本
+        selector: 订单详情-基础信息-贷款期数
+        value: 12期
+      - action: 验证文本
+        selector: 订单详情-基础信息-月供金额
+        value: 1003元
+      - action: 验证文本
+        selector: 订单详情-其他-购车总价
+        value: 10001元
+      - action: faker
+        data_type: datetime
+        variable_name: current_date
+      - action: 验证文本
+        selector: 订单详情-其他-提车日期
+        value: $<$<current_date>>
+      - action: 验证文本
+        selector: 订单详情-其他-合同日期
+        value: $<current_date>
+      - action: 验证文本
+        selector: 订单详情-其他-付款日期项
+        value: 付款日期
+      - action: 验证文本
+        selector: 订单详情-其他-合同凭证
+        value: 线上合同
+      - action: 验证文本
+        selector: 订单详情-其他-身份证号
+        value: 31011019560416545X
+      - action: 验证文本
+        selector: 订单详情-其他凭证
+        value: '-'

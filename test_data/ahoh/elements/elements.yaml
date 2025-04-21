@@ -10,7 +10,9 @@ elements:
   下订信息-付款日期输入框:
     xpath=//*[@id="scrolltarget"]/div/div[2]/div/section/form/div[4]/div[2]/div/input
   下订信息-企业代码: input[name="socialCode"]
+  下订信息-身份证号: input[name="identityCard"]
   下订信息-公户: div.select-buyertype-main>div>div:nth-child(2)
+  下订信息-个户: div.select-buyertype-main>div>div:nth-child(1)
   下订信息-其他项: xpath=//span[text()="其他"]
   下订信息-合同凭证输入框: div.uploader-box.contractPic-box[data-v-acd976af] div.van-uploader__upload input.van-uploader__input
 #  xpath=//input[@name="contractPic"]/parent::div
@@ -211,6 +213,7 @@ elements:
     section.home-wrap>section.nav-bar-box>div.nav-bar-content-wraper>div.nav-bar-content>section.nav-left
   订单列表页面标题:
     section.home-wrap>section.nav-bar-box>div.nav-bar-content-wraper>div.nav-bar-content>section.nav-title
+  订单列表第一个卡片: div.listcont
   订单卡片-上传发票/查看发票按钮:
     xpath=id("app")/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[4]/div[2]/div[1]
   订单卡片-填写信息按钮: div#app > div > div > div > div > div:nth-of-type(2) > div > div >
@@ -259,3 +262,31 @@ elements:
   确认函预览-分享客户微信按钮: div.confirmation-button>button:nth-child(2)
   确认函预览-短信按钮: div.confirmation-button>button:nth-child(1)
   确认函预览-邀请信息-复制文本: text=复制文本
+
+
+#订单详情页
+  订单详情-确认函tab: //div[@role="tablist"]/div[@tabindex="0"]/span
+  订单详情-确认函客户姓名: section.confirm-view>div.order-container>section:nth-child(1)>span.filed-cell-content
+  订单详情-确认函客户手机号: section.confirm-view>div.order-container>section:nth-child(2)>span.filed-cell-content
+  订单详情-确认函身份证号: section.confirm-view>div.order-container>section:nth-child(3)>span.filed-cell-content
+  订单详情-确认函购买车型: section.confirm-view>div.order-container>section:nth-child(4)>span.filed-cell-content
+  订单详情-确认函厂商指导价: section.confirm-view>div.order-container>section:nth-child(5)>span.filed-cell-label
+  订单详情-确认函发票价: section.confirm-view>div.order-container>section:nth-child(6)>span.filed-cell-label
+  订单详情-确认函合同日期: section.confirm-view>div.order-container>section:nth-child(7)>span.filed-cell-label
+  订单详情-订单信息tab: //div[@role="tablist"]/div[@tabindex="-1"]/span
+  订单详情-基础信息-上牌城市: section.echo-container>section:nth-child(1)>section:nth-child(2)>span.filed-cell-content
+  订单详情-基础信息-开票价格: section.echo-container>section:nth-child(1)>section:nth-child(3)>span.filed-cell-content
+  订单详情-基础信息-店内上牌: section.echo-container>section:nth-child(1)>section:nth-child(4)>span.filed-cell-content
+  订单详情-基础信息-上牌费用: section.echo-container>section:nth-child(1)>section:nth-child(5)>span.filed-cell-content
+  订单详情-基础信息-店内投保商业保险: section.echo-container>section:nth-child(1)>section:nth-child(6)>span.filed-cell-content
+  订单详情-基础信息-是否贷款: section.echo-container>section:nth-child(1)>section:nth-child(7)>span.filed-cell-content
+  订单详情-基础信息-贷款额度: section.echo-container>section:nth-child(1)>section:nth-child(8)>span.filed-cell-content
+  订单详情-基础信息-贷款期数: section.echo-container>section:nth-child(1)>section:nth-child(9)>span.filed-cell-content
+  订单详情-基础信息-月供金额: section.echo-container>section:nth-child(1)>section:nth-child(10)>span.filed-cell-content
+  订单详情-其他-购车总价: section.echo-container>section:nth-child(3)>section:nth-child(2)>span.filed-cell-content
+  订单详情-其他-提车日期: section.echo-container>section:nth-child(3)>section:nth-child(3)>span.filed-cell-content
+  订单详情-其他-合同日期: section.echo-container>section:nth-child(3)>section:nth-child(4)>span.filed-cell-content
+  订单详情-其他-付款日期项:  section.echo-container>section:nth-child(3)>section:nth-child(5)>span.filed-cell-label
+  订单详情-其他-合同凭证: div.echo-module-image>section:nth-child(1)>div:nth-child(2)
+  订单详情-其他-身份证号: div.echo-module-image>section:nth-child(3)>div:nth-child(2)
+  订单详情-其他凭证:  div.echo-module-image>section:nth-child(4)>div:nth-child(2)

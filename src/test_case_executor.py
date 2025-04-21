@@ -37,7 +37,10 @@ class CaseExecutor:
             step_executor = StepExecutor(page, ui_helper, self.elements)
             steps = self.case_data["steps"]
             for step in steps:
-                step_executor.execute_step(step)
+                if step:
+                    step_executor.execute_step(step)
+                else:
+                    log.debug(f"Skipping step: {step}")
 
         finally:
             pass
