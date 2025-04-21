@@ -25,6 +25,7 @@ class StepAction:
     # 执行Python文件
     EXECUTE_PYTHON = ["execute_python", "执行Python"]
     # 断言相关
+    HARD_ASSERT_TEXT = ["hard_assert", "硬断言"]
     ASSERT_VISIBLE = ["assert_visible", "验证可见"]
     ASSERT_TEXT = ["assert_text", "assertion", "验证文本", "验证", "verify"]
     ASSERT_ATTRIBUTE = ["assert_attribute", "验证属性"]
@@ -642,6 +643,10 @@ class StepExecutor:
             expected = step.get("expected", value)
             self.ui_helper.assert_text(selector, expected)
 
+        elif action in StepAction.HARD_ASSERT_TEXT:
+            expected = step.get("expected", value)
+            self.ui_helper.hard_assert_text(selector, expected)
+
         elif action in StepAction.ASSERT_TEXT_CONTAINS:
             expected = step.get("expected", value)
             self.ui_helper.assert_text_contains(selector, expected)
@@ -935,6 +940,7 @@ class StepExecutor:
                 # 尝试解析为JSON数组
                 try:
                     import json
+
                     expected_values = json.loads(expected_values)
                 except Exception:
                     # 如果不是JSON，则分割字符串
