@@ -311,3 +311,10 @@ def pytest_sessionfinish(session, exitstatus):
             logger.info(f"已在测试会话结束时删除临时测试数据文件: {variables_file}")
     except Exception as e:
         logger.error(f"删除测试数据文件时出错: {e}")
+
+
+def pytest_collection_modifyitems(items) -> None:
+    # item表示每个测试用例，解决用例名称中文显示问题
+    for item in items:
+        item.name = item.name.encode().decode("unicode-escape")
+        item._nodeid = item._nodeid.encode().decode("unicode-escape")
