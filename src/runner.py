@@ -6,8 +6,15 @@ from playwright.async_api import Page
 
 from src.test_case_executor import CaseExecutor
 from utils.logger import logger
+from utils.variable_manager import VariableManager
 
-_DEFAULT_FIXTURES = ["page", "ui_helper", "screenshot_fixture"]
+_DEFAULT_FIXTURES = [
+    "page",
+    "ui_helper",
+    "screenshot_fixture",
+    "get_test_name",
+    "value",
+]
 
 
 def build_test_signature(fixtures: list) -> Signature:
@@ -41,8 +48,10 @@ class TestCaseGenerator(pytest.Item):
         self.test_cases = test_cases
         self.test_data = self.datas.get("test_data", {})
         self.elements = self.datas.get("elements", {})
+        self.vars = self.datas.get("vars", {})
         self.module: types.ModuleType = module  # 动态创建的 module 模型
         self.module_variable = {}  # 模块变量
+        self.variable_manager = VariableManager()  # 初始化变量管理器
 
     def generate(self) -> None:
         """主生成方法"""
@@ -50,6 +59,12 @@ class TestCaseGenerator(pytest.Item):
             raise ValueError(
                 f"'test_cases' 数据格式错误，期望列表类型，但实际为: {type(self.test_cases)}"
             )
+
+        # 加载全局变量到变量管理器
+        if self.vars:
+            for var_name, var_value in self.vars.items():
+                self.variable_manager.set_variable(var_name, var_value, "temp")
+
         for case in self.test_cases:
             if not isinstance(case, dict):  # 循环内部增加 case 类型检查
                 print(
@@ -82,7 +97,14 @@ class TestCaseGenerator(pytest.Item):
         fixtures = case.get("fixtures", [])
         case_data = self.test_data.get(case_name, {})
 
-        logger.debug(f"用例名称: {case_name}")
+        # 优化后的代码
+        case_data = (
+            [case_data]
+            if isinstance(case_data, dict) and case_data
+            else case_data if isinstance(case_data, list) else []
+        )
+        # 设置测试数据
+        setattr(self.module, f"{case_name}_data", case_data)
 
         # 使用闭包绑定当前 case 数据
         def _test_function_wrapper_for_case(
@@ -90,7 +112,7 @@ class TestCaseGenerator(pytest.Item):
         ):  # 重命名闭包函数
             self.execute_test(
                 case=case,
-                case_data=case_data,
+                case_data=kwargs.get("value", {}),
                 elements=self.elements,
                 page=page,
                 ui_helper=ui_helper,
