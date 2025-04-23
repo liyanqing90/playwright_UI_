@@ -417,7 +417,13 @@ class BasePage:
 
             var_name = result[start + 2 : end]
             var_value = self.variable_manager.get_variable(var_name, "global")
-            result = result[:start] + str(var_value) + result[end + 1 :]
+            if var_value is None:
+                logger.warning(f"变量 ${var_name} 未定义，保留原始引用")
+                # 跳过这个变量引用以避免无限循环
+                break_point = start + 2
+                result = result[:break_point] + result[break_point:]
+            else:
+                result = result[:start] + str(var_value) + result[end + 1 :]
 
         return result
 

@@ -28,7 +28,13 @@ class CaseExecutor:
         self.executed_fixtures: Set[str] = set()
 
     def execute_test_case(self, case: Dict[str, Any], page, ui_helper) -> None:
-        # case_name = case["name"]
+        """执行测试用例
+
+        Args:
+            case: 测试用例定义
+            page: Playwright页面对象
+            ui_helper: UI操作帮助类
+        """
 
         # # 执行测试用例前的准备工作
         # self._setup_test_environment(case)
@@ -41,5 +47,5 @@ class CaseExecutor:
 
         finally:
             pass
-        #     # 清理测试环境
-        #     self._cleanup_test_environment(case)
+            # 清理测试环境
+            # self._cleanup_test_environment(case)
