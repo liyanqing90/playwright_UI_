@@ -60,11 +60,6 @@ class TestCaseGenerator(pytest.Item):
                 f"'test_cases' 数据格式错误，期望列表类型，但实际为: {type(self.test_cases)}"
             )
 
-        # 加载全局变量到变量管理器
-        if self.vars:
-            for var_name, var_value in self.vars.items():
-                self.variable_manager.set_variable(var_name, var_value, "temp")
-
         for case in self.test_cases:
             if not isinstance(case, dict):  # 循环内部增加 case 类型检查
                 print(
@@ -111,7 +106,6 @@ class TestCaseGenerator(pytest.Item):
             page, ui_helper, **kwargs
         ):  # 重命名闭包函数
             self.execute_test(
-                case=case,
                 case_data=kwargs.get("value", {}),
                 elements=self.elements,
                 page=page,
@@ -130,11 +124,9 @@ class TestCaseGenerator(pytest.Item):
         marked_func.__signature__ = build_test_signature(fixtures)
         return marked_func
 
-    def execute_test(
-        self, case: dict, case_data, page: Page, ui_helper, **kwargs
-    ) -> None:
-        executor = CaseExecutor(case_data, self.elements)
-        executor.execute_test_case(case, page, ui_helper)
+    def execute_test(self, case_data, page: Page, ui_helper, **kwargs) -> None:
+        executor = CaseExecutor(case_data, self.elements, self.vars)
+        executor.execute_test_case(page, ui_helper)
 
     def runtest(self):
         """
