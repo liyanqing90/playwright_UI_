@@ -143,7 +143,7 @@ class BasePage:
     @allure.step("输入文本 {text}")
     def fill(self, selector: str, text: str):
         """在输入框中填写文本"""
-        resolved_text = self._resolve_variables(text)
+        resolved_text = self.variable_manager.replace_variables_refactored(text)
         self._wait_for_element(selector)
         self.page.fill(selector, resolved_text)
 
@@ -177,7 +177,9 @@ class BasePage:
     @allure.step("断言元素文本")
     def assert_text(self, selector: str, expected_text: str):
         """断言元素文本"""
-        resolved_expected = self._resolve_variables(expected_text)
+        resolved_expected = self.variable_manager.replace_variables_refactored(
+            expected_text
+        )
         actual_text = self.get_text(selector)
         expect(self.page.locator(selector)).to_have_text(resolved_expected)
         allure.attach(
@@ -189,7 +191,9 @@ class BasePage:
     @allure.step("硬断言元素文本")
     def hard_assert_text(self, selector: str, expected_text: str):
         """断言元素文本"""
-        resolved_expected = self._resolve_variables(expected_text)
+        resolved_expected = self.variable_manager.replace_variables_refactored(
+            expected_text
+        )
         actual_text = self.get_text(selector)
         expect(self.page.locator(selector)).to_have_text(resolved_expected)
         allure.attach(
@@ -234,7 +238,9 @@ class BasePage:
     @allure.step("断言元素包含文本")
     def assert_text_contains(self, selector: str, expected_text: str):
         """断言元素文本包含指定内容"""
-        resolved_expected = self._resolve_variables(expected_text)
+        resolved_expected = self.variable_manager.replace_variables_refactored(
+            expected_text
+        )
         actual_text = self.get_text(selector)
         expect(self.page.locator(selector)).to_contain_text(resolved_expected)
         allure.attach(
@@ -247,7 +253,9 @@ class BasePage:
     @allure.step("断言URL包含")
     def assert_url_contains(self, expected_url_part: str):
         """断言当前URL包含指定内容"""
-        resolved_expected = self._resolve_variables(expected_url_part)
+        resolved_expected = self.variable_manager.replace_variables_refactored(
+            expected_url_part
+        )
         actual_url = self.page.url
         expect(self.page).to_have_url(re.compile(f".*{re.escape(resolved_expected)}.*"))
         allure.attach(
@@ -338,7 +346,9 @@ class BasePage:
     @allure.step("断言元素值")
     def assert_value(self, selector: str, expected_value: str):
         """断言元素值"""
-        resolved_expected = self._resolve_variables(expected_value)
+        resolved_expected = self.variable_manager.replace_variables_refactored(
+            expected_value
+        )
         actual_value = self.page.input_value(selector)
         expect(self.page.locator(selector)).to_have_value(resolved_expected)
         allure.attach(
@@ -402,30 +412,6 @@ class BasePage:
     ):
         """等待页面加载状态"""
         self.page.wait_for_load_state(state)
-
-    def _resolve_variables(self, text: str) -> str:
-        """解析文本中的变量引用"""
-        if not text or "${" not in text:
-            return text
-
-        result = text
-        while "${" in result:
-            start = result.find("${")
-            end = result.find("}", start)
-            if end == -1:
-                break
-
-            var_name = result[start + 2 : end]
-            var_value = self.variable_manager.get_variable(var_name, "global")
-            if var_value is None:
-                logger.warning(f"变量 ${var_name} 未定义，保留原始引用")
-                # 跳过这个变量引用以避免无限循环
-                break_point = start + 2
-                result = result[:break_point] + result[break_point:]
-            else:
-                result = result[:start] + str(var_value) + result[end + 1 :]
-
-        return result
 
     def wait_and_click(self, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT):
         """等待元素可点击并点击"""
@@ -851,7 +837,7 @@ class BasePage:
     @allure.step("全局输入文本 {text}")
     def keyboard_type(self, text: str, delay: int = DEFAULT_TYPE_DELAY):
         """全局输入文本，不针对特定元素"""
-        resolved_text = self._resolve_variables(text)
+        resolved_text = self.variable_manager.replace_variables_refactored(text)
         self.page.keyboard.type(resolved_text, delay=delay)
         logger.debug(f"全局输入文本: {resolved_text}")
 
@@ -1054,7 +1040,9 @@ class BasePage:
             raise ValueError(f"JSONPath {jsonpath_expr} 未找到匹配项，当前数据: {data}")
 
         # 处理变量替换
-        resolved_expected = self._resolve_variables(expected_value)
+        resolved_expected = self.variable_manager.replace_variables_refactored(
+            expected_value
+        )
 
         # 执行断言
         with check, allure.step(f"验证参数 {jsonpath_expr}"):
@@ -1088,7 +1076,10 @@ class BasePage:
     @allure.step("断言元素有多个值")
     def assert_values(self, selector: str, expected_values: List[str]):
         """断言元素有多个值（适用于多选框等）"""
-        resolved_values = [self._resolve_variables(val) for val in expected_values]
+        resolved_values = [
+            self.variable_manager.replace_variables_refactored(val)
+            for val in expected_values
+        ]
         actual_values = self.page.locator(selector).evaluate(
             "el => Array.from(el.selectedOptions).map(o => o.value)"
         )
@@ -1103,7 +1094,9 @@ class BasePage:
     @allure.step("断言元素有精确文本")
     def assert_exact_text(self, selector: str, expected_text: str):
         """断言元素有精确的文本（不包括子元素文本）"""
-        resolved_expected = self._resolve_variables(expected_text)
+        resolved_expected = self.variable_manager.replace_variables_refactored(
+            expected_text
+        )
         actual_text = self.page.locator(selector).inner_text()
         expect(self.page.locator(selector)).to_have_text(
             resolved_expected, use_inner_text=True
