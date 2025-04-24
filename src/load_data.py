@@ -23,6 +23,7 @@ class LoadData:
             "elements": self.yaml.load_yaml_dir(self.test_data_dir + "/elements")[
                 "elements"
             ],
+            "vars": self.yaml.load_yaml_dir(self.test_data_dir + "/vars"),
         }
 
     def return_data(self):
