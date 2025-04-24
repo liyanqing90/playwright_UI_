@@ -9,3 +9,14 @@ elements:
   城市权益配置: //span[contains(text(),"城市权益配置")]
   优惠权益配置: //span[contains(text(),"优惠权益配置")]
   资源位配置: //span[contains(text(),"资源位配置")]
+
+  # 车系排序配置
+  order_品牌: (//div[@class='ant-select-selector'])[1]
+  order_车系: (//div[@class='ant-select-selector'])[2]
+  order_重置: //button[@class="ant-btn ant-btn-default"]
+  order_查询: //button[@class="ant-btn ant-btn-primary"]
+  order_品牌_大众: div[title='大众'] div:nth-child(1)
+  order_车系_save: text=${series_name}
+  order_tb_品牌: //tbody/tr[1]/td[3]
+  order_tb_车系: //tbody/tr[1]/td[5]
+

@@ -1,0 +1,77 @@
+test_data:
+  test_car_series:
+    - description: "搜索大众"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系排序配置
+        - action: click
+          selector: order_品牌
+        - action: click
+          selector: order_品牌_大众
+        - action: assert_text
+          selector: order_品牌
+          value: 大众
+        - action: monitor_request
+          url_pattern: "api/sysSeriesSort/getSeriesSortListPage"
+          selector: order_查询
+          assert_params:
+            $.brandId: 1
+        - action: assert_text
+          selector: order_tb_品牌
+          value: 大众
+        - action: click
+          selector: order_车系
+        - action: store_text
+          value: 车系
+          selector: div[class='ant-select-item-option-content']
+
+    - description: "搜索大众车系"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系排序配置
+        - action: click
+          selector: order_品牌
+        - action: monitor_response
+          selector: order_品牌_大众
+          url_pattern: "/api/car/getSeriesAll"
+          save_params:
+            $..seriesName: series_name
+            $..seriesId: series_id
+        - action: click
+          selector: order_车系
+        - action: click
+          selector: order_车系_save
+        - action: assert_text
+          selector: order_车系
+          value: ${series_name}
+        - action: monitor_request
+          url_pattern: "api/sysSeriesSort/getSeriesSortListPage"
+          selector: order_查询
+          assert_params:
+            $.brandId: 1
+        - action: assert_text
+          selector: order_tb_车系
+          value: ${series_name}
+
+    - description: "重置搜索"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系排序配置
+        - action: click
+          selector: order_品牌
+        - action: click
+          selector: order_品牌_大众
+        - action: assert_text
+          selector: order_品牌
+          value: 大众
+        - action: click
+          selector: order_重置
+        - action: assert_text
+          selector: order_品牌
+          value: 请选择品牌
+        - action: assert_text
+          selector: order_车系
+          value: 请选择车系
