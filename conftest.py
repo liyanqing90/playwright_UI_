@@ -258,3 +258,63 @@ def login(page, ui_helper, request):
 def fixture_demo():
     logger.debug("fixture demo")
     return "fixture demo"
+
+
+def pytest_generate_tests(metafunc):  # noqa
+    """测试用例参数化功能实现"""
+    # 获取测试函数对应的测试数据
+    func_name = metafunc.function.__name__
+    params_data = getattr(metafunc.module, f"{func_name}_data", None)
+
+    # 如果没有数据，跳过参数化
+    if not params_data:
+        return
+
+    # 确保测试数据是列表形式
+    if not isinstance(params_data, list):
+        params_data = [params_data]
+
+    # 生成测试ID
+    ids = [
+        value.get("description", f"用例{i + 1}") for i, value in enumerate(params_data)
+    ]
+
+    # 参数化
+    metafunc.parametrize(
+        "value",
+        params_data,
+        ids=ids,
+        scope="function",
+    )
+
+
+@pytest.fixture()
+def get_test_name(request):
+    """返回当前测试用例的完整名称，包括参数化ID"""
+    test_name = request.node.name
+    # 将Unicode转义序列解码为实际的中文字符
+    decoded_name = test_name.encode("utf-8").decode("unicode_escape")
+    logger.debug(f"当前测试用例名称: {decoded_name}")
+    return decoded_name
+
+
+@pytest.hookimpl(trylast=True)
+def pytest_sessionfinish(session, exitstatus):
+    """
+    测试会话结束时执行的钩子函数
+    用于清理测试数据文件（在所有测试完成后只执行一次）
+    """
+    try:
+        variables_file = Path("test_data/variables.json")
+        if variables_file.exists():
+            variables_file.unlink()
+            logger.info(f"已在测试会话结束时删除临时测试数据文件: {variables_file}")
+    except Exception as e:
+        logger.error(f"删除测试数据文件时出错: {e}")
+
+
+def pytest_collection_modifyitems(items) -> None:
+    # item表示每个测试用例，解决用例名称中文显示问题
+    for item in items:
+        item.name = item.name.encode().decode("unicode-escape")
+        item._nodeid = item._nodeid.encode().decode("unicode-escape")

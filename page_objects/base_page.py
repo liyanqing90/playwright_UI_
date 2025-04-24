@@ -186,6 +186,18 @@ class BasePage:
             attachment_type=allure.attachment_type.TEXT,
         )
 
+    @allure.step("硬断言元素文本")
+    def hard_assert_text(self, selector: str, expected_text: str):
+        """断言元素文本"""
+        resolved_expected = self._resolve_variables(expected_text)
+        actual_text = self.get_text(selector)
+        expect(self.page.locator(selector)).to_have_text(resolved_expected)
+        allure.attach(
+            f"断言成功: 元素 {selector} 的文本\n期望: '{resolved_expected}'\n实际: '{actual_text}'",
+            name="断言结果",
+            attachment_type=allure.attachment_type.TEXT,
+        )
+
     @check_and_screenshot()
     @allure.step("断言页面标题")
     def assert_title(self, title: str):
@@ -405,7 +417,13 @@ class BasePage:
 
             var_name = result[start + 2 : end]
             var_value = self.variable_manager.get_variable(var_name, "global")
-            result = result[:start] + str(var_value) + result[end + 1 :]
+            if var_value is None:
+                logger.warning(f"变量 ${var_name} 未定义，保留原始引用")
+                # 跳过这个变量引用以避免无限循环
+                break_point = start + 2
+                result = result[:break_point] + result[break_point:]
+            else:
+                result = result[:start] + str(var_value) + result[end + 1 :]
 
         return result
 
