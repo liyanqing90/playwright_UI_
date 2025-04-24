@@ -947,6 +947,7 @@ class BasePage:
         selector: str,
         action: str = "click",
         assert_params: Dict[str, Any] = None,
+        save_params: Dict[str, Any] = None,
         timeout: int = DEFAULT_TIMEOUT,
         **kwargs,
     ):
@@ -958,6 +959,7 @@ class BasePage:
             selector: 要操作的元素选择器
             action: 要执行的操作，如 "click", "fill" 等
             assert_params: 要验证的参数列表，格式为 [{"$.path.to.field": expected_value}, ...]
+            save_params: 要保存的参数列表，格式为 [{"$.path.to.field": viable_name}, ...]
             timeout: 等待超时时间(毫秒)
             **kwargs: 其他操作参数，如 fill 操作的 value
 
@@ -995,13 +997,20 @@ class BasePage:
                     logger.info(f"响应数据: {response_data}")
 
                     # 验证参数（如果需要）
-                    if assert_params and response_data:
-                        # 处理断言参数
-                        for jsonpath_expr, expected_value in assert_params.items():
-                            self._verify_jsonpath(
-                                response_data, jsonpath_expr, expected_value
-                            )
+                    if response_data:
+                        if assert_params:
+                            # 处理断言参数
+                            for jsonpath_expr, expected_value in assert_params.items():
+                                self._verify_jsonpath(
+                                    response_data, jsonpath_expr, expected_value
+                                )
 
+                        if save_params:
+                            # 处理保存参数
+                            for jsonpath_expr, viable_name in save_params.items():
+                                self._save_jsonpath(
+                                    response_data, jsonpath_expr, viable_name
+                                )
                     return response_data
 
                 except Exception as e:
@@ -1017,6 +1026,27 @@ class BasePage:
                 attachment_type=allure.attachment_type.PNG,
             )
             raise
+
+    def _save_jsonpath(self, data, jsonpath_expr, viable_name):
+        """
+        保存JSONPath表达式的值到变量
+
+        Args:
+            data: 要保存的数据
+            jsonpath_expr: JSONPath表达式
+            viable_name: 变量名称
+        """
+
+        # 解析 jsonpath 表达式
+        jsonpath_expr = jsonpath_expr.strip()
+        expr = parse(jsonpath_expr)
+        logger.debug(f"JSONPath表达式: {jsonpath_expr}")
+        logger.debug(f"变量名称: {viable_name}")
+
+        # 查找匹配的值
+        matches = [value.value for value in expr.find(data)][0]
+        logger.debug(f"匹配的值: {matches}")
+        self.store_variable(viable_name, matches)
 
     def _verify_jsonpath(self, data, jsonpath_expr, expected_value):
         """
@@ -1034,7 +1064,9 @@ class BasePage:
 
         # 查找匹配的值
         matches = [value.value for value in expr.find(data)][0]
-
+        expected_value = self.variable_manager.replace_variables_refactored(
+            expected_value
+        )
         if expected_value and not matches:
             logger.error(f"JSONPath {jsonpath_expr} 未找到匹配项")
             raise ValueError(f"JSONPath {jsonpath_expr} 未找到匹配项，当前数据: {data}")

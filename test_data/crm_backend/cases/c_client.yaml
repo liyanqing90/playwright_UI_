@@ -1,0 +1,3 @@
+test_cases:
+  - name: test_car_series
+    fixtures: ["login"]
