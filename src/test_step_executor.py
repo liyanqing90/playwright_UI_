@@ -4,6 +4,7 @@ from datetime import datetime
 from io import StringIO
 from pathlib import Path
 from typing import Dict, Any, List
+from utils.variable_manager import VariableManager
 
 import allure
 
@@ -25,6 +26,7 @@ class StepAction:
     # 执行Python文件
     EXECUTE_PYTHON = ["execute_python", "执行Python"]
     # 断言相关
+    HARD_ASSERT_TEXT = ["hard_assert", "硬断言"]
     ASSERT_VISIBLE = ["assert_visible", "验证可见"]
     ASSERT_TEXT = ["assert_text", "assertion", "验证文本", "验证", "verify"]
     ASSERT_ATTRIBUTE = ["assert_attribute", "验证属性"]
@@ -194,7 +196,6 @@ class StepExecutor:
         self._NO_SELECTOR_ACTIONS = {a.lower() for a in StepAction.NO_SELECTOR_ACTIONS}
 
         # 初始化变量管理器
-        from utils.variable_manager import VariableManager
 
         self.variable_manager = VariableManager()
 
@@ -253,9 +254,13 @@ class StepExecutor:
 
             action = step.get("action", "").lower()
             pre_selector = step.get("selector")
-            selector = self.elements.get(pre_selector, pre_selector)  # 替换变量
-            value = self._replace_variables(step.get("value"))  # 替换变量
-            logger.debug(f"执行步骤: {action} | 选择器: {pre_selector} | 值: {value}")
+            selector = self.variable_manager.replace_variables_refactored(
+                self.elements.get(pre_selector, pre_selector)
+            )  # 替换变量
+            value = self.variable_manager.replace_variables_refactored(
+                step.get("value")
+            )  # 替换变量
+            logger.debug(f"执行步骤: {action} | 选择器: {selector} | 值: {value}")
             self._validate_step(action, selector)
             self._execute_action(action, selector, value, step)
 
@@ -642,6 +647,10 @@ class StepExecutor:
             expected = step.get("expected", value)
             self.ui_helper.assert_text(selector, expected)
 
+        elif action in StepAction.HARD_ASSERT_TEXT:
+            expected = step.get("expected", value)
+            self.ui_helper.hard_assert_text(selector, expected)
+
         elif action in StepAction.ASSERT_TEXT_CONTAINS:
             expected = step.get("expected", value)
             self.ui_helper.assert_text_contains(selector, expected)
@@ -887,8 +896,8 @@ class StepExecutor:
             url_pattern = step.get("url_pattern", value)
             action_type = step.get("action_type", "click")
             assert_params = step.get("assert_params")
+            save_params = step.get("save_params")
             timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
-            variable_name = step.get("variable_name")
             scope = step.get("scope", "global")
 
             # 其他可能的参数
@@ -917,6 +926,7 @@ class StepExecutor:
                 selector=selector,
                 action=action_type,
                 assert_params=assert_params,
+                save_params=save_params,
                 timeout=DEFAULT_TIMEOUT,
                 value=value,
                 **kwargs,
