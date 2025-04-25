@@ -5,7 +5,7 @@ create_order_steps: # APP中管家创建线索并下订
     selector: 客户列表-搜索
   - action: 输入
     selector: 客户列表查询条件输入框
-    value: $<phone_num>
+    value: ${phone_num}
   - action: 点击
     selector: 客户列表_执行搜索
   - action: 点击
@@ -109,7 +109,7 @@ fill_company_non_priority_order_info: #填写非重点品牌公户订单信息�
     selector: 订单列表-搜索
   - action: 输入
     selector: 订单列表-搜索输入框
-    value: $<lead_id>
+    value: ${lead_id}
   - action: 点击
     selector: 订单卡片-填写信息按钮
   - action: 点击
@@ -194,7 +194,7 @@ fill_personal_non_priority_order_info: #填写非重点品牌个户订单信息�
     selector: 订单列表-搜索
   - action: 输入
     selector: 订单列表-搜索输入框
-    value: $<lead_id>
+    value: ${lead_id}
   - action: 点击
     selector: 订单卡片-填写信息按钮
   - action: 点击
@@ -287,7 +287,7 @@ fill_personal_non_priority_order_info: #填写非重点品牌个户订单信息�
     selector: 订单列表-搜索
   - action: 输入
     selector: 订单列表-搜索输入框
-    value: $<lead_id>
+    value: ${lead_id}
   - action: 硬断言
     selector: 订单卡片第一个订单状态
     value: 审核中
@@ -301,7 +301,7 @@ create_order_savaDraft: # APP中管家创建线索并下订，填写信息
     selector: 客户列表-搜索
   - action: 输入
     selector: 客户列表查询条件输入框
-    value: $<phone_num>
+    value: ${phone_num}
   - action: 点击
     selector: 客户列表_执行搜索
   - action: 点击
@@ -402,7 +402,7 @@ create_order_savaDraft: # APP中管家创建线索并下订，填写信息
     selector: 订单列表-搜索
   - action: 输入
     selector: 订单列表-搜索输入框
-    value: $<phone_num>
+    value: ${phone_num}
   - action: 点击
     selector: 订单卡片-填写信息按钮
   - action: 点击
@@ -486,7 +486,7 @@ create_order: # APP中管家创建线索并下订，不填写任何信息
     selector: 客户列表-搜索
   - action: 输入
     selector: 客户列表查询条件输入框
-    value: $<phone_num>
+    value: ${phone_num}
   - action: 点击
     selector: 客户列表_执行搜索
   - action: 点击
@@ -593,7 +593,7 @@ fill_personal_non_priority_order_confirm_document: #非重点品牌的个户订�
     selector: 订单列表-搜索
   - action: 输入
     selector: 订单列表-搜索输入框
-    value: $<lead_id>
+    value: ${lead_id}
   - action: 点击
     selector: 订单卡片-确认函按钮
   - action: 验证
