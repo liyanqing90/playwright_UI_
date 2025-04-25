@@ -1,11 +1,11 @@
-create_order_steps: # APP中管家创建线索并下订提交审核
+create_order_steps: # APP中管家创建线索并下订
   - action: 点击
     selector: 底部菜单-客户
   - action: 点击
     selector: 客户列表-搜索
   - action: 输入
     selector: 客户列表查询条件输入框
-    value: $<phone_num>
+    value: ${phone_num}
   - action: 点击
     selector: 客户列表_执行搜索
   - action: 点击
@@ -98,6 +98,9 @@ create_order_steps: # APP中管家创建线索并下订提交审核
     selector: 下订成功-返回
   - action: 点击
     selector: 搜索框-返回
+
+
+fill_company_non_priority_order_info: #填写非重点品牌公户订单信息并提交审核
   - action: 点击
     selector: 底部菜单-工作
   - action: 点击
@@ -106,7 +109,7 @@ create_order_steps: # APP中管家创建线索并下订提交审核
     selector: 订单列表-搜索
   - action: 输入
     selector: 订单列表-搜索输入框
-    value: $<phone_num>
+    value: ${lead_id}
   - action: 点击
     selector: 订单卡片-填写信息按钮
   - action: 点击
@@ -182,6 +185,115 @@ create_order_steps: # APP中管家创建线索并下订提交审核
   - action: 点击
     selector: 下订信息-提交审核按钮
 
+fill_personal_non_priority_order_info: #填写非重点品牌个户订单信息并提交审核
+  - action: 点击
+    selector: 底部菜单-工作
+  - action: 点击
+    selector: 全部订单
+  - action: 点击
+    selector: 订单列表-搜索
+  - action: 输入
+    selector: 订单列表-搜索输入框
+    value: ${lead_id}
+  - action: 点击
+    selector: 订单卡片-填写信息按钮
+  - action: 点击
+    selector: 下订信息-个户
+  - action: 点击
+    selector: 下订信息-购车类型-下一步按钮
+  - action: 输入
+    selector: 下订信息-身份证号
+    value: 31011019560416545X
+  - action: 点击
+    selector: 下订信息-车型输入框
+  - action: 点击
+    selector: 下订信息-选择车系
+  - action: 点击
+    selector: 选择下订车型页-确定按钮
+  - action: 输入
+    selector: 下订信息-开票价格输入框
+    value: '10001'
+  - action: 输入
+    selector: 下订信息-上牌费用输入框
+    value: '2000'
+  - action: 输入
+    selector: 下订信息-贷款额度输入框
+    value: '2000'
+  - action: 点击
+    selector: 下订信息-贷款期数输入框
+  - action: 输入
+    selector: 下订信息-月供输入框
+    value: '1003'
+  - action: 点击
+    selector: 下订信息-其他项
+  - action: 输入
+    selector: 下订信息-购车总价输入框
+    value: '10001'
+  - action: 点击
+    selector: 下订信息-提车日期输入框
+  - action: 点击
+    selector: 下订信息-提车日期-选择日期-确认按钮
+  - action: 点击
+    selector: 下订信息-合同日期输入框
+  - action: 点击
+    selector: 下订信息-合同日期-选择日期-确认按钮
+  - action: 点击
+    selector: 下订信息-付款日期输入框
+  - action: 点击
+    selector: 下订信息-付款日期-选择日期-确认按钮
+  - action: 上传
+    selector: 下订信息-合同凭证输入框
+    value: files\ahoh\test.jpg
+  - action: 点击
+    selector: 下订信息-合同类型-线上合同
+  - action: 上传
+    selector: 下订信息-付款凭证输入框
+    value: files\ahoh\test.jpg
+  - action: 点击
+    selector: 下订信息-录音文件输入框
+  - action: 点击
+    selector: 下订信息-录音文件日期范围
+  - action: 滚动到元素
+    selector: //div[@class='van-calendar__month-title'][contains(text(),'2024年3月')]
+  - action: 点击
+    selector: 下订信息-录音文件日期面板-2024年3月1日
+  - action: 滚动到元素
+    selector: //div[@class='van-calendar__month-title'][contains(text(),'2024年7月')]
+  - action: 点击
+    selector: 下订信息-录音文件日期面板-2024年7月1日
+  - action: 点击
+    selector: 下订信息-录音文件日期面板按钮-确定
+  - action: 点击
+    selector: 下订信息-选择录音-第一条录音
+  - action: 点击
+    selector: 下订信息-选择录音-确定按钮
+#  - action: 暂停
+  - action: 等待
+    value: 2
+  - action: 点击
+    selector: 下订信息-提交审核按钮
+  - action: monitor_request
+    url_pattern: /api/app/dealOrder/apply
+    selector: 下订信息-提交审核按钮
+    action_type: click
+    assert_params:
+      $.contractType: '4'
+  - action: 刷新
+  - action: 点击
+    selector: 底部菜单-工作
+  - action: 点击
+    selector: 全部订单
+  - action: 点击
+    selector: 订单列表-搜索
+  - action: 输入
+    selector: 订单列表-搜索输入框
+    value: ${lead_id}
+  - action: 硬断言
+    selector: 订单卡片第一个订单状态
+    value: 审核中
+  - action: 刷新
+
+
 create_order_savaDraft: # APP中管家创建线索并下订，填写信息
   - action: 点击
     selector: 底部菜单-客户
@@ -189,7 +301,7 @@ create_order_savaDraft: # APP中管家创建线索并下订，填写信息
     selector: 客户列表-搜索
   - action: 输入
     selector: 客户列表查询条件输入框
-    value: $<phone_num>
+    value: ${phone_num}
   - action: 点击
     selector: 客户列表_执行搜索
   - action: 点击
@@ -290,7 +402,7 @@ create_order_savaDraft: # APP中管家创建线索并下订，填写信息
     selector: 订单列表-搜索
   - action: 输入
     selector: 订单列表-搜索输入框
-    value: $<phone_num>
+    value: ${phone_num}
   - action: 点击
     selector: 订单卡片-填写信息按钮
   - action: 点击
@@ -374,7 +486,7 @@ create_order: # APP中管家创建线索并下订，不填写任何信息
     selector: 客户列表-搜索
   - action: 输入
     selector: 客户列表查询条件输入框
-    value: $<phone_num>
+    value: ${phone_num}
   - action: 点击
     selector: 客户列表_执行搜索
   - action: 点击
@@ -471,3 +583,90 @@ create_order: # APP中管家创建线索并下订，不填写任何信息
     selector: 搜索框-返回
   - action: 点击
     selector: 底部菜单-工作
+
+fill_personal_non_priority_order_confirm_document: #非重点品牌的个户订单填写确认函
+  - action: 点击
+    selector: 底部菜单-工作
+  - action: 点击
+    selector: 全部订单
+  - action: 点击
+    selector: 订单列表-搜索
+  - action: 输入
+    selector: 订单列表-搜索输入框
+    value: ${lead_id}
+  - action: 点击
+    selector: 订单卡片-确认函按钮
+  - action: 验证
+    selector: 确认函签署-页面标题
+    value: 确认函签署
+  - action: wait
+    value: 2
+  - action: 输入
+    selector: 确认函签署填写信息页-身份证输入框
+    value: 31011019560416545X
+  - action: wait
+    value: 1
+  - action: 点击
+    selector: 确认函签署填写信息页-购买车型选择框
+    value:
+  - action: 验证
+    selector: 确认函签署填写信息页-选择车型页标题
+    value: 选择车型
+  - action: wait
+    value: 1
+  - action: 点击
+    selector: 确认函签署填写信息页-选择车型页第一项
+  - action: 点击
+    selector: 确认函签署填写信息页-选择车型的半屏页-确定按钮
+  - action: 输入
+    selector: 确认函签署填写信息页-指导价输入框
+    value: '5.65'
+  - action: 输入
+    selector: 确认函签署填写信息页-发票价格输入框
+    value: '50000'
+  - action: 点击
+    selector: 确认函签署填写信息页-合同日期输入框
+  - action: 验证
+    selector: 确认函签署填写信息页-合同日期半屏页标题
+    value: 选择合同日期
+  - action: 点击
+    selector: 确认函签署填写信息页-合同日期半屏页-确任按钮
+  - action: 点击
+    selector: 确认函签署填写信息页-合同日期半屏页-底部确定按钮
+  - action: 验证
+    selector: 全屏页页面标题
+    value: 《买贵必赔确认函》预览
+  - action: 等待
+    value: 1
+  - action: 验证
+    selector: 确认函预览-标题
+    value: 尊敬的客户名称先生/女士
+  - action: 验证
+    selector: 确认函预览-客户名称
+    value: 客户名称
+  - action: 验证
+    selector: 确认函预览-手机号
+    value: 182****3933
+  - action: 验证
+    selector: 确认函预览-身份证号
+    value: 31011019560416545X
+  - action: 验证
+    selector: 确认函预览-购买车辆品牌
+    value: 金杯
+  - action: 验证
+    selector: 确认函预览-购买车辆MSRP(官方指导价)
+    value: 56500元
+  - action: 验证
+    selector: 确认函预览-购买车辆价格(发票价)
+    value: 50000元
+  - action: 验证
+    selector: 确认函预览-分享客户微信按钮
+    value: 分享客户微信
+  - action: 点击
+    selector: 确认函预览-短信按钮
+    value: 短信
+  - action: 验证
+    selector: 发票信息页-确认发票二次确认弹窗文案
+    value: 邀请信息
+  - action: 点击
+    selector: 确认函预览-邀请信息-复制文本
