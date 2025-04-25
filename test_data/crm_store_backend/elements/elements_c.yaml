@@ -43,6 +43,43 @@ elements:
 
   重置: //span[contains(text(),'重 置')]
 
+  购车政策: //span[@title='购车政策']
+  优惠权益配置: //li[@title='优惠权益配置']//span[@class='ant-pro-menu-item']
+  新建活动: //span[contains(text(),'新建活动')]
+  位置选择: //div[@class='ant-select-selection-overflow']
+  频道页双列车卡: (//div[@class='ant-select-item-option-content'])[1]
+  权益类型: //input[@id='form_item_text.rightType']
+  到店礼: (//div[@class='ant-select-item-option-content'])[8]
+  价值: //input[@placeholder='请输入金额']
+  标题: //input[@id='form_item_text.title']
+  开始时间: //input[@id='form_item_time']
+  年份选择: //div[@class='ant-picker-date-panel']//div[@class='ant-picker-header-view']
+  初始时间: //button[normalize-space()='2020-2029']
+  30年代: //div[normalize-space()='2030-2039']
+  2030年: //div[normalize-space()='2030']
+  月份选择: //td[@title='2030-01']
+  2030-01-01: //td[@title='2030-01-01']
+  起止时间确定: //li[@class='ant-picker-ok']
+  结束时间: //input[@placeholder='结束时间']
+  2030-01-06: //td[@title='2030-01-06']
+  权益配置确定: (//span[contains(text(),'确 定')])[1]
+
+  权益位置下拉框: //input[@id='form_item_position']
+  频道页双列车卡选项: //div[@id='363']//div[1]
+  权益类型下拉框: //input[@id='rc_select_1']
+  到店礼选项: //div[@label='到店礼']
+  权益标题: //input[@placeholder='请输入权益标题']
+  权益查询: //span[contains(text(),'查 询')]
+  查询结果标题: //td[contains(text(),'自动化测试001')]
+
+
+
+
+
+
+
+
+
 
 
 

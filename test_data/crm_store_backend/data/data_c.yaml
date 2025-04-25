@@ -168,6 +168,83 @@ test_data:
         selector: 启用状态
         value: ""
 
+  test_new_equity:
+    description: "新增权益"
+    steps:
+      - use_module: login_steps
+      - action: click
+        selector: 购车政策
+      - action: click
+        selector: 优惠权益配置
+      - action: click
+        selector: 新建活动
+      - action: click
+        selector: 位置选择
+      - action: click
+        selector: 频道页双列车卡
+      - action: click
+        selector: 权益类型
+      - action: click
+        selector: 到店礼
+      - action: fill
+        selector: 价值
+        value: "1500"
+      - action: fill
+        selector: 标题
+        value: "自动化测试001"
+      - action: click
+        selector: 开始时间
+      - action: click
+        selector: 年份选择
+      - action: click
+        selector: 初始时间
+      - action: click
+        selector: 30年代
+      - action: click
+        selector: 2030年
+      - action: click
+        selector: 月份选择
+      - action: click
+        selector: 2030-01-01
+      - action: click
+        selector: 起止时间确定
+      - action: click
+        selector: 结束时间
+      - action: click
+        selector: 2030-01-06
+      - action: click
+        selector: 起止时间确定
+      - action: click
+        selector: 权益配置确定
+      - action: wait
+
+  test_screen_equity:
+    description: "权益筛选"
+    steps:
+      - use_module: login_steps
+      - action: click
+        selector: 购车政策
+      - action: click
+        selector: 优惠权益配置
+      - action: click
+        selector: 权益位置下拉框
+      - action: click
+        selector: 频道页双列车卡选项
+      - action: click
+        selector: 权益类型下拉框
+      - action: click
+        selector: 到店礼选项
+      - action: fill
+        selector: 权益标题
+        value: "自动化测试001"
+      - action: click
+        selector: 权益查询
+      - action: wait
+      - action: assert_text
+        selector: 查询结果标题
+        value: "自动化测试001"
+
+
 
 
 
