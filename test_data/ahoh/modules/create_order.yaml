@@ -267,8 +267,31 @@ fill_personal_non_priority_order_info: #填写非重点品牌个户订单信息�
     selector: 下订信息-选择录音-第一条录音
   - action: 点击
     selector: 下订信息-选择录音-确定按钮
+#  - action: 暂停
+  - action: 等待
+    value: 2
   - action: 点击
     selector: 下订信息-提交审核按钮
+  - action: monitor_request
+    url_pattern: /api/app/dealOrder/apply
+    selector: 下订信息-提交审核按钮
+    action_type: click
+    assert_params:
+      $.contractType: '4'
+  - action: 刷新
+  - action: 点击
+    selector: 底部菜单-工作
+  - action: 点击
+    selector: 全部订单
+  - action: 点击
+    selector: 订单列表-搜索
+  - action: 输入
+    selector: 订单列表-搜索输入框
+    value: $<lead_id>
+  - action: 硬断言
+    selector: 订单卡片第一个订单状态
+    value: 审核中
+  - action: 刷新
 
 
 create_order_savaDraft: # APP中管家创建线索并下订，填写信息

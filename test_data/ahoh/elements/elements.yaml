@@ -228,6 +228,7 @@ elements:
 
   订单卡片第一个-发票状态:
     div.orderListcard>div:nth-child(1)>div.listcont>div.listcard-cont>div:nth-child(5)>div.listcard-cont-value
+  订单卡片第一个订单状态: span.common_span #左上角待审核、审核中等
   试驾车系选择框: section[placeholder="请选择试驾车系"]
   购车周期-存疑: xpath=//div[@class="radio-item-text"][text()="存疑"]
   选择下订车型页-确定按钮: div.operation-btn-big
@@ -273,7 +274,9 @@ elements:
   订单详情-确认函厂商指导价: section.confirm-view>div.order-container>section:nth-child(5)>span.filed-cell-label
   订单详情-确认函发票价: section.confirm-view>div.order-container>section:nth-child(6)>span.filed-cell-label
   订单详情-确认函合同日期: section.confirm-view>div.order-container>section:nth-child(7)>span.filed-cell-label
-  订单详情-订单信息tab: //div[@role="tablist"]/div[@tabindex="-1"]/span
+  订单详情-有确认函的订单信息tab: //div[@role="tablist"]/div[@tabindex="-1"]/span
+  订单详情-取消下订按钮: div.fillInWhiteBtnForCancel
+
   订单详情-基础信息-上牌城市: section.echo-container>section:nth-child(1)>section:nth-child(2)>span.filed-cell-content
   订单详情-基础信息-开票价格: section.echo-container>section:nth-child(1)>section:nth-child(3)>span.filed-cell-content
   订单详情-基础信息-店内上牌: section.echo-container>section:nth-child(1)>section:nth-child(4)>span.filed-cell-content

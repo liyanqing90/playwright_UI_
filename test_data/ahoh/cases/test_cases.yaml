@@ -15,4 +15,6 @@ test_cases:
 # - name: test_生成订单，取消下订
 #    - name: test_生成当日个户用户订单，常规品牌发起确认函
 #    - name: test_查看常规品牌确认函详情
-    - name: test_查看常规品牌有确认函的订单信息
+#    - name: test_查看常规品牌有确认函的订单信息
+#    - name: test_查看常规品牌订单信息_无确认函
+    - name: test_订单详情中点击取消下订
