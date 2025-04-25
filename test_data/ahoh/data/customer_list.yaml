@@ -14,7 +14,7 @@ test_data:
         selector: 客户列表-搜索
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
       - action: 等待
@@ -24,7 +24,7 @@ test_data:
         value: 写备注
       - action: 验证
         selector: 客户列表待清洗&预约待接待线索第一个卡片的线索来源
-        value:  $<ahoh_lead_source>
+        value:  ${ahoh_lead_source}
       - action: 点击
         selector: 客户列表查询结果第一条填跟进按钮
       - action: 等待
@@ -60,7 +60,7 @@ test_data:
         selector: 客户列表-搜索
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
       - action: 验证
@@ -110,10 +110,10 @@ test_data:
         selector: 推送经销商弹框-确定按钮
       - action: 验证文本
         selector: 客户列表第一个卡片的意向车系
-        value: $<ahoh_lead_seriesName>
+        value: ${ahoh_lead_seriesName}
       - action: 验证文本
         selector: 客户列表待清洗&预约待接待线索第一个卡片的线索来源
-        value: $<ahoh_lead_source>
+        value: ${ahoh_lead_source}
       - action: 点击
         selector: 客户列表查询结果第一条填跟进按钮
       - action: 等待

@@ -421,7 +421,7 @@ test_data:
         variable_name: phone_num
       - action: 输入
         selector: 手机号
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 是否已到店
 
@@ -439,7 +439,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -505,7 +505,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -617,7 +617,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -724,7 +724,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -829,7 +829,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -892,7 +892,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -982,7 +982,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -1099,7 +1099,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -1214,7 +1214,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -1347,7 +1347,7 @@ test_data:
 
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 订单卡片-填写信息按钮
 
@@ -1450,7 +1450,7 @@ test_data:
         selector: 订单列表-搜索
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<lead_id>
+        value: ${lead_id}
       - action: 点击
         selector: 订单卡片-确认函按钮
       - action: 验证
@@ -1544,17 +1544,17 @@ test_data:
         selector: 订单列表-搜索
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<lead_id>
+        value: ${lead_id}
       - action: 点击
         selector: 订单卡片-填写信息按钮
       - action: 点击
         selector: 下订信息-基础信息-展开
       - action: 验证值
         selector: 下订信息-企业代码
-        value: $<ahoh_oder_socialCode>
+        value: ${ahoh_oder_socialCode}
       - action: 验证值
         selector: 下订信息-上牌城市
-        value: $<ahoh_order_registerCityName>
+        value: ${ahoh_order_registerCityName}
       - action: 验证值
         selector: 下订信息-上牌城市
         value: 香港
@@ -1573,7 +1573,7 @@ test_data:
         selector: 订单列表-搜索
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<lead_id>
+        value: ${lead_id}
       - action: 点击
         selector: 订单列表第一个卡片-三个点
       - action: 验证文本
@@ -1596,7 +1596,7 @@ test_data:
         selector: 客户列表-搜索
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<lead_id>
+        value: ${lead_id}
       - action: 点击
         selector: 客户列表_执行搜索
       - action: 点击
@@ -1666,7 +1666,7 @@ test_data:
         selector: 订单列表-搜索
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<lead_id>
+        value: ${lead_id}
 #        value: '27210999150178'
       - action: 点击
         selector: 订单列表第一个卡片
@@ -1714,7 +1714,7 @@ test_data:
         selector: 订单列表-搜索
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<lead_id>
+        value: ${lead_id}
 #        value: '27210999150178'
       - action: 点击
         selector: 订单列表第一个卡片
@@ -1759,10 +1759,10 @@ test_data:
         variable_name: current_date
       - action: 硬断言
         selector: 订单详情-其他-提车日期
-        value: $<current_date>
+        value: ${current_date}
       - action: 验证文本
         selector: 订单详情-其他-合同日期
-        value: $<current_date>
+        value: ${current_date}
       - action: 验证文本
         selector: 订单详情-其他-付款日期项
         value: 付款日期
@@ -1791,7 +1791,7 @@ test_data:
         selector: 订单列表-搜索
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<lead_id>
+        value: ${lead_id}
       - action: 点击
         selector: 订单列表第一个卡片
       - action: 硬断言
@@ -1829,10 +1829,10 @@ test_data:
         variable_name: current_date
       - action: 验证文本
         selector: 订单详情-其他-提车日期
-        value: $<current_date>
+        value: ${current_date}
       - action: 验证文本
         selector: 订单详情-其他-合同日期
-        value: $<current_date>
+        value: ${current_date}
       - action: 验证文本
         selector: 订单详情-其他-付款日期项
         value: 付款日期
@@ -1860,7 +1860,7 @@ test_data:
         selector: 订单列表-搜索
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<lead_id>
+        value: ${lead_id}
       - action: 点击
         selector: 订单列表第一个卡片
       - action: 点击
@@ -1880,7 +1880,7 @@ test_data:
         selector: 客户列表-搜索
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<lead_id>
+        value: ${lead_id}
       - action: 点击
         selector: 客户列表_执行搜索
       - action: 点击
