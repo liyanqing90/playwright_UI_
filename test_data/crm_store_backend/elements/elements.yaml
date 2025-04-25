@@ -133,3 +133,23 @@ elements:
   重置按钮: //span[contains(text(),'重 置')]
   重置后经销商省份筛选框为默认值: //span[contains(text(),'请选择经销商省份')]
   列表第二行数据序号: //td[normalize-space()='2']
+
+ #编辑后的列表元素
+
+  cell_1: tr[class='ant-table-row ant-table-row-level-0'] td:nth-child(1)
+  text_audi: //td[@class='ant-table-cell ant-table-cell-fix-left']//div[1]
+  text_a4l: div[_nk='aPX812']
+  text_version: div[_nk='aPX813']
+  cell_hk: tr[class='ant-table-row ant-table-row-level-0'] td:nth-child(1)
+  cell_test: (//td[contains(text(),'测试宝骏20150609')])[1]
+  cell_28_980: td[class='ant-table-cell ant-table-cell-fix-left ant-table-cell-fix-left-last']
+  cell_booking: (//td[contains(text(),'预订')])[1]
+  cell_month: (//td[contains(text(),'3个月以上')])[1]
+  裸车价cell_28_880: (//td[@class='ant-table-cell'][normalize-space()='28.880'])[1]
+  线上报价cell_28_880: (//td[@class='ant-table-cell'][normalize-space()='28.880'])[2]
+  text_white: span[_nk='aPX821']
+  text_1_000: span[_nk='aPX822']
+  强制保险cell_force: (//td[@class='ant-table-cell'][contains(text(),'强制')])[1]
+  强制上牌cell_force: (//td[@class='ant-table-cell'][contains(text(),'强制')])[2]
+  cell_0_400: (//td[normalize-space()='0.400'])[1]
+  cell_0_900: (//td[normalize-space()='0.900'])[1]

@@ -34,6 +34,7 @@ class Project(str, Enum):
     CRM_STORE_BACKEND = "crm_store_backend"
     AHOH = "ahoh"
     DA_PING = "da_ping"
+    CRM_BACKEND = "crm_backend"
 
 
 @singleton
@@ -71,7 +72,7 @@ class Config(BaseSettings):
     def _update_config_based_on_env_and_project(self):
         """根据环境和项目更新配置"""
         try:
-            env_config = YamlHandler().load_yaml("config/env_config.yaml")
+            env_config = YamlHandler().load_yaml(Path("config/env_config.yaml"))
             if not env_config or not isinstance(env_config, dict):
                 raise ValueError("Invalid YAML configuration")
 

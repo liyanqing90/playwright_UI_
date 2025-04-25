@@ -1,8 +1,10 @@
 import json
-import logging
 import os
+import re
 from pathlib import Path
 from typing import Any, Dict, Optional, Literal
+
+from loguru import logger
 
 
 class VariableManager:
@@ -13,6 +15,10 @@ class VariableManager:
     """
 
     _instance = None
+
+    def __init__(self):
+        self.storage_file = None
+        self.storage_mode = None
 
     def __new__(cls, storage_mode: str = "file", storage_file: str = None):
         """单例模式实现"""
@@ -29,7 +35,7 @@ class VariableManager:
             storage_mode: 存储模式，可选值：memory, file
             storage_file: 文件存储模式下的存储文件路径
         """
-        self.logger = logging.getLogger(__name__)
+        self.logger = logger
         self.storage_mode = storage_mode
 
         # 内存存储模式的变量
@@ -314,3 +320,50 @@ class VariableManager:
         # 如果是文件存储模式且有变量被导入，保存到文件
         if changes_made and self.storage_mode == "file":
             self._save_variables_to_file()
+
+    def replace_variables_refactored(
+        self, value: Any, scope: Optional[str] = "global"
+    ) -> Any:
+        """
+        替换值中的变量引用。递归处理字符串、列表、字典。
+        对整个值是变量引用的字符串保留原始类型。
+        使用 self.variable_manager.get_variable(name, "global") 获取变量。
+        """
+        # 直接返回 None, 数字, 布尔等非容器类型
+        if value is None or not isinstance(value, (str, list, dict)):
+            return value
+        # 处理字符串
+        if isinstance(value, str):
+            # 回调函数：查找变量值并格式化
+            def _variable_replacer(match):
+                _var_name = match.group(1)  # 获取变量名
+                # 获取变量值，指定全局范围
+                var_value = self.get_variable(_var_name, scope)
+                if var_value is None:
+                    # 变量未定义，警告并保留原始引用
+                    logger.warning(f"变量 '${_var_name}' 未定义，保留原始引用")
+                    return match.group(0)  # 返回原始 ${var_name}
+                else:
+                    # 变量找到，转换为字符串进行替换
+                    return str(var_value)
+
+            # 检查整个字符串是否就是一个变量引用，以保留原始类型
+            exact_match_pattern = r"^\${([^}]+)}$"
+            exact_match = re.fullmatch(exact_match_pattern, value)
+            if exact_match:
+                var_name = exact_match.group(1)
+                # 精确匹配，直接获取并返回原始类型的值
+                return self.get_variable(var_name, "global")
+            else:
+                # 不是精确匹配，使用 re.sub 替换所有内嵌变量
+                # 使用非贪婪匹配防止跨越多个 {}
+                embedded_var_pattern = r"\$\{(.*?)\}"
+                return re.sub(embedded_var_pattern, _variable_replacer, value)
+        # 处理列表 (递归)
+        if isinstance(value, list):
+            return [self.replace_variables_refactored(item) for item in value]
+        # 处理字典 (递归)
+        if isinstance(value, dict):
+            # 使用字典推导式处理
+            return {k: self.replace_variables_refactored(v) for k, v in value.items()}
+        return None
