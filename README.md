@@ -355,11 +355,9 @@ dont_write_input: "input#dontwrite" # 确认文本为只读
    号。需要使用引号包裹
 2. 步骤转换: 将 steps 示例数据中定义的代码步骤转换为 Playwright 的标准步骤描述。每个步骤描述应包含 action、selector（若适用）和
    value（若适用）三个属性：
-
-- action: 根据下方的 代码方法对应关系，将原始代码中的动作转换为对应的 Playwright 标准方法名称。
-- selector: 将原始代码中步骤的 selector 值替换为第一步中提取的对应定位符。
-- value: 如果原始代码的步骤中有 value 值，则将其原样保留。
-
+   - action: 根据下方的 代码方法对应关系，将原始代码中的动作转换为对应的 Playwright 标准方法名称。
+   - selector: 将原始代码中步骤的 selector 值替换为第一步中提取的对应定位符。
+   - value: 如果原始代码的步骤中有 value 值，则将其原样保留。
 3. 输出格式: 请分两部分输出结果，第一部分输出提取的元素定位符，第二部分输出转换后的步骤描述。
    代码方法对应关系 (原始代码 -> Playwright):
 
