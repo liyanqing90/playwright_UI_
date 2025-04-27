@@ -934,11 +934,6 @@ class StepExecutor:
                 **kwargs,
             )
 
-            # 如果提供了变量名，存储捕获数据
-            if variable_name:
-                self.variable_manager.set_variable(variable_name, response_data, scope)
-                logger.info(f"已存储响应数据到变量 {variable_name}")
-
         # 保留 ASSERT_HAVE_VALUES，因为它是独特的功能
         elif action in StepAction.ASSERT_HAVE_VALUES:
             expected_values = step.get("expected_values", value)
@@ -1032,6 +1027,7 @@ def generate_faker_data(data_type, **kwargs):
         return "18210233933"
     elif data_type == "datetime":
         import datetime
+
         today = datetime.date.today()
         return today.strftime("%Y-%m-%d")
     else:
