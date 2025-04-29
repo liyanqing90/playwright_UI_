@@ -1,5 +1,0 @@
-test_cases:
-  - name: test_demo
-    fixtures: [ ]
-    depends_on: [ ]
-  - name: test_demo2
