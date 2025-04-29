@@ -7,6 +7,8 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import quote_plus
 
+import requests
+
 
 class DingTalkNotifier:
     def __init__(self, access_token: str, secret: str):
@@ -15,10 +17,12 @@ class DingTalkNotifier:
         self.webhook_url = "https://oapi.dingtalk.com/robot/send"
 
     def _generate_signature(self, timestamp: int) -> str:
-        secret_enc = self.secret.encode('utf-8')
+        secret_enc = self.secret.encode("utf-8")
         string_to_sign = f"{timestamp}\n{self.secret}"
-        string_to_sign_enc = string_to_sign.encode('utf-8')
-        hmac_code = hmac.new(secret_enc, string_to_sign_enc, digestmod=hashlib.sha256).digest()
+        string_to_sign_enc = string_to_sign.encode("utf-8")
+        hmac_code = hmac.new(
+            secret_enc, string_to_sign_enc, digestmod=hashlib.sha256
+        ).digest()
         return quote_plus(base64.b64encode(hmac_code))
 
     def send_message(self, title: str, text: str, at_all=False):
@@ -29,18 +33,13 @@ class DingTalkNotifier:
 
         message = {
             "msgtype": "markdown",
-            "markdown": {
-                "title": title,
-                "text": text
-            },
-            "at": {
-                "isAtAll": False
-            }
+            "markdown": {"title": title, "text": text},
+            "at": {"isAtAll": False},
         }
         print("发送报告")
         print(text)
         #
-        # response = requests.post(url, json=message)
+        response = requests.post(url, json=message)
         # response.raise_for_status()
 
 
@@ -64,37 +63,40 @@ class ReportNotifier:
 
     def format_report_message(self, report_data: dict) -> str:
         from utils.config import Config
+
         config = Config()
-        disposition_part = ["#### 测试配置",
-                            f"- 浏览器：{config.browser.value}",
-                            f"- 运行模式：{'有头模式' if config.headed else '无头模式'}",
-                            f"- 运行环境：{config.env.value}",
-                            f"- 项目：{config.project.value}",
-                            f"- 用例标记：{getattr(config, 'marker', '无')}\n"
-                            ]
+        disposition_part = [
+            "#### 测试配置",
+            f"- 浏览器：{config.browser.value}",
+            f"- 运行模式：{'有头模式' if config.headed else '无头模式'}",
+            f"- 运行环境：{config.env.value}",
+            f"- 项目：{config.project.value}",
+            f"- 用例标记：{getattr(config, 'marker', '无')}\n",
+        ]
         overview_part = [
             "#### 测试概况",
             f"- 总用例数：{report_data['total_tests']}",
             f"- 通过率：{report_data['passed'] / report_data['total_tests']:.2%}",
             f"- 失败率：{report_data['failed'] / report_data['total_tests']:.2%}",
             f"- 跳过率：{report_data['skipped'] / report_data['total_tests']:.2%}",
-            f"- 总耗时：{report_data['duration']}秒\n"
+            f"- 总耗时：{report_data['duration']}秒\n",
         ]
         message_parts = disposition_part + overview_part
 
-        if report_data['failed'] > 0:
-            message_parts.extend([
-                "#### 失败详情\n",
-                self._format_failures(report_data['failures'])
-            ])
+        if report_data["failed"] > 0:
+            message_parts.extend(
+                ["#### 失败详情\n", self._format_failures(report_data["failures"])]
+            )
 
         return "\n".join(message_parts)
 
     def _format_failures(self, failures: list) -> str:
         if not failures:
             return "无失败详情"
-        failure_msgs = [f"- {failure.get('test_case', '未知用例')}: {failure.get('reason', '未知原因')}" for failure in
-                        failures]
+        failure_msgs = [
+            f"- {failure.get('test_case', '未知用例')}: {failure.get('reason', '未知原因')}"
+            for failure in failures
+        ]
         return "\n".join(failure_msgs)  # 使用双换行符确保钉钉markdown格式正确
 
     def notify(self, report_data: dict):

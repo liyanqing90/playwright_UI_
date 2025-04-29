@@ -26,9 +26,15 @@ class Environment(str, Enum):
 
 class Project(str, Enum):
     DEMO = "demo"
-    HOLO_LIVE = "holo_live"  # 确保枚举值使用小写
+    HOLO_LIVE = "hololive"  # 确保枚举值使用小写
     ASSISTANT = "assistant"
     OTHER_PROJECT = "other_project"
+    MARKETING = "marketing"
+    CHANNEL_PAGE = "channel_page"
+    CRM_STORE_BACKEND = "crm_store_backend"
+    AHOH = "ahoh"
+    DA_PING = "da_ping"
+    CRM_BACKEND = "crm_backend"
 
 
 @singleton
@@ -42,6 +48,7 @@ class Config(BaseSettings):
     base_url: str = ""
     test_dir: str = ""
     browser_config: Optional[dict] = None
+    test_file: str = ""
 
     class Config:
         case_sensitive = False
@@ -58,16 +65,18 @@ class Config(BaseSettings):
                 self.project = Project(self.project.lower())  # 转换为小写再验证
             except ValueError:
                 valid_projects = ", ".join([p.value for p in Project])
-                raise ValueError(f"Invalid project: {self.project}. Valid projects are: {valid_projects}")
+                raise ValueError(
+                    f"Invalid project: {self.project}. Valid projects are: {valid_projects}"
+                )
 
     def _update_config_based_on_env_and_project(self):
         """根据环境和项目更新配置"""
         try:
-            env_config = YamlHandler().load_yaml('config/env_config.yaml')
+            env_config = YamlHandler().load_yaml(Path("config/env_config.yaml"))
             if not env_config or not isinstance(env_config, dict):
                 raise ValueError("Invalid YAML configuration")
 
-            projects = env_config.get('projects', {})
+            projects = env_config.get("projects", {})
             if not projects or not isinstance(projects, dict):
                 raise ValueError("Missing or invalid projects configuration")
 
@@ -77,18 +86,22 @@ class Config(BaseSettings):
                 raise ValueError(f"Project {self.project.value} not found in config")
 
             # 获取环境URL
-            environments = project_config.get('environments', {})
+            environments = project_config.get("environments", {})
             self.base_url = environments.get(self.env.value)
             if not self.base_url:
-                raise ValueError(f"Environment {self.env.value} not found for project {self.project.value}")
+                raise ValueError(
+                    f"Environment {self.env.value} not found for project {self.project.value}"
+                )
 
             # 设置测试数据目录
             self.test_dir = project_config.get("test_dir")
-            self.browser_config = project_config.get("browser_config", {'viewport': {'width': 1920, 'height': 1080}})
+            self.browser_config = project_config.get(
+                "browser_config", {"viewport": {"width": 1920, "height": 1080}}
+            )
 
             # 设置环境变量
-            os.environ['BASE_URL'] = self.base_url
-            os.environ['TEST_DIR'] = str(self.test_dir)
+            os.environ["BASE_URL"] = self.base_url
+            os.environ["TEST_DIR"] = str(self.test_dir)
             # os.environ['BROWSER_CONFIG'] = str(browser_config)
 
         except Exception as e:
@@ -97,13 +110,13 @@ class Config(BaseSettings):
 
     def configure_environment(self):
         """配置运行环境"""
-        os.environ['PWHEADED'] = '1' if self.headed else '0'
-        os.environ['BROWSER'] = self.browser.value
-        os.environ['TEST_ENV'] = self.env.value
-        os.environ['TEST_PROJECT'] = self.project.value
+        os.environ["PWHEADED"] = "1" if self.headed else "0"
+        os.environ["BROWSER"] = self.browser.value
+        os.environ["TEST_ENV"] = self.env.value
+        os.environ["TEST_PROJECT"] = self.project.value
 
 
 class DirPath:
     def __init__(self):
-        self.test_dir = os.environ['TEST_DIR']
+        self.test_dir = os.environ["TEST_DIR"]
         self.base_dir = Path.cwd()

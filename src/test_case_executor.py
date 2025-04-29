@@ -1,3 +1,4 @@
+import re
 from typing import Dict, Any, Set
 
 import allure
@@ -21,25 +22,22 @@ def _setup_test_environment(case: Dict[str, Any]) -> None:
 
 
 class CaseExecutor:
-
     def __init__(self, case_data: Dict[str, Any], elements: Dict[str, Any]):
         self.case_data = case_data
         self.elements = elements
         self.executed_fixtures: Set[str] = set()
 
-    def execute_test_case(self, case: Dict[str, Any], page, ui_helper) -> None:
-        case_name = case["name"]
-
-        # # 执行测试用例前的准备工作
-        # self._setup_test_environment(case)
+    def execute_test_case(self, page, ui_helper) -> None:
+        """执行测试用例
+        Args:
+            page: Playwright页面对象
+            ui_helper: UI操作帮助类
+        """
         try:
             # 执行测试步骤
             step_executor = StepExecutor(page, ui_helper, self.elements)
-            steps = self.case_data["steps"]
+            steps = self.case_data.get("steps")
             for step in steps:
                 step_executor.execute_step(step)
-
         finally:
             pass
-        #     # 清理测试环境
-        #     self._cleanup_test_environment(case)
