@@ -8,23 +8,6 @@ projects:
       prod: "https://testautomationpractice.blogspot.com/"
     browser_config: { "viewport": { "width": 1920, "height": 1080 } }
 
-  holo_live:
-    test_dir: "test_data/hololive"
-    environments:
-      dev: "http://dev.demo.com"
-      test: "http://test.demo.com"
-      stage: "http://stage.demo.com"
-      prod: "http://prod.demo.com"
-    browser_config: { "viewport": { "width": 393, "height": 659 }, "device_scale_factor": 3, "is_mobile": True, "has_touch": True, "default_browser_type": "webkit" }
-  assistant:
-    test_dir: "test_data/assistant"
-    environments:
-      dev: "http://dev.hololive.com"
-      test: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
-      stage: "http://stage.hololive.com"
-      prod: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
-    browser_config: { "viewport": { "width": 1920, "height": 1080 } }
-
   other_project:
     test_dir: "test_data/other_project"
     environments:
