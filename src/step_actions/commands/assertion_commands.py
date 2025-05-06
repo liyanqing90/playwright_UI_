@@ -7,6 +7,7 @@ from typing import Dict, Any
 
 from src.step_actions.action_types import StepAction
 from src.step_actions.commands.base_command import Command, CommandFactory
+from src.step_actions.expression_evaluator import evaluate_math_expression
 
 
 @CommandFactory.register(StepAction.ASSERT_TEXT)
@@ -77,12 +78,25 @@ class AssertTitleCommand(Command):
 
 @CommandFactory.register(StepAction.ASSERT_ELEMENT_COUNT)
 class AssertElementCountCommand(Command):
-    """断言元素数量命令"""
+    """断言元素数量命令，支持数学表达式"""
 
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         expected = step.get("expected", value)
+        expression = step.get("expression")
+
+        # 如果提供了表达式，则计算表达式的值
+        if expression:
+            try:
+                expected = evaluate_math_expression(expression, ui_helper.variable_manager)
+                from utils.logger import logger
+                logger.info(f"计算表达式: {expression} = {expected}")
+            except Exception as e:
+                from utils.logger import logger
+                logger.error(f"计算表达式错误: {expression} - {e}")
+                raise
+
         ui_helper.assert_element_count(selector, expected)
 
 

@@ -99,11 +99,11 @@ def execute_loop(step_executor, step: Dict[str, Any]) -> None:
 
 def evaluate_expression(step_executor, expression: str) -> bool:
     """
-    计算表达式的值
+    计算表达式的值，支持数学运算和比较操作
 
     Args:
         step_executor: StepExecutor实例
-        expression: 表达式字符串，如 "${{ ${count} > 5 }}"
+        expression: 表达式字符串，如 "${{ ${count} > 5 }}" 或 "${{ ${num1} + ${num2} * 2 }}"
 
     Returns:
         表达式的布尔结果
@@ -121,47 +121,140 @@ def evaluate_expression(step_executor, expression: str) -> bool:
 
     # 安全计算表达式
     try:
-        # 为了安全起见，我们需要确保字符串值被正确引用
-        # 创建一个安全的执行环境
-        safe_globals = {"__builtins__": {}}
+        # 创建一个安全的执行环境，添加必要的数学函数和操作
+        import math
+        import operator
+        
+        # 定义安全的数学函数集合
+        safe_math_functions = {
+            # 基本数学函数
+            'abs': abs,
+            'round': round,
+            'min': min,
+            'max': max,
+            'sum': sum,
+            'len': len,
+            
+            # 数学模块函数
+            'sqrt': math.sqrt,
+            'pow': math.pow,
+            'sin': math.sin,
+            'cos': math.cos,
+            'tan': math.tan,
+            'floor': math.floor,
+            'ceil': math.ceil,
+            'log': math.log,
+            'log10': math.log10,
+            'exp': math.exp,
+            
+            # 常量
+            'pi': math.pi,
+            'e': math.e,
+            
+            # 类型转换
+            'int': int,
+            'float': float,
+            'str': str,
+            'bool': bool
+        }
+        
+        # 设置安全的执行环境
+        safe_globals = {
+            '__builtins__': {},  # 清空内置函数
+            **safe_math_functions  # 添加安全的数学函数
+        }
 
-        # 尝试将表达式中的字符串值用引号括起来
-        # 这是一个简单的方法，可能需要更复杂的解析来处理所有情况
-        if "==" in expr_content or "!=" in expr_content:
-            parts = []
-            if "==" in expr_content:
-                parts = expr_content.split("==")
-                operator = "=="
-            else:
-                parts = expr_content.split("!=")
-                operator = "!="
-
-            if len(parts) == 2:
-                left = parts[0].strip()
-                right = parts[1].strip()
-
-                # 如果左右两边不是已经被引号括起来的，且不是纯数字，则添加引号
-                if not (left.startswith('"') and left.endswith('"')) and not (
-                    left.startswith("'") and left.endswith("'")
-                ):
-                    try:
-                        float(left)  # 尝试转换为数字
-                    except ValueError:
-                        left = f"'{left}'"  # 不是数字，添加引号
-
-                if not (right.startswith('"') and right.endswith('"')) and not (
-                    right.startswith("'") and right.endswith("'")
-                ):
-                    try:
-                        float(right)  # 尝试转换为数字
-                    except ValueError:
-                        right = f"'{right}'"  # 不是数字，添加引号
-
-                expr_content = f"{left} {operator} {right}"
-
+        # 预处理表达式，处理字符串和数字
+        processed_expr = preprocess_expression(expr_content)
+        
         # 执行表达式
-        result = eval(expr_content, safe_globals)
+        result = eval(processed_expr, safe_globals)
         return bool(result)
     except Exception as e:
         logger.error(f"表达式计算错误: {expr_content} - {e}")
         return False
+
+
+def preprocess_expression(expr: str) -> str:
+    """
+    预处理表达式，处理字符串和数字
+    
+    Args:
+        expr: 原始表达式字符串
+        
+    Returns:
+        处理后的表达式字符串
+    """
+    import re
+    
+    # 已经是合法Python表达式的情况直接返回
+    try:
+        # 尝试编译表达式，如果成功则直接返回
+        compile(expr, '<string>', 'eval')
+        return expr
+    except SyntaxError:
+        pass  # 继续处理
+    
+    # 处理常见的比较操作符
+    if "==" in expr or "!=" in expr or ">" in expr or "<" in expr or ">=" in expr or "<=" in expr:
+        # 使用正则表达式匹配操作符
+        operators = ["==", "!=", ">=", "<=", ">", "<"]
+        for op in operators:
+            if op in expr:
+                # 分割表达式
+                parts = expr.split(op, 1)  # 只分割一次，处理第一个操作符
+                if len(parts) == 2:
+                    left = parts[0].strip()
+                    right = parts[1].strip()
+                    
+                    # 处理左侧
+                    left = process_operand(left)
+                    
+                    # 处理右侧
+                    right = process_operand(right)
+                    
+                    # 重新组合表达式
+                    return f"{left} {op} {right}"
+    
+    # 处理数学运算表达式
+    # 这里我们假设如果没有比较操作符，那么整个表达式就是一个数学运算
+    return process_operand(expr)
+
+
+def process_operand(operand: str) -> str:
+    """
+    处理操作数，确保字符串和数字格式正确
+    
+    Args:
+        operand: 操作数字符串
+        
+    Returns:
+        处理后的操作数字符串
+    """
+    # 去除首尾空格
+    operand = operand.strip()
+    
+    # 如果已经是引号括起来的字符串，直接返回
+    if (operand.startswith('"') and operand.endswith('"')) or \
+       (operand.startswith("'") and operand.endswith("'")):
+        return operand
+    
+    # 尝试解析为数字
+    try:
+        # 尝试解析为整数
+        int(operand)
+        return operand  # 是整数，直接返回
+    except ValueError:
+        try:
+            # 尝试解析为浮点数
+            float(operand)
+            return operand  # 是浮点数，直接返回
+        except ValueError:
+            # 不是数字，也不是已引用的字符串，添加引号
+            # 检查是否包含数学表达式的特殊字符
+            if any(c in operand for c in '+-*/()%'):
+                # 可能是复杂表达式，不添加引号
+                return operand
+            else:
+                # 普通字符串，添加引号
+                return f"'{operand}'"

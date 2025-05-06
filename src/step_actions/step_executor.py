@@ -527,7 +527,7 @@ class StepExecutor:
         替换值中的变量引用
 
         Args:
-            value: 原始值，可能包含变量引用 ${var_name} 或 $<var_name>
+            value: 原始值，可能包含变量引用 ${var_name} 或 $<var_name> 或 $[[expression]]
 
         Returns:
             替换后的值
@@ -539,6 +539,19 @@ class StepExecutor:
             return value
 
         if isinstance(value, str):
+            # 处理数学表达式引用，如 $[[1 + 2 * ${var}]]
+            if value.startswith("$[[") and value.endswith("]]") and value.count("$[[") == 1:
+                try:
+                    from src.step_actions.expression_evaluator import evaluate_math_expression
+                    # 提取表达式内容
+                    expr = value[3:-2].strip()
+                    # 计算表达式
+                    result = evaluate_math_expression(expr, self.variable_manager)
+                    return result
+                except Exception as e:
+                    logger.error(f"计算表达式错误: {value} - {e}")
+                    return value  # 出错时返回原始值
+            
             # 处理完整的变量引用，如 ${var_name} 或 $<var_name>
             if (
                 value.startswith("${")
@@ -573,6 +586,25 @@ class StepExecutor:
 
             # 使用正则表达式替换所有变量引用
             result = re.sub(pattern, replace_var, value)
+            
+            # 处理内嵌的数学表达式引用，如 "Total: $[[1 + 2 * ${var}]]"
+            pattern_expr = r"\$\[\[([^\[\]]+)\]\]"
+            
+            def replace_expr(match):
+                try:
+                    from src.step_actions.expression_evaluator import evaluate_math_expression
+                    # 提取表达式内容
+                    expr = match.group(1).strip()
+                    # 计算表达式
+                    result = evaluate_math_expression(expr, self.variable_manager)
+                    return str(result)
+                except Exception as e:
+                    logger.error(f"计算表达式错误: {match.group(0)} - {e}")
+                    return match.group(0)  # 出错时返回原始表达式
+            
+            # 替换所有内嵌的数学表达式
+            result = re.sub(pattern_expr, replace_expr, result)
+            
             return result
 
         if isinstance(value, list):

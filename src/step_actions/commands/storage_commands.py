@@ -6,12 +6,13 @@ from typing import Dict, Any
 
 from src.step_actions.action_types import StepAction
 from src.step_actions.commands.base_command import Command, CommandFactory
+from src.step_actions.expression_evaluator import evaluate_math_expression
 from utils.logger import logger
 
 
 @CommandFactory.register(StepAction.STORE_VARIABLE)
 class StoreVariableCommand(Command):
-    """存储变量命令"""
+    """存储变量命令，支持表达式计算"""
 
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
@@ -19,6 +20,17 @@ class StoreVariableCommand(Command):
         var_name = step.get("name", "temp_var")
         var_value = step.get("value")
         scope = step.get("scope", "global")
+        expression = step.get("expression")
+
+        # 如果提供了表达式，则计算表达式的值
+        if expression:
+            try:
+                var_value = evaluate_math_expression(expression, ui_helper.variable_manager)
+                logger.info(f"计算表达式: {expression} = {var_value}")
+            except Exception as e:
+                logger.error(f"计算表达式错误: {expression} - {e}")
+                raise
+
         # 存储变量
         ui_helper.variable_manager.set_variable(var_name, var_value, scope)
         logger.info(f"已存储变量 {var_name}={var_value} (scope={scope})")
