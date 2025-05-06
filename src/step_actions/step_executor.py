@@ -145,7 +145,10 @@ class StepExecutor:
             # 使用命令模式执行操作
             execute_action_with_command(self.ui_helper, action, selector, value, step)
         except Exception as e:
-            logger.error(f"使用命令模式执行操作失败: {e}")
+            # 检查异常是否已被记录
+            if not hasattr(e, '_logged'):
+                logger.error(f"步骤执行失败: {e}")
+                setattr(e, '_logged', True)
             # 如果命令模式执行失败，回退到原始实现
             self._execute_action_legacy(action, selector, value, step)
 
@@ -551,7 +554,7 @@ class StepExecutor:
                 except Exception as e:
                     logger.error(f"计算表达式错误: {value} - {e}")
                     return value  # 出错时返回原始值
-            
+
             # 处理完整的变量引用，如 ${var_name} 或 $<var_name>
             if (
                 value.startswith("${")
@@ -586,10 +589,10 @@ class StepExecutor:
 
             # 使用正则表达式替换所有变量引用
             result = re.sub(pattern, replace_var, value)
-            
+
             # 处理内嵌的数学表达式引用，如 "Total: $[[1 + 2 * ${var}]]"
             pattern_expr = r"\$\[\[([^\[\]]+)\]\]"
-            
+
             def replace_expr(match):
                 try:
                     from src.step_actions.expression_evaluator import evaluate_math_expression
@@ -601,10 +604,10 @@ class StepExecutor:
                 except Exception as e:
                     logger.error(f"计算表达式错误: {match.group(0)} - {e}")
                     return match.group(0)  # 出错时返回原始表达式
-            
+
             # 替换所有内嵌的数学表达式
             result = re.sub(pattern_expr, replace_expr, result)
-            
+
             return result
 
         if isinstance(value, list):

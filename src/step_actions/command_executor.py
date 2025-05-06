@@ -31,8 +31,15 @@ def execute_action_with_command(
     command = CommandFactory.get_command(action)
 
     if command:
-        # 如果找到命令，执行命令
-        command.execute(ui_helper, selector, value, step)
+        try:
+            # 如果找到命令，执行命令
+            command.execute(ui_helper, selector, value, step)
+        except Exception as e:
+            # 检查异常是否已被记录
+            if not hasattr(e, '_logged'):
+                logger.error(f"使用命令模式执行操作失败: {e}")
+                setattr(e, '_logged', True)
+            raise
     else:
         # 如果没有找到命令，记录错误
         logger.error(f"不支持的操作类型: {action}")
