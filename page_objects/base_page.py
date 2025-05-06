@@ -1,17 +1,17 @@
 import functools
 import json
 import os
+import re
 from typing import Callable, Literal, Optional, List, Any, Dict
 
 import allure
+from jsonpath_ng import parse
 from playwright.sync_api import Page, expect
 from pytest_check import check
 
 from constants import DEFAULT_TIMEOUT, DEFAULT_TYPE_DELAY
 from utils.logger import logger
 from utils.variable_manager import VariableManager
-from jsonpath_ng import parse
-import re
 
 
 def handle_page_error(func: Callable) -> Callable:

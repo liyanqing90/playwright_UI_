@@ -1,9 +1,9 @@
-import re
 from typing import Dict, Any, Set
 
 import allure
 
-from src.test_step_executor import StepExecutor
+# 导入重构后的StepExecutor
+from src.step_actions.step_executor import StepExecutor
 from utils.logger import logger
 
 log = logger
