@@ -5,7 +5,6 @@ import pytest
 from playwright.async_api import Page
 
 from src.test_case_executor import CaseExecutor
-from utils.logger import logger
 from utils.variable_manager import VariableManager
 
 _DEFAULT_FIXTURES = [

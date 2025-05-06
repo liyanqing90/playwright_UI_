@@ -181,7 +181,7 @@ class BasePage:
             expected_text
         )
         actual_text = self.get_text(selector)
-        expect(self.page.locator(selector)).to_have_text(resolved_expected)
+        expect(self.page.locator(selector).first).to_have_text(resolved_expected)
         allure.attach(
             f"断言成功: 元素 {selector} 的文本\n期望: '{resolved_expected}'\n实际: '{actual_text}'",
             name="断言结果",
@@ -195,7 +195,7 @@ class BasePage:
             expected_text
         )
         actual_text = self.get_text(selector)
-        expect(self.page.locator(selector)).to_have_text(resolved_expected)
+        expect(self.page.locator(selector).first).to_have_text(resolved_expected)
         allure.attach(
             f"断言成功: 元素 {selector} 的文本\n期望: '{resolved_expected}'\n实际: '{actual_text}'",
             name="断言结果",
