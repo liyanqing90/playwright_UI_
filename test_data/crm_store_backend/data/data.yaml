@@ -470,3 +470,4 @@ test_data:
       - action: assert_text
         selector: cell_0_900
         value: "0.900"
+

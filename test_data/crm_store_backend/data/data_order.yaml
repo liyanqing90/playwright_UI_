@@ -1,0 +1,81 @@
+test_data:
+#订单列表
+  test_order_list:
+    description: "订单列表-列表"
+    steps:
+      - use_module: login_steps
+      - action: click
+        selector: 订单管理一级菜单
+      - action: click
+        selector: 订单列表二级菜单
+      - action: click
+        selector: 线索id输入框
+      - action: fill
+        selector: 线索id输入框
+        value: "25754651876977"
+      - action: click
+        selector: 订单查询按钮
+      - action: assert_text
+        selector: 订单ID
+        value: "93617"
+      - action: assert_text
+        selector: 线索id
+        value: "25754651876977"
+      - action: assert_text
+        selector: 客户姓名文本
+        value: "客户姓名：卫星店账号非卫星店订单"
+      - action: assert_text
+        selector: 手机号文本
+        value: "手机号：151****6033"
+      - action: assert_text
+        selector: 自然进店单元格
+        value: "自然进店"
+      - action: assert_text
+        selector: 重点品牌文本
+        value: "重点品牌"
+      - action: assert_text
+        selector: 已提交文本
+        value: "已提交"
+      - action: assert_text
+        selector: 审核通过文本
+        value: "审核通过"
+      - action: assert_text
+        selector: 已签署文本
+        value: "已签署"
+      - action: assert_text
+        selector: 车辆型号文本
+        value: "宝马i3 2024款 eDrive 40 L 曜夜运动套装"
+      - action: assert_text
+        selector: 总价
+        value: "889元"
+      - action: assert_text
+        selector: 提交人单元格
+        value: "罗秀蕊"
+      - action: assert_text
+        selector: 日期单元格1
+        value: "2025-02-11 10:37:15"
+      - action: assert_text
+        selector: 日期单元格2
+        value: "2025-02-11 10:37:08"
+      - action: assert_text
+        selector: 成交周期
+        value: "0天"
+      - action: assert_text
+        selector: 已确认单元格
+        value: "已确认"
+      - action: assert_text
+        selector: 发票校验通过单元格
+        value: "发票校验通过"
+      - action: assert_text
+        selector: 查看详情
+        value: "查看详情"
+      - action: assert_text
+        selector: 取消下订
+        value: "取消下订"
+      - action: assert_text
+        selector: 本地变现
+        value: "本地变现"
+      - action: assert_text
+        selector: 1条数据
+        value: "共 1 条数据"
+
