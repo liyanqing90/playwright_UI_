@@ -1,6 +1,7 @@
 """
 处理网络监控相关的操作
 """
+
 import json
 from typing import Dict, Any
 
@@ -10,8 +11,15 @@ from jsonpath_ng import parse
 from utils.logger import logger
 
 
-def monitor_action_request(step_executor, url_pattern: str, selector: str, action: str = "click",
-                          assert_params: Dict[str, Any] = None, timeout: int = None, **kwargs):
+def monitor_action_request(
+    step_executor,
+    url_pattern: str,
+    selector: str,
+    action: str = "click",
+    assert_params: Dict[str, Any] = None,
+    timeout: int = None,
+    **kwargs,
+):
     """
     监测操作触发的请求并验证参数
 
@@ -28,14 +36,16 @@ def monitor_action_request(step_executor, url_pattern: str, selector: str, actio
         捕获的请求数据
     """
     from constants import DEFAULT_TIMEOUT
-    
+
     if timeout is None:
         timeout = DEFAULT_TIMEOUT
-        
+
     logger.info(f"开始监测请求: {url_pattern}, 操作: {action} 元素: {selector}")
 
     try:
-        with step_executor.page.expect_request(url_pattern, timeout=timeout) as request_info:
+        with step_executor.page.expect_request(
+            url_pattern, timeout=timeout
+        ) as request_info:
             # 执行操作
             if action == "click":
                 step_executor.ui_helper.click(selector)
@@ -88,7 +98,9 @@ def monitor_action_request(step_executor, url_pattern: str, selector: str, actio
             if assert_params and request_data:
                 # 处理断言参数
                 for jsonpath_expr, expected_value in assert_params.items():
-                    verify_jsonpath(step_executor, request_data, jsonpath_expr, expected_value)
+                    verify_jsonpath(
+                        step_executor, request_data, jsonpath_expr, expected_value
+                    )
 
         return captured_data
 
@@ -103,9 +115,16 @@ def monitor_action_request(step_executor, url_pattern: str, selector: str, actio
         raise
 
 
-def monitor_action_response(step_executor, url_pattern: str, selector: str, action: str = "click",
-                           assert_params: Dict[str, Any] = None, save_params: Dict[str, Any] = None,
-                           timeout: int = None, **kwargs):
+def monitor_action_response(
+    step_executor,
+    url_pattern: str,
+    selector: str,
+    action: str = "click",
+    assert_params: Dict[str, Any] = None,
+    save_params: Dict[str, Any] = None,
+    timeout: int = None,
+    **kwargs,
+):
     """
     监测操作触发的响应并验证参数
 
@@ -123,14 +142,16 @@ def monitor_action_response(step_executor, url_pattern: str, selector: str, acti
         捕获的响应数据
     """
     from constants import DEFAULT_TIMEOUT
-    
+
     if timeout is None:
         timeout = DEFAULT_TIMEOUT
-        
+
     logger.info(f"开始监测响应: {url_pattern}, 操作: {action} 元素: {selector}")
 
     try:
-        with step_executor.page.expect_response(url_pattern, timeout=timeout) as response_info:
+        with step_executor.page.expect_response(
+            url_pattern, timeout=timeout
+        ) as response_info:
             # 执行操作
             if action == "click":
                 step_executor.ui_helper.click(selector)
@@ -160,12 +181,19 @@ def monitor_action_response(step_executor, url_pattern: str, selector: str, acti
                     if assert_params:
                         # 处理断言参数
                         for jsonpath_expr, expected_value in assert_params.items():
-                            verify_jsonpath(step_executor, response_data, jsonpath_expr, expected_value)
+                            verify_jsonpath(
+                                step_executor,
+                                response_data,
+                                jsonpath_expr,
+                                expected_value,
+                            )
 
                     if save_params:
                         # 处理保存参数
                         for jsonpath_expr, viable_name in save_params.items():
-                            save_jsonpath(step_executor, response_data, jsonpath_expr, viable_name)
+                            save_jsonpath(
+                                step_executor, response_data, jsonpath_expr, viable_name
+                            )
                 return response_data
 
             except Exception as e:
@@ -220,7 +248,7 @@ def verify_jsonpath(step_executor, data, jsonpath_expr, expected_value):
         expected_value: 期望值
     """
     from pytest_check import check
-    
+
     # 解析 jsonpath 表达式
     jsonpath_expr = jsonpath_expr.strip()
     expr = parse(jsonpath_expr)
@@ -230,10 +258,12 @@ def verify_jsonpath(step_executor, data, jsonpath_expr, expected_value):
     if not matches:
         logger.error(f"JSONPath {jsonpath_expr} 未找到匹配项")
         raise ValueError(f"JSONPath {jsonpath_expr} 未找到匹配项，当前数据: {data}")
-        
+
     matches_value = matches[0]
-    
-    expected_value = step_executor.variable_manager.replace_variables_refactored(expected_value)
+
+    expected_value = step_executor.variable_manager.replace_variables_refactored(
+        expected_value
+    )
 
     # 执行断言
     with check, allure.step(f"验证参数 {jsonpath_expr}"):
@@ -246,7 +276,9 @@ def verify_jsonpath(step_executor, data, jsonpath_expr, expected_value):
             # 检查列表中是否包含期望值
             expected_str = str(expected_value)
             found = any(str(item) == expected_str for item in matches_value)
-            assert found, f"断言失败: 参数 {jsonpath_expr} 期望包含值 '{expected_value}', 实际值为 '{matches_value}'"
+            assert (
+                found
+            ), f"断言失败: 参数 {jsonpath_expr} 期望包含值 '{expected_value}', 实际值为 '{matches_value}'"
         else:
             # 单值比较
             assert str(matches_value) == str(

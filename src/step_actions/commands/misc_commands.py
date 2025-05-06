@@ -1,6 +1,7 @@
 """
 其他杂项命令
 """
+
 from typing import Dict, Any
 
 from constants import DEFAULT_TYPE_DELAY
@@ -12,16 +13,20 @@ from src.step_actions.utils import generate_faker_data, run_dynamic_script_from_
 @CommandFactory.register(StepAction.SCROLL_INTO_VIEW)
 class ScrollIntoViewCommand(Command):
     """滚动到元素命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         ui_helper.scroll_into_view(selector)
 
 
 @CommandFactory.register(StepAction.SCROLL_TO)
 class ScrollToCommand(Command):
     """滚动到位置命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         x = int(step.get("x", 0))
         y = int(step.get("y", 0))
         ui_helper.scroll_to(x, y)
@@ -30,56 +35,70 @@ class ScrollToCommand(Command):
 @CommandFactory.register(StepAction.FOCUS)
 class FocusCommand(Command):
     """聚焦命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         ui_helper.focus(selector)
 
 
 @CommandFactory.register(StepAction.BLUR)
 class BlurCommand(Command):
     """失焦命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         ui_helper.blur(selector)
 
 
 @CommandFactory.register(StepAction.ENTER_FRAME)
 class EnterFrameCommand(Command):
     """进入框架命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         ui_helper.enter_frame(selector)
 
 
 @CommandFactory.register(StepAction.ACCEPT_ALERT)
 class AcceptAlertCommand(Command):
     """接受弹框命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         ui_helper.accept_alert(selector, value)
 
 
 @CommandFactory.register(StepAction.DISMISS_ALERT)
 class DismissAlertCommand(Command):
     """取消弹框命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         ui_helper.dismiss_alert(selector)
 
 
 @CommandFactory.register(StepAction.EXECUTE_PYTHON)
 class ExecutePythonCommand(Command):
     """执行Python命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         run_dynamic_script_from_path(value)
 
 
 @CommandFactory.register(StepAction.FAKER)
 class FakerCommand(Command):
     """生成数据命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         data_type = step.get("data_type")
         kwargs = {
             k: v
@@ -100,8 +119,10 @@ class FakerCommand(Command):
 @CommandFactory.register(StepAction.KEYBOARD_SHORTCUT)
 class KeyboardShortcutCommand(Command):
     """键盘快捷键命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         key_combination = step.get("key_combination", value)
         ui_helper.press_keyboard_shortcut(key_combination)
 
@@ -109,8 +130,10 @@ class KeyboardShortcutCommand(Command):
 @CommandFactory.register(StepAction.KEYBOARD_PRESS)
 class KeyboardPressCommand(Command):
     """全局按键命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         key = step.get("key", value)
         ui_helper.keyboard_press(key)
 
@@ -118,8 +141,10 @@ class KeyboardPressCommand(Command):
 @CommandFactory.register(StepAction.KEYBOARD_TYPE)
 class KeyboardTypeCommand(Command):
     """全局输入命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         text = step.get("text", value)
         delay = int(step.get("delay", DEFAULT_TYPE_DELAY))
         ui_helper.keyboard_type(text, delay)

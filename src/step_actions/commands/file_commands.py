@@ -1,6 +1,7 @@
 """
 文件相关的命令
 """
+
 from typing import Dict, Any
 
 from constants import DEFAULT_TIMEOUT
@@ -11,8 +12,10 @@ from src.step_actions.commands.base_command import Command, CommandFactory
 @CommandFactory.register(StepAction.DOWNLOAD_FILE)
 class DownloadFileCommand(Command):
     """下载文件命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         save_path = step.get("save_path")
         file_path = ui_helper.download_file(selector, save_path)
         if "variable_name" in step:
@@ -24,8 +27,10 @@ class DownloadFileCommand(Command):
 @CommandFactory.register(StepAction.DOWNLOAD_VERIFY)
 class DownloadVerifyCommand(Command):
     """验证下载命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         file_pattern = step.get("file_pattern", value)
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
         result = ui_helper.verify_download(file_pattern, timeout)

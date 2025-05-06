@@ -1,20 +1,26 @@
 """
 网络相关的命令
 """
+
 from typing import Dict, Any
 
 from constants import DEFAULT_TIMEOUT
 from src.step_actions.action_types import StepAction
 from src.step_actions.commands.base_command import Command, CommandFactory
-from src.step_actions.network_monitor import monitor_action_request, monitor_action_response
+from src.step_actions.network_monitor import (
+    monitor_action_request,
+    monitor_action_response,
+)
 from utils.logger import logger
 
 
 @CommandFactory.register(StepAction.MONITOR_REQUEST)
 class MonitorRequestCommand(Command):
     """监测请求命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         # 获取参数
         url_pattern = step.get("url_pattern", value)
         action_type = step.get("action_type", "click")
@@ -41,20 +47,18 @@ class MonitorRequestCommand(Command):
                 url_pattern = f"**{url_pattern}**"
             else:
                 url_pattern = f"**/{url_pattern}**"
-                
+
         # 创建一个模拟的StepExecutor对象，只包含必要的属性
         class MockStepExecutor:
             def __init__(self, page, ui_helper, variable_manager):
                 self.page = page
                 self.ui_helper = ui_helper
                 self.variable_manager = variable_manager
-                
+
         mock_executor = MockStepExecutor(
-            ui_helper.page, 
-            ui_helper, 
-            ui_helper.variable_manager
+            ui_helper.page, ui_helper, ui_helper.variable_manager
         )
-                
+
         # 调用监测方法
         request_data = monitor_action_request(
             mock_executor,
@@ -76,8 +80,10 @@ class MonitorRequestCommand(Command):
 @CommandFactory.register(StepAction.MONITOR_RESPONSE)
 class MonitorResponseCommand(Command):
     """监测响应命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         # 获取参数
         url_pattern = step.get("url_pattern", value)
         action_type = step.get("action_type", "click")
@@ -106,18 +112,16 @@ class MonitorResponseCommand(Command):
                 url_pattern = f"**{url_pattern}**"
             else:
                 url_pattern = f"**/{url_pattern}**"
-                
+
         # 创建一个模拟的StepExecutor对象，只包含必要的属性
         class MockStepExecutor:
             def __init__(self, page, ui_helper, variable_manager):
                 self.page = page
                 self.ui_helper = ui_helper
                 self.variable_manager = variable_manager
-                
+
         mock_executor = MockStepExecutor(
-            ui_helper.page, 
-            ui_helper, 
-            ui_helper.variable_manager
+            ui_helper.page, ui_helper, ui_helper.variable_manager
         )
 
         # 调用监测方法

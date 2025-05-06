@@ -1,6 +1,7 @@
 """
 处理流程控制相关的操作（条件和循环）
 """
+
 import json
 from typing import Dict, Any
 
@@ -37,9 +38,7 @@ def execute_condition(step_executor, step: Dict[str, Any]) -> None:
     # 计算条件结果
     condition_result = step_executor._evaluate_expression(condition)
 
-    with allure.step(
-        f"条件分支: {description} ({readable_expr} = {condition_result})"
-    ):
+    with allure.step(f"条件分支: {description} ({readable_expr} = {condition_result})"):
         if condition_result:
             logger.info(f"条件 '{readable_expr}' 为真，执行THEN分支")
             for then_step in then_steps:

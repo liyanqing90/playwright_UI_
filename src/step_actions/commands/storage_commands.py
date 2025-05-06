@@ -1,6 +1,7 @@
 """
 存储相关的命令
 """
+
 from typing import Dict, Any
 
 from src.step_actions.action_types import StepAction
@@ -11,8 +12,10 @@ from utils.logger import logger
 @CommandFactory.register(StepAction.STORE_VARIABLE)
 class StoreVariableCommand(Command):
     """存储变量命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         var_name = step.get("name", "temp_var")
         var_value = step.get("value")
         scope = step.get("scope", "global")
@@ -24,8 +27,10 @@ class StoreVariableCommand(Command):
 @CommandFactory.register(StepAction.STORE_TEXT)
 class StoreTextCommand(Command):
     """存储文本命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         var_name = step.get("variable_name", "text_var")
         scope = step.get("scope", "global")
         # 获取元素文本
@@ -38,8 +43,10 @@ class StoreTextCommand(Command):
 @CommandFactory.register(StepAction.STORE_ATTRIBUTE)
 class StoreAttributeCommand(Command):
     """存储属性命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         var_name = step.get("variable_name", "attr_var")
         attribute = step.get("attribute")
         scope = step.get("scope", "global")
@@ -53,8 +60,10 @@ class StoreAttributeCommand(Command):
 @CommandFactory.register(StepAction.SAVE_ELEMENT_COUNT)
 class SaveElementCountCommand(Command):
     """存储元素数量命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> None:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
         count = ui_helper.get_element_count(selector)
         if "variable_name" in step:
             ui_helper.store_variable(

@@ -1,6 +1,7 @@
 """
 步骤执行器的核心实现
 """
+
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
@@ -10,18 +11,24 @@ import allure
 
 from constants import DEFAULT_TIMEOUT, DEFAULT_TYPE_DELAY
 from src.step_actions.action_types import StepAction
-from src.step_actions.flow_control import execute_condition, execute_loop, evaluate_expression
+
+# 导入命令模式执行器
+from src.step_actions.command_executor import execute_action_with_command
+from src.step_actions.flow_control import (
+    execute_condition,
+    execute_loop,
+    evaluate_expression,
+)
 from src.step_actions.module_handler import execute_module
-from src.step_actions.network_monitor import monitor_action_request, monitor_action_response
+from src.step_actions.network_monitor import (
+    monitor_action_request,
+    monitor_action_response,
+)
 from src.step_actions.utils import generate_faker_data, run_dynamic_script_from_path
 from utils.logger import logger
 from utils.variable_manager import VariableManager
 
 
-# 导入命令模式执行器
-# 导入所有命令类
-
-# 导入命令工厂
 # 导入所有命令类
 
 
@@ -133,11 +140,24 @@ class StepExecutor:
     def _execute_action(
         self, action: str, selector: str, value: Any = None, step: Dict[str, Any] = None
     ) -> None:
-        """执行具体操作"""
+        """执行具体操作，使用命令模式"""
+        try:
+            # 使用命令模式执行操作
+            execute_action_with_command(self.ui_helper, action, selector, value, step)
+        except Exception as e:
+            logger.error(f"使用命令模式执行操作失败: {e}")
+            # 如果命令模式执行失败，回退到原始实现
+            self._execute_action_legacy(action, selector, value, step)
+
+    def _execute_action_legacy(
+        self, action: str, selector: str, value: Any = None, step: Dict[str, Any] = None
+    ) -> None:
+        """原始的操作执行方法，作为命令模式的后备"""
         action = action.lower()
         # with allure.step(f"执行步骤: {action}"):
         if action in StepAction.NAVIGATE:
             from page_objects.base_page import base_url
+
             url = base_url()
             if not value:
                 value = url

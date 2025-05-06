@@ -33,14 +33,8 @@ def build_pytest_args(config: Config) -> List[str]:
         "no:warnings",
         "-s",
         "--alluredir=reports/allure-results",
-        "--clean-alluredir",
-        # "-n", "3"
+        "--clean-alluredir"
     ]
-
-    # 启用多线程执行，除非明确禁用
-    # if not config.no_parallel:
-    #     pytest_args.append("-n auto")
-
     if config.marker:
         pytest_args.extend(["-m", config.marker])
     if config.keyword:
