@@ -1,6 +1,6 @@
 test_data:
 
-  test_客户列表_推送功能&客户卡片:
+  test_push_car_models_in_customer_list:
     description: 客户列表预约待接待的线索推送功能,客户卡片线索来源和意向车型验证
     steps:
 #      - action: execute_python
