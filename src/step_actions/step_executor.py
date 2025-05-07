@@ -149,8 +149,10 @@ class StepExecutor:
             if not hasattr(e, '_logged'):
                 logger.error(f"步骤执行失败: {e}")
                 setattr(e, '_logged', True)
-            # 如果命令模式执行失败，回退到原始实现
-            self._execute_action_legacy(action, selector, value, step)
+            # 标记步骤出错
+            self.step_has_error = True
+            # 重新抛出异常，确保异常被正确传播
+            raise
 
     def _execute_action_legacy(
         self, action: str, selector: str, value: Any = None, step: Dict[str, Any] = None
