@@ -25,7 +25,9 @@ class StoreVariableCommand(Command):
         # 如果提供了表达式，则计算表达式的值
         if expression:
             try:
-                var_value = evaluate_math_expression(expression, ui_helper.variable_manager)
+                var_value = evaluate_math_expression(
+                    expression, ui_helper.variable_manager
+                )
                 logger.info(f"计算表达式: {expression} = {var_value}")
             except Exception as e:
                 logger.error(f"计算表达式错误: {expression} - {e}")

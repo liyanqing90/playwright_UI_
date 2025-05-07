@@ -124,49 +124,46 @@ def evaluate_expression(step_executor, expression: str) -> bool:
         # 创建一个安全的执行环境，添加必要的数学函数和操作
         import math
         import operator
-        
+
         # 定义安全的数学函数集合
         safe_math_functions = {
             # 基本数学函数
-            'abs': abs,
-            'round': round,
-            'min': min,
-            'max': max,
-            'sum': sum,
-            'len': len,
-            
+            "abs": abs,
+            "round": round,
+            "min": min,
+            "max": max,
+            "sum": sum,
+            "len": len,
             # 数学模块函数
-            'sqrt': math.sqrt,
-            'pow': math.pow,
-            'sin': math.sin,
-            'cos': math.cos,
-            'tan': math.tan,
-            'floor': math.floor,
-            'ceil': math.ceil,
-            'log': math.log,
-            'log10': math.log10,
-            'exp': math.exp,
-            
+            "sqrt": math.sqrt,
+            "pow": math.pow,
+            "sin": math.sin,
+            "cos": math.cos,
+            "tan": math.tan,
+            "floor": math.floor,
+            "ceil": math.ceil,
+            "log": math.log,
+            "log10": math.log10,
+            "exp": math.exp,
             # 常量
-            'pi': math.pi,
-            'e': math.e,
-            
+            "pi": math.pi,
+            "e": math.e,
             # 类型转换
-            'int': int,
-            'float': float,
-            'str': str,
-            'bool': bool
+            "int": int,
+            "float": float,
+            "str": str,
+            "bool": bool,
         }
-        
+
         # 设置安全的执行环境
         safe_globals = {
-            '__builtins__': {},  # 清空内置函数
-            **safe_math_functions  # 添加安全的数学函数
+            "__builtins__": {},  # 清空内置函数
+            **safe_math_functions,  # 添加安全的数学函数
         }
 
         # 预处理表达式，处理字符串和数字
         processed_expr = preprocess_expression(expr_content)
-        
+
         # 执行表达式
         result = eval(processed_expr, safe_globals)
         return bool(result)
@@ -178,25 +175,32 @@ def evaluate_expression(step_executor, expression: str) -> bool:
 def preprocess_expression(expr: str) -> str:
     """
     预处理表达式，处理字符串和数字
-    
+
     Args:
         expr: 原始表达式字符串
-        
+
     Returns:
         处理后的表达式字符串
     """
     import re
-    
+
     # 已经是合法Python表达式的情况直接返回
     try:
         # 尝试编译表达式，如果成功则直接返回
-        compile(expr, '<string>', 'eval')
+        compile(expr, "<string>", "eval")
         return expr
     except SyntaxError:
         pass  # 继续处理
-    
+
     # 处理常见的比较操作符
-    if "==" in expr or "!=" in expr or ">" in expr or "<" in expr or ">=" in expr or "<=" in expr:
+    if (
+        "==" in expr
+        or "!=" in expr
+        or ">" in expr
+        or "<" in expr
+        or ">=" in expr
+        or "<=" in expr
+    ):
         # 使用正则表达式匹配操作符
         operators = ["==", "!=", ">=", "<=", ">", "<"]
         for op in operators:
@@ -206,16 +210,16 @@ def preprocess_expression(expr: str) -> str:
                 if len(parts) == 2:
                     left = parts[0].strip()
                     right = parts[1].strip()
-                    
+
                     # 处理左侧
                     left = process_operand(left)
-                    
+
                     # 处理右侧
                     right = process_operand(right)
-                    
+
                     # 重新组合表达式
                     return f"{left} {op} {right}"
-    
+
     # 处理数学运算表达式
     # 这里我们假设如果没有比较操作符，那么整个表达式就是一个数学运算
     return process_operand(expr)
@@ -224,21 +228,22 @@ def preprocess_expression(expr: str) -> str:
 def process_operand(operand: str) -> str:
     """
     处理操作数，确保字符串和数字格式正确
-    
+
     Args:
         operand: 操作数字符串
-        
+
     Returns:
         处理后的操作数字符串
     """
     # 去除首尾空格
     operand = operand.strip()
-    
+
     # 如果已经是引号括起来的字符串，直接返回
-    if (operand.startswith('"') and operand.endswith('"')) or \
-       (operand.startswith("'") and operand.endswith("'")):
+    if (operand.startswith('"') and operand.endswith('"')) or (
+        operand.startswith("'") and operand.endswith("'")
+    ):
         return operand
-    
+
     # 尝试解析为数字
     try:
         # 尝试解析为整数
@@ -252,7 +257,7 @@ def process_operand(operand: str) -> str:
         except ValueError:
             # 不是数字，也不是已引用的字符串，添加引号
             # 检查是否包含数学表达式的特殊字符
-            if any(c in operand for c in '+-*/()%'):
+            if any(c in operand for c in "+-*/()%"):
                 # 可能是复杂表达式，不添加引号
                 return operand
             else:

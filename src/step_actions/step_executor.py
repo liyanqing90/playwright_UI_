@@ -146,9 +146,9 @@ class StepExecutor:
             execute_action_with_command(self.ui_helper, action, selector, value, step)
         except Exception as e:
             # 检查异常是否已被记录
-            if not hasattr(e, '_logged'):
+            if not hasattr(e, "_logged"):
                 logger.error(f"步骤执行失败: {e}")
-                setattr(e, '_logged', True)
+                setattr(e, "_logged", True)
             # 标记步骤出错
             self.step_has_error = True
             # 重新抛出异常，确保异常被正确传播
@@ -545,9 +545,16 @@ class StepExecutor:
 
         if isinstance(value, str):
             # 处理数学表达式引用，如 $[[1 + 2 * ${var}]]
-            if value.startswith("$[[") and value.endswith("]]") and value.count("$[[") == 1:
+            if (
+                value.startswith("$[[")
+                and value.endswith("]]")
+                and value.count("$[[") == 1
+            ):
                 try:
-                    from src.step_actions.expression_evaluator import evaluate_math_expression
+                    from src.step_actions.expression_evaluator import (
+                        evaluate_math_expression,
+                    )
+
                     # 提取表达式内容
                     expr = value[3:-2].strip()
                     # 计算表达式
@@ -597,7 +604,10 @@ class StepExecutor:
 
             def replace_expr(match):
                 try:
-                    from src.step_actions.expression_evaluator import evaluate_math_expression
+                    from src.step_actions.expression_evaluator import (
+                        evaluate_math_expression,
+                    )
+
                     # 提取表达式内容
                     expr = match.group(1).strip()
                     # 计算表达式

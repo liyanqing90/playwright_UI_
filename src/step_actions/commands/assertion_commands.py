@@ -89,11 +89,15 @@ class AssertElementCountCommand(Command):
         # 如果提供了表达式，则计算表达式的值
         if expression:
             try:
-                expected = evaluate_math_expression(expression, ui_helper.variable_manager)
+                expected = evaluate_math_expression(
+                    expression, ui_helper.variable_manager
+                )
                 from utils.logger import logger
+
                 logger.info(f"计算表达式: {expression} = {expected}")
             except Exception as e:
                 from utils.logger import logger
+
                 logger.error(f"计算表达式错误: {expression} - {e}")
                 raise
 

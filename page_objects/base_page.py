@@ -29,7 +29,7 @@ def handle_page_error(func: Callable) -> Callable:
                 screenshot, name="错误截图", attachment_type=allure.attachment_type.PNG
             )
             # 标记这个异常已经被记录过
-            setattr(e, '_logged', True)
+            setattr(e, "_logged", True)
             raise
 
     return wrapper
