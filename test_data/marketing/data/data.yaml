@@ -480,8 +480,8 @@ test_data:
         value: "/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
       - action: click
         selector: rights_detail_text
-      - action: assert_text
-        selector: navigation_bar
+      - action: assert_title
+#        selector: navigation_bar
         value: "买贵必赔权益说明"
 
   test_store_list:
@@ -516,16 +516,8 @@ test_data:
       - action: assert_text
         selector: heading
         value: "领专属礼包"
-      #      - action: click
-      #        selector: store_name_text
       - action: click
-        selector: dialog
-        childSelector: aion_y_text
-      - action: click
-        selector: bmw_text
-        exact: true
-      - action: click
-        selector: byd_text
+        selector: car_series_checked
       - action: click
         selector: second_checkbox
       - action: click

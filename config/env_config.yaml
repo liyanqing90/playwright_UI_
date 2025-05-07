@@ -45,7 +45,7 @@ projects:
       test: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
       stage: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
       prod: "http://edit.ahohcrm.terra.corpautohome.com"
-    browser_config: { "viewport": { "width": 1920, "height": 1080 } }
+    browser_config: { "viewport": { "width": 1600, "height": 900 } }
 
   marketing:
     test_dir: "test_data/marketing"

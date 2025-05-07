@@ -1,17 +1,17 @@
 import functools
 import json
 import os
+import re
 from typing import Callable, Literal, Optional, List, Any, Dict
 
 import allure
+from jsonpath_ng import parse
 from playwright.sync_api import Page, expect
 from pytest_check import check
 
 from constants import DEFAULT_TIMEOUT, DEFAULT_TYPE_DELAY
 from utils.logger import logger
 from utils.variable_manager import VariableManager
-from jsonpath_ng import parse
-import re
 
 
 def handle_page_error(func: Callable) -> Callable:
@@ -28,6 +28,8 @@ def handle_page_error(func: Callable) -> Callable:
             allure.attach(
                 screenshot, name="错误截图", attachment_type=allure.attachment_type.PNG
             )
+            # 标记这个异常已经被记录过
+            setattr(e, '_logged', True)
             raise
 
     return wrapper
@@ -181,7 +183,7 @@ class BasePage:
             expected_text
         )
         actual_text = self.get_text(selector)
-        expect(self.page.locator(selector)).to_have_text(resolved_expected)
+        expect(self.page.locator(selector).first).to_have_text(resolved_expected)
         allure.attach(
             f"断言成功: 元素 {selector} 的文本\n期望: '{resolved_expected}'\n实际: '{actual_text}'",
             name="断言结果",
@@ -195,7 +197,7 @@ class BasePage:
             expected_text
         )
         actual_text = self.get_text(selector)
-        expect(self.page.locator(selector)).to_have_text(resolved_expected)
+        expect(self.page.locator(selector).first).to_have_text(resolved_expected)
         allure.attach(
             f"断言成功: 元素 {selector} 的文本\n期望: '{resolved_expected}'\n实际: '{actual_text}'",
             name="断言结果",

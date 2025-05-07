@@ -4,7 +4,7 @@ import time
 import types
 from datetime import datetime
 from pathlib import Path
-from typing import Generator, Any, List
+from typing import Generator, Any
 
 import pytest
 from _pytest.python import Module
