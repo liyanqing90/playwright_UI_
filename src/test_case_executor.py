@@ -1,9 +1,9 @@
-import re
 from typing import Dict, Any, Set
 
 import allure
 
-from src.test_step_executor import StepExecutor
+# 导入重构后的StepExecutor
+from src.step_actions.step_executor import StepExecutor
 from utils.logger import logger
 
 log = logger
@@ -36,7 +36,21 @@ class CaseExecutor:
         try:
             # 执行测试步骤
             step_executor = StepExecutor(page, ui_helper, self.elements)
-            steps = self.case_data.get("steps")
+
+            # 支持两种数据结构：直接的步骤列表或包含步骤的字典
+            if isinstance(self.case_data, list):
+                # 如果是列表，取第一个元素（兼容旧格式）
+                if self.case_data and isinstance(self.case_data[0], dict):
+                    steps = self.case_data[0].get("steps", [])
+                else:
+                    steps = []
+            elif isinstance(self.case_data, dict):
+                # 如果是字典，直接获取steps
+                steps = self.case_data.get("steps", [])
+            else:
+                steps = []
+
+            # 执行所有步骤
             for step in steps:
                 step_executor.execute_step(step)
         finally:

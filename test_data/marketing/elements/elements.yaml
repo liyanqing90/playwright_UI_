@@ -25,27 +25,23 @@ elements:
   worktime_text: "//div[@class='info-worktime']"
   phone_textbox: "role=textbox[name='手机号码']"
   car_series_textbox: "role=textbox[name='意向车系']"
-  second_checkbox: "li:nth-child(2) > .check-btn"
+  car_series_checked: (//span[@class='select-series--value'])[1]
+  second_checkbox: (//div[@class='check-btn'])[2]
   first_checkbox: ".check-btn"
   clear_button: "text=清除"
-  seventh_checkbox: "li:nth-child(7) > .check-btn"
+  seventh_checkbox: (//div[@class='check-btn'])[7]
   confirm_selection_button: "text=确认选择(1)"
   selected_2_brands: "text=已选2个品牌"
   heading: "role=heading"
   store_name_text: "text=汽车之家空间站·北京平谷车卖场官方"
   phoneItem-style: //span[@class='phoneItem-style']
   dialog: "role=dialog"
-  aion_y_text: "text=AION Y"
-  bmw_text: "//li[contains(text(),'宝马')]"
-  byd_text: "//li[contains(text(),'比亚迪')]"
-  third_checkbox: "li:nth-child(3) > .check-btn"
-  max_3_car_text: "text=最多可选3个车系"
-  agreement_text: "text=请勾选用户协议"
+  third_checkbox: (//div[@class='check-btn'])[3]
   confirm_car_series: //div[@class="select-series-box__btnbox"]
   popup_close_button: ".fill-info-popup-close"
   third_carousel_image: "div:nth-child(3) > .carousel-img"
   get_gift_heading: "role=heading"
-  first_price_button: ".series-card__price > .btn"
+  first_price_button: (//span[@class='btn'][contains(text(),'询底价')])[1]
   inquire_price_heading: "role=heading"
   consult_button: "role=button[name='立即咨询']"
   reservation_phone_text: "text=请输入预约手机号"
@@ -103,7 +99,7 @@ elements:
   detail_question: //div[@class="question"]
 
   detail_car_purchase: .car-purchase-plan__btn
-  detail_car_trade_in: .change-new-btn-wrap
+  detail_car_trade_in: //button[@class='van-button van-button--default van-button--normal change-new-btn']//div[@class='van-button__content']
   detail_car_test_drive: .compare-test-drive__btn
   detail_new_name: .change-new-main-new-name
 
