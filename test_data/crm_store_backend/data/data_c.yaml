@@ -148,7 +148,7 @@ test_data:
       - action: click
         selector: 启用
       - action: click
-        selector: 重置
+        selector: 车系重置
       - action: assert_value
         selector: 位置下拉框
         value: ""
@@ -243,6 +243,70 @@ test_data:
       - action: assert_text
         selector: 查询结果标题
         value: "自动化测试001"
+
+  test_screen_equity_reset:
+    description: "权益筛选重置"
+    steps:
+      - use_module: login_steps
+      - action: click
+        selector: 购车政策
+      - action: click
+        selector: 优惠权益配置
+      - action: click
+        selector: 权益位置下拉框
+      - action: click
+        selector: 频道页双列车卡选项
+      - action: click
+        selector: 权益类型下拉框
+      - action: click
+        selector: 到店礼选项
+      - action: fill
+        selector: 权益标题
+        value: "测试002"
+      - action: click
+        selector: 权益查询
+      - action: click
+        selector: 权益重置
+      - action: assert_value
+        selector: 权益位置下拉框
+        value: ""
+      - action: assert_value
+        selector: 权益类型下拉框
+        value: ""
+      - action: assert_value
+        selector: 权益标题
+        value: ""
+
+  test_del_equity:
+    description: "权益删除"
+    steps:
+      - use_module: login_steps
+      - action: click
+        selector: 购车政策
+      - action: click
+        selector: 优惠权益配置
+      - action: fill
+        selector: 权益标题
+        value: "自动化测试001"
+      - action: click
+        selector: 权益查询
+      - action: wait
+      - action: click
+        selector: 删除
+      - action: click
+        selector: 取消
+      - action: click
+        selector: 删除
+      - action: click
+        selector: 确认
+      - action: wait
+      - action: assert_text
+        selector: 暂无数据
+        value: "暂无数据"
+
+
+
+
 
 
 

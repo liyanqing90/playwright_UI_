@@ -41,10 +41,10 @@ elements:
   列表类别: //td[normalize-space()='C']
   列表主推: //td[contains(text(),'是')]
 
-  重置: //span[contains(text(),'重 置')]
+  车系重置: //span[contains(text(),'重 置')]
 
   购车政策: //span[@title='购车政策']
-  优惠权益配置: //li[@title='优惠权益配置']//span[@class='ant-pro-menu-item']
+  优惠权益配置: //li[@title='优惠权益配置']//div
   新建活动: //span[contains(text(),'新建活动')]
   位置选择: //div[@class='ant-select-selection-overflow']
   频道页双列车卡: (//div[@class='ant-select-item-option-content'])[1]
@@ -71,6 +71,14 @@ elements:
   权益标题: //input[@placeholder='请输入权益标题']
   权益查询: //span[contains(text(),'查 询')]
   查询结果标题: //td[contains(text(),'自动化测试001')]
+
+  权益重置: //span[contains(text(),'重 置')]
+
+  删除: //span[contains(text(),'删除')]
+  取消: //div[@class='ant-modal-confirm-body-wrapper']//button[1]
+  确认: //button[@class='ant-btn ant-btn-dangerous']
+  暂无数据: //p[@class='ant-empty-description']
+
 
 
 
