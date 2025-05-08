@@ -19,6 +19,9 @@ elements:
   丰台车卖场: //span[contains(text(),'汽车之家空间站·北京汽车博物馆站')]
 
   到店礼: (//div[contains(text(),'到店礼')])[1]
+  到店礼地址: //div[@class='store-address-detail']
+
+
 
 
 

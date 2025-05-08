@@ -421,7 +421,7 @@ test_data:
         variable_name: phone_num
       - action: 输入
         selector: 手机号
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 是否已到店
 
@@ -439,7 +439,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -505,7 +505,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -617,7 +617,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -724,7 +724,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -829,7 +829,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -892,7 +892,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -982,7 +982,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -1099,7 +1099,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -1214,7 +1214,7 @@ test_data:
 
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 客户列表_执行搜索
 
@@ -1347,7 +1347,7 @@ test_data:
 
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<phone_num>
+        value: ${phone_num}
       - action: 点击
         selector: 订单卡片-填写信息按钮
 
@@ -1433,13 +1433,14 @@ test_data:
 
 
 
-  test_生成当日个户用户订单，常规品牌发起确认函:
-    description: 生成当日个户用户订单，常规品牌发起确认函--已调通
+  test_生成当日公户用户订单，常规品牌发起确认函:
+    description: 生成当日公户用户订单，常规品牌发起确认函--已调通
     steps:
       - use_module: login_steps
       - use_module: create_store_unvisited_leads_steps
       - action: 刷新
       - use_module: create_order_steps
+      - use_module: fill_company_non_priority_order_info
       - action: 刷新
       - action: 点击
         selector: 底部菜单-工作
@@ -1449,7 +1450,7 @@ test_data:
         selector: 订单列表-搜索
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<lead_id>
+        value: ${lead_id}
       - action: 点击
         selector: 订单卡片-确认函按钮
       - action: 验证
@@ -1527,8 +1528,8 @@ test_data:
       - action: 点击
         selector: 确认函预览-邀请信息-复制文本
 
-  test_生成当日个户用户订单，订单暂存:
-    description: 生成当日个户用户订单，订单暂存--调试中
+  test_生成当日公户用户订单，订单暂存:
+    description: 生成当日公户用户订单，订单暂存--调试中
     steps:
       - use_module: login_steps
       - use_module: create_store_unvisited_leads_steps
@@ -1543,22 +1544,22 @@ test_data:
         selector: 订单列表-搜索
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<lead_id>
+        value: ${lead_id}
       - action: 点击
         selector: 订单卡片-填写信息按钮
       - action: 点击
         selector: 下订信息-基础信息-展开
       - action: 验证值
         selector: 下订信息-企业代码
-        value: $<ahoh_oder_socialCode>
+        value: ${ahoh_oder_socialCode}
       - action: 验证值
         selector: 下订信息-上牌城市
-        value: $<ahoh_order_registerCityName>
+        value: ${ahoh_order_registerCityName}
       - action: 验证值
         selector: 下订信息-上牌城市
         value: 香港
 
-  test_生成当日个户用户订单，取消下订:
+  test_生成订单，取消下订:
     description: 生成订单，取消订单
     steps:
       - use_module: login_steps
@@ -1572,7 +1573,7 @@ test_data:
         selector: 订单列表-搜索
       - action: 输入
         selector: 订单列表-搜索输入框
-        value: $<lead_id>
+        value: ${lead_id}
       - action: 点击
         selector: 订单列表第一个卡片-三个点
       - action: 验证文本
@@ -1595,7 +1596,7 @@ test_data:
         selector: 客户列表-搜索
       - action: 输入
         selector: 客户列表查询条件输入框
-        value: $<lead_id>
+        value: ${lead_id}
       - action: 点击
         selector: 客户列表_执行搜索
       - action: 点击
@@ -1635,3 +1636,286 @@ test_data:
         selector: 底部菜单-工作
         value: 工作
 
+  # 查看确认函详情，leadId=20030958350411
+  test_生成当日个户用户订单，常规品牌发起确认函:
+    description: 生成当日个户用户订单，常规品牌发起确认函--调试完成
+    steps:
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
+      - action: 刷新
+      - use_module: create_order_steps
+      - use_module: fill_personal_non_priority_order_info
+      - action: 刷新
+      - use_module: fill_personal_non_priority_order_confirm_document
+
+  # 查看确认函详情，leadId=27210999150178
+  test_查看常规品牌确认函详情:
+    description: 个户常规品牌查看确认函详情
+    steps:
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
+      - action: 刷新
+      - use_module: create_order_steps
+#      - use_module: fill_personal_non_priority_order_info
+      - action: 刷新
+      - use_module: fill_personal_non_priority_order_confirm_document
+      - action: 刷新
+      - action: 点击
+        selector: 全部订单
+      - action: 点击
+        selector: 订单列表-搜索
+      - action: 输入
+        selector: 订单列表-搜索输入框
+        value: ${lead_id}
+#        value: '27210999150178'
+      - action: 点击
+        selector: 订单列表第一个卡片
+      - action: 验证文本
+        selector: 订单详情-确认函tab
+        value: 确认函
+      - action: 验证文本
+        selector: 订单详情-确认函客户姓名
+        value: 客户名称
+      - action: 验证文本
+        selector: 订单详情-确认函客户手机号
+        value: 182****3933
+      - action: 验证文本
+        selector: 订单详情-确认函身份证号
+        value: 31011019560416545X
+      - action: 验证文本
+        selector: 订单详情-确认函购买车型
+        value: 新海狮X30L CNG-2023款 70L CNG财富版客车6/7座无空调SWCC15M
+      - action: 等待
+        value: 1
+      - action: 验证文本
+        selector: 订单详情-确认函厂商指导价
+        value: 厂商指导价
+      - action: 验证文本
+        selector: 订单详情-确认函发票价
+        value: 发票价
+      - action: 验证文本
+        selector: 订单详情-确认函合同日期
+        value: 合同日期
+
+  test_查看常规品牌有确认函的订单信息:
+    description: 个户常规品牌已提交确认函,查看订单详情
+    steps:
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
+      - action: 刷新
+      - use_module: create_order_steps
+      - use_module: fill_personal_non_priority_order_info #填写个户订单信息
+      - action: 刷新
+      - use_module: fill_personal_non_priority_order_confirm_document #填写确认函信息
+      - action: 刷新
+      - action: 点击
+        selector: 全部订单
+      - action: 点击
+        selector: 订单列表-搜索
+      - action: 输入
+        selector: 订单列表-搜索输入框
+        value: ${lead_id}
+#        value: '27210999150178'
+      - action: 点击
+        selector: 订单列表第一个卡片
+      - action: 验证文本
+        selector: 订单详情-订单信息tab
+        value: 订单信息
+      - action: 点击
+        selector: 订单详情-订单信息tab
+        value: 订单信息
+      - action: 硬断言
+        selector: 订单详情-基础信息-上牌城市
+        value: 香港
+      - action: 硬断言
+        selector: 订单详情-基础信息-开票价格
+        value: 10001元
+      - action: 硬断言
+        selector: 订单详情-基础信息-店内上牌
+        value: 是
+      - action: 硬断言
+        selector: 订单详情-基础信息-上牌费用
+        value: 2000元
+      - action: 硬断言
+        selector: 订单详情-基础信息-店内投保商业保险
+        value: 是
+      - action: 硬断言
+        selector: 订单详情-基础信息-是否贷款
+        value: 是
+      - action: 硬断言
+        selector: 订单详情-基础信息-贷款额度
+        value: 2000元
+      - action: 硬断言
+        selector: 订单详情-基础信息-贷款期数
+        value: 12期
+      - action: 硬断言
+        selector: 订单详情-基础信息-月供金额
+        value: 1003元
+      - action: 硬断言
+        selector: 订单详情-其他-购车总价
+        value: 10001元
+      - action: faker
+        data_type: datetime
+        variable_name: current_date
+      - action: 硬断言
+        selector: 订单详情-其他-提车日期
+        value: ${current_date}
+      - action: 验证文本
+        selector: 订单详情-其他-合同日期
+        value: ${current_date}
+      - action: 验证文本
+        selector: 订单详情-其他-付款日期项
+        value: 付款日期
+      - action: 验证文本
+        selector: 订单详情-其他-合同凭证
+        value: 线上合同
+      - action: 验证文本
+        selector: 订单详情-其他-身份证号
+        value: 31011019560416545X
+      - action: 验证文本
+        selector: 订单详情-其他凭证
+        value: '-'
+
+  test_查看常规品牌订单信息_无确认函:
+    description: 个户常规品牌无确认函信息,查看订单详情
+    steps:
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
+      - action: 刷新
+      - use_module: create_order_steps
+      - use_module: fill_personal_non_priority_order_info
+      - action: 刷新
+      - action: 点击
+        selector: 全部订单
+      - action: 点击
+        selector: 订单列表-搜索
+      - action: 输入
+        selector: 订单列表-搜索输入框
+        value: ${lead_id}
+      - action: 点击
+        selector: 订单列表第一个卡片
+      - action: 硬断言
+        selector: 订单详情-基础信息-上牌城市
+        value: 香港
+      - action: 硬断言
+        selector: 订单详情-基础信息-开票价格
+        value: 10001元
+      - action: 硬断言
+        selector: 订单详情-基础信息-店内上牌
+        value: 是
+      - action: 硬断言
+        selector: 订单详情-基础信息-上牌费用
+        value: 2000元
+      - action: 硬断言
+        selector: 订单详情-基础信息-店内投保商业保险
+        value: 是
+      - action: 硬断言
+        selector: 订单详情-基础信息-是否贷款
+        value: 是
+      - action: 硬断言
+        selector: 订单详情-基础信息-贷款额度
+        value: 2000元
+      - action: 硬断言
+        selector: 订单详情-基础信息-贷款期数
+        value: 12期
+      - action: 验证文本
+        selector: 订单详情-基础信息-月供金额
+        value: 1003元
+      - action: 验证文本
+        selector: 订单详情-其他-购车总价
+        value: 10001元
+      - action: faker
+        data_type: datetime
+        variable_name: current_date
+      - action: 验证文本
+        selector: 订单详情-其他-提车日期
+        value: ${current_date}
+      - action: 验证文本
+        selector: 订单详情-其他-合同日期
+        value: ${current_date}
+      - action: 验证文本
+        selector: 订单详情-其他-付款日期项
+        value: 付款日期
+      - action: 硬断言
+        selector: 订单详情-其他-合同凭证
+        value: 线上合同
+      - action: 硬断言
+        selector: 订单详情-其他-身份证号
+        value: 31011019560416545X
+      - action: 验证文本
+        selector: 订单详情-其他凭证
+        value: '-'
+
+  test_订单详情中点击取消下订:
+    description: 常规品牌订单，未填写订单信息，订单详情中点击取消下订
+    steps:
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
+      - action: 刷新
+      - use_module: create_order_steps
+      - action: 刷新
+      - action: 点击
+        selector: 全部订单
+      - action: 点击
+        selector: 订单列表-搜索
+      - action: 输入
+        selector: 订单列表-搜索输入框
+        value: ${lead_id}
+      - action: 点击
+        selector: 订单列表第一个卡片
+      - action: 点击
+        selector: 订单详情-取消下订按钮
+      - action: 硬断言
+        selector:  取消下订确认弹窗确认取消文案
+        value: 确定取消下订吗?
+      - action: 硬断言
+        selector:  取消下订确认弹窗转跟进任务文案
+        value: 此订单将转为今日跟进任务
+      - action: 点击
+        selector: 取消下订确认弹窗-确认按钮
+      - action: 刷新
+      - action: 点击
+        selector: 底部菜单-客户
+      - action: 点击
+        selector: 客户列表-搜索
+      - action: 输入
+        selector: 客户列表查询条件输入框
+        value: ${lead_id}
+      - action: 点击
+        selector: 客户列表_执行搜索
+      - action: 点击
+        selector: 客户列表查询结果第一条填跟进按钮
+      - action: 等待
+        value: 1
+      - action: 验证
+        selector: 线索详情-任务信息-第一个主任务的名称
+        value: 持续跟进
+      - action: 点击
+        selector: 线索详情页面-任务tab-第一个任务点击填跟进
+      - action: 硬断言
+        selector: 任务填跟进页面标题
+        value: 持续跟进任务
+      - action: 点击
+        selector: 购车周期-存疑
+      - action: 点击
+        selector: 任务填跟进页-跟进结果-战败
+      - action: 点击
+        selector: 任务填跟进页-跟进结果-战败-一级战败因素选项
+      - action: 点击
+        selector: 任务填跟进页-跟进结果-战败-二级战败因素输入框
+      - action: 点击
+        selector: 任务填跟进页-跟进结果-战败-二级战败因素弹框-第一个选项
+      - action: 点击
+        selector: 任务填跟进页-二级战败因素弹框-确认按钮
+      - action: 点击
+        selector: 任务填跟进页-提交跟进记录按钮
+      - action: 等待
+        value: 1
+      - action: 硬断言
+        selector: 线索详情页面标题-线索状态
+        value: 战败
+      - action: 刷新
+        selector: ''
+      - action: 验证
+        selector: 底部菜单-工作
+        value: 工作

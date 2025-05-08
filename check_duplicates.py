@@ -1,9 +1,9 @@
-from pathlib import Path
 from collections import defaultdict
-from typing import Dict, List, Tuple, Set
+from pathlib import Path
+from typing import Dict, List, Tuple
 
-from utils.yaml_handler import YamlHandler
 from utils.logger import logger
+from utils.yaml_handler import YamlHandler
 
 
 def get_line_numbers(content: str, target: str) -> List[int]:
