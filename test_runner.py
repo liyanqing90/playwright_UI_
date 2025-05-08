@@ -25,8 +25,13 @@ def build_pytest_args(config: Config) -> List[str]:
     Returns:
         pytest命令行参数列表
     """
+    # 构建测试文件路径
+    test_path = f"{config.test_dir}/cases"
+    if config.test_file:
+        test_path = f"{test_path}/{config.test_file}"
+
     pytest_args = [
-        f"{config.test_dir}/cases/{config.test_file}",
+        test_path,
         "-v",
         "--tb=line",
         "-p",

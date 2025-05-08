@@ -1,0 +1,59 @@
+test_data:
+  test_channel_page_activity_approval_inquire:
+    - description: "频道页活动审批查询"
+      steps:
+        - use_module: click_approval_center
+        - action: click
+          selector: 频道页活动审批
+        - action: wait
+        - action: fill
+          selector: 活动名称搜索
+          value: "门店活动001"
+        - action: fill
+          selector: 提审人搜索
+          value: "香港综合店1"
+        - action: click
+          selector: 提审门店搜索
+        - action: click
+          selector: 选中门店
+        - action: click
+          selector: 审批状态搜索
+        - action: click
+          selector: 驳回
+        - action: click
+          selector: 查询
+        - action: wait
+        - action: assert_text
+          selector: 活动名称
+          value: "门店活动001"
+        - action: assert_text
+          selector: 提审门店
+          value: "加盟商香港综合测试门店1"
+        - action: assert_text
+          selector: 提审人
+          value: "香港综合店1"
+        - action: assert_text
+          selector: 审批状态
+          value: "驳回"
+
+
+
+  test_channel_page_activity_approval_inquire_null:
+    - description: "频道页活动审批查询为空"
+      steps:
+        - use_module: click_approval_center
+        - action: click
+          selector: 频道页活动审批
+        - action: wait
+        - action: fill
+          selector: 活动名称搜索
+          value: "不存在的审批"
+        - action: click
+          selector: 查询
+        - action: wait
+        - action: assert_text
+          selector: 暂无数据
+          value: "暂无数据"
+
+
+

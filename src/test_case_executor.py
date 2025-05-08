@@ -33,11 +33,23 @@ class CaseExecutor:
             page: Playwright页面对象
             ui_helper: UI操作帮助类
         """
-        try:
-            # 执行测试步骤
-            step_executor = StepExecutor(page, ui_helper, self.elements)
-            steps = self.case_data.get("steps")
-            for step in steps:
-                step_executor.execute_step(step)
-        finally:
-            pass
+        # 执行测试步骤
+        step_executor = StepExecutor(page, ui_helper, self.elements)
+
+        # 支持两种数据结构：直接的步骤列表或包含步骤的字典
+        if isinstance(self.case_data, list):
+            # 如果是列表，取第一个元素（兼容旧格式）
+            if self.case_data and isinstance(self.case_data[0], dict):
+                steps = self.case_data[0].get("steps", [])
+            else:
+                steps = []
+        elif isinstance(self.case_data, dict):
+            # 如果是字典，直接获取steps
+            steps = self.case_data.get("steps", [])
+        else:
+            steps = []
+
+        # 执行所有步骤
+        for step in steps:
+            # 这里不再使用try-except包裹，让异常直接传播
+            step_executor.execute_step(step)
