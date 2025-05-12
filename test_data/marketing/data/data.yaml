@@ -61,7 +61,7 @@ test_data:
         variable_name: worktime_text
       - action: store_text
         selector: car_name
-        variable_name: car_name
+        variable_name: store_car_name
   test_car_detail_click:
     description: "点击进入车系详情"
     steps:
@@ -71,7 +71,7 @@ test_data:
         selector: car_name
       - action: assert_text
         selector: detail_car_name
-        value: ${car_name}
+        value: ${store_car_name}
       - action: assert_text
         selector: detail_store_title
         value: ${store_name}
@@ -85,22 +85,22 @@ test_data:
     description: "url进入车系详情"
     steps:
       - action: goto
-        value: "/ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682"
+        value: "/ahoh-marketing/specDetail?seriesId=${series_id}&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682"
       - action: wait
       - action: assert_text
         selector: detail_car_model
-        value: "2024款 1.5T 后驱Plus版 5座"
+        value: ${car_model}
       - action: assert_text
         selector: detail_car_price
-        value: "24.98万"
+        value: ${car_price}
       - action: assert_text
         selector: detail_item_car_name
-        value: "问界M7"
+        value: ${car_name}
   test_car_detail_gift:
     description: "礼包"
     steps:
       - action: navigate
-        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=${series_id}&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: assert_text
         selector: detail_gift_title
         value: "1280"
@@ -132,7 +132,7 @@ test_data:
     description: "门店信息"
     steps:
       - action: navigate
-        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=${series_id}&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_store_info
       - action: assert_text
@@ -152,7 +152,7 @@ test_data:
     description: "购车计算"
     steps:
       - action: navigate
-        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=${series_id}&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_car_clc
       - action: assert_text
@@ -183,7 +183,7 @@ test_data:
     description: "以旧换新"
     steps:
       - action: navigate
-        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=${series_id}&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_trade_in
       - action: assert_text
@@ -191,7 +191,7 @@ test_data:
         value: 以旧换新
       - action: assert_text
         selector: detail_new_name
-        value: 2024款 1.5T 后驱Plus版 5座
+        value: ${car_model}
       - action: click
         selector: detail_old_btn
       - action: click
@@ -251,7 +251,7 @@ test_data:
     description: "以旧换新"
     steps:
       - action: navigate
-        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=${series_id}&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_trade_in
       - action: assert_text
@@ -277,7 +277,7 @@ test_data:
     description: "以旧换新"
     steps:
       - action: navigate
-        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=${series_id}&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_trade_in
       - action: assert_text
@@ -339,7 +339,7 @@ test_data:
     description: "以旧换新"
     steps:
       - action: navigate
-        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=${series_id}&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_trade_in
       - action: assert_text
@@ -370,7 +370,7 @@ test_data:
     description: "试驾服务"
     steps:
       - action: navigate
-        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=${series_id}&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_test_drive
       - action: assert_text
@@ -401,7 +401,7 @@ test_data:
     description: "选择车型"
     steps:
       - action: navigate
-        value: /ahoh-marketing/specDetail?seriesId=6643&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
+        value: /ahoh-marketing/specDetail?seriesId=${series_id}&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: click
         selector: choice_test_drive
       - action: assert_text
@@ -414,7 +414,7 @@ test_data:
         value: 选择意向车系
       - action: assert_text
         selector: detail_choice_car_name
-        value: 问界M7
+        value: ${car_name}
       - action: click
         selector: detail_choice_car_clear
       - action: assert_text
