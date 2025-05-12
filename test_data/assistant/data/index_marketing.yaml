@@ -119,7 +119,7 @@ test_data:
         selector: 未留资
       - action: assert_text
         value: "未留资"
-        selector: 没留资
+        selector: 留资筛选
   test_hui_fu_zhuang_tai:
     description: "营销助手页面私信会话弹窗回复状态筛选测试"
     steps:
@@ -352,9 +352,321 @@ test_data:
         selector: 营销
       - action: click
         selector: 线索管理
-      - action: click
-        url_pattern: /api/aim/leads/page?BUserId=9250
+      - action: wait
+      - action: monitor_response
+        url_pattern: api/aim/leads/page?BUserId=9250&pageIndex=1&pageSize=10
         selector: 关闭图标
         action_type: click
         assert_params:
-          $.result[1].sourceName: "抖音"
+          $.result.list[0].sourceName: "抖音"
+  test_zhi_neng_hui_fu:
+    description: "营销助手页面弹幕智能回复开关测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 弹幕智能回复开关
+      - action: click
+        selector: 弹幕智能回复开关
+      - action: assert_text
+        value: "弹幕智能回复生效中"
+        selector: 弹幕智能回复生效中
+  test_she_zhi_yu_liao:
+    description: "营销助手页面设置语料入口测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 设置语料
+      - action: assert_text
+        value: "回复语料设置 新增"
+        selector: 回复语料设置
+  test_xin_zeng_yu_liao:
+    description: "回复语料设置页面新增功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 设置语料
+      - action: click
+        selector: 新增
+      - action: assert_text
+        value: "新增弹幕语料"
+        selector: 新增弹幕语料
+  test_xin_zeng_guan_jian_zi:
+    description: "新增弹幕语料页面新增并删除关键字功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 设置语料
+      - action: click
+        selector: 新增
+      - action: click
+        selector: 关键字输入框
+      - action: fill
+        selector: 关键字输入框
+        value: "驾照"
+      - action: keyboard_press
+        value: Enter
+      - action: assert_text
+        value: "驾照"
+        selector: 驾照
+      - action: click
+        selector: 关键字标签
+  test_xin_zeng_danmu_hui_fu_nei_rong:
+    description: "新增弹幕语料页面新增并删除回复内容测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 设置语料
+      - action: click
+        selector: 新增
+      - action: click
+        selector: 弹幕回复输入框
+      - action: fill
+        selector: 弹幕回复输入框
+        value: "点击关注"
+      - action: keyboard_press
+        value: Enter
+      - action: assert_text
+        value: "点击关注"
+        selector: 点击关注
+      - action: click
+        selector: 已添加回复标签
+  test_que_ding_xin_zeng:
+    description: "新增一条弹幕语料功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 设置语料
+      - action: click
+        selector: 新增
+      - action: click
+        selector: 关键字输入框
+      - action: fill
+        selector: 关键字输入框
+        value: "驾照"
+      - action: keyboard_press
+        value: Enter
+      - action: click
+        selector: 弹幕回复输入框
+      - action: fill
+        selector: 弹幕回复输入框
+        value: "点击关注"
+      - action: keyboard_press
+        value: Enter
+      - action: monitor_response
+        url_pattern: /api/aim/aimDanmakuReply/saveOrUpdate
+        selector: 确定
+        action_type: click
+        assert_params:
+          $.result: "True"
+#      - action: wait
+#      - action: monitor_response
+#        url_pattern: /api/aim/aimDanmakuReply/list?pageNum=1&pageSize=10
+#        selector: 删除
+#        save_params:
+#          $.result.total: Total
+  test_fan_ye:
+    description: "弹幕语料页面翻页功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 设置语料
+      - action: double_click
+        selector: 翻页
+      - action: assert_visible
+        selector: 序号
+  test_bian_ji_yu_liao:
+    description: "弹幕语料页面编辑功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 设置语料
+      - action: click
+        selector: 编辑
+      - action: assert_text
+        value: "编辑弹幕语料"
+        selector: 编辑弹幕语料
+  test_shan_chu_yu_liao:
+    description: "弹幕语料页面删除功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 设置语料
+      - action: click
+        selector: 删除
+      - action: click
+        selector: 确认
+  test_bai_ming_dan:
+    description: "白名单入口功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 白名单菜单项
+      - action: assert_text
+        value: "白名单 新增"
+        selector: 白名单
+  test_xin_zeng_bai_ming_dan:
+    description: "白名单新增功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 白名单菜单项
+      - action: click
+        selector: 新增
+      - action: click
+        selector: 抖音昵称输入框
+      - action: fill
+        selector: 抖音昵称输入框
+        value: "噼里啪啦"
+      - action: click
+        selector: 备注输入框
+      - action: fill
+        selector: 备注输入框
+        value: "加入白名单"
+      - action: monitor_response
+        url_pattern: /api/aim/aimDanmakuWhitelist/saveOrUpdate
+        selector: 确定
+        action_type: click
+        assert_params:
+          $.result: "True"
+  test_bian_ji_bai_ming_dan:
+    description: "白名单编辑功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 白名单菜单项
+      - action: click
+        selector: 编辑
+      - action: assert_text
+        value: "编辑白名单账号"
+        selector: 编辑白名单
+  test_shan_chu_bai_ming_dan:
+    description: "白名单删除功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 白名单菜单项
+      - action: click
+        selector: 删除白名单
+      - action: monitor_response
+        url_pattern: /api/aim/aimDanmakuWhitelist/delete/*
+        selector: 确认
+        action_type: click
+        assert_params:
+          $.result: "True"
+  test_fu_dai_kou_ling:
+    description: "福袋口令入口功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 福袋口令菜单
+      - action: assert_text
+        value: "编辑白名单账号"
+        selector: 编辑白名单
+  test_xin_zeng_fu_dai:
+    description: "福袋口令新增功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 福袋口令菜单
+      - action: click
+        selector: 新增
+      - action: click
+        selector: 口令输入框
+      - action: fill
+        selector: 口令输入框
+        value: "点点关注"
+      - action: click
+        selector: 备注输入框
+      - action: fill
+        selector: 备注输入框
+        value: "不进行智能回复"
+      - action: monitor_response
+        url_pattern: /api/aim/aimFortuneBlock/saveOrUpdate
+        selector: 确定
+        action_type: click
+        assert_params:
+          $.result: "True"
+  test_bian_ji_fu_dai:
+    description: "福袋口令编辑功能测试"
+    steps:
+      - use_module: login_futian
+      - action: click
+        selector: 营销
+      - action: click
+        selector: 营销助手
+      - action: click
+        selector: 福袋口令菜单
+      - action: click
+        selector: 编辑
+      - action: assert_text
+        value: "编辑屏蔽福袋口令"
+        selector: 编辑对话框
+
+
+
+
+
+
+
+
+

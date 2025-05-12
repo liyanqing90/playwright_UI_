@@ -1,6 +1,6 @@
 test_cases:
 
-  #素材
+  素材
   - name: test_material_search
     fixtures: [ login ]
   - name: test_material_upload
@@ -19,7 +19,7 @@ test_cases:
   - name: test_ling_gan
     fixtures: [ login ]
   - name: test_zong_kai_guan
-  - name: est_jin_si
+  - name: test_jin_si
   - name: test_qian_ke
   - name: test_wan_hui
   - name: test_hui_fu_lv
@@ -39,8 +39,24 @@ test_cases:
   - name: test_xian_suo_zong_lan
   - name: test_xian_suo_ri_qi
   - name: test_xian_suo_lie_biao
+  - name: test_zhi_neng_hui_fu
+  - name: test_she_zhi_yu_liao
+  - name: test_xin_zeng_yu_liao
+  - name: test_xin_zeng_guan_jian_zi
+  - name: test_xin_zeng_danmu_hui_fu_nei_rong
+  - name: test_que_ding_xin_zeng
+  - name: test_fan_ye
+  - name: test_bian_ji_yu_liao
+  - name: test_shan_chu_yu_liao
+  - name: test_bai_ming_dan
+  - name: test_xin_zeng_bai_ming_dan
+  - name: test_bian_ji_bai_ming_dan
+  - name:  test_shan_chu_bai_ming_dan
+  - name: test_fu_dai_kou_ling
+  - name: test_xin_zeng_fu_dai
+  - name: test_bian_ji_fu_dai
 
-  #个人中心
+  个人中心
   - name: test_Personal_Center
     fixtures: [ login ]
   - name: test_Assistant_Settings

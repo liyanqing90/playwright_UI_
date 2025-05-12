@@ -1,0 +1,19 @@
+elements:
+  审批中心: //span[@title='审批中心']
+  频道页活动审批: //li[@title='频道页活动审批']
+
+  活动名称搜索: //input[@id='basic_title']
+  提审人搜索: //input[@id='basic_operatorName']
+  提审门店搜索: //input[@id='basic_storeId']
+  选中门店: //div[@title='加盟商香港综合测试门店1']
+  审批状态搜索: //input[@id='basic_auditStatus']
+  驳回: //div[@title='驳回']
+  查询: //span[contains(text(),'查 询')]
+
+  活动名称: //td[contains(text(),'门店活动001')]
+  提审门店: //td[contains(text(),'加盟商香港综合测试门店1')]
+  提审人: //td[contains(text(),'香港综合店1')]
+  审批状态: (//span[contains(text(),'驳回')])[1]
+  暂无数据: //p[@class='ant-empty-description']
+
+
