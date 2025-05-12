@@ -10,7 +10,6 @@ from utils.variable_manager import VariableManager
 _DEFAULT_FIXTURES = [
     "page",
     "ui_helper",
-    "screenshot_fixture",
     "get_test_name",
     "value",
 ]

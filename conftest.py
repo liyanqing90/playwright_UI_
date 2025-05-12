@@ -56,42 +56,6 @@ def page(context) -> Generator[Page, Any, None]:
     page.close()
 
 
-@pytest.fixture(scope="function")
-def screenshot_fixture(request, page):
-    """
-    截图管理fixture，使用Playwright原生的截图功能
-    仅在测试失败时捕获截图
-    """
-    # 执行测试用例
-    yield
-
-    # 如果测试失败，捕获截图
-    if request.node.rep_call.failed if hasattr(request.node, "rep_call") else False:
-        test_name = request.node.name
-        logger.info(f"测试用例 {test_name} 失败，捕获截图")
-
-        # 创建截图目录
-        screenshot_dir = "reports/screenshots"
-        os.makedirs(screenshot_dir, exist_ok=True)
-
-        # 生成截图文件名
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        screenshot_path = os.path.join(
-            screenshot_dir, f"failure_{test_name}_{timestamp}.png"
-        )
-
-        try:
-            # 使用Playwright的截图功能
-            page.screenshot(
-                path=screenshot_path,
-                full_page=True,  # 捕获完整页面
-                timeout=5000,  # 5秒超时
-            )
-            logger.info(f"失败截图已保存: {screenshot_path}")
-        except Exception as e:
-            logger.error(f"保存失败截图时出错: {e}")
-
-
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     """
