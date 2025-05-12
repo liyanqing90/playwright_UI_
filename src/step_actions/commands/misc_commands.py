@@ -17,7 +17,7 @@ class ScrollIntoViewCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.scroll_into_view(selector)
+        ui_helper.scroll_into_view(selector=selector)
 
 
 @CommandFactory.register(StepAction.SCROLL_TO)
@@ -29,7 +29,7 @@ class ScrollToCommand(Command):
     ) -> None:
         x = int(step.get("x", 0))
         y = int(step.get("y", 0))
-        ui_helper.scroll_to(x, y)
+        ui_helper.scroll_to(x=x, y=y)
 
 
 @CommandFactory.register(StepAction.FOCUS)
@@ -39,7 +39,7 @@ class FocusCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.focus(selector)
+        ui_helper.focus(selector=selector)
 
 
 @CommandFactory.register(StepAction.BLUR)
@@ -49,7 +49,7 @@ class BlurCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.blur(selector)
+        ui_helper.blur(selector=selector)
 
 
 @CommandFactory.register(StepAction.ENTER_FRAME)
@@ -59,7 +59,7 @@ class EnterFrameCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.enter_frame(selector)
+        ui_helper.enter_frame(selector=selector)
 
 
 @CommandFactory.register(StepAction.ACCEPT_ALERT)
@@ -69,7 +69,7 @@ class AcceptAlertCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.accept_alert(selector, value)
+        ui_helper.accept_alert(selector=selector, prompt_text=value)
 
 
 @CommandFactory.register(StepAction.DISMISS_ALERT)
@@ -79,7 +79,7 @@ class DismissAlertCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.dismiss_alert(selector)
+        ui_helper.dismiss_alert(selector=selector)
 
 
 @CommandFactory.register(StepAction.EXECUTE_PYTHON)
