@@ -38,7 +38,7 @@ def build_pytest_args(config: Config) -> List[str]:
         "no:warnings",
         "-s",
         "--alluredir=reports/allure-results",
-        "--clean-alluredir"
+        "--clean-alluredir",
     ]
     if config.marker:
         pytest_args.extend(["-m", config.marker])

@@ -14,7 +14,6 @@ log_dir.mkdir(exist_ok=True)
 log_file = log_dir / f'test_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'
 # 通用格式化字符串
 log_format = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> [<level>{level}</level>] <white>{message}</white> (<cyan>{file}:{line}</cyan>)"
-# 添加控制台输出 (INFO 级别及以上)
 logger.add(
     sink=lambda msg: print(msg),
     format=log_format,  # 使用通用格式

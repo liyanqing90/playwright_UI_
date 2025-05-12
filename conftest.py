@@ -10,6 +10,7 @@ import pytest
 from _pytest.python import Module
 from playwright.sync_api import Page, Browser, sync_playwright
 
+from constants import DEFAULT_TIMEOUT
 from page_objects.base_page import BasePage
 from src.case_utils import run_test_data
 from src.runner import TestCaseGenerator
@@ -41,6 +42,7 @@ def context(browser):
     """创建浏览器上下文"""
     context_options = config.browser_config or {}
     browser_context = browser.new_context(**context_options)
+    browser_context.set_default_timeout(DEFAULT_TIMEOUT)
     yield browser_context
     # 测试结束后关闭上下文
     browser_context.close()
