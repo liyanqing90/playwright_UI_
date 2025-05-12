@@ -182,7 +182,6 @@ def preprocess_expression(expr: str) -> str:
     Returns:
         处理后的表达式字符串
     """
-    import re
 
     # 已经是合法Python表达式的情况直接返回
     try:

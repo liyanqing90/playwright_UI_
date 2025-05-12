@@ -3,7 +3,6 @@
 """
 
 import math
-import operator
 from typing import Any
 
 from src.step_actions.flow_control import preprocess_expression

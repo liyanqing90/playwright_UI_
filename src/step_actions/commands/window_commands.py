@@ -17,7 +17,9 @@ class ExpectPopupCommand(Command):
     ) -> None:
         action = step.get("real_action", "click")
         variable_name = step.get("variable_name", value)
-        ui_helper.expect_popup(action, selector, variable_name)
+        ui_helper.expect_popup(
+            action=action, selector=selector, variable_name=variable_name
+        )
 
 
 @CommandFactory.register(StepAction.SWITCH_WINDOW)
@@ -27,7 +29,7 @@ class SwitchWindowCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.switch_window(value)
+        ui_helper.switch_window(window_name=value)
 
 
 @CommandFactory.register(StepAction.CLOSE_WINDOW)
@@ -37,7 +39,7 @@ class CloseWindowCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.close_window()
+        ui_helper.close_window(action="close_window")
 
 
 @CommandFactory.register(StepAction.TAB_SWITCH)
@@ -47,4 +49,4 @@ class TabSwitchCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.switch_window(value)
+        ui_helper.switch_window(window_name=value)

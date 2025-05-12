@@ -84,14 +84,7 @@ class StepExecutor:
         """
         self.project_name = project_name
         for step in steps:
-            try:
-                self.execute_step(step)
-            except Exception as e:
-                logger.error(f"步骤执行失败: {e}")
-                if step.get("continue_on_failure", False):
-                    logger.warning("忽略错误并继续执行")
-                    continue
-                raise
+            self.execute_step(step)
 
     def execute_step(self, step: Dict[str, Any]) -> None:
         try:
@@ -119,13 +112,27 @@ class StepExecutor:
             logger.debug(f"执行步骤: {action} | 选择器: {selector} | 值: {value}")
             self._validate_step(action, selector)
             self._execute_action(action, selector, value, step)
-
-        except Exception:
+        except AssertionError as e:
+            # 标记整个执行器的错误状态
+            self.has_error = True
+            # 同时标记当前步骤的错误状态
+            self.step_has_error = True
+            raise
+        except Exception as e:
             self.has_error = True
             self._capture_failure_evidence()
             raise
         finally:
-            self._log_step_duration()
+            # 如果是超时异常，跳过时间记录和额外处理
+            if self.step_has_error:
+                # 只记录耗时，不做其他处理
+                if self.start_time:
+                    duration = (datetime.now() - self.start_time).total_seconds()
+                    logger.debug(f"[失败] 步骤耗时: {duration:.2f}s")
+            else:
+                # 正常完成的步骤执行常规处理
+                logger.debug("记录时间")
+                self._finalize_step()
 
     def _validate_step(self, action, selector) -> None:
         if not action:
@@ -142,16 +149,28 @@ class StepExecutor:
     ) -> None:
         """执行具体操作，使用命令模式"""
         try:
-            # 使用命令模式执行操作
             execute_action_with_command(self.ui_helper, action, selector, value, step)
+        except AssertionError as e:
+            # 标记异常为断言失败
+            self.step_has_error = True
+            raise
         except Exception as e:
-            # 检查异常是否已被记录
+            # 统一处理所有异常，不区分超时与非超时
+            # 标记步骤失败
+            self.step_has_error = True
+            self.has_error = True
+
+            # 只添加必要的错误信息，不进行额外处理
             if not hasattr(e, "_logged"):
                 logger.error(f"步骤执行失败: {e}")
                 setattr(e, "_logged", True)
-            # 标记步骤出错
-            self.step_has_error = True
-            # 重新抛出异常，确保异常被正确传播
+
+            # 添加关键信息
+            setattr(e, "_action", action)
+            setattr(e, "_selector", selector)
+            setattr(e, "_value", value)
+
+            # 直接抛出异常，不做其他任何处理
             raise
 
     def _execute_action_legacy(
@@ -168,223 +187,255 @@ class StepExecutor:
                 value = url
             if "http" not in value:
                 value = url + value
-            self.ui_helper.navigate(value)
+            self.ui_helper.navigate(url=value)
 
         elif action in StepAction.PAUSE:
-            self.ui_helper.pause()
+            self.ui_helper.pause(action="pause")
 
         elif action in StepAction.CLICK:
-            self.ui_helper.click(selector)
+            self.ui_helper.click(selector=selector)
 
         elif action in StepAction.FILL:
-            self.ui_helper.fill(selector, value)
+            self.ui_helper.fill(selector=selector, value=value)
 
         elif action in StepAction.PRESS_KEY:
-            self.ui_helper.press_key(selector, step.get("key", value))
+            self.ui_helper.press_key(selector=selector, key=step.get("key", value))
 
         elif action in StepAction.UPLOAD:
-            self.ui_helper.upload_file(selector, value)
+            self.ui_helper.upload_file(selector=selector, file_path=value)
 
         elif action in StepAction.WAIT:
             wait_time = (
                 int(float(step.get("value", 1)) * 1000) if step.get("value") else 1000
             )
-            self.ui_helper.wait_for_timeout(wait_time)
+            self.ui_helper.wait_for_timeout(timeout=wait_time)
 
         elif action in StepAction.WAIT_FOR_NETWORK_IDLE:
             timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
-            self.ui_helper.wait_for_network_idle(timeout)
+            self.ui_helper.wait_for_network_idle(timeout=timeout)
 
         elif action in StepAction.WAIT_FOR_ELEMENT_HIDDEN:
             timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
-            self.ui_helper.wait_for_element_hidden(selector, timeout)
+            self.ui_helper.wait_for_element_hidden(selector=selector, timeout=timeout)
 
         elif action in StepAction.WAIT_FOR_ELEMENT_CLICKABLE:
             timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
-            self.ui_helper.wait_for_element_clickable(selector, timeout)
+            self.ui_helper.wait_for_element_clickable(
+                selector=selector, timeout=timeout
+            )
 
         elif action in StepAction.WAIT_FOR_ELEMENT_TEXT:
             timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
             expected_text = step.get("expected_text", value)
-            self.ui_helper.wait_for_element_text(selector, expected_text, timeout)
+            self.ui_helper.wait_for_element_text(
+                selector=selector, expected_text=expected_text, timeout=timeout
+            )
 
         elif action in StepAction.WAIT_FOR_ELEMENT_COUNT:
             timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
             expected_count = int(step.get("expected_count", value))
-            self.ui_helper.wait_for_element_count(selector, expected_count, timeout)
+            self.ui_helper.wait_for_element_count(
+                selector=selector, expected_count=expected_count, timeout=timeout
+            )
 
         elif action in StepAction.ASSERT_VISIBLE:
-            self.ui_helper.assert_visible(selector)
+            self.ui_helper.assert_visible(selector=selector)
 
         elif action in StepAction.ASSERT_TEXT:
             expected = step.get("expected", value)
-            self.ui_helper.assert_text(selector, expected)
+            self.ui_helper.assert_text(selector=selector, expected_text=expected)
 
         elif action in StepAction.HARD_ASSERT_TEXT:
             expected = step.get("expected", value)
-            self.ui_helper.hard_assert_text(selector, expected)
+            self.ui_helper.hard_assert_text(selector=selector, expected_text=expected)
 
         elif action in StepAction.ASSERT_TEXT_CONTAINS:
             expected = step.get("expected", value)
-            self.ui_helper.assert_text_contains(selector, expected)
+            self.ui_helper.assert_text_contains(
+                selector=selector, expected_text=expected
+            )
 
         elif action in StepAction.ASSERT_URL:
             expected = step.get("expected", value)
-            self.ui_helper.assert_url(expected)
+            self.ui_helper.assert_url(url=expected)
 
         elif action in StepAction.ASSERT_URL_CONTAINS:
             expected = step.get("expected", value)
-            self.ui_helper.assert_url_contains(expected)
+            self.ui_helper.assert_url_contains(expected_url_part=expected)
 
         elif action in StepAction.ASSERT_TITLE:
             expected = step.get("expected", value)
-            self.ui_helper.assert_title(expected)
+            self.ui_helper.assert_title(expected_title=expected)
 
         elif action in StepAction.ASSERT_ELEMENT_COUNT:
             expected = step.get("expected", value)
-            self.ui_helper.assert_element_count(selector, expected)
+            self.ui_helper.assert_element_count(
+                selector=selector, expected_count=expected
+            )
 
         elif action in StepAction.ASSERT_EXISTS:
-            self.ui_helper.assert_exists(selector)
+            self.ui_helper.assert_exists(selector=selector)
 
         elif action in StepAction.ASSERT_NOT_EXISTS:
-            self.ui_helper.assert_not_exists(selector)
+            self.ui_helper.assert_not_exists(selector=selector)
 
         elif action in StepAction.ASSERT_ENABLED:
-            self.ui_helper.assert_element_enabled(selector)
+            self.ui_helper.assert_element_enabled(selector=selector)
 
         elif action in StepAction.ASSERT_DISABLED:
-            self.ui_helper.assert_element_disabled(selector)
+            self.ui_helper.assert_element_disabled(selector=selector)
 
         elif action in StepAction.ASSERT_ATTRIBUTE:
             attribute = step.get("attribute")
             expected = step.get("expected", value)
-            self.ui_helper.assert_attribute(selector, attribute, expected)
+            self.ui_helper.assert_attribute(
+                selector=selector, attribute=attribute, expected_value=expected
+            )
 
         elif action in StepAction.ASSERT_VALUE:
             expected = step.get("expected", value)
-            self.ui_helper.assert_value(selector, expected)
+            self.ui_helper.assert_value(selector=selector, expected_value=expected)
 
         elif action in StepAction.STORE_VARIABLE:
             var_name = step.get("name", "temp_var")
             var_value = step.get("value")
             scope = step.get("scope", "global")
             # 存储变量
-            self.variable_manager.set_variable(var_name, var_value, scope)
+            self.variable_manager.set_variable(
+                name=var_name, value=var_value, scope=scope
+            )
             logger.info(f"已存储变量 {var_name}={var_value} (scope={scope})")
 
         elif action in StepAction.STORE_TEXT:
             var_name = step.get("variable_name", "text_var")
             scope = step.get("scope", "global")
             # 获取元素文本
-            text = self.ui_helper.get_text(selector)
+            text = self.ui_helper.get_text(selector=selector)
             # 存储文本
-            self.variable_manager.set_variable(var_name, text, scope)
+            self.variable_manager.set_variable(name=var_name, value=text, scope=scope)
             logger.info(f"已存储元素文本 {var_name}={text} (scope={scope})")
 
         elif action in StepAction.REFRESH:
-            self.ui_helper.refresh()
+            self.ui_helper.refresh(action="refresh")
 
         elif action in StepAction.HOVER:
-            self.ui_helper.hover(selector)
+            self.ui_helper.hover(selector=selector)
 
         elif action in StepAction.DOUBLE_CLICK:
-            self.ui_helper.double_click(selector)
+            self.ui_helper.double_click(selector=selector)
 
         elif action in StepAction.RIGHT_CLICK:
-            self.ui_helper.right_click(selector)
+            self.ui_helper.right_click(selector=selector)
 
         elif action in StepAction.SELECT:
-            self.ui_helper.select_option(selector, value)
+            self.ui_helper.select_option(selector=selector, value=value)
 
         elif action in StepAction.DRAG_AND_DROP:
             target = step.get("target")
-            self.ui_helper.drag_and_drop(selector, target)
+            self.ui_helper.drag_and_drop(source=selector, target=target)
 
         elif action in StepAction.GET_VALUE:
-            result = self.ui_helper.get_value(selector)
+            result = self.ui_helper.get_value(selector=selector)
             if "variable_name" in step:
                 self.ui_helper.store_variable(
-                    step["variable_name"], result, step.get("scope", "global")
+                    name=step["variable_name"],
+                    value=result,
+                    scope=step.get("scope", "global"),
                 )
 
         elif action in StepAction.GET_ALL_ELEMENTS:
-            elements = self.ui_helper.get_all_elements(selector)
+            elements = self.ui_helper.get_all_elements(selector=selector)
             if "variable_name" in step:
                 self.ui_helper.store_variable(
-                    step["variable_name"], elements, step.get("scope", "global")
+                    name=step["variable_name"],
+                    value=elements,
+                    scope=step.get("scope", "global"),
                 )
 
         elif action in StepAction.SCROLL_INTO_VIEW:
-            self.ui_helper.scroll_into_view(selector)
+            self.ui_helper.scroll_into_view(selector=selector)
 
         elif action in StepAction.SCROLL_TO:
             x = int(step.get("x", 0))
             y = int(step.get("y", 0))
-            self.ui_helper.scroll_to(x, y)
+            self.ui_helper.scroll_to(x=x, y=y)
 
         elif action in StepAction.FOCUS:
-            self.ui_helper.focus(selector)
+            self.ui_helper.focus(selector=selector)
 
         elif action in StepAction.BLUR:
-            self.ui_helper.blur(selector)
+            self.ui_helper.blur(selector=selector)
 
         elif action in StepAction.TYPE:
             delay = int(step.get("delay", DEFAULT_TYPE_DELAY))
-            self.ui_helper.type(selector, value, delay)
+            self.ui_helper.type(selector=selector, text=value, delay=delay)
 
         elif action in StepAction.CLEAR:
-            self.ui_helper.clear(selector)
+            self.ui_helper.clear(selector=selector)
 
         elif action in StepAction.ENTER_FRAME:
-            self.ui_helper.enter_frame(selector)
+            self.ui_helper.enter_frame(selector=selector)
 
         elif action in StepAction.ACCEPT_ALERT:
-            text = self.ui_helper.accept_alert(selector, value)
+            text = self.ui_helper.accept_alert(selector=selector, prompt_text=value)
 
         elif action in StepAction.DISMISS_ALERT:
-            self.ui_helper.dismiss_alert(selector)
+            self.ui_helper.dismiss_alert(selector=selector)
 
         elif action in StepAction.EXPECT_POPUP:
             action = step.get("real_action", "click")
             variable_name = step.get("variable_name", value)
-            self.ui_helper.expect_popup(action, selector, variable_name)
+            self.ui_helper.expect_popup(
+                action=action, selector=selector, variable_name=variable_name
+            )
 
         elif action in StepAction.SWITCH_WINDOW:
-            self.ui_helper.switch_window(value)
+            self.ui_helper.switch_window(window_name=value)
 
         elif action in StepAction.CLOSE_WINDOW:
-            self.ui_helper.close_window()
+            self.ui_helper.close_window(action="close_window")
 
         elif action in StepAction.WAIT_FOR_NEW_WINDOW:
-            new_page = self.ui_helper.wait_for_new_window()
+            new_page = self.ui_helper.wait_for_new_window(action="wait_for_new_window")
             if "variable_name" in step:
                 self.ui_helper.store_variable(
-                    step["variable_name"], new_page, step.get("scope", "global")
+                    name=step["variable_name"],
+                    value=new_page,
+                    scope=step.get("scope", "global"),
                 )
 
         elif action in StepAction.SAVE_ELEMENT_COUNT:
-            count = self.ui_helper.get_element_count(selector)
+            count = self.ui_helper.get_element_count(selector=selector)
             if "variable_name" in step:
                 self.ui_helper.store_variable(
-                    step["variable_name"], str(count), step.get("scope", "global")
+                    name=step["variable_name"],
+                    value=str(count),
+                    scope=step.get("scope", "global"),
                 )
 
         elif action in StepAction.DOWNLOAD_FILE:
             save_path = step.get("save_path")
-            file_path = self.ui_helper.download_file(selector, save_path)
+            file_path = self.ui_helper.download_file(
+                selector=selector, save_path=save_path
+            )
             if "variable_name" in step:
                 self.ui_helper.store_variable(
-                    step["variable_name"], file_path, step.get("scope", "global")
+                    name=step["variable_name"],
+                    value=file_path,
+                    scope=step.get("scope", "global"),
                 )
 
         elif action in StepAction.DOWNLOAD_VERIFY:
             file_pattern = step.get("file_pattern", value)
             timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
-            result = self.ui_helper.verify_download(file_pattern, timeout)
+            result = self.ui_helper.verify_download(
+                file_pattern=file_pattern, timeout=timeout
+            )
             if "variable_name" in step:
                 self.ui_helper.store_variable(
-                    step["variable_name"], str(result), step.get("scope", "global")
+                    name=step["variable_name"],
+                    value=str(result),
+                    scope=step.get("scope", "global"),
                 )
 
         elif action in StepAction.FAKER:
@@ -399,25 +450,27 @@ class StepExecutor:
                 raise ValueError("步骤缺少必要参数: variable_name")
 
             # 直接使用ui_helper的方法
-            value = generate_faker_data(data_type, **kwargs)
+            value = generate_faker_data(data_type=data_type, **kwargs)
             self.ui_helper.store_variable(
-                step["variable_name"], value, step.get("scope", "global")
+                name=step["variable_name"],
+                value=value,
+                scope=step.get("scope", "global"),
             )
 
         elif action in StepAction.KEYBOARD_SHORTCUT:
             key_combination = step.get("key_combination", value)
-            self.ui_helper.press_keyboard_shortcut(key_combination)
+            self.ui_helper.press_keyboard_shortcut(key_combination=key_combination)
 
         elif action in StepAction.KEYBOARD_PRESS:
             key = step.get("key", value)
-            self.ui_helper.keyboard_press(key)
+            self.ui_helper.keyboard_press(key=key)
 
         elif action in StepAction.KEYBOARD_TYPE:
             text = step.get("text", value)
             delay = int(step.get("delay", DEFAULT_TYPE_DELAY))
-            self.ui_helper.keyboard_type(text, delay)
+            self.ui_helper.keyboard_type(text=text, delay=delay)
         elif action in StepAction.EXECUTE_PYTHON:
-            run_dynamic_script_from_path(value)
+            run_dynamic_script_from_path(script_path=value)
 
         # 监测请求
         elif action in StepAction.MONITOR_REQUEST:
@@ -461,7 +514,9 @@ class StepExecutor:
 
             # 如果提供了变量名，存储捕获数据
             if variable_name:
-                self.variable_manager.set_variable(variable_name, request_data, scope)
+                self.variable_manager.set_variable(
+                    name=variable_name, value=request_data, scope=scope
+                )
                 logger.info(f"已存储请求数据到变量 {variable_name}")
 
         # 监测响应
@@ -510,7 +565,9 @@ class StepExecutor:
 
             # 如果提供了变量名，存储捕获数据
             if variable_name:
-                self.variable_manager.set_variable(variable_name, response_data, scope)
+                self.variable_manager.set_variable(
+                    name=variable_name, value=response_data, scope=scope
+                )
                 logger.info(f"已存储响应数据到变量 {variable_name}")
 
         # 保留 ASSERT_HAVE_VALUES，因为它是独特的功能
@@ -525,7 +582,9 @@ class StepExecutor:
                 except Exception:
                     # 如果不是JSON，则分割字符串
                     expected_values = expected_values.split(",")
-            self.ui_helper.assert_values(selector, expected_values)
+            self.ui_helper.assert_values(
+                selector=selector, expected_values=expected_values
+            )
 
     def _replace_variables(self, value: Any) -> Any:
         """
@@ -653,8 +712,8 @@ class StepExecutor:
         self._log_step_duration()
 
         # 失败时采集证据
-        if self.step_has_error:
-            self._capture_failure_evidence()
+        # if self.step_has_error:
+        #     self._capture_failure_evidence()
 
     def _log_step_duration(self):
         """统一记录步骤耗时"""
@@ -669,15 +728,6 @@ class StepExecutor:
             # 生成时间戳
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-            # 3. 捕获步骤日志
-            log_content = self._log_buffer.getvalue()
-            allure.attach(
-                log_content,
-                name="步骤日志",
-                attachment_type=allure.attachment_type.TEXT,
-            )
-
-            # 4. 记录上下文信息
             context_info = f"URL: {self.page.url}\n错误时间: {timestamp}"
             allure.attach(
                 context_info,

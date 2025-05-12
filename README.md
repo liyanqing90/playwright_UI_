@@ -1,6 +1,7 @@
 # 之家 UI 自动化测试框架
 
-之家 UI 自动化测试框架是一个基于 Playwright 的 UI 自动化测试框架，采用模块化设计，支持 YAML 格式的测试用例定义，提供灵活、高效、可维护的自动化测试解决方案。
+之家 UI 自动化测试框架是一个基于 Playwright 的 UI 自动化测试框架，采用模块化设计，支持 YAML
+格式的测试用例定义，提供灵活、高效、可维护的自动化测试解决方案。
 
 ## 目录
 
@@ -21,6 +22,7 @@
 ## 框架特性
 
 ### 核心功能
+
 - **多浏览器支持**：基于Playwright实现，支持Chrome、Firefox、Safari等主流浏览器
 - **YAML用例编写方式**：支持YAML方式编写测试用例
 - **丰富的UI操作**：内置40+种常用UI操作，覆盖各种交互场景
@@ -29,16 +31,17 @@
 - **详细日志与报告**：详细的操作日志、失败截图和Allure测试报告
 
 ### 高级特性
+
 - **数据驱动能力**：
-  - 多级变量管理：支持全局变量、测试用例级变量和临时变量
-  - 表达式计算：支持条件判断、数学运算等
-  - 模块化组件：可复用的测试步骤片段
-  - 流程控制：支持if-then-else条件分支和for_each循环结构
+    - 多级变量管理：支持全局变量、测试用例级变量和临时变量
+    - 表达式计算：支持条件判断、数学运算等
+    - 模块化组件：可复用的测试步骤片段
+    - 流程控制：支持if-then-else条件分支和for_each循环结构
 
 - **性能优化功能**：
-  - 浏览器资源池：减少浏览器启动开销，支持复用和健康检查
-  - 智能截图策略：仅在测试失败时截图，支持压缩和区域截图
-  - 日志轮转机制：自动归档和清理日志，减少存储占用
+    - 浏览器资源池：减少浏览器启动开销，支持复用和健康检查
+    - 智能截图策略：仅在测试失败时截图，支持压缩和区域截图
+    - 日志轮转机制：自动归档和清理日志，减少存储占用
 
 ## 架构概述
 
@@ -219,85 +222,85 @@ zhijia_ui/
 测试用例由三个核心文件协同定义，采用模块化组织方式：
 
 1. **用例元数据文件** (`cases/cases.yaml`)
-   - 定义测试用例的基本信息
-   - 包含用例名称、描述、标签、前置条件等
-   - 示例：
-     ```yaml
-     test_login:
-       description: "用户登录测试"
-       tags: ["smoke", "login"]
-       fixtures: ["setup_browser"]
-       depends_on: []
-     ```
+    - 定义测试用例的基本信息
+    - 包含用例名称、描述、标签、前置条件等
+    - 示例：
+      ```yaml
+      test_login:
+        description: "用户登录测试"
+        tags: ["smoke", "login"]
+        fixtures: ["setup_browser"]
+        depends_on: []
+      ```
 
 2. **测试步骤文件** (`data/index.yaml`)
-   - 定义测试用例的具体执行步骤
-   - 包含操作类型、目标元素、参数值等
-   - 支持条件分支、循环和模块引用
-   - 示例：
-     ```yaml
-     test_login:
-       steps:
-         - action: goto
-           value: "${base_url}/login"
-           description: "打开登录页面"
-
-         - action: fill
-           selector: "username_input"
-           value: "${username}"
-           description: "输入用户名"
-
-         - action: fill
-           selector: "password_input"
-           value: "${password}"
-           description: "输入密码"
-
-         - action: click
-           selector: "login_button"
-           description: "点击登录按钮"
-
-         - action: expect_visible
-           selector: "welcome_message"
-           timeout: 5000
-           description: "验证登录成功"
-     ```
+    - 定义测试用例的具体执行步骤
+    - 包含操作类型、目标元素、参数值等
+    - 支持条件分支、循环和模块引用
+    - 示例：
+      ```yaml
+      test_login:
+        steps:
+          - action: goto
+            value: "${base_url}/login"
+            description: "打开登录页面"
+ 
+          - action: fill
+            selector: "username_input"
+            value: "${username}"
+            description: "输入用户名"
+ 
+          - action: fill
+            selector: "password_input"
+            value: "${password}"
+            description: "输入密码"
+ 
+          - action: click
+            selector: "login_button"
+            description: "点击登录按钮"
+ 
+          - action: expect_visible
+            selector: "welcome_message"
+            timeout: 5000
+            description: "验证登录成功"
+      ```
 
 3. **元素定义文件** (`elements/elements.yaml`)
-   - 集中定义页面元素的定位策略
-   - 支持多种定位方式（CSS、XPath、Text等）
-   - 每个元素包含选择器和描述信息
-   - 示例：
-     ```yaml
-     username_input:  "#username" # "用户名输入框"
-
-     password_input:  "#password" # "密码输入框"
-
-     login_button:  "button.login-btn" # "登录按钮"
-
-     welcome_message: ".welcome-text" # "欢迎信息"
-     ```
+    - 集中定义页面元素的定位策略
+    - 支持多种定位方式（CSS、XPath、Text等）
+    - 每个元素包含选择器和描述信息
+    - 示例：
+      ```yaml
+      username_input:  "#username" # "用户名输入框"
+ 
+      password_input:  "#password" # "密码输入框"
+ 
+      login_button:  "button.login-btn" # "登录按钮"
+ 
+      welcome_message: ".welcome-text" # "欢迎信息"
+      ```
 
 #### 用例编写流程
 
 1. **规划测试用例**
-   - 确定测试目标和范围
-   - 设计测试步骤和预期结果
+    - 确定测试目标和范围
+    - 设计测试步骤和预期结果
 
 2. **定义页面元素**
-   - 在 `elements/elements.yaml` 中添加所需元素
-   - 使用最稳定的定位方式
-   - 添加清晰的描述信息
+    - 在 `elements/elements.yaml` 中添加所需元素
+    - 使用最稳定的定位方式
+    - 添加清晰的描述信息
 
 3. **编写测试用例元数据**
-   - 在 `cases/cases.yaml` 中添加用例定义
-   - 指定用例名称、描述和标签
-   - 配置必要的前置条件
+    - 在 `cases/cases.yaml` 中添加用例定义
+    - 指定用例名称、描述和标签
+    - 配置必要的前置条件
 
 4. **编写测试步骤**
-   - 在 `data/index.yaml` 中添加测试步骤
-   - 按顺序编写清晰的操作步骤
-   - 使用变量和参数化数据
-   - 添加必要的断言和验证步骤
+    - 在 `data/index.yaml` 中添加测试步骤
+    - 按顺序编写清晰的操作步骤
+    - 使用变量和参数化数据
+    - 添加必要的断言和验证步骤
 
 ## 高级功能
 
@@ -423,47 +426,46 @@ login_test:
   # 当 count 大于 5 时执行的步骤
 ```
 
-
 ## 最佳实践
 
 ### 用例组织与管理
 
 1. **模块化组织**
-   - 按功能模块组织测试用例
-   - 将常用操作封装为可复用模块
-   - 使用标签对用例进行分类
+    - 按功能模块组织测试用例
+    - 将常用操作封装为可复用模块
+    - 使用标签对用例进行分类
 
 2. **命名规范**
-   - 使用描述性的用例名称，如 `test_login_valid_credentials`
-   - 元素ID采用功能描述性命名，如 `login_button`
-   - 测试步骤添加清晰的描述信息
+    - 使用描述性的用例名称，如 `test_login_valid_credentials`
+    - 元素ID采用功能描述性命名，如 `login_button`
+    - 测试步骤添加清晰的描述信息
 
 3. **数据管理**
-   - 使用变量文件管理测试数据，避免硬编码
-   - 分离测试数据与测试逻辑
-   - 使用参数化实现数据驱动测试
+    - 使用变量文件管理测试数据，避免硬编码
+    - 分离测试数据与测试逻辑
+    - 使用参数化实现数据驱动测试
 
 ### 编写技巧
 
 1. **元素定位**
-   - 优先使用ID、CSS选择器等稳定的定位方式
-   - 避免使用绝对路径和索引定位
-   - 为复杂元素添加详细注释
+    - 优先使用ID、CSS选择器等稳定的定位方式
+    - 避免使用绝对路径和索引定位
+    - 为复杂元素添加详细注释
 
 2. **等待策略**
-   - 使用显式等待而非固定等待时间
-   - 为关键操作添加适当的超时时间
-   - 利用自适应等待机制提高测试稳定性
+    - 使用显式等待而非固定等待时间
+    - 为关键操作添加适当的超时时间
+    - 利用自适应等待机制提高测试稳定性
 
 3. **断言与验证**
-   - 每个关键步骤后添加验证
-   - 使用精确的断言而非模糊的检查
-   - 在流程转换点添加状态验证
+    - 每个关键步骤后添加验证
+    - 使用精确的断言而非模糊的检查
+    - 在流程转换点添加状态验证
 
 4. **错误处理**
-   - 添加适当的错误捕获和恢复机制
-   - 为失败用例提供详细的错误信息
-   - 实现智能重试机制处理闪现问题
+    - 添加适当的错误捕获和恢复机制
+    - 为失败用例提供详细的错误信息
+    - 实现智能重试机制处理闪现问题
 
 ## 常用命令
 
@@ -493,19 +495,16 @@ $ python check_duplicates.py
 ### 元素定位最佳实践
 
 1. **优先使用稳定定位符**
-   - 优先级: ID > 数据属性 > CSS选择器 > XPath
-   - 避免使用索引和绝对路径
+    - 优先级: ID > 数据属性 > CSS选择器 > XPath
+    - 避免使用索引和绝对路径
 
 2. **使用语义化命名**
-   - 元素ID应描述其功能而非位置
-   - 例如: `login_button` 而非 `button_1`
+    - 元素ID应描述其功能而非位置
+    - 例如: `login_button` 而非 `button_1`
 
 3. **添加详细注释**
-   - 为复杂元素添加清晰的描述
-   - 说明元素的用途和位置
-
-
-
+    - 为复杂元素添加清晰的描述
+    - 说明元素的用途和位置
 
 ### 代码规范
 
@@ -520,6 +519,7 @@ $ python check_duplicates.py
 **Q: 安装依赖时出现错误**
 
 A: 尝试以下解决方案：
+
 1. 确保您使用的是 Python 3.10 或更高版本
 2. 更新 Poetry: `pip install --upgrade poetry`
 3. 清除 Poetry 缓存: `poetry cache clear --all pypi`
@@ -527,6 +527,7 @@ A: 尝试以下解决方案：
 **Q: Playwright 浏览器安装失败**
 
 A: 手动安装浏览器：
+
 ```bash
 python -m playwright install chromium
 ```
@@ -536,6 +537,7 @@ python -m playwright install chromium
 **Q: 测试运行不稳定，经常失败**
 
 A: 可能的原因和解决方案：
+
 1. 增加等待时间或使用显式等待
 2. 检查元素定位符是否稳定
 3. 在调试模式下运行以获取更多信息
@@ -543,6 +545,7 @@ A: 可能的原因和解决方案：
 **Q: 如何调试复杂的测试用例？**
 
 A: 使用以下方法：
+
 1. 添加 `page.pause()` 暂停浏览器
 2. 使用有头模式运行: `python test_runner.py --project demo --headed`
 3. 检查生成的日志和截图

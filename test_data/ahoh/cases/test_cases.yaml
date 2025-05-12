@@ -1,20 +1,20 @@
 test_cases:
-#    - name: test_待清洗的线索-对客作业-跟进方式见面和微信+查看跟进详情
-  #  - name: test_创建试驾任务和取消任务
-  #  - name: test_登录
-  #  - name: test_取消看舱
-  #  - name: test_清洗任务填跟进
-  #  - name: test_清洗任务生成的管家回电任务填跟进
-#  - name: test_管家回电任务生成的再联系任务跟进
-#  - name: test_看舱任务完成
-#  - name: test_生成当日公户用户订单，提交审核全流程
-#  - name: test_公户用户订单提交审核后管家上传发票
-#  - name: test_生成当日公户用户订单，常规品牌发起确认函
-# - name: test_生成当日公户用户订单，订单暂存
-# - name: test_客户列表_推送功能&客户卡片
-# - name: test_生成订单，取消下订
-#    - name: test_生成当日个户用户订单，常规品牌发起确认函
-#    - name: test_查看常规品牌确认函详情
-#    - name: test_查看常规品牌有确认函的订单信息
-#    - name: test_查看常规品牌订单信息_无确认函
-    - name: test_订单详情中点击取消下订
+#    - name: test_complete_cleaning_task_with_meet_and_wechat_img_and_view_customer_follow_up_detail #待清洗的线索-对客作业-跟进方式见面和微信+查看跟进详情
+  #  - name: test_create_test_drive_task_and_cancel_task #创建试驾任务和取消任务
+  #  - name: test_login #登录
+  #  - name: test_cancel_holographic_cabin_viewing_task #取消看舱
+  #  - name: test_complete_cleaning_task #清洗任务填跟进
+  #  - name: test_complete_call_back_task_generate_from_cleaning_task #清洗任务生成的管家回电任务填跟进
+#  - name: test_complete_reconnection_task_generate_from_call_back_task #管家回电任务生成的再联系任务跟进
+#  - name: test_complete_holographic_cabin_viewing_task #看舱任务完成
+#  - name: test_submit_daily_corporate_order # 生成当日公户用户订单，提交审核全流程
+#  - name: test_upload_invoice_for_submitted_corporate_order #提交审核的公户订单管家操作上传发票
+#  - name: test_generate_daily_corporate_order_confirmations_for_regular_brand #常规品牌的当日订单发起确认函
+# - name: test_temp_store_today_corporate_orders #订单暂存
+# - name: test_push_car_models_in_customer_list #客户列表中客户卡片的推送车型功能
+# - name: test_cancel_order_from_order_list #订单列表操作取消订单
+#    - name: test_generate_daily_individual_order_confirmations_for_regular_brand #常规品牌个户订单发起确认函
+#    - name: test_view_regular_brand_confirmation_detail #常规品牌订单查看确认函详情
+#    - name: test_view_regular_brand_order_detail_with_confirmation #已发起确认函的常规品牌订单查看订单详情
+    - name: test_view_regular_brand_order_detail_without_confirmation #未发起确认函的常规品牌查看订单详情
+#    - name: test_cancel_order_from_order_detail #订单详情中操作取消订单

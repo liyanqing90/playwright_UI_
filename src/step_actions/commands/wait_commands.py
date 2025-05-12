@@ -19,7 +19,7 @@ class WaitCommand(Command):
         wait_time = (
             int(float(step.get("value", 1)) * 1000) if step.get("value") else 1000
         )
-        ui_helper.wait_for_timeout(wait_time)
+        ui_helper.wait_for_timeout(timeout=wait_time)
 
 
 @CommandFactory.register(StepAction.WAIT_FOR_NETWORK_IDLE)
@@ -30,7 +30,7 @@ class WaitForNetworkIdleCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
-        ui_helper.wait_for_network_idle(timeout)
+        ui_helper.wait_for_network_idle(timeout=timeout)
 
 
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_HIDDEN)
@@ -41,7 +41,7 @@ class WaitForElementHiddenCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
-        ui_helper.wait_for_element_hidden(selector, timeout)
+        ui_helper.wait_for_element_hidden(selector=selector, timeout=timeout)
 
 
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_CLICKABLE)
@@ -52,7 +52,7 @@ class WaitForElementClickableCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
-        ui_helper.wait_for_element_clickable(selector, timeout)
+        ui_helper.wait_for_element_clickable(selector=selector, timeout=timeout)
 
 
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_TEXT)
@@ -64,7 +64,9 @@ class WaitForElementTextCommand(Command):
     ) -> None:
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
         expected_text = step.get("expected_text", value)
-        ui_helper.wait_for_element_text(selector, expected_text, timeout)
+        ui_helper.wait_for_element_text(
+            selector=selector, expected_text=expected_text, timeout=timeout
+        )
 
 
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_COUNT)
@@ -76,7 +78,9 @@ class WaitForElementCountCommand(Command):
     ) -> None:
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
         expected_count = int(step.get("expected_count", value))
-        ui_helper.wait_for_element_count(selector, expected_count, timeout)
+        ui_helper.wait_for_element_count(
+            selector=selector, expected_count=expected_count, timeout=timeout
+        )
 
 
 @CommandFactory.register(StepAction.WAIT_FOR_NEW_WINDOW)
@@ -86,7 +90,7 @@ class WaitForNewWindowCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        new_page = ui_helper.wait_for_new_window()
+        new_page = ui_helper.wait_for_new_window(action="wait_for_new_window")
         if "variable_name" in step:
             ui_helper.store_variable(
                 step["variable_name"], new_page, step.get("scope", "global")

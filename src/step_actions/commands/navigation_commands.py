@@ -21,7 +21,7 @@ class NavigateCommand(Command):
             value = url
         if "http" not in value:
             value = url + value
-        ui_helper.navigate(value)
+        ui_helper.navigate(url=value)
 
 
 @CommandFactory.register(StepAction.REFRESH)
@@ -31,7 +31,7 @@ class RefreshCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.refresh()
+        ui_helper.refresh(action="refresh")
 
 
 @CommandFactory.register(StepAction.PAUSE)
@@ -41,4 +41,4 @@ class PauseCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.pause()
+        ui_helper.pause(action="pause")

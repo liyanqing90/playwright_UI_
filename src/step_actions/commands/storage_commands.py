@@ -48,7 +48,7 @@ class StoreTextCommand(Command):
         var_name = step.get("variable_name", "text_var")
         scope = step.get("scope", "global")
         # 获取元素文本
-        text = ui_helper.get_text(selector)
+        text = ui_helper.get_text(selector=selector)
         # 存储文本
         ui_helper.variable_manager.set_variable(var_name, text, scope)
         logger.info(f"已存储元素文本 {var_name}={text} (scope={scope})")
@@ -65,7 +65,9 @@ class StoreAttributeCommand(Command):
         attribute = step.get("attribute")
         scope = step.get("scope", "global")
         # 获取元素属性
-        attr_value = ui_helper.get_element_attribute(selector, attribute)
+        attr_value = ui_helper.get_element_attribute(
+            selector=selector, attribute=attribute
+        )
         # 存储属性
         ui_helper.variable_manager.set_variable(var_name, attr_value, scope)
         logger.info(f"已存储元素属性 {var_name}={attr_value} (scope={scope})")
@@ -78,7 +80,7 @@ class SaveElementCountCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        count = ui_helper.get_element_count(selector)
+        count = ui_helper.get_element_count(selector=selector)
         if "variable_name" in step:
             ui_helper.store_variable(
                 step["variable_name"], str(count), step.get("scope", "global")
