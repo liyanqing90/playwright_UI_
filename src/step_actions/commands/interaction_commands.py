@@ -16,7 +16,7 @@ class ClickCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.click(selector)
+        ui_helper.click(selector=selector)
 
 
 @CommandFactory.register(StepAction.FILL)
@@ -26,7 +26,7 @@ class FillCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.fill(selector, value)
+        ui_helper.fill(selector=selector, value=value)
 
 
 @CommandFactory.register(StepAction.PRESS_KEY)
@@ -36,7 +36,7 @@ class PressKeyCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.press_key(selector, step.get("key", value))
+        ui_helper.press_key(selector=selector, key=step.get("key", value))
 
 
 @CommandFactory.register(StepAction.TYPE)
@@ -47,7 +47,7 @@ class TypeCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         delay = int(step.get("delay", DEFAULT_TYPE_DELAY))
-        ui_helper.type(selector, value, delay)
+        ui_helper.type(selector=selector, text=value, delay=delay)
 
 
 @CommandFactory.register(StepAction.CLEAR)
@@ -57,7 +57,7 @@ class ClearCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.clear(selector)
+        ui_helper.clear(selector=selector)
 
 
 @CommandFactory.register(StepAction.HOVER)
@@ -67,7 +67,7 @@ class HoverCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.hover(selector)
+        ui_helper.hover(selector=selector)
 
 
 @CommandFactory.register(StepAction.DOUBLE_CLICK)
@@ -77,7 +77,7 @@ class DoubleClickCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.double_click(selector)
+        ui_helper.double_click(selector=selector)
 
 
 @CommandFactory.register(StepAction.RIGHT_CLICK)
@@ -87,7 +87,7 @@ class RightClickCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.right_click(selector)
+        ui_helper.right_click(selector=selector)
 
 
 @CommandFactory.register(StepAction.SELECT)
@@ -97,7 +97,7 @@ class SelectCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.select_option(selector, value)
+        ui_helper.select_option(selector=selector, value=value)
 
 
 @CommandFactory.register(StepAction.UPLOAD)
@@ -107,4 +107,4 @@ class UploadCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.upload_file(selector, value)
+        ui_helper.upload_file(selector=selector, file_path=value)

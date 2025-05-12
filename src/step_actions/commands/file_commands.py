@@ -17,7 +17,7 @@ class DownloadFileCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         save_path = step.get("save_path")
-        file_path = ui_helper.download_file(selector, save_path)
+        file_path = ui_helper.download_file(selector=selector, save_path=save_path)
         if "variable_name" in step:
             ui_helper.store_variable(
                 step["variable_name"], file_path, step.get("scope", "global")
@@ -33,7 +33,7 @@ class DownloadVerifyCommand(Command):
     ) -> None:
         file_pattern = step.get("file_pattern", value)
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
-        result = ui_helper.verify_download(file_pattern, timeout)
+        result = ui_helper.verify_download(file_pattern=file_pattern, timeout=timeout)
         if "variable_name" in step:
             ui_helper.store_variable(
                 step["variable_name"], str(result), step.get("scope", "global")

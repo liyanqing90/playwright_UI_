@@ -481,7 +481,6 @@ test_data:
       - action: click
         selector: rights_detail_text
       - action: assert_title
-#        selector: navigation_bar
         value: "买贵必赔权益说明"
 
   test_store_list:

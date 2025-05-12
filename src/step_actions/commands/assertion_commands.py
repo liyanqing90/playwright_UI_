@@ -18,7 +18,7 @@ class AssertTextCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         expected = step.get("expected", value)
-        ui_helper.assert_text(selector, expected)
+        ui_helper.assert_text(selector=selector, expected=expected)
 
 
 @CommandFactory.register(StepAction.HARD_ASSERT_TEXT)
@@ -29,7 +29,7 @@ class HardAssertTextCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         expected = step.get("expected", value)
-        ui_helper.hard_assert_text(selector, expected)
+        ui_helper.hard_assert_text(selector=selector, expected=expected)
 
 
 @CommandFactory.register(StepAction.ASSERT_TEXT_CONTAINS)
@@ -40,7 +40,7 @@ class AssertTextContainsCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         expected = step.get("expected", value)
-        ui_helper.assert_text_contains(selector, expected)
+        ui_helper.assert_text_contains(selector=selector, expected=expected)
 
 
 @CommandFactory.register(StepAction.ASSERT_URL)
@@ -51,7 +51,7 @@ class AssertUrlCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         expected = step.get("expected", value)
-        ui_helper.assert_url(expected)
+        ui_helper.assert_url(expected=expected)
 
 
 @CommandFactory.register(StepAction.ASSERT_URL_CONTAINS)
@@ -62,7 +62,7 @@ class AssertUrlContainsCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         expected = step.get("expected", value)
-        ui_helper.assert_url_contains(expected)
+        ui_helper.assert_url_contains(expected=expected)
 
 
 @CommandFactory.register(StepAction.ASSERT_TITLE)
@@ -73,7 +73,7 @@ class AssertTitleCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         expected = step.get("expected", value)
-        ui_helper.assert_title(expected)
+        ui_helper.assert_title(expected=expected)
 
 
 @CommandFactory.register(StepAction.ASSERT_ELEMENT_COUNT)
@@ -89,15 +89,19 @@ class AssertElementCountCommand(Command):
         # 如果提供了表达式，则计算表达式的值
         if expression:
             try:
-                expected = evaluate_math_expression(expression, ui_helper.variable_manager)
+                expected = evaluate_math_expression(
+                    expression, ui_helper.variable_manager
+                )
                 from utils.logger import logger
+
                 logger.info(f"计算表达式: {expression} = {expected}")
             except Exception as e:
                 from utils.logger import logger
+
                 logger.error(f"计算表达式错误: {expression} - {e}")
                 raise
 
-        ui_helper.assert_element_count(selector, expected)
+        ui_helper.assert_element_count(selector=selector, expected=expected)
 
 
 @CommandFactory.register(StepAction.ASSERT_VISIBLE)
@@ -107,7 +111,7 @@ class AssertVisibleCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.assert_visible(selector)
+        ui_helper.assert_visible(selector=selector)
 
 
 @CommandFactory.register(StepAction.ASSERT_EXISTS)
@@ -117,7 +121,7 @@ class AssertExistsCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.assert_exists(selector)
+        ui_helper.assert_exists(selector=selector)
 
 
 @CommandFactory.register(StepAction.ASSERT_NOT_EXISTS)
@@ -127,7 +131,7 @@ class AssertNotExistsCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.assert_not_exists(selector)
+        ui_helper.assert_not_exists(selector=selector)
 
 
 @CommandFactory.register(StepAction.ASSERT_ENABLED)
@@ -137,7 +141,7 @@ class AssertEnabledCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.assert_element_enabled(selector)
+        ui_helper.assert_element_enabled(selector=selector)
 
 
 @CommandFactory.register(StepAction.ASSERT_DISABLED)
@@ -147,7 +151,7 @@ class AssertDisabledCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.assert_element_disabled(selector)
+        ui_helper.assert_element_disabled(selector=selector)
 
 
 @CommandFactory.register(StepAction.ASSERT_ATTRIBUTE)
@@ -159,7 +163,9 @@ class AssertAttributeCommand(Command):
     ) -> None:
         attribute = step.get("attribute")
         expected = step.get("expected", value)
-        ui_helper.assert_attribute(selector, attribute, expected)
+        ui_helper.assert_attribute(
+            selector=selector, attribute=attribute, expected=expected
+        )
 
 
 @CommandFactory.register(StepAction.ASSERT_VALUE)
@@ -170,7 +176,7 @@ class AssertValueCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         expected = step.get("expected", value)
-        ui_helper.assert_value(selector, expected)
+        ui_helper.assert_value(selector=selector, expected=expected)
 
 
 @CommandFactory.register(StepAction.ASSERT_HAVE_VALUES)
@@ -180,12 +186,12 @@ class AssertHaveValuesCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        expected_values = step.get("expected_values", value)
-        if isinstance(expected_values, str):
+        expected = step.get("expected_values", value)
+        if isinstance(expected, str):
             # 尝试解析为JSON数组
             try:
-                expected_values = json.loads(expected_values)
+                expected = json.loads(expected)
             except Exception:
                 # 如果不是JSON，则分割字符串
-                expected_values = expected_values.split(",")
-        ui_helper.assert_values(selector, expected_values)
+                expected = expected.split(",")
+        ui_helper.assert_values(selector=selector, expected=expected)
