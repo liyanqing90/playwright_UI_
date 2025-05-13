@@ -16,7 +16,6 @@ create_store_unvisited_leads_steps: # APP中管家创建未到店的线索
     value: ${phone_num}
   - action: 点击
     selector: 是否已到店
-    value: ''
   - action: 点击
     selector: 新增用户按钮
 

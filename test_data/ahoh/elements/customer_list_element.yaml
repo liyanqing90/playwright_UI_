@@ -13,28 +13,16 @@ elements:
   客户列表第一个卡片的意向车系: div.value-diff
   # 第一个客户卡片内部的客户信息容器
   first_customer_info: ".van-list .listcard:first-child .customer-card .customer-info" # 定位客户信息容器
-
   # 第一个客户信息头部容器
   first_header_container: ".van-list .listcard:first-child .header-container" # 定位头部信息容器
-
   # 第一个客户姓名和等级容器
   first_user_name_level: ".van-list .listcard:first-child .user-name-level"  # 定位包含用户名和等级的容器
-
-
-
   # 第一个客户电话
   first_listcard_phone: ".van-list .listcard:first-child .listcard-phone"  # 定位客户电话号码
-
   # 第一个列表项（来源、线索进店、到店时间等）
   first_listcard_item: ".van-list .listcard:first-child .listcard-item" # 定位列表项
-
   # 第一个列表项名称 (例如: 来源, 线索进店)
   first_listcard_item_name: ".van-list .listcard:first-child .listcard-item__name"  # 定位列表项的名称标签
-
-
-
-
-
   # 第一个收藏按钮
   first_favorite_button: ".van-list .listcard:first-child .footContainer .fillInWhiteBtn:nth-child(2)" # 定位加收藏按钮
 
@@ -43,6 +31,5 @@ elements:
 
   # 第一个填写跟进按钮
   first_follow_up_button: ".van-list .listcard:first-child .footContainer .fillInWhiteBtn.blueThemeColor" # 定位填写跟进按钮
-
   # 第一个更多信息按钮
   first_instore_info_title: ".van-list .listcard:first-child .instore-info-title" # 定位更多信息按钮
