@@ -109,8 +109,7 @@ elements:
   选择车系: //div[contains(@title,'奥迪A4L')]//div[1]
   车型筛选框: //input[@id='specId']
   选择车型: //div[contains(@title,'2025款 200万辆悦享版 40 TFSI 时尚动感型')]//div[1]
-  暂无数据: (//div[contains(@class,'ant-empty-description')][contains(text(),'暂无数据')])[1]
-
+  政策暂无数据: (//div[@class='ant-table-expanded-row-fixed'])[1]
   #编辑元素
   编辑库存状态输入框: span[title='现车']
   预定标签: //div[contains(@title,'预订')]//div[1]
@@ -142,11 +141,11 @@ elements:
   text_version: div[_nk='aPX813']
   cell_hk: tr[class='ant-table-row ant-table-row-level-0'] td:nth-child(1)
   cell_test: (//td[contains(text(),'测试宝骏20150609')])[1]
-  cell_28_980: td[class='ant-table-cell ant-table-cell-fix-left ant-table-cell-fix-left-last']
+  cell_28_980: (//td[normalize-space()='28.980'])[1]
   cell_booking: (//td[contains(text(),'预订')])[1]
   cell_month: (//td[contains(text(),'3个月以上')])[1]
-  裸车价cell_28_880: (//td[@class='ant-table-cell'][normalize-space()='28.880'])[1]
-  线上报价cell_28_880: (//td[@class='ant-table-cell'][normalize-space()='28.880'])[2]
+  裸车价cell_28_880: (//td[@class='ant-table-cell ant-table-cell-row-hover'][normalize-space()='28.879'])[1]
+  线上报价cell_28_880: (//td[@class='ant-table-cell'][normalize-space()='28.880'])[1]
   text_white: span[_nk='aPX821']
   text_1_000: span[_nk='aPX822']
   强制保险cell_force: (//td[@class='ant-table-cell'][contains(text(),'强制')])[1]
