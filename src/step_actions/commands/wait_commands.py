@@ -90,7 +90,7 @@ class WaitForNewWindowCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        new_page = ui_helper.wait_for_new_window(action="wait_for_new_window")
+        new_page = ui_helper.wait_for_new_window()
         if "variable_name" in step:
             ui_helper.store_variable(
                 step["variable_name"], new_page, step.get("scope", "global")

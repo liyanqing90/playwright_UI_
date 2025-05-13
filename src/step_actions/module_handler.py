@@ -2,11 +2,11 @@
 处理模块相关的操作
 """
 
-import os
 from typing import Dict, Any, List
 
 import allure
 
+from src.case_utils import load_moules
 from utils.logger import logger
 
 
@@ -55,34 +55,19 @@ def _replace_module_params(
     return processed_steps
 
 
-def find_module(module_name: str, project_name: str = None) -> Dict[str, Any]:
+def find_module(module_name: str) -> Dict[str, Any]:
     """
     查找并加载模块数据
 
     Args:
         module_name: 模块名称
-        project_name: 项目名称，用于确定模块目录
-
     Returns:
         模块数据
 
     Raises:
         ValueError: 如果找不到模块
     """
-    from utils.yaml_handler import YamlHandler
-    from pathlib import Path
-
-    yaml_handler = YamlHandler()
-
-    # 确定模块目录
-    if project_name:
-        modules_dir = Path("test_data") / project_name / "modules"
-    else:
-        test_dir = os.environ.get("TEST_DIR", "test_data")
-        modules_dir = Path(test_dir) / "modules"
-
-    # 如果没有找到直接匹配的文件，使用load_yaml_dir加载整个目录
-    all_modules = yaml_handler.load_yaml_dir(modules_dir)
+    all_modules = load_moules()
 
     # 检查是否有匹配的模块名
     if module_name in all_modules:
@@ -118,7 +103,7 @@ def execute_module(step_executor, step: Dict[str, Any]) -> None:
             module_data = step_executor.modules_cache[module_name]
         else:
             # 获取模块路径和数据
-            module_data = find_module(module_name, step_executor.project_name)
+            module_data = find_module(module_name)
 
             # 缓存模块数据
             step_executor.modules_cache[module_name] = module_data

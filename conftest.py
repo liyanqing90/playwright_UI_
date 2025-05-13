@@ -1,5 +1,4 @@
 import json
-import os
 import time
 import types
 from datetime import datetime
@@ -12,13 +11,12 @@ from playwright.sync_api import Page, Browser, sync_playwright
 
 from constants import DEFAULT_TIMEOUT
 from page_objects.base_page import BasePage
-from src.case_utils import run_test_data
+from src.case_utils import run_test_data, load_test_cases, load_moules
 from src.runner import TestCaseGenerator
 from src.test_step_executor import StepExecutor
 from utils.config import Config
 from utils.dingtalk_notifier import ReportNotifier
 from utils.logger import logger
-from utils.yaml_handler import YamlHandler
 
 DINGTALK_TOKEN = "636325ecf2302baf112f74ac54d8ef991de9b307c00bd168d3f2baa7df7f9113"
 DINGTALK_SECRET = "SECa7e01bee3a34e05d1b57297a95b8920d8c257088979c49fa0b50889fd60c570c"
@@ -185,10 +183,8 @@ def extract_assertion_message(log_list):
 
 def pytest_collect_file(file_path: Path, parent):  # noqa
     datas = run_test_data()
-    yaml_handler = YamlHandler()
     if file_path.suffix in [".yaml", "xlsx"]:
-        if test_data := yaml_handler.load_yaml(file_path):
-            test_cases = test_data["test_cases"]
+        if test_cases := load_test_cases(file_path):
             py_module, module = create_py_module(file_path, parent, test_cases, datas)
             py_module._getobj = lambda: module  # 返回 pytest 模块对象
             return py_module
@@ -209,10 +205,8 @@ def create_py_module(file_path: Path, parent, test_cases, datas):
 
 @pytest.fixture()
 def login(page, ui_helper, request):
-    yaml = YamlHandler()
-    test_dir = os.environ.get("TEST_DIR")
-    elements = yaml.load_yaml_dir(f"{test_dir}/elements/").get("elements")
-    login_modules = yaml.load_yaml_dir(f"{test_dir}/modules/").get("login")
+    elements = run_test_data().get("elements")
+    login_modules = load_moules().get("login")
     step_executor = StepExecutor(page, ui_helper, elements)
     for step in login_modules:
         step_executor.execute_step(step)

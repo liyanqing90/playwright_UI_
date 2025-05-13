@@ -29,7 +29,7 @@ class SwitchWindowCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.switch_window(window_name=value)
+        ui_helper.switch_window(value=value)
 
 
 @CommandFactory.register(StepAction.CLOSE_WINDOW)
@@ -39,7 +39,7 @@ class CloseWindowCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.close_window(action="close_window")
+        ui_helper.close_window()
 
 
 @CommandFactory.register(StepAction.TAB_SWITCH)
@@ -49,4 +49,4 @@ class TabSwitchCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.switch_window(window_name=value)
+        ui_helper.switch_window(value=value)

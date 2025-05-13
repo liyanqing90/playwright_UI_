@@ -31,39 +31,38 @@ class YamlHandler:
             except Exception:
                 raise Exception(f"YAML文件解析错误: {file_path}")
 
+    def merge_yaml_files(self, dir_path: Path):
+        yaml_datas = self.load_yaml_dir(dir_path)
+        result = {}
+        for key in set(k for d in yaml_datas for k in d.keys()):
+            value = None
+            for yaml_data in yaml_datas:
+                if not isinstance(yaml_data, dict):
+                    raise ValueError(f"YAML文件内容不是字典格式")
+                if key in yaml_data:
+                    temp = yaml_data[key]
+                    if not value:
+                        value = temp
+                    else:
+                        if isinstance(temp, dict):
+                            value.update(temp)
+                        else:
+                            value += temp
+            result[key] = value
+
+        return result
+
     def load_yaml_dir(self, file_path):
         yaml_files = get_yaml_files(file_path)
-        all_data = []
-        result = {}
+        result = []
         if not yaml_files:
             return result
+        # 直接顺序加载并合并（后面的文件覆盖前面的）
         for yaml_file in yaml_files:
-            if yaml_data := self.load_yaml(yaml_file):
-                all_data.append(yaml_data)
-        if all_data:
-            for key in set(k for d in all_data for k in d.keys()):
-                value = None  # 先初始化为 None
-                for d in all_data:
-                    if key in d:  # 先判断键是否存在，避免 KeyError
-                        if value is None:  # 根据值的类型初始化
-                            if isinstance(d[key], list):
-                                value = []
-                            elif isinstance(d[key], dict):
-                                value = {}
-                            else:
-                                value = d[key]  # 对于不是list和dict的，直接赋值
-                                break  # 假设一个key的值都是同类型，若存在不是list和dict的，直接赋值，减少循环
-                        if isinstance(d[key], list):
-                            value += d[key]
-                        elif isinstance(d[key], dict):
-                            # 字典合并，如果需要复杂的合并逻辑，可以在这里修改
-                            value.update(d[key])
-                        elif isinstance(value, list):
-                            value.append(
-                                d[key]
-                            )  # 处理当key对应多个值，但是其中出现不是list或者dict的情况
-
-                result[key] = value
+            if data := self.load_yaml(yaml_file):
+                if not isinstance(data, dict):
+                    raise ValueError(f"YAML文件 {yaml_file} 内容不是字典格式")
+                result.append(data)
         return result
 
     def save_to_yaml(self, data_dict, output_dir, filename):
