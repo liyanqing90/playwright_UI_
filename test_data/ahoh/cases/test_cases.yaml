@@ -16,5 +16,7 @@ test_cases:
 #    - name: test_generate_daily_individual_order_confirmations_for_regular_brand #常规品牌个户订单发起确认函
 #    - name: test_view_regular_brand_confirmation_detail #常规品牌订单查看确认函详情
 #    - name: test_view_regular_brand_order_detail_with_confirmation #已发起确认函的常规品牌订单查看订单详情
-    - name: test_view_regular_brand_order_detail_without_confirmation #未发起确认函的常规品牌查看订单详情
+#    - name: test_view_regular_brand_order_detail_without_confirmation #未发起确认函的常规品牌查看订单详情
 #    - name: test_cancel_order_from_order_detail #订单详情中操作取消订单
+    - name: test_card_info_in_policy_list
+    - name: test_card_info_in_policy_detail
