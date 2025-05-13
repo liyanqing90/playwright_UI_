@@ -83,6 +83,7 @@ class StepExecutor:
     def execute_step(self, step: Dict[str, Any]) -> None:
         try:
             self.start_time = datetime.now()
+            self.step_has_error = False
 
             # 检查是否为流程控制步骤
             if "use_module" in step:
@@ -107,18 +108,15 @@ class StepExecutor:
             self._validate_step(action, selector)
             self._execute_action(action, selector, value, step)
         except AssertionError as e:
+            self.has_error = True
             self.step_has_error = True
             # raise
         except Exception as e:
             logger.error(f"步骤执行失败: {e}")
             self.has_error = True
             self.step_has_error = True
-            self._capture_failure_evidence()
             raise e
         finally:
-            # 如果是超时异常，跳过时间记录和额外处理
-            if self.step_has_error:
-                self._log_step_duration()
             self._finalize_step()
 
     def _validate_step(self, action, selector) -> None:
@@ -286,8 +284,8 @@ class StepExecutor:
         self._log_step_duration()
 
         # 失败时采集证据
-        # if self.step_has_error:
-        #     self._capture_failure_evidence()
+        if self.step_has_error:
+            self._capture_failure_evidence()
 
     def _log_step_duration(self):
         """统一记录步骤耗时"""
