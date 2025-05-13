@@ -116,7 +116,9 @@ class Config(BaseSettings):
         os.environ["TEST_PROJECT"] = self.project.value
 
 
-class DirPath:
+class BaseInfo:
     def __init__(self):
         self.test_dir = os.environ["TEST_DIR"]
         self.base_dir = Path.cwd()
+        self.env = os.environ["TEST_ENV"]
+        self.project = os.environ["TEST_PROJECT"]

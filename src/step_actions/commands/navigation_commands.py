@@ -31,7 +31,7 @@ class RefreshCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.refresh(action="refresh")
+        ui_helper.refresh()
 
 
 @CommandFactory.register(StepAction.PAUSE)
@@ -41,4 +41,4 @@ class PauseCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        ui_helper.pause(action="pause")
+        ui_helper.pause()

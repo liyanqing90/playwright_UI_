@@ -44,17 +44,11 @@ class TestCaseGenerator(pytest.Item):
         super().__init__(name, **kw)
         self.datas = datas
         self.test_cases = test_cases
-        self.test_data = self.datas.get("test_data", {})
+        self.test_datas = self.datas.get("test_datas", {})
         self.elements = self.datas.get("elements", {})
-        self.vars = self.datas.get("vars", {})
         self.module: types.ModuleType = module  # 动态创建的 module 模型
         self.module_variable = {}  # 模块变量
         self.variable_manager = VariableManager()  # 初始化变量管理器
-        # 加载全局变量到变量管理器
-
-        if self.vars:
-            for var_name, var_value in self.vars.items():
-                self.variable_manager.set_variable(var_name, var_value, "temp")
 
     def generate(self) -> None:
         """主生成方法"""
@@ -93,9 +87,8 @@ class TestCaseGenerator(pytest.Item):
 
         depends = case.get("depends_on", [])
         fixtures = case.get("fixtures", [])
-        case_data = self.test_data.get(case_name, {})
+        case_data = self.test_datas.get(case_name, {})
 
-        # 优化后的代码
         case_data = (
             [case_data]
             if isinstance(case_data, dict) and case_data
