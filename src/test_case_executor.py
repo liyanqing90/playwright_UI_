@@ -51,5 +51,4 @@ class CaseExecutor:
 
         # 执行所有步骤
         for step in steps:
-            # 这里不再使用try-except包裹，让异常直接传播
             step_executor.execute_step(step)

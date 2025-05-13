@@ -158,7 +158,7 @@ def check_and_screenshot(description="Assertion"):
                             break
 
                 # 返回空值，不抛出异常，允许继续执行
-                return None
+                raise
 
             except Exception as e:
                 if not hasattr(e, "_logged"):

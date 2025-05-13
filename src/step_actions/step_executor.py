@@ -83,6 +83,7 @@ class StepExecutor:
     def execute_step(self, step: Dict[str, Any]) -> None:
         try:
             self.start_time = datetime.now()
+            self.step_has_error = False
 
             # 检查是否为流程控制步骤
             if "use_module" in step:
@@ -107,26 +108,16 @@ class StepExecutor:
             self._validate_step(action, selector)
             self._execute_action(action, selector, value, step)
         except AssertionError as e:
-            # 标记整个执行器的错误状态
             self.has_error = True
-            # 同时标记当前步骤的错误状态
             self.step_has_error = True
-            raise
+            # raise
         except Exception as e:
+            logger.error(f"步骤执行失败: {e}")
             self.has_error = True
-            self._capture_failure_evidence()
-            raise
+            self.step_has_error = True
+            raise e
         finally:
-            # 如果是超时异常，跳过时间记录和额外处理
-            if self.step_has_error:
-                # 只记录耗时，不做其他处理
-                if self.start_time:
-                    duration = (datetime.now() - self.start_time).total_seconds()
-                    logger.debug(f"[失败] 步骤耗时: {duration:.2f}s")
-            else:
-                # 正常完成的步骤执行常规处理
-                logger.debug("记录时间")
-                self._finalize_step()
+            self._finalize_step()
 
     def _validate_step(self, action, selector) -> None:
         if not action:
@@ -147,7 +138,7 @@ class StepExecutor:
         except AssertionError as e:
             # 标记异常为断言失败
             self.step_has_error = True
-            raise
+            raise e
         except Exception as e:
             # 统一处理所有异常，不区分超时与非超时
             # 标记步骤失败
@@ -293,15 +284,17 @@ class StepExecutor:
         self._log_step_duration()
 
         # 失败时采集证据
-        # if self.step_has_error:
-        #     self._capture_failure_evidence()
+        if self.step_has_error:
+            self._capture_failure_evidence()
 
     def _log_step_duration(self):
         """统一记录步骤耗时"""
         if self.start_time:
             duration = (datetime.now() - self.start_time).total_seconds()
-            status = "成功" if not self.step_has_error else "失败"
-            logger.debug(f"[{status}] 步骤耗时: {duration:.2f}s")
+            if self.step_has_error:
+                logger.error(f"[失败] 步骤耗时: {duration:.2f}s")
+            else:
+                logger.info(f"[成功] 步骤耗时: {duration:.2f}s")
 
     def _capture_failure_evidence(self):
         """统一失败证据采集"""
