@@ -269,7 +269,7 @@ test_data:
       - action: click
         selector: 查询按钮
       - action: assert_text
-        selector: 暂无数据
+        selector: 政策暂无数据
         value: 暂无数据
 
 #筛选
@@ -323,7 +323,7 @@ test_data:
         selector: 裸车价输入框
       - action: fill
         selector: 裸车价输入框
-        value: "28.880"
+        value: "28.879"
       - action: click
         selector: DCC报价输入框
       - action: clear
@@ -448,7 +448,7 @@ test_data:
         value: "3个月以上"
       - action: assert_text
         selector: 裸车价cell_28_880
-        value: "28.880"
+        value: "28.879"
       - action: assert_text
         selector: 线上报价cell_28_880
         value: "28.880"
