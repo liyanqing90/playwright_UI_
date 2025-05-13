@@ -29,7 +29,7 @@ test_data:
         value: ${选中车系}
 
   test_insured:
-    description: "30分钟报价"
+    description: "买贵必赔"
     steps:
       - action: goto
         value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
@@ -49,26 +49,36 @@ test_data:
       - action: assert_url
         value: https://mf.autohome.com.cn/v3/4806
 
-  test_charging_stations:
-    description: "送充电桩"
+#  test_charging_stations:
+#    description: "送充电桩"
+#    steps:
+#      - action: goto
+#        value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
+#      - action: click
+#        selector: 送充电桩
+#      - action: assert_url
+#        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/insured?pvareaid=6865272&cityId=110100&pageType=chargingPile
+#      - action: click
+#        selector: 充电桩立即领取
+#      - action: assert_text
+#        selector: 领新春礼包标题
+#        value: 领新春礼包
+#      - action: click
+#        selector: 领新春礼包关闭
+#      - action: click
+#        selector: 活动规则
+#      - action: assert_url
+#        value: https://mf.autohome.com.cn/v3/8167
+
+  test_test_drive_owner:
+    description: "试驾车主"
     steps:
       - action: goto
         value: "https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100"
       - action: click
-        selector: 送充电桩
+        selector: 试驾车主
       - action: assert_url
-        value: https://energyspace.m.autohome.com.cn/ahoh-marketing/insured?pvareaid=6865272&cityId=110100&pageType=chargingPile
-      - action: click
-        selector: 充电桩立即领取
-      - action: assert_text
-        selector: 领新春礼包标题
-        value: 领新春礼包
-      - action: click
-        selector: 领新春礼包关闭
-      - action: click
-        selector: 活动规则
-      - action: assert_url
-        value: https://mf.autohome.com.cn/v3/8167
+        value: https://mf.autohome.com.cn/v3/8589
 
   test_old_cars:
     description: "旧车估值"
@@ -140,7 +150,7 @@ test_data:
         selector: 金牌销售
         variable_name: pop_index
       - action: assert_url
-        value: https://work.weixin.qq.com/ca/cawcde008b52661817?customer_channel=6866165
+        value: https://work.weixin.qq.com/ca/cawcde008b52661817?customer_channel=6866165--110100
       - action: close_window
       - action: assert_url
         value: https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100
@@ -149,7 +159,7 @@ test_data:
         selector: 报价
         variable_name: pop_index
       - action: assert_url
-        value: https://work.weixin.qq.com/ca/cawcde0ceb320e0488?customer_channel=6865378
+        value: https://work.weixin.qq.com/ca/cawcde0ceb320e0488?customer_channel=6865378--110100
       - action: close_window
       - action: assert_url
         value: https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100
@@ -223,7 +233,7 @@ test_data:
         selector: 一对一报价
         variable_name: pop_index
       - action: assert_url
-        value: https://work.weixin.qq.com/ca/cawcde96c9ccc668a9?customer_channel=6866154
+        value: https://work.weixin.qq.com/ca/cawcde96c9ccc668a9?customer_channel=6866154-5769-110100
       - action: close_window
       - action: assert_url
         value: https://energyspace.m.autohome.com.cn/ahoh-marketing/ahohIndex4?cityId=110100

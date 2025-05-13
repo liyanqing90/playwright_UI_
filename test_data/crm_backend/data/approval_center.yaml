@@ -36,8 +36,6 @@ test_data:
           selector: 审批状态
           value: "驳回"
 
-
-
   test_channel_page_activity_approval_inquire_null:
     - description: "频道页活动审批查询为空"
       steps:
