@@ -205,7 +205,7 @@ elements:
   add_service: "span[data-v-7d609ef8]" # 新增服务事项
   phone_button: "div.fillInWhiteBtnForCustomer" # 打电话
   线索详情页面标题-线索状态: section.nav-title
-  线索详情页面标题-线索状态2: #app > div.app-wrapper > div > div > section > section > div >div>section.nav-title
+  线索详情页面标题-线索状态2: "#app > div.app-wrapper > div > div > section > section > div >div>section.nav-title"
 
   订单列表-搜索: div.search-icon
   订单列表-搜索输入框: xpath=//*[@id="app"]/div/div/div/div/div[1]/div/div/div/div/div[2]/div/input

@@ -144,3 +144,59 @@ test_data:
       - action: 验证
         selector: 底部菜单-工作
         value: 工作
+
+  test_customer_cleaning_task_info:
+    description: 客户列表 清洗任务的信息
+    steps:
+      - use_module: login_steps
+      - use_module: create_store_unvisited_leads_steps
+      - action: 刷新
+      - action: 点击
+        selector: 底部菜单-客户
+      - action: 点击
+        selector: 客户列表-搜索
+      - action: 输入
+        selector: 客户列表查询条件输入框
+        value: ${phone_num}
+      - action: 点击
+        selector: 客户列表_执行搜索
+      - action: 等待
+        value: 1
+      - action: 点击
+        selector: 客户列表-第一个客户卡片
+      - action: 硬断言
+        selector: 线索详情-任务信息-第一个主任务的名称
+        value:  待清洗
+      - action: 硬断言
+        selector: 客户详情页面点击填跟进
+        value: 填跟进
+      - action: 硬断言
+        selector: 线索详情页-任务信息-第一个主任务的状态
+        value: 服务中
+      - action: 点击
+        selector: 客户详情页面点击填跟进
+      - action: 硬断言
+        selector: 任务填跟进页面标题
+        value: 待清洗任务
+      - action: 点击
+        selector: 待清洗任务填跟进页-清洗结果-无效
+      - action: 点击
+        selector: 待清洗任务填跟进页-清洗结果-无效-无效原因选择框
+      - action: 硬断言
+        selector: 清洗结果无效-无效原因半屏页标题
+        value: 无效原因
+      - action: 点击
+        selector: 清洗结果无效-无效原因半屏页-已购车
+      - action: 点击
+        selector: 清洗结果无效-无效原因半屏页-确定按钮
+      - action: 点击
+        selector: 任务填跟进页-提交跟进记录按钮
+      - action: 硬断言
+        selector: 线索详情页面标题-线索状态2
+        value: 无效
+      - action: 刷新
+      - action: 等待
+        value: 1
+      - action: 硬断言
+        selector: 底部菜单-工作
+        value: 工作
