@@ -1,2 +1,8 @@
-mobile: 18511761156
-pwd: Admin123!
+# dev test stage prod
+prod:
+  mobile: 18511761156
+  pwd: Admin123!
+  series_name: ID.6 X
+  series_id: 6035
+  recommend_name: 热门轿车
+  recommend_city: 上海

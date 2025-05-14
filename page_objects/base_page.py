@@ -137,11 +137,12 @@ def check_and_screenshot(description="Assertion"):
                         )
 
                         # 使用check.fail来记录失败，但不抛出异常
-                        check.fail(simplified_error)
 
                         # 创建并抛出异常对象，而不是字符串
                         raise AssertionError(simplified_error)
-            except AssertionError as e:
+            except Exception as e:
+                check.fail(e)
+
                 if not hasattr(e, "_logged"):
                     logger.error(e)
                     setattr(e, "_logged", True)
@@ -158,13 +159,13 @@ def check_and_screenshot(description="Assertion"):
                             break
 
                 # 返回空值，不抛出异常，允许继续执行
-                raise
+                raise AssertionError(e)
 
-            except Exception as e:
-                if not hasattr(e, "_logged"):
-                    logger.error(f"断言过程中发生异常: {e}")
-                    setattr(e, "_logged", True)
-                raise
+            # except Exception as e:
+            #     if not hasattr(e, "_logged"):
+            #         logger.error(f"断言过程中发生异常: {e}")
+            #         setattr(e, "_logged", True)
+            #     raise
 
         return wrapper
 
@@ -223,9 +224,12 @@ class BasePage:
         self._locator(selector).set_input_files(file_path)
 
     @handle_page_error(description="输入文本")
-    def fill(self, selector: str, value: str = None):
+    def fill(self, selector: str, value: Any):
         """在输入框中填写文本"""
         resolved_text = self.variable_manager.replace_variables_refactored(value)
+        # 确保传递给 Playwright 的 fill 方法的值是字符串类型
+        if resolved_text is not None:
+            resolved_text = str(resolved_text)
         self._locator(selector).fill(resolved_text)
 
     @handle_page_error(description="按键")
@@ -313,6 +317,11 @@ class BasePage:
         """断言元素不可见"""
         expect(self._locator(selector)).not_to_be_visible()
 
+    @check_and_screenshot("断言元素隐藏")
+    def assert_be_hidden(self, selector: str):
+        """断言元素隐藏"""
+        expect(self.page.locator(selector)).to_be_hidden()
+
     @check_and_screenshot("断言元素属性值")
     def assert_attribute(self, selector: str, attribute: str, expected: str):
         """断言元素属性值"""
@@ -372,9 +381,12 @@ class BasePage:
         self._locator(selector, timeout=timeout).click()
 
     def wait_and_fill(
-        self, selector: str, text: str, timeout: Optional[int] = DEFAULT_TIMEOUT
+        self, selector: str, text: Any, timeout: Optional[int] = DEFAULT_TIMEOUT
     ):
         """等待元素可见并输入文本"""
+        # 确保传递给 Playwright 的 fill 方法的值是字符串类型
+        if text is not None:
+            text = str(text)
         self._locator(selector, timeout=timeout).fill(text)
 
     def close(self):
