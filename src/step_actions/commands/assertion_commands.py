@@ -39,7 +39,7 @@ class AssertTextContainsCommand(Command):
     def execute(
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
-        expected = step.get("expected", value)
+        expected = step.get("expected", str(value))
         ui_helper.assert_text_contains(selector=selector, expected=expected)
 
 
@@ -112,6 +112,16 @@ class AssertVisibleCommand(Command):
         self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
     ) -> None:
         ui_helper.assert_visible(selector=selector)
+
+
+@CommandFactory.register(StepAction.ASSERT_BE_HIDDEN)
+class AssertBeHiddenCommand(Command):
+    """断言隐藏命令"""
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> None:
+        ui_helper.assert_be_hidden(selector=selector)
 
 
 @CommandFactory.register(StepAction.ASSERT_EXISTS)

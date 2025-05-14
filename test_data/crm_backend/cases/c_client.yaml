@@ -1,15 +1,25 @@
 test_cases:
   - name: test_car_series_search_band
-    fixtures: ["login"]
+    fixtures: [ "login" ]
   - name: test_car_series_search_series
-    fixtures: ["login"]
+    fixtures: [ "login" ]
   - name: test_car_series_reset
-    fixtures: ["login"]
+    fixtures: [ "login" ]
   - name: test_recommend_name
-    fixtures: ["login"]
+    fixtures: [ "login" ]
   - name: test_recommend_city
-    fixtures: ["login"]
+    fixtures: [ "login" ]
   - name: test_recommend_status
-    fixtures: ["login"]
+    fixtures: [ "login" ]
   - name: test_recommend_reset
-    fixtures: ["login"]
+    fixtures: [ "login" ]
+  - name: test_resource_search_title
+    fixtures: [ "login" ]
+  - name: test_resource_search_type
+    fixtures: [ "login" ]
+  - name: test_resource_search_status
+    fixtures: [ "login" ]
+  - name: test_resource_reset
+    fixtures: [ "login" ]
+  - name: test_resource_new
+    fixtures: [ "login" ]

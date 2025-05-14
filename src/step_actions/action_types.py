@@ -18,6 +18,7 @@ class StepAction:
     # 断言相关
     HARD_ASSERT_TEXT = ["hard_assert", "硬断言"]
     ASSERT_VISIBLE = ["assert_visible", "验证可见"]
+    ASSERT_BE_HIDDEN = ["assert_be_hidden", "验证隐藏"]
     ASSERT_TEXT = ["assert_text", "assertion", "验证文本", "验证", "verify"]
     ASSERT_ATTRIBUTE = ["assert_attribute", "验证属性"]
     ASSERT_URL = ["assert_url", "验证URL"]

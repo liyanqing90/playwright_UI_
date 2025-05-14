@@ -44,7 +44,7 @@ projects:
       dev: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
       test: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
       stage: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
-      prod: "http://edit.ahohcrm.corpautohome.com/#/login"
+      prod: "http://edit.ahohcrm.corpautohome.com/"
     browser_config: { "viewport": { "width": 1600, "height": 900 } }
 
   marketing:
