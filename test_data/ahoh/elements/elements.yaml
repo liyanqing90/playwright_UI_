@@ -202,6 +202,10 @@ elements:
   pre_time: "span.label" # 预约时间
   pre_time_value: "span.desc" # 预约时间 Value
   线索详情页-任务tab-第一个子任务的名称: "h4" # 门店试驾
+  线索详情页-任务tab-最底下的任务名称标签: div.instore-info>div.instore-info-main:last-child>div.instore-info-item-card>div.task-type>div.title-content>span
+  线索详情页-任务tab-最底下的任务状态: div.instore-info>div.instore-info-main:last-child>div.instore-info-item-card>div.task-type>span.type-status
+  线索详情页- 任务tab-最底下的任务预约时间标签: div.instore-info>div.instore-info-main:last-child>div.instore-info-item-card>div:nth-child(2)>span.label
+  线索详情页- 任务tab-最底下的任务完成时间标签: div.instore-info>div.instore-info-main:last-child>div.instore-info-item-card>div:nth-child(3)>span.label
   add_service: "span[data-v-7d609ef8]" # 新增服务事项
   phone_button: "div.fillInWhiteBtnForCustomer" # 打电话
   线索详情页面标题-线索状态: section.nav-title

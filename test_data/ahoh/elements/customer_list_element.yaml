@@ -33,3 +33,4 @@ elements:
   first_follow_up_button: ".van-list .listcard:first-child .footContainer .fillInWhiteBtn.blueThemeColor" # 定位填写跟进按钮
   # 第一个更多信息按钮
   first_instore_info_title: ".van-list .listcard:first-child .instore-info-title" # 定位更多信息按钮
+
