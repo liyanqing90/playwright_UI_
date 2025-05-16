@@ -1,6 +1,6 @@
 test_cases:
 
-  #素材
+#  素材
   - name: test_material_search
     fixtures: [ login ]
   - name: test_material_upload
@@ -55,8 +55,12 @@ test_cases:
   - name: test_fu_dai_kou_ling
   - name: test_xin_zeng_fu_dai
   - name: test_bian_ji_fu_dai
-
-  #个人中心
+  - name: test_shan_chu_fu_dai
+  - name: test_dan_mu_xun_huan_bo_bao
+  - name: test_dan_mu_xun_huan_ru_kou
+  - name: test_xin_zeng_bo_bao
+  - name: test_shan_chu_bo_bao
+#  个人中心
   - name: test_Personal_Center
     fixtures: [ login ]
   - name: test_Assistant_Settings
