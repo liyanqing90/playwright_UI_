@@ -239,6 +239,15 @@ test_data:
           url_pattern: /api/admin/cPosition/config/list
           assert_params:
             $.configState: 1
+        - action: ASSERT_ATTRIBUTE
+          attribute: aria-checked
+          selector: city_rights_tb_状态
+          value: "1"
+    - description: "资源位配置禁用状态"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 资源位配置
         - action: click
           selector: resource_状态
         - action: click
@@ -248,6 +257,10 @@ test_data:
           url_pattern: /api/admin/cPosition/config/list
           assert_params:
             $.configState: 0
+        - action: ASSERT_ATTRIBUTE
+          attribute: aria-checked
+          selector: city_rights_tb_状态
+          value: "0"
   test_resource_reset:
     - description: "资源位配置重置"
       steps:
@@ -284,9 +297,9 @@ test_data:
           selector: 资源位配置
         - action: wait
         - action: click
-          selector: resource_新建
+          selector: 新建
         - action: assert_text
-          selector: resource_弹框标题
+          selector: 弹框标题
           value: "新增"
         - action: assert_value
           selector: resource_新建_名称
@@ -310,6 +323,311 @@ test_data:
           selector: resource_新建_名称
           value: 测试
         - action: click
-          selector: resource_弹框关闭
+          selector: 弹框关闭
         - action: assert_be_hidden
-          selector: resource_弹框
+          selector: 弹框
+
+  #优惠权益
+  test_benefits_search:
+    - description: "搜索权益配置"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 优惠权益配置
+        - action: assert_text
+          selector: title
+          value: 优惠权益配置
+        - action: click
+          selector: benefits_位置
+        - action: click
+          selector: benefits_位置_频道页
+        - action: click
+          selector: benefits_权益
+        - action: click
+          selector: benefits_权益_购车礼金
+        - action: click
+          selector: benefits_品牌
+        - action: click
+          selector: benefits_品牌_Abarth
+        - action: click
+          selector: benefits_车系
+        - action: click
+          selector: benefits_车系_Abarth_500新能源
+        - action: click
+          selector: benefits_城市
+        - action: click
+          selector: benefits_城市_展开
+        - action: click
+          selector: benefits_城市_北京
+        - action: monitor_request
+          selector: 查询
+          url_pattern: api/admin/seriesCityRight/pageList
+          assert_params:
+            $.positionId: 1
+            $.rightType: 1
+            $.brandId: 524
+            $.seriesId: 7001
+            $.cityId: 110100
+  test_benefits_reset:
+    - description: "重置权益配置"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 优惠权益配置
+        - action: click
+          selector: benefits_位置
+        - action: click
+          selector: benefits_位置_频道页
+        - action: click
+          selector: benefits_权益
+        - action: click
+          selector: benefits_权益_购车礼金
+        - action: click
+          selector: benefits_品牌
+        - action: click
+          selector: benefits_品牌_Abarth
+        - action: click
+          selector: benefits_车系
+        - action: click
+          selector: benefits_车系_Abarth_500新能源
+        - action: click
+          selector: benefits_城市
+        - action: click
+          selector: benefits_城市_展开
+        - action: click
+          selector: benefits_城市_北京
+        - action: click
+          selector: 重置
+        - action: assert_text
+          selector: benefits_位置
+          value: "请选择位置"
+        - action: assert_text
+          selector: benefits_权益
+          value: "请选择权益"
+        - action: assert_text
+          selector: benefits_品牌
+          value: "请选择品牌"
+        - action: assert_text
+          selector: benefits_车系
+          value: "请选择车系"
+        - action: assert_text
+          selector: benefits_城市
+          value: "请选择"
+  test_benefits_location:
+    - description: "搜索位置"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 优惠权益配置
+        - action: click
+          selector: benefits_位置
+        - action: click
+          selector: benefits_位置_频道页
+        - action: monitor_request
+          selector: 查询
+          url_pattern: api/admin/seriesCityRight/pageList
+          assert_params:
+            $.positionId: 1
+        - action: assert_text
+          selector: benefits_tb_位置
+          value: 频道页
+  test_benefits_right:
+    - description: "搜索权益"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 优惠权益配置
+        - action: click
+          selector: benefits_权益
+        - action: click
+          selector: benefits_权益_购车礼金
+        - action: monitor_request
+          selector: 查询
+          url_pattern: api/admin/seriesCityRight/pageList
+          assert_params:
+            $.rightType: 1
+        - action: assert_text
+          selector: benefits_tb_权益
+          value: 购车礼金
+  test_benefits_city:
+    - description: "搜索城市"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 优惠权益配置
+        - action: click
+          selector: benefits_城市
+        - action: click
+          selector: benefits_城市_展开
+        - action: click
+          selector: benefits_城市_北京
+        - action: monitor_request
+          selector: 查询
+          url_pattern: api/admin/seriesCityRight/pageList
+          assert_params:
+            $.cityId: 110100
+        - action: assert_text_contains
+          selector: benefits_tb_城市
+          value: 北京
+
+  test_benefits_new:
+    - description: "优惠权益配置新建"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 优惠权益配置
+        - action: click
+          selector: benefits_新建活动
+        - action: assert_text
+          selector: 弹框标题
+          value: "权益配置"
+        - action: click
+          selector: 弹框关闭
+        - action: assert_be_hidden
+          selector: 弹框
+
+  #城市权益配置
+  test_city_rights_search:
+    - description: "搜索城市权益配置"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 城市权益配置
+        - action: fill
+          selector: city_rights_标题_input
+          value: 测试
+        - action: click
+          selector: city_rights_类型
+        - action: click
+          selector: city_rights_试驾礼
+        - action: click
+          selector: city_rights_城市
+        - action: click
+          selector: city_rights_城市_展开
+        - action: click
+          selector: city_rights_城市_北京
+        - action: click
+          selector: city_rights_状态
+        - action: click
+          selector: city_rights_状态_启用
+        - action: monitor_request
+          selector: 查询
+          url_pattern: /api/cityEquity/pageList
+          assert_params:
+            $.equityName: 测试
+            $.equityType: 1
+            $.status: 0
+            $.cityId: 110100
+
+  test_city_rights_reset:
+    - description: "重置城市权益配置"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 城市权益配置
+        - action: fill
+          selector: city_rights_标题_input
+          value: 测试
+        - action: click
+          selector: city_rights_类型
+        - action: click
+          selector: city_rights_试驾礼
+        - action: click
+          selector: city_rights_城市
+        - action: click
+          selector: city_rights_城市_展开
+        - action: click
+          selector: city_rights_城市_北京
+        - action: click
+          selector: 重置
+        - action: assert_text
+          selector: city_rights_标题
+          value: ""
+        - action: assert_text
+          selector: city_rights_类型
+          value: "请选择"
+        - action: assert_text
+          selector: city_rights_城市
+          value: "请选择"
+        - action: assert_text
+          selector: city_rights_状态
+          value: "请选择"
+
+  test_city_rights_type:
+    - description: "搜索城市权益配置类型"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 城市权益配置
+        - action: click
+          selector: city_rights_类型
+        - action: click
+          selector: city_rights_试驾礼
+        - action: click
+          selector: 查询
+        - action: assert_text
+          selector: city_rights_tb_类型
+          value: 试驾礼
+  test_city_rights_city:
+    - description: "搜索城市权益配置城市"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 城市权益配置
+        - action: click
+          selector: city_rights_城市
+        - action: click
+          selector: city_rights_城市_展开
+        - action: click
+          selector: city_rights_城市_北京
+        - action: click
+          selector: 查询
+        - action: assert_text_contains
+          selector: city_rights_tb_城市
+          value: 北京
+  test_city_rights_status:
+    - description: "搜索城市权益配置启用状态"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 城市权益配置
+        - action: click
+          selector: city_rights_状态
+        - action: click
+          selector: city_rights_状态_启用
+        - action: click
+          selector: 查询
+        - action: ASSERT_ATTRIBUTE
+          attribute: aria-checked
+          selector: city_rights_tb_状态
+          value: "true"
+    -  description: "搜索城市权益配置关闭状态"
+       steps:
+        - use_module: click_c
+        - action: click
+          selector: 城市权益配置
+        - action: click
+          selector: city_rights_状态
+        - action: click
+          selector: city_rights_状态_关闭
+        - action: click
+          selector: 查询
+        - action: ASSERT_ATTRIBUTE
+          attribute: aria-checked
+          selector: city_rights_tb_状态
+          value: "false"
+  test_city_rights_new:
+    - description: "城市权益配置新建"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 城市权益配置
+        - action: click
+          selector: 新建
+        - action: assert_text
+          selector: 弹框标题
+          value: "权益配置"
+        - action: click
+          selector: 弹框关闭
+        - action: assert_be_hidden
+          selector: 弹框

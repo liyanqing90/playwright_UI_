@@ -23,3 +23,30 @@ test_cases:
     fixtures: [ "login" ]
   - name: test_resource_new
     fixtures: [ "login" ]
+  - name: test_benefits_search
+    fixtures: [ "login" ]
+  - name: test_benefits_reset
+    fixtures: [ "login" ]
+  - name: test_benefits_location
+    fixtures: [ "login" ]
+  - name: test_benefits_right
+    fixtures: [ "login" ]
+  - name: test_benefits_city
+    fixtures: [ "login" ]
+  - name: test_benefits_new
+    fixtures: [ "login" ]
+  - name: test_city_rights_search
+    fixtures: [ login ]
+  - name: test_city_rights_type
+    fixtures: [ login ]
+  - name: test_city_rights_city
+    fixtures: [ login ]
+  - name: test_city_rights_status
+    fixtures: [ login ]
+  - name: test_city_rights_new
+    fixtures: [ login ]
+  - name: test_city_rights_reset
+    fixtures: [ login ]
+  - name: test_benefits_search
+    fixtures: [ login ]
+
