@@ -631,3 +631,124 @@ test_data:
           selector: 弹框关闭
         - action: assert_be_hidden
           selector: 弹框
+
+  #精彩现场
+  test_live_search:
+    - description: "搜索精彩现场"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 精彩现场
+        - action: fill
+          selector: live_标题
+          value: 测试
+        - action: fill
+          selector: live_城市
+          value: 北京
+        - action: click
+          selector: live_来源
+        - action: click
+          selector: live_来源_UGC
+        - action: click
+          selector: live_启用状态
+        - action: click
+          selector: live_启用状态_启用
+        - action: monitor_request
+          selector: 查询
+          url_pattern: /api/topicPostInfo/getTopicPostInfoListPage
+          assert_params:
+            $.topicTitle: 测试
+            $.cityName: 北京
+            $.topicSource: 0
+            $.status: 0
+  test_live_source:
+    - description: "搜索精彩现场来源"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 精彩现场
+        - action: click
+          selector: live_来源
+        - action: click
+          selector: live_来源_UGC
+        - action: click
+          selector: 查询
+        - action: assert_text
+          selector: live_tb_来源
+          value: UGC
+  test_live_status:
+    - description: "搜索精彩现场启用状态"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 精彩现场
+        - action: click
+          selector: live_启用状态
+        - action: click
+          selector: live_启用状态_启用
+        - action: click
+          selector: 查询
+        - action: ASSERT_ATTRIBUTE
+          attribute: aria-checked
+          selector: live_tb_启用状态
+          value: "true"
+    - description: "搜索精彩现场关闭状态"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 精彩现场
+        - action: click
+          selector: live_启用状态
+        - action: click
+          selector: live_启用状态_禁用
+        - action: click
+          selector: 查询
+        - action: ASSERT_ATTRIBUTE
+          attribute: aria-checked
+          selector: live_tb_启用状态
+          value: "false"
+  test_live_rest:
+    - description: "重置精彩现场"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 精彩现场
+        - action: fill
+          selector: live_标题
+          value: 测试
+        - action: fill
+          selector: live_城市
+          value: 北京
+        - action: click
+          selector: live_来源
+        - action: click
+          selector: live_来源_UGC
+        - action: click
+          selector: live_启用状态
+        - action: click
+          selector: live_启用状态_启用
+        - action: click
+          selector: 重置
+        - action: assert_value
+          selector: live_标题
+          value: ""
+        - action: assert_value
+          selector: live_城市
+          value: ""
+        - action: assert_text
+          selector: live_来源
+          value: "请选择"
+        - action: assert_text
+          selector: live_启用状态
+          value: "请选择"
+  test_live_new:
+    - description: "精彩现场新建"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 精彩现场
+        - action: click
+          selector: 新建
+        - action: assert_text
+          selector: title
+          value: "精彩现场活动配置"
