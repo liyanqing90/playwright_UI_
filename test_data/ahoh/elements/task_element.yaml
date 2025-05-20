@@ -1,0 +1,8 @@
+elements:
+  待办列表-全部tab: div[role="tablist"]>div:nth-child(1)>span
+  待办列表-待清洗tab: div[role="tablist"]>div:nth-child(2)>span
+  待办列表-待回电tab: div[role="tablist"]>div:nth-child(3)>span
+  待办列表-预约确认tab: div[role="tablist"]>div:nth-child(4)>span
+  待办列表-持续跟进tab: div[role="tablist"]>div:nth-child(5)>span
+  待办列表-待接待tab: div[role="tablist"]>div:nth-child(6)>span
+  待办列表-已逾期tab: div[role="tablist"]>div:nth-child(7)>span

@@ -1,0 +1,57 @@
+test_data:
+
+  test_task_type_tab_name_in_list:
+    description: 任务列表中任务tab名称校验
+    steps:
+      - use_module: login_steps
+      - action: 点击
+        selector: 首页-待办列表-全部
+      - action: 验证包含文本
+        selector: 待办列表-全部tab
+        value: 全部
+      - action: 硬断言
+        selector: 全屏页页面标题
+        value: 全部待办
+      - action: 验证包含文本
+        selector: 待办列表-待清洗tab
+        value: 待清洗
+      - action: 验证包含文本
+        selector: 待办列表-待回电tab
+        value: 待回电
+      - action: 验证包含文本
+        selector: 待办列表-预约确认tab
+        value: 预约确认
+      - action: 验证包含文本
+        selector: 待办列表-持续跟进tab
+        value: 持续跟进
+      - action: 验证包含文本
+        selector: 待办列表-待接待tab
+        value: 待接待
+      - action: 验证包含文本
+        selector: 待办列表-已逾期tab
+        value: 已逾期
+
+  test_switch_task_tab_name_in_list:
+    description: 任务列表中任务tab名称切换点击
+    steps:
+      - use_module: login_steps
+      - action: 点击
+        selector: 首页-待办列表-全部
+      - action: 验证包含文本
+        selector: 待办列表-全部tab
+        value: 全部
+      - action: 硬断言
+        selector: 全屏页页面标题
+        value: 全部待办
+      - action: 点击
+        selector: 待办列表-待清洗tab
+      - action: 点击
+        selector: 待办列表-待回电tab
+      - action: 点击
+        selector: 待办列表-预约确认tab
+      - action: 点击
+        selector: 待办列表-持续跟进tab
+      - action: 点击
+        selector: 待办列表-待接待tab
+      - action: 点击
+        selector: 待办列表-已逾期tab
