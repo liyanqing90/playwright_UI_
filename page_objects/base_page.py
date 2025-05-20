@@ -255,9 +255,33 @@ class BasePage:
 
     @allure.step("硬断言元素文本")
     def hard_assert_text(self, selector: str, expected: str):
-        """断言元素文本"""
-        resolved_expected = self.variable_manager.replace_variables_refactored(expected)
-        expect(self._locator(selector).first).to_have_text(resolved_expected)
+        """硬断言元素文本，失败时会终止测试执行"""
+        try:
+            resolved_expected = self.variable_manager.replace_variables_refactored(expected)
+            expect(self._locator(selector).first).to_have_text(resolved_expected)
+        except AssertionError as e:
+            # 截图
+            if selector and hasattr(self.page, "locator"):
+                try:
+                    # 尝试截取元素截图
+                    screenshot = self.page.locator(selector).first.screenshot()
+                except Exception:
+                    screenshot = self.page.screenshot()
+            else:
+                # 如果没有选择器，直接截取页面
+                screenshot = self.page.screenshot()
+
+            # 添加截图到报告
+            allure.attach(
+                screenshot,
+                name="硬断言失败截图",
+                attachment_type=allure.attachment_type.PNG,
+            )
+
+            # 标记为硬断言异常
+            setattr(e, "_hard_assert", True)
+            logger.error(f"硬断言失败: {e}")
+            raise
 
     @check_and_screenshot("断言页面标题")
     def assert_title(self, expected: str):

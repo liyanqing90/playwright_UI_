@@ -110,7 +110,11 @@ class StepExecutor:
         except AssertionError as e:
             self.has_error = True
             self.step_has_error = True
-            # raise
+            # 检查是否为硬断言异常
+            if hasattr(e, "_hard_assert") and getattr(e, "_hard_assert", False):
+                logger.error(f"硬断言失败，终止测试执行: {e}")
+                raise  # 硬断言失败时重新抛出异常，终止测试执行
+            # 软断言失败时不抛出异常，继续执行
         except Exception as e:
             logger.error(f"步骤执行失败: {e}")
             self.has_error = True
