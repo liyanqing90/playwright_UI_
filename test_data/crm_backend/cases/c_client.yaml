@@ -49,4 +49,14 @@ test_cases:
     fixtures: [ login ]
   - name: test_benefits_search
     fixtures: [ login ]
+  - name: test_live_search
+    fixtures: [ login ]
+  - name: test_live_source
+    fixtures: [ login ]
+  - name: test_live_status
+    fixtures: [ login ]
+  - name: test_live_rest
+    fixtures: [ login ]
+  - name: test_live_new
+    fixtures: [ login ]
 

@@ -84,3 +84,15 @@ elements:
   city_rights_tb_类型: //tbody/tr[1]/td[3]
   city_rights_tb_城市: //tbody/tr[1]/td[4]
   city_rights_tb_状态: (//button[@role='switch'])[1]
+ #精彩现场
+  live_标题: //input[@id='topicTitle']
+  live_城市: //input[@id='cityNames']
+  live_来源: (//div[@class='ant-col ant-form-item-control'])[3]
+  live_来源_UGC: //div[@class='ant-select-item-option-content'][normalize-space()='UGC']
+  live_启用状态: (//div[@class='ant-col ant-form-item-control'])[4]
+  live_启用状态_启用: //div[contains(text(),'启用')]
+  live_启用状态_禁用: //div[contains(text(),'禁用')]
+  live_tb_来源: //tbody/tr[2]/td[7]
+  live_tb_启用状态: (//button[@role='switch'])[1]
+
+
