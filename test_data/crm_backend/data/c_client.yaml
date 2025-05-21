@@ -752,3 +752,234 @@ test_data:
         - action: assert_text
           selector: title
           value: "精彩现场活动配置"
+
+  test_car_config_search:
+    - description: "搜索车系配置"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系配置
+        - action: click
+          selector: car_config_位置
+        - action: click
+          selector: car_config_位置_1
+        - action: store_text
+          selector: car_config_位置_1
+          variable_name: config_location
+        - action: click
+          selector: car_config_城市
+        - action: click
+          selector: car_config_城市_北京
+        - action: click
+          selector: car_config_品牌
+        - action: click
+          selector: car_config_品牌_选择
+        - action: click
+          selector: car_config_主推
+        - action: click
+          selector: car_config_主推_是
+        - action: click
+          selector: car_config_类别
+        - action: click
+          selector: car_config_类别_A
+        - action: click
+          selector: car_config_启用状态
+        - action: click
+          selector: car_config_启用状态_开启
+        - action: monitor_request
+          selector: 查询
+          url_pattern: api/operationSeriesConfig/getOperationSeriesConfigPageList
+          assert_params:
+            $.current: 1
+            $.pageSize: 10
+            $.cityId: 110100
+            $.isMainRecommend: 1
+            $.brandId: 15
+            $.position: 1
+            $.status: 1
+            $.brandType: A
+  test_car_config_reset:
+    - description: "重置车系配置"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系配置
+        - action: click
+          selector: car_config_位置
+        - action: click
+          selector: car_config_位置_1
+        - action: click
+          selector: car_config_城市
+        - action: click
+          selector: car_config_城市_北京
+        - action: click
+          selector: car_config_品牌
+        - action: click
+          selector: car_config_品牌_选择
+        - action: click
+          selector: car_config_主推
+        - action: click
+          selector: car_config_主推_是
+        - action: click
+          selector: car_config_类别
+        - action: click
+          selector: car_config_类别_A
+        - action: click
+          selector: car_config_启用状态
+        - action: click
+          selector: car_config_启用状态_开启
+        - action: click
+          selector: 重置
+        - action: assert_text
+          selector: car_config_位置
+          value: "请选择位置"
+        - action: assert_text
+          selector: car_config_城市
+          value: "请选择投放城市"
+        - action: assert_text
+          selector: car_config_品牌
+          value: "请选择品牌"
+        - action: assert_text
+          selector: car_config_主推
+          value: "请选择"
+        - action: assert_text
+          selector: car_config_类别
+          value: "请选择"
+        - action: assert_text
+          selector: car_config_启用状态
+          value: "请选择"
+  test_car_config_location:
+    - description: "搜索车系配置位置"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系配置
+        - action: click
+          selector: car_config_位置
+        - action: store_text
+          selector: car_config_位置_1
+          variable_name: config_location
+        - action: click
+          selector: car_config_位置_1
+        - action: click
+          selector: 查询
+        - action: assert_text
+          selector: car_config_tb_位置
+          value: ${config_location}
+  test_car_config_city:
+    - description: "搜索车系配置城市"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系配置
+        - action: click
+          selector: car_config_城市
+        - action: click
+          selector: car_config_城市_北京
+        - action: click
+          selector: 查询
+        - action: assert_text_contains
+          selector: car_config_tb_城市
+          value: 北京
+  test_car_config_brand:
+    - description: "搜索车系配置品牌"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系配置
+        - action: click
+          selector: car_config_品牌
+        - action: click
+          selector: car_config_品牌_选择
+        - action: click
+          selector: 查询
+        - action: assert_text
+          selector: car_config_tb_品牌
+          value: ${brand_name}
+  test_car_config_main:
+    - description: "搜索车系配置主推"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系配置
+        - action: click
+          selector: car_config_主推
+        - action: click
+          selector: car_config_主推_是
+        - action: click
+          selector: 查询
+        - action: assert_text
+          selector: car_config_tb_主推
+          value: 是
+    - description: "搜索车系配置非主推"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系配置
+        - action: click
+          selector: car_config_主推
+        - action: click
+          selector: car_config_主推_否
+        - action: click
+          selector: 查询
+        - action: assert_text
+          selector: car_config_tb_主推
+          value: 否
+  test_car_config_type:
+    - description: "搜索车系配置类别"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系配置
+        - action: click
+          selector: car_config_类别
+        - action: click
+          selector: car_config_类别_A
+        - action: click
+          selector: 查询
+        - action: assert_text
+          selector: car_config_tb_类别
+          value: A
+  test_car_config_status:
+    - description: "搜索车系配置启用状态"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系配置
+        - action: click
+          selector: car_config_启用状态
+        - action: click
+          selector: car_config_启用状态_开启
+        - action: click
+          selector: 查询
+        - action: ASSERT_ATTRIBUTE
+          attribute: aria-checked
+          selector: car_config_tb_启用状态
+          value: "true"
+    - description: "搜索车系配置关闭状态"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系配置
+        - action: click
+          selector: car_config_启用状态
+        - action: click
+          selector: car_config_启用状态_关闭
+        - action: click
+          selector: 查询
+        - action: ASSERT_ATTRIBUTE
+          attribute: aria-checked
+          selector: car_config_tb_启用状态
+          value: "false"
+
+  test_car_config_new:
+    - description: "车系配置新建"
+      steps:
+        - use_module: click_c
+        - action: click
+          selector: 车系配置
+        - action: click
+          selector: 新建
+        - action: assert_text
+          selector: title
+          value: "车系配置"
