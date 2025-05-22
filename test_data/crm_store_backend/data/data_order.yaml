@@ -78,7 +78,7 @@ test_data:
       - action: assert_text
         selector: 1条数据
         value: "共 1 条数据"
-  test_order_filter: #调试中
+  test_order_filter:
     description: "订单列表-筛选"
     steps:
       - use_module: login_steps
