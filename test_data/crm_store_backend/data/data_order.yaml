@@ -78,4 +78,69 @@ test_data:
       - action: assert_text
         selector: 1条数据
         value: "共 1 条数据"
+  test_order_filter:
+    description: "订单列表-筛选"
+    steps:
+      - use_module: login_steps
+      - action: click
+        selector: 订单管理一级菜单
+      - action: click
+        selector: 订单列表二级菜单
+      - action: click
+        selector: 下订时间输入框
+      - action: fill
+        selector: 下订时间输入框
+        value: "2025-01-15"
+      - action: click
+        selector: 日期选择器
+      - action: click
+        selector: 结束时间输入框
+      - action: fill
+        selector: 结束时间输入框
+        value: "2025-01-15"
+      - action: click
+        selector: 日期选择器
+      - action: click
+        selector: 订单审核状态下拉框
+      - action: click
+        selector: 审核通过选项
+      - action: click
+        selector: 成交周期下拉框
+      - action: click
+        selector: 当日转化选项
+      - action: click
+        selector: 发票状态下拉框
+      - action: click
+        selector: 已确认选项
+      - action: click
+        selector: 发票校验状态下拉框
+      - action: click
+        selector: 校验通过选项
+      - action: click
+        selector: 确认函下拉框
+      - action: click
+        selector: 已签署选项
+      - action: click
+        selector: 品牌类型下拉框
+      - action: click
+        selector: 重点品牌选项
+      - action: click
+        selector: 手机号输入框
+      - action: fill
+        selector: 手机号输入框
+        value: "6033"
+      - action: click
+        selector: 订单查询按钮
+      - action: assert_text
+        selector: 订单id
+        value: "90807"
+      - action: assert_text
+        selector: 订单线索id文本
+        value: "线索id： 25149544867175 "
+      - action: assert_text
+        selector: 手机号文本
+        value: "手机号：151****6033"
+      - action: assert_text
+        selector: 1条数据
+        value: "共 1 条数据"
 
