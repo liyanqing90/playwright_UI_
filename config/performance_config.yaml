@@ -1,0 +1,53 @@
+# 性能优化配置文件
+
+# 变量管理器缓存配置
+variable_cache:
+  max_cache_size: 1000              # 最大变量缓存大小
+  max_replacement_cache_size: 500   # 最大替换结果缓存大小
+  enable_lru: true                  # 启用LRU缓存策略
+
+# 性能监控配置
+performance_monitor:
+  monitoring_interval: 5.0    # 监控间隔（秒）
+  max_history: 1000          # 最大历史记录数
+  enable_gc_monitoring: true  # 启用垃圾回收监控
+  memory_threshold_mb: 500    # 内存使用阈值（MB）
+  cpu_threshold_percent: 80   # CPU使用阈值（%）
+
+# 元素定位优化
+element_location:
+  default_timeout: 10000      # 默认超时时间（毫秒）
+  retry_interval: 100         # 重试间隔（毫秒）
+  max_retries: 3             # 最大重试次数
+  enable_smart_wait: true     # 启用智能等待
+
+# 日志优化
+logging:
+  buffer_size: 1000          # 日志缓冲区大小
+  flush_interval: 5          # 刷新间隔（秒）
+  enable_async_logging: true # 启用异步日志
+
+# 内存管理
+memory_management:
+  enable_auto_gc: true       # 启用自动垃圾回收
+  gc_threshold: 400          # 垃圾回收阈值（MB）
+  gc_interval: 300           # 垃圾回收间隔（秒）
+
+# 并发控制
+concurrency:
+  max_concurrent_tests: 1    # 最大并发测试数
+  thread_pool_size: 4        # 线程池大小
+  enable_parallel_execution: false  # 启用并行执行
+
+# 网络优化
+network:
+  request_timeout: 30        # 请求超时时间（秒）
+  connection_pool_size: 10   # 连接池大小
+  enable_keep_alive: true    # 启用连接保持
+
+# 报告生成优化
+reporting:
+  enable_lazy_loading: true  # 启用延迟加载
+  compress_screenshots: true # 压缩截图
+  max_screenshot_size_mb: 5  # 最大截图大小（MB）
+  enable_incremental_reports: true  # 启用增量报告

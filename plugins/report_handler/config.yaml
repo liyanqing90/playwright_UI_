@@ -1,0 +1,363 @@
+# 报告处理插件配置文件
+
+# 插件基本信息
+name: "report_handler"
+version: "1.0.0"
+description: "报告处理插件，提供多种格式的测试报告生成和处理功能"
+author: "Playwright UI Framework"
+
+# 插件设置
+plugin_settings:
+  enabled: true
+  auto_init: true
+  priority: 5
+
+# 报告配置
+report_config:
+  # 输出目录
+  output_dir: "reports"
+  
+  # 默认报告格式 (html, json, allure)
+  default_format: "html"
+  
+  # 时间戳格式
+  timestamp_format: "%Y%m%d_%H%M%S"
+  
+  # 是否自动打开报告
+  auto_open: false
+  
+  # 报告内容配置
+  content:
+    include_screenshots: true
+    include_page_source: false
+    include_network_logs: false
+    include_console_logs: false
+    include_steps: true
+    include_timing: true
+    include_environment: true
+
+# HTML报告配置
+html_config:
+  # 主题样式
+  theme: "default"  # default, dark, light
+  
+  # 是否包含图表
+  include_charts: true
+  
+  # 是否压缩HTML
+  minify: false
+  
+  # 自定义CSS文件路径
+  custom_css: null
+  
+  # 自定义JS文件路径
+  custom_js: null
+  
+  # 报告标题
+  title: "测试报告"
+  
+  # 公司/项目信息
+  company_info:
+    name: "Playwright UI Framework"
+    logo: null
+    website: null
+
+# JSON报告配置
+json_config:
+  # 是否美化输出
+  pretty_print: true
+  
+  # 是否包含原始数据
+  include_raw_data: false
+  
+  # 压缩级别 (0-9)
+  compression_level: 0
+
+# Allure报告配置
+allure_config:
+  # 结果目录
+  results_dir: "allure-results"
+  
+  # 报告目录
+  report_dir: "allure-report"
+  
+  # 是否清理旧结果
+  clean_results: true
+  
+  # 环境信息
+  environment:
+    browser: "chromium"
+    platform: "windows"
+    framework: "playwright"
+  
+  # 分类配置
+  categories:
+    - name: "产品缺陷"
+      messageRegex: ".*AssertionError.*"
+      traceRegex: ".*"
+    - name: "测试缺陷"
+      messageRegex: ".*ElementNotFound.*"
+      traceRegex: ".*"
+    - name: "环境问题"
+      messageRegex: ".*TimeoutError.*"
+      traceRegex: ".*"
+
+# 截图配置
+screenshot_config:
+  # 截图质量 (0-100)
+  quality: 90
+  
+  # 截图格式 (png, jpeg)
+  format: "png"
+  
+  # 是否全屏截图
+  full_page: true
+  
+  # 截图目录
+  directory: "screenshots"
+  
+  # 文件名模式
+  filename_pattern: "screenshot_{timestamp}_{test_name}"
+  
+  # 最大文件大小 (MB)
+  max_file_size: 10
+
+# 性能配置
+performance_config:
+  # 最大结果数量
+  max_results: 1000
+  
+  # 结果保留天数
+  retention_days: 30
+  
+  # 是否异步生成报告
+  async_generation: false
+  
+  # 并发处理数
+  concurrent_workers: 4
+
+# 通知配置
+notification_config:
+  # 是否启用通知
+  enabled: false
+  
+  # 通知方式 (email, webhook, slack)
+  methods: []
+  
+  # 邮件配置
+  email:
+    smtp_server: null
+    smtp_port: 587
+    username: null
+    password: null
+    from_address: null
+    to_addresses: []
+    subject_template: "测试报告 - {status}"
+  
+  # Webhook配置
+  webhook:
+    url: null
+    method: "POST"
+    headers: {}
+    timeout: 30
+  
+  # Slack配置
+  slack:
+    webhook_url: null
+    channel: null
+    username: "TestBot"
+
+# 数据过滤配置
+filter_config:
+  # 状态过滤
+  status_filter:
+    include: ["passed", "failed", "skipped"]
+    exclude: []
+  
+  # 测试名称过滤
+  name_filter:
+    include_patterns: []
+    exclude_patterns: []
+  
+  # 时间范围过滤
+  time_filter:
+    start_time: null
+    end_time: null
+  
+  # 标签过滤
+  tag_filter:
+    include_tags: []
+    exclude_tags: []
+
+# 模板配置
+template_config:
+  # 自定义模板目录
+  template_dir: "templates"
+  
+  # HTML模板文件
+  html_template: "report_template.html"
+  
+  # 邮件模板文件
+  email_template: "email_template.html"
+  
+  # 模板变量
+  variables:
+    project_name: "UI自动化测试"
+    test_environment: "测试环境"
+    contact_email: "test@example.com"
+
+# 插件扩展配置
+extensions:
+  # 自定义报告处理器
+  custom_handlers: []
+  
+  # 自定义过滤器
+  custom_filters: []
+  
+  # 自定义模板函数
+  custom_template_functions: []
+
+# 命令映射
+command_mappings:
+  generate_report:
+    aliases: ["生成报告", "create_report"]
+    description: "生成指定格式的测试报告"
+    parameters:
+      format:
+        type: "string"
+        required: true
+        default: "html"
+        choices: ["html", "json", "allure"]
+        description: "报告格式"
+      config:
+        type: "object"
+        required: false
+        description: "报告配置"
+  
+  attach_screenshot:
+    aliases: ["添加截图", "screenshot"]
+    description: "添加截图到报告"
+    parameters:
+      name:
+        type: "string"
+        required: false
+        description: "截图名称"
+  
+  attach_page_source:
+    aliases: ["添加页面源码", "page_source"]
+    description: "添加页面源码到报告"
+    parameters:
+      name:
+        type: "string"
+        required: false
+        description: "页面源码名称"
+  
+  add_test_result:
+    aliases: ["添加测试结果", "add_result"]
+    description: "添加测试结果"
+    parameters:
+      test_name:
+        type: "string"
+        required: true
+        description: "测试名称"
+      status:
+        type: "string"
+        required: true
+        choices: ["passed", "failed", "skipped"]
+        description: "测试状态"
+      start_time:
+        type: "string"
+        required: true
+        description: "开始时间 (ISO格式)"
+      end_time:
+        type: "string"
+        required: true
+        description: "结束时间 (ISO格式)"
+      duration:
+        type: "number"
+        required: true
+        description: "执行时长 (秒)"
+      error_message:
+        type: "string"
+        required: false
+        description: "错误信息"
+  
+  clear_results:
+    aliases: ["清空结果", "clear"]
+    description: "清空所有测试结果"
+    parameters: {}
+
+# 示例配置
+examples:
+  basic_html_report:
+    description: "生成基本HTML报告"
+    command: "generate_report"
+    parameters:
+      format: "html"
+  
+  detailed_html_report:
+    description: "生成详细HTML报告"
+    command: "generate_report"
+    parameters:
+      format: "html"
+      config:
+        include_screenshots: true
+        include_page_source: true
+        include_network_logs: true
+  
+  json_report:
+    description: "生成JSON报告"
+    command: "generate_report"
+    parameters:
+      format: "json"
+  
+  allure_report:
+    description: "生成Allure报告"
+    command: "generate_report"
+    parameters:
+      format: "allure"
+  
+  add_screenshot:
+    description: "添加截图"
+    command: "attach_screenshot"
+    parameters:
+      name: "登录页面截图"
+  
+  add_test_result:
+    description: "添加测试结果"
+    command: "add_test_result"
+    parameters:
+      test_name: "登录功能测试"
+      status: "passed"
+      start_time: "2024-01-01T10:00:00"
+      end_time: "2024-01-01T10:01:30"
+      duration: 90.5
+
+# 依赖项
+dependencies:
+  required:
+    - "allure-pytest"
+    - "jinja2"
+  optional:
+    - "matplotlib"  # 用于生成图表
+    - "plotly"      # 用于交互式图表
+    - "weasyprint"  # 用于PDF生成
+
+# 版本兼容性
+compatibility:
+  min_python_version: "3.8"
+  max_python_version: "3.12"
+  playwright_version: ">=1.40.0"
+  framework_version: ">=1.0.0"
+
+# 许可证
+license: "MIT"
+
+# 更新日志
+changelog:
+  "1.0.0":
+    - "初始版本"
+    - "支持HTML、JSON、Allure报告格式"
+    - "支持截图和页面源码附件"
+    - "支持自定义报告模板"
+    - "支持多种通知方式"

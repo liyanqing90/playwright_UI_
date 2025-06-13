@@ -1,5 +1,22 @@
 test_data:
-
+  test_complete_process_unconfirmed_and_task:
+    description: 生成预约确认任务和待接待任务并完成跟进
+    steps:
+      - use_module: login_steps
+      - action: 点击
+        selector: 首页-待办列表-全部
+      - action: 等待
+        value: 2
+      - action: assert_text
+        selector: (//div[@class='swiper-slide swiper-slide-next'])[1]
+        value: "14六"
+      - action: 滚动到元素
+        selector: (//div[@class='swiper-slide swiper-slide-next'])[1]
+      - action: 点击
+        selector: (//div[@class='swiper-slide swiper-slide-next'])[1]
+      - action: assert_text
+        selector: (//div[@class='swiper-slide swiper-slide-active'])[1]
+        value: "14六"
   test_push_car_models_in_customer_list:
     description: 客户列表预约待接待的线索推送功能,客户卡片线索来源和意向车型验证
     steps:

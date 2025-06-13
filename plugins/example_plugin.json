@@ -1,0 +1,12 @@
+{
+  "name": "example_plugin",
+  "version": "1.0.0",
+  "description": "示例插件",
+  "author": "Plugin Developer",
+  "commands": [
+    "custom_action"
+  ],
+  "dependencies": [],
+  "enabled": false,
+  "entry_point": "example_plugin.py"
+}

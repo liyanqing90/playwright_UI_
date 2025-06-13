@@ -1,0 +1,1171 @@
+# 断言命令插件配置文件
+# Assertion Commands Plugin Configuration
+
+# 插件基本信息
+plugin:
+  name: "assertion_commands"
+  version: "1.0.0"
+  description: "增强的断言命令插件，提供软断言、硬断言、条件断言、批量断言等功能"
+  author: "Playwright UI Team"
+  license: "MIT"
+  homepage: "https://github.com/playwright-ui/assertion-commands"
+  repository: "https://github.com/playwright-ui/assertion-commands.git"
+  keywords: ["assertion", "testing", "validation", "playwright", "ui-testing"]
+
+# 插件通用设置
+settings:
+  # 启用插件
+  enabled: true
+  
+  # 日志级别
+  log_level: "INFO"
+  
+  # 编码设置
+  encoding: "utf-8"
+  
+  # 时区设置
+  timezone: "Asia/Shanghai"
+  
+  # 语言设置
+  language: "zh-CN"
+  
+  # 数据目录
+  data_directory: "data/assertions"
+  
+  # 报告目录
+  report_directory: "reports/assertions"
+
+# 断言配置
+assertion:
+  # 默认断言类型
+  default_type: "hard"  # hard, soft, conditional, batch, retry, timeout
+  
+  # 默认操作符
+  default_operator: "equals"
+  
+  # 默认超时时间（秒）
+  default_timeout: 30.0
+  
+  # 默认重试次数
+  default_retry_count: 0
+  
+  # 默认重试间隔（秒）
+  default_retry_interval: 1.0
+  
+  # 默认忽略大小写
+  default_ignore_case: false
+  
+  # 默认去除空白字符
+  default_trim_whitespace: true
+  
+  # 自动生成断言ID
+  auto_generate_id: true
+  
+  # 断言ID前缀
+  id_prefix: "assert_"
+  
+  # 断言ID时间戳格式
+  id_timestamp_format: "%Y%m%d_%H%M%S_%f"
+
+# 软断言配置
+soft_assertion:
+  # 启用软断言
+  enabled: true
+  
+  # 自动收集软断言失败
+  auto_collect_failures: true
+  
+  # 软断言失败时的日志级别
+  failure_log_level: "WARNING"
+  
+  # 最大软断言失败数量
+  max_failures: 100
+  
+  # 软断言失败时是否继续执行
+  continue_on_failure: true
+
+# 硬断言配置
+hard_assertion:
+  # 启用硬断言
+  enabled: true
+  
+  # 硬断言失败时的日志级别
+  failure_log_level: "ERROR"
+  
+  # 硬断言失败时是否立即停止
+  stop_on_failure: true
+  
+  # 硬断言失败时是否生成详细报告
+  generate_detailed_report: true
+
+# 重试断言配置
+retry_assertion:
+  # 启用重试断言
+  enabled: true
+  
+  # 最大重试次数
+  max_retry_count: 5
+  
+  # 重试间隔（秒）
+  retry_interval: 1.0
+  
+  # 重试间隔递增因子
+  retry_backoff_factor: 1.5
+  
+  # 最大重试间隔（秒）
+  max_retry_interval: 10.0
+  
+  # 重试时的日志级别
+  retry_log_level: "INFO"
+
+# 超时断言配置
+timeout_assertion:
+  # 启用超时断言
+  enabled: true
+  
+  # 默认超时时间（秒）
+  default_timeout: 30.0
+  
+  # 最大超时时间（秒）
+  max_timeout: 300.0
+  
+  # 超时检查间隔（秒）
+  check_interval: 0.5
+  
+  # 超时时的日志级别
+  timeout_log_level: "ERROR"
+
+# 条件断言配置
+conditional_assertion:
+  # 启用条件断言
+  enabled: true
+  
+  # 条件评估超时（秒）
+  condition_timeout: 5.0
+  
+  # 条件评估失败时的日志级别
+  condition_failure_log_level: "WARNING"
+  
+  # 允许的条件表达式函数
+  allowed_functions:
+    - "len"
+    - "str"
+    - "int"
+    - "float"
+    - "bool"
+    - "abs"
+    - "min"
+    - "max"
+    - "sum"
+
+# 批量断言配置
+batch_assertion:
+  # 启用批量断言
+  enabled: true
+  
+  # 最大批量断言数量
+  max_batch_size: 50
+  
+  # 批量断言并发执行
+  concurrent_execution: false
+  
+  # 并发线程数
+  max_concurrent_threads: 5
+  
+  # 批量断言失败时是否继续
+  continue_on_failure: true
+
+# 自定义断言配置
+custom_assertion:
+  # 启用自定义断言
+  enabled: true
+  
+  # 自定义验证器超时（秒）
+  validator_timeout: 10.0
+  
+  # 允许的模块导入
+  allowed_imports:
+    - "re"
+    - "json"
+    - "math"
+    - "datetime"
+  
+  # 禁用的函数
+  forbidden_functions:
+    - "exec"
+    - "eval"
+    - "__import__"
+    - "open"
+    - "file"
+
+# 统计配置
+statistics:
+  # 启用统计
+  enabled: true
+  
+  # 统计数据保存间隔（秒）
+  save_interval: 60
+  
+  # 统计数据文件
+  stats_file: "assertion_stats.json"
+  
+  # 历史统计保留天数
+  history_retention_days: 30
+  
+  # 实时统计更新
+  real_time_update: true
+
+# 报告配置
+reporting:
+  # 启用报告
+  enabled: true
+  
+  # 报告格式
+  formats: ["json", "html", "xml"]
+  
+  # 自动生成报告
+  auto_generate: true
+  
+  # 报告生成间隔（秒）
+  generation_interval: 300
+  
+  # 报告保留天数
+  retention_days: 7
+  
+  # 报告内容
+  content:
+    include_passed: true
+    include_failed: true
+    include_statistics: true
+    include_timeline: true
+    include_details: true
+  
+  # 报告模板
+  templates:
+    html: "templates/assertion_report.html"
+    json: "templates/assertion_report.json"
+    xml: "templates/assertion_report.xml"
+
+# 性能配置
+performance:
+  # 启用性能监控
+  monitoring_enabled: true
+  
+  # 性能数据收集间隔（秒）
+  collection_interval: 10
+  
+  # 慢断言阈值（毫秒）
+  slow_assertion_threshold: 1000
+  
+  # 内存使用限制（MB）
+  memory_limit: 512
+  
+  # 断言缓存大小
+  cache_size: 1000
+  
+  # 缓存过期时间（秒）
+  cache_expiry: 3600
+
+# 安全配置
+security:
+  # 启用安全检查
+  enabled: true
+  
+  # 允许的断言类型
+  allowed_assertion_types:
+    - "hard"
+    - "soft"
+    - "conditional"
+    - "batch"
+    - "retry"
+    - "timeout"
+    - "custom"
+  
+  # 禁用的操作符
+  forbidden_operators: []
+  
+  # 最大断言深度
+  max_assertion_depth: 10
+  
+  # 最大字符串长度
+  max_string_length: 10000
+  
+  # 验证输入数据
+  validate_input: true
+
+# 命令映射
+commands:
+  # 基础断言命令
+  assert_equals:
+    action: "ASSERT_EQUALS"
+    aliases: ["assertEquals", "equal", "eq"]
+    description: "断言两个值相等"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_value:
+        type: "any"
+        required: true
+        description: "期望值"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      message:
+        type: "string"
+        required: false
+        description: "自定义断言消息"
+      ignore_case:
+        type: "boolean"
+        required: false
+        default: false
+        description: "忽略大小写"
+      trim_whitespace:
+        type: "boolean"
+        required: false
+        default: true
+        description: "去除空白字符"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+      scope:
+        type: "string"
+        required: false
+        default: "global"
+        description: "变量作用域"
+
+  assert_not_equals:
+    action: "ASSERT_NOT_EQUALS"
+    aliases: ["assertNotEquals", "notEqual", "ne"]
+    description: "断言两个值不相等"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_value:
+        type: "any"
+        required: true
+        description: "期望值"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      message:
+        type: "string"
+        required: false
+        description: "自定义断言消息"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_contains:
+    action: "ASSERT_CONTAINS"
+    aliases: ["assertContains", "contains"]
+    description: "断言包含指定内容"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_value:
+        type: "string"
+        required: true
+        description: "期望包含的内容"
+      actual_value:
+        type: "string"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      ignore_case:
+        type: "boolean"
+        required: false
+        default: false
+        description: "忽略大小写"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_not_contains:
+    action: "ASSERT_NOT_CONTAINS"
+    aliases: ["assertNotContains", "notContains"]
+    description: "断言不包含指定内容"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_value:
+        type: "string"
+        required: true
+        description: "期望不包含的内容"
+      actual_value:
+        type: "string"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_starts_with:
+    action: "ASSERT_STARTS_WITH"
+    aliases: ["assertStartsWith", "startsWith"]
+    description: "断言以指定内容开头"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_value:
+        type: "string"
+        required: true
+        description: "期望的开头内容"
+      actual_value:
+        type: "string"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_ends_with:
+    action: "ASSERT_ENDS_WITH"
+    aliases: ["assertEndsWith", "endsWith"]
+    description: "断言以指定内容结尾"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_value:
+        type: "string"
+        required: true
+        description: "期望的结尾内容"
+      actual_value:
+        type: "string"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_matches:
+    action: "ASSERT_MATCHES"
+    aliases: ["assertMatches", "matches", "regex"]
+    description: "断言匹配正则表达式"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_value:
+        type: "string"
+        required: true
+        description: "正则表达式模式"
+      actual_value:
+        type: "string"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_greater_than:
+    action: "ASSERT_GREATER_THAN"
+    aliases: ["assertGreaterThan", "gt"]
+    description: "断言大于指定值"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_value:
+        type: "number"
+        required: true
+        description: "期望的最小值"
+      actual_value:
+        type: "number"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_less_than:
+    action: "ASSERT_LESS_THAN"
+    aliases: ["assertLessThan", "lt"]
+    description: "断言小于指定值"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_value:
+        type: "number"
+        required: true
+        description: "期望的最大值"
+      actual_value:
+        type: "number"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_in:
+    action: "ASSERT_IN"
+    aliases: ["assertIn", "in"]
+    description: "断言值在指定集合中"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_value:
+        type: "array"
+        required: true
+        description: "期望的集合"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_not_in:
+    action: "ASSERT_NOT_IN"
+    aliases: ["assertNotIn", "notIn"]
+    description: "断言值不在指定集合中"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_value:
+        type: "array"
+        required: true
+        description: "期望的集合"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_empty:
+    action: "ASSERT_EMPTY"
+    aliases: ["assertEmpty", "empty"]
+    description: "断言值为空"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_not_empty:
+    action: "ASSERT_NOT_EMPTY"
+    aliases: ["assertNotEmpty", "notEmpty"]
+    description: "断言值不为空"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_null:
+    action: "ASSERT_NULL"
+    aliases: ["assertNull", "null"]
+    description: "断言值为null"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_not_null:
+    action: "ASSERT_NOT_NULL"
+    aliases: ["assertNotNull", "notNull"]
+    description: "断言值不为null"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_true:
+    action: "ASSERT_TRUE"
+    aliases: ["assertTrue", "true"]
+    description: "断言值为true"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_false:
+    action: "ASSERT_FALSE"
+    aliases: ["assertFalse", "false"]
+    description: "断言值为false"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  assert_length:
+    action: "ASSERT_LENGTH"
+    aliases: ["assertLength", "length"]
+    description: "断言长度"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      expected_length:
+        type: "number"
+        required: true
+        description: "期望的长度"
+      length_operator:
+        type: "string"
+        required: false
+        default: "equals"
+        description: "长度比较操作符（equals, greater, less）"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      assertion_type:
+        type: "string"
+        required: false
+        default: "hard"
+        description: "断言类型"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  # 高级断言命令
+  soft_assert:
+    action: "SOFT_ASSERT"
+    aliases: ["softAssert", "soft"]
+    description: "软断言（失败时不停止执行）"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      operator:
+        type: "string"
+        required: false
+        default: "equals"
+        description: "断言操作符"
+      expected_value:
+        type: "any"
+        required: true
+        description: "期望值"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      message:
+        type: "string"
+        required: false
+        description: "自定义断言消息"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  hard_assert:
+    action: "HARD_ASSERT"
+    aliases: ["hardAssert", "hard"]
+    description: "硬断言（失败时立即停止）"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      operator:
+        type: "string"
+        required: false
+        default: "equals"
+        description: "断言操作符"
+      expected_value:
+        type: "any"
+        required: true
+        description: "期望值"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      message:
+        type: "string"
+        required: false
+        description: "自定义断言消息"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  conditional_assert:
+    action: "CONDITIONAL_ASSERT"
+    aliases: ["conditionalAssert", "conditional"]
+    description: "条件断言（基于条件执行）"
+    parameters:
+      condition:
+        type: "string"
+        required: true
+        description: "执行条件（Python表达式）"
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      operator:
+        type: "string"
+        required: false
+        default: "equals"
+        description: "断言操作符"
+      expected_value:
+        type: "any"
+        required: true
+        description: "期望值"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      message:
+        type: "string"
+        required: false
+        description: "自定义断言消息"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  batch_assert:
+    action: "BATCH_ASSERT"
+    aliases: ["batchAssert", "batch"]
+    description: "批量断言"
+    parameters:
+      assertions:
+        type: "array"
+        required: true
+        description: "断言列表"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  retry_assert:
+    action: "RETRY_ASSERT"
+    aliases: ["retryAssert", "retry"]
+    description: "重试断言"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      operator:
+        type: "string"
+        required: false
+        default: "equals"
+        description: "断言操作符"
+      expected_value:
+        type: "any"
+        required: true
+        description: "期望值"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      retry_count:
+        type: "number"
+        required: false
+        default: 3
+        description: "重试次数"
+      retry_interval:
+        type: "number"
+        required: false
+        default: 1.0
+        description: "重试间隔（秒）"
+      message:
+        type: "string"
+        required: false
+        description: "自定义断言消息"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  timeout_assert:
+    action: "TIMEOUT_ASSERT"
+    aliases: ["timeoutAssert", "timeout"]
+    description: "超时断言"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      operator:
+        type: "string"
+        required: false
+        default: "equals"
+        description: "断言操作符"
+      expected_value:
+        type: "any"
+        required: true
+        description: "期望值"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      timeout:
+        type: "number"
+        required: false
+        default: 30.0
+        description: "超时时间（秒）"
+      message:
+        type: "string"
+        required: false
+        description: "自定义断言消息"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  custom_assert:
+    action: "CUSTOM_ASSERT"
+    aliases: ["customAssert", "custom"]
+    description: "自定义断言"
+    parameters:
+      selector:
+        type: "string"
+        required: false
+        description: "元素选择器"
+      validator:
+        type: "string"
+        required: true
+        description: "自定义验证器代码（Python表达式）"
+      expected_value:
+        type: "any"
+        required: false
+        description: "期望值"
+      actual_value:
+        type: "any"
+        required: false
+        description: "实际值（如果不使用选择器）"
+      message:
+        type: "string"
+        required: false
+        description: "自定义断言消息"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  # 管理命令
+  check_soft_assertions:
+    action: "CHECK_SOFT_ASSERTIONS"
+    aliases: ["checkSoftAssertions", "checkSoft"]
+    description: "检查软断言结果"
+    parameters:
+      fail_on_soft_assertion:
+        type: "boolean"
+        required: false
+        default: true
+        description: "软断言失败时是否抛出异常"
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  get_assertion_stats:
+    action: "GET_ASSERTION_STATS"
+    aliases: ["getAssertionStats", "stats"]
+    description: "获取断言统计信息"
+    parameters:
+      variable_name:
+        type: "string"
+        required: false
+        description: "存储结果的变量名"
+
+  reset_assertion_stats:
+    action: "RESET_ASSERTION_STATS"
+    aliases: ["resetAssertionStats", "resetStats"]
+    description: "重置断言统计信息"
+    parameters: {}
+
+# 使用示例
+examples:
+  basic_assertions:
+    - name: "基础等于断言"
+      command: "assert_equals"
+      parameters:
+        selector: "#username"
+        expected_value: "admin"
+        message: "用户名应该是admin"
+    
+    - name: "包含断言"
+      command: "assert_contains"
+      parameters:
+        selector: ".message"
+        expected_value: "成功"
+        ignore_case: true
+    
+    - name: "正则匹配断言"
+      command: "assert_matches"
+      parameters:
+        selector: "#email"
+        expected_value: "^[\w\.-]+@[\w\.-]+\.\w+$"
+        message: "邮箱格式不正确"
+
+  advanced_assertions:
+    - name: "软断言"
+      command: "soft_assert"
+      parameters:
+        selector: "#status"
+        operator: "equals"
+        expected_value: "active"
+        message: "状态应该是active"
+    
+    - name: "重试断言"
+      command: "retry_assert"
+      parameters:
+        selector: ".loading"
+        operator: "not_contains"
+        expected_value: "loading"
+        retry_count: 5
+        retry_interval: 2.0
+    
+    - name: "超时断言"
+      command: "timeout_assert"
+      parameters:
+        selector: ".result"
+        operator: "not_empty"
+        timeout: 30.0
+        message: "30秒内应该有结果"
+    
+    - name: "条件断言"
+      command: "conditional_assert"
+      parameters:
+        condition: "user_type == 'admin'"
+        selector: ".admin-panel"
+        operator: "not_empty"
+        message: "管理员应该能看到管理面板"
+    
+    - name: "批量断言"
+      command: "batch_assert"
+      parameters:
+        assertions:
+          - selector: "#title"
+            operator: "equals"
+            expected_value: "首页"
+          - selector: "#nav"
+            operator: "not_empty"
+          - selector: ".footer"
+            operator: "contains"
+            expected_value: "版权所有"
+    
+    - name: "自定义断言"
+      command: "custom_assert"
+      parameters:
+        selector: "#price"
+        validator: "float(actual) > 0 and float(actual) < 1000"
+        message: "价格应该在0到1000之间"
+
+  management_commands:
+    - name: "检查软断言"
+      command: "check_soft_assertions"
+      parameters:
+        fail_on_soft_assertion: true
+    
+    - name: "获取统计信息"
+      command: "get_assertion_stats"
+      parameters:
+        variable_name: "assertion_stats"
+    
+    - name: "重置统计信息"
+      command: "reset_assertion_stats"
+      parameters: {}
+
+# 依赖项
+dependencies:
+  required:
+    - "python >= 3.8"
+    - "playwright"
+  
+  optional:
+    - "pytest"  # 用于测试集成
+    - "allure-pytest"  # 用于报告生成
+    - "jsonschema"  # 用于配置验证
+
+# 版本兼容性
+compatibility:
+  python: ">=3.8"
+  playwright: ">=1.20.0"
+  framework: ">=1.0.0"
+
+# 许可证
+license: "MIT"
+
+# 更新日志
+changelog:
+  "1.0.0":
+    date: "2024-01-15"
+    changes:
+      - "初始版本发布"
+      - "支持基础断言命令"
+      - "支持软断言和硬断言"
+      - "支持条件断言和批量断言"
+      - "支持重试断言和超时断言"
+      - "支持自定义断言"
+      - "提供完整的统计和报告功能"
+      - "支持多种配置选项"
+      - "提供详细的使用示例"

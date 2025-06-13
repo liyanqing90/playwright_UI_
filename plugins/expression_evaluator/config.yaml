@@ -1,0 +1,170 @@
+# 表达式评估插件配置
+name: expression_evaluator
+version: 1.0.0
+description: 表达式评估插件，提供安全的数学表达式计算和自定义函数支持
+author: Playwright UI Framework
+
+# 插件设置
+settings:
+  enabled: true
+  safe_mode: true  # 安全模式，限制可用函数
+  max_expression_length: 1000  # 表达式最大长度
+  timeout: 5  # 计算超时时间（秒）
+  allow_custom_functions: true  # 是否允许自定义函数
+  precision: 10  # 浮点数精度
+
+# 内置函数分类
+function_categories:
+  math:
+    - abs
+    - round
+    - min
+    - max
+    - sum
+    - sqrt
+    - pow
+    - floor
+    - ceil
+    - log
+    - log10
+    - exp
+  
+  trigonometry:
+    - sin
+    - cos
+    - tan
+    - asin
+    - acos
+    - atan
+  
+  conversion:
+    - int
+    - float
+    - str
+    - bool
+  
+  string:
+    - upper
+    - lower
+    - strip
+    - replace
+  
+  logic:
+    - and_
+    - or_
+    - not_
+  
+  comparison:
+    - eq
+    - ne
+    - lt
+    - le
+    - gt
+    - ge
+  
+  conditional:
+    - if_
+  
+  basic:
+    - len
+
+# 内置常量
+constants:
+  pi: 3.141592653589793
+  e: 2.718281828459045
+
+# 安全设置
+security:
+  # 禁用的函数模式
+  forbidden_patterns:
+    - "\\b(exec|eval|compile|open|file|input|raw_input)\\b"
+    - "\\b(__import__|getattr|setattr|delattr|hasattr)\\b"
+    - "\\b(globals|locals|vars|dir)\\b"
+  
+  # 允许的模块
+  allowed_modules:
+    - math
+    - operator
+  
+  # 最大递归深度
+  max_recursion_depth: 100
+
+# 自定义函数示例
+custom_functions:
+  # 示例：计算圆面积
+  circle_area:
+    function: "pi * (args[0] ** 2)"
+    description: "计算圆面积"
+    category: "geometry"
+    args_count: 1
+  
+  # 示例：计算矩形面积
+  rectangle_area:
+    function: "args[0] * args[1]"
+    description: "计算矩形面积"
+    category: "geometry"
+    args_count: 2
+  
+  # 示例：温度转换（摄氏度到华氏度）
+  celsius_to_fahrenheit:
+    function: "args[0] * 9 / 5 + 32"
+    description: "摄氏度转华氏度"
+    category: "conversion"
+    args_count: 1
+
+# 命令映射
+commands:
+  evaluate_expression:
+    action_types:
+      - "evaluate_expression"
+      - "计算表达式"
+    description: "计算数学表达式"
+    
+  register_function:
+    action_types:
+      - "register_function"
+      - "注册函数"
+    description: "注册自定义函数"
+    
+  set_variable:
+    action_types:
+      - "set_variable"
+      - "设置变量"
+    description: "设置表达式变量"
+    
+  get_variable:
+    action_types:
+      - "get_variable"
+      - "获取变量"
+    description: "获取表达式变量"
+
+# 表达式示例
+examples:
+  basic_math:
+    - "2 + 3 * 4"
+    - "sqrt(16) + pow(2, 3)"
+    - "abs(-5) + round(3.7)"
+  
+  trigonometry:
+    - "sin(pi / 2)"
+    - "cos(0) + tan(pi / 4)"
+  
+  string_operations:
+    - "upper('hello')"
+    - "len('test string')"
+  
+  conditional:
+    - "if_(5 > 3, 'yes', 'no')"
+    - "if_(eq(2, 2), 'equal', 'not equal')"
+  
+  variables:
+    - "x + y * 2"  # 需要先设置变量x和y
+    - "circle_area(radius)"  # 需要先设置变量radius
+
+# 依赖项
+dependencies:
+  - math
+  - operator
+  - re
+  - typing
+  - dataclasses

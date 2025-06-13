@@ -1,0 +1,451 @@
+# 性能管理插件配置文件
+
+plugin:
+  name: "performance_management"
+  version: "1.0.0"
+  description: "性能监控、缓存管理和资源优化插件"
+  author: "Playwright UI Framework"
+  category: "performance"
+  priority: 5
+  enabled: true
+  auto_start: true
+
+# 通用插件设置
+settings:
+  # 日志级别
+  log_level: "INFO"
+  # 数据保存目录
+  data_directory: "data/performance"
+  # 报告输出目录
+  report_directory: "reports/performance"
+  # 配置文件编码
+  encoding: "utf-8"
+  # 时区设置
+  timezone: "Asia/Shanghai"
+  # 语言设置
+  language: "zh-CN"
+
+# 性能监控配置
+monitor:
+  # 是否启用监控
+  enabled: true
+  # 监控间隔（秒）
+  interval: 5
+  # 历史数据保存数量
+  history_size: 1000
+  # 慢操作阈值（秒）
+  slow_operation_threshold: 2.0
+  # 最大指标数量
+  max_metrics: 10000
+  # 自动启动监控
+  auto_start: true
+  
+  # 资源使用阈值
+  thresholds:
+    # CPU使用率阈值（%）
+    cpu_percent: 80
+    # 内存使用率阈值（%）
+    memory_percent: 80
+    # 磁盘使用率阈值（%）
+    disk_percent: 90
+    # 网络IO阈值（MB/s）
+    network_io_mbps: 100
+  
+  # 监控项目
+  metrics:
+    # 系统资源监控
+    system_resources: true
+    # 操作性能监控
+    operation_performance: true
+    # 内存使用监控
+    memory_usage: true
+    # 网络IO监控
+    network_io: true
+    # 磁盘IO监控
+    disk_io: true
+  
+  # 告警设置
+  alerts:
+    # 是否启用告警
+    enabled: true
+    # 告警冷却时间（秒）
+    cooldown: 300
+    # 告警级别
+    levels:
+      warning: 70
+      critical: 90
+
+# 缓存管理配置
+cache:
+  # 是否启用缓存
+  enabled: true
+  # 最大缓存条目数
+  max_size: 1000
+  # 默认TTL（秒）
+  default_ttl: 3600
+  # 清理间隔（秒）
+  cleanup_interval: 300
+  # 最大内存使用（MB）
+  max_memory_mb: 100
+  # 自动启动清理
+  auto_cleanup: true
+  
+  # 缓存策略
+  strategy:
+    # 淘汰策略：lru, lfu, fifo
+    eviction_policy: "lru"
+    # 预加载策略
+    preload_enabled: false
+    # 压缩存储
+    compression_enabled: false
+  
+  # 缓存分类
+  categories:
+    # 元素缓存
+    elements:
+      enabled: true
+      ttl: 1800
+      max_size: 500
+    # 页面缓存
+    pages:
+      enabled: true
+      ttl: 3600
+      max_size: 100
+    # 数据缓存
+    data:
+      enabled: true
+      ttl: 7200
+      max_size: 300
+    # 配置缓存
+    config:
+      enabled: true
+      ttl: 86400
+      max_size: 50
+
+# 资源优化配置
+optimizer:
+  # 是否启用优化器
+  enabled: true
+  # 自动优化
+  auto_optimize: false
+  # 优化间隔（秒）
+  optimize_interval: 600
+  # 优化策略
+  strategies:
+    # 内存优化
+    memory_optimization: true
+    # CPU优化
+    cpu_optimization: true
+    # 网络优化
+    network_optimization: true
+    # 磁盘优化
+    disk_optimization: true
+  
+  # 优化规则
+  rules:
+    # 内存清理规则
+    memory_cleanup:
+      enabled: true
+      threshold: 80
+      action: "clear_cache"
+    # CPU降频规则
+    cpu_throttle:
+      enabled: true
+      threshold: 90
+      action: "reduce_concurrency"
+    # 网络优化规则
+    network_optimize:
+      enabled: true
+      threshold: 80
+      action: "compress_data"
+
+# 报告生成配置
+reporting:
+  # 是否启用报告
+  enabled: true
+  # 报告格式：json, html, pdf
+  formats: ["json", "html"]
+  # 自动生成报告
+  auto_generate: true
+  # 报告生成间隔（秒）
+  generate_interval: 3600
+  # 报告保留天数
+  retention_days: 30
+  
+  # 报告内容
+  content:
+    # 性能统计
+    performance_stats: true
+    # 缓存统计
+    cache_stats: true
+    # 优化历史
+    optimization_history: true
+    # 资源使用历史
+    resource_history: true
+    # 慢操作列表
+    slow_operations: true
+    # 优化建议
+    optimization_suggestions: true
+  
+  # 报告模板
+  templates:
+    html_template: "templates/performance_report.html"
+    css_style: "templates/performance_report.css"
+
+# 命令映射
+commands:
+  # 监控命令
+  start_monitor:
+    action: "START_PERFORMANCE_MONITOR"
+    aliases: ["start_perf_monitor", "begin_monitoring"]
+    description: "启动性能监控"
+    parameters:
+      interval:
+        type: "integer"
+        description: "监控间隔（秒）"
+        default: 5
+        min: 1
+        max: 3600
+  
+  stop_monitor:
+    action: "STOP_PERFORMANCE_MONITOR"
+    aliases: ["stop_perf_monitor", "end_monitoring"]
+    description: "停止性能监控"
+  
+  get_stats:
+    action: "GET_PERFORMANCE_STATS"
+    aliases: ["perf_stats", "performance_statistics"]
+    description: "获取性能统计信息"
+    parameters:
+      variable_name:
+        type: "string"
+        description: "存储结果的变量名"
+        required: false
+      scope:
+        type: "string"
+        description: "变量作用域"
+        default: "global"
+        options: ["global", "local", "session"]
+  
+  reset_stats:
+    action: "RESET_PERFORMANCE_STATS"
+    aliases: ["clear_stats", "reset_performance"]
+    description: "重置性能统计信息"
+  
+  record_metric:
+    action: "RECORD_PERFORMANCE_METRIC"
+    aliases: ["add_metric", "log_metric"]
+    description: "记录性能指标"
+    parameters:
+      metric_name:
+        type: "string"
+        description: "指标名称"
+        required: true
+      metric_value:
+        type: "number"
+        description: "指标值"
+        required: true
+      unit:
+        type: "string"
+        description: "单位"
+        default: "count"
+      category:
+        type: "string"
+        description: "分类"
+        default: "general"
+      tags:
+        type: "object"
+        description: "标签"
+        required: false
+  
+  # 缓存命令
+  set_cache:
+    action: "SET_CACHE"
+    aliases: ["cache_set", "store_cache"]
+    description: "设置缓存值"
+    parameters:
+      cache_key:
+        type: "string"
+        description: "缓存键"
+        required: true
+      cache_value:
+        type: "any"
+        description: "缓存值"
+        required: true
+      ttl:
+        type: "integer"
+        description: "生存时间（秒）"
+        required: false
+  
+  get_cache:
+    action: "GET_CACHE"
+    aliases: ["cache_get", "retrieve_cache"]
+    description: "获取缓存值"
+    parameters:
+      cache_key:
+        type: "string"
+        description: "缓存键"
+        required: true
+      default:
+        type: "any"
+        description: "默认值"
+        required: false
+      variable_name:
+        type: "string"
+        description: "存储结果的变量名"
+        required: false
+  
+  delete_cache:
+    action: "DELETE_CACHE"
+    aliases: ["cache_delete", "remove_cache"]
+    description: "删除缓存"
+    parameters:
+      cache_key:
+        type: "string"
+        description: "缓存键"
+        required: true
+  
+  clear_cache:
+    action: "CLEAR_CACHE"
+    aliases: ["cache_clear", "flush_cache"]
+    description: "清空所有缓存"
+  
+  cache_stats:
+    action: "GET_CACHE_STATS"
+    aliases: ["cache_statistics", "cache_info"]
+    description: "获取缓存统计信息"
+    parameters:
+      variable_name:
+        type: "string"
+        description: "存储结果的变量名"
+        required: false
+  
+  # 优化命令
+  optimize:
+    action: "OPTIMIZE_PERFORMANCE"
+    aliases: ["perf_optimize", "performance_tune"]
+    description: "执行性能优化"
+    parameters:
+      context:
+        type: "object"
+        description: "优化上下文"
+        required: false
+      variable_name:
+        type: "string"
+        description: "存储结果的变量名"
+        required: false
+  
+  get_suggestions:
+    action: "GET_OPTIMIZATION_SUGGESTIONS"
+    aliases: ["optimization_advice", "perf_suggestions"]
+    description: "获取优化建议"
+    parameters:
+      variable_name:
+        type: "string"
+        description: "存储结果的变量名"
+        required: false
+  
+  generate_report:
+    action: "GENERATE_PERFORMANCE_REPORT"
+    aliases: ["perf_report", "create_report"]
+    description: "生成性能报告"
+    parameters:
+      report_path:
+        type: "string"
+        description: "报告文件路径"
+        default: "performance_report.json"
+      include_history:
+        type: "boolean"
+        description: "是否包含历史数据"
+        default: true
+      variable_name:
+        type: "string"
+        description: "存储结果的变量名"
+        required: false
+
+# 使用示例
+examples:
+  - name: "启动性能监控"
+    description: "开始监控系统性能"
+    command: "start_monitor"
+    parameters:
+      interval: 10
+  
+  - name: "记录自定义指标"
+    description: "记录业务相关的性能指标"
+    command: "record_metric"
+    parameters:
+      metric_name: "page_load_time"
+      metric_value: 2.5
+      unit: "seconds"
+      category: "ui"
+      tags:
+        page: "login"
+        browser: "chrome"
+  
+  - name: "使用缓存"
+    description: "设置和获取缓存数据"
+    steps:
+      - command: "set_cache"
+        parameters:
+          cache_key: "user_data"
+          cache_value: {"id": 123, "name": "test"}
+          ttl: 1800
+      - command: "get_cache"
+        parameters:
+          cache_key: "user_data"
+          variable_name: "cached_user"
+  
+  - name: "性能优化"
+    description: "执行性能优化并获取建议"
+    steps:
+      - command: "optimize"
+        parameters:
+          context:
+            operation: "batch_processing"
+            data_size: 10000
+      - command: "get_suggestions"
+        parameters:
+          variable_name: "optimization_tips"
+  
+  - name: "生成性能报告"
+    description: "生成详细的性能分析报告"
+    command: "generate_report"
+    parameters:
+      report_path: "reports/performance_analysis.json"
+      include_history: true
+
+# 依赖项
+dependencies:
+  required:
+    - "psutil>=5.8.0"  # 系统资源监控
+    - "threading"       # 多线程支持
+    - "json"            # JSON处理
+    - "datetime"        # 时间处理
+    - "collections"     # 数据结构
+  optional:
+    - "matplotlib>=3.5.0"  # 图表生成
+    - "pandas>=1.3.0"      # 数据分析
+    - "jinja2>=3.0.0"      # 报告模板
+
+# 版本兼容性
+compatibility:
+  python_version: ">=3.7"
+  framework_version: ">=1.0.0"
+  os_support: ["Windows", "Linux", "macOS"]
+
+# 许可证
+license: "MIT"
+
+# 更新日志
+changelog:
+  "1.0.0":
+    date: "2024-01-15"
+    changes:
+      - "初始版本发布"
+      - "实现性能监控功能"
+      - "实现缓存管理功能"
+      - "实现资源优化功能"
+      - "实现报告生成功能"
+      - "支持多种性能指标"
+      - "支持自动优化建议"

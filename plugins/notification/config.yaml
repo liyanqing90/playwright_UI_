@@ -1,0 +1,505 @@
+# 通知插件配置文件
+
+# 插件基本信息
+plugin:
+  name: "notification"
+  version: "1.0.0"
+  description: "多渠道通知插件，支持钉钉、邮件、Webhook、Slack等多种通知方式"
+  author: "Automation Team"
+  category: "notification"
+  tags: ["notification", "dingtalk", "email", "webhook", "slack", "alert"]
+  priority: 50
+  dependencies: ["requests"]
+
+# 通用设置
+general:
+  enabled: true
+  logging:
+    enabled: true
+    level: "INFO"
+    file: "logs/notification.log"
+    max_size: "10MB"
+    backup_count: 5
+  timezone: "Asia/Shanghai"
+  language: "zh-CN"
+  encoding: "utf-8"
+
+# 通知提供者配置
+providers:
+  # 钉钉配置
+  dingtalk:
+    enabled: true
+    access_token: "${DINGTALK_ACCESS_TOKEN}"  # 从环境变量获取
+    secret: "${DINGTALK_SECRET}"  # 从环境变量获取
+    timeout: 30
+    retry:
+      enabled: true
+      max_retries: 3
+      retry_delay: 5
+    rate_limit:
+      enabled: true
+      max_requests: 20
+      time_window: 60  # 秒
+  
+  # 邮件配置
+  email:
+    enabled: false
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    username: "${EMAIL_USERNAME}"
+    password: "${EMAIL_PASSWORD}"
+    from_email: "${EMAIL_FROM}"
+    use_tls: true
+    timeout: 30
+    retry:
+      enabled: true
+      max_retries: 3
+      retry_delay: 10
+    rate_limit:
+      enabled: true
+      max_requests: 100
+      time_window: 3600  # 1小时
+  
+  # Webhook配置
+  webhook:
+    enabled: false
+    url: "${WEBHOOK_URL}"
+    method: "POST"
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer ${WEBHOOK_TOKEN}"
+    timeout: 30
+    verify_ssl: true
+    retry:
+      enabled: true
+      max_retries: 3
+      retry_delay: 5
+  
+  # Slack配置
+  slack:
+    enabled: false
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#automation"
+    username: "Automation Bot"
+    icon_emoji: ":robot_face:"
+    timeout: 30
+    retry:
+      enabled: true
+      max_retries: 3
+      retry_delay: 5
+  
+  # 企业微信配置
+  wechat_work:
+    enabled: false
+    webhook_url: "${WECHAT_WEBHOOK_URL}"
+    timeout: 30
+    retry:
+      enabled: true
+      max_retries: 3
+      retry_delay: 5
+  
+  # 短信配置（示例）
+  sms:
+    enabled: false
+    provider: "aliyun"  # aliyun, tencent, etc.
+    access_key: "${SMS_ACCESS_KEY}"
+    secret_key: "${SMS_SECRET_KEY}"
+    sign_name: "自动化测试"
+    template_code: "SMS_123456789"
+    timeout: 30
+
+# 通知模板配置
+templates:
+  # 测试报告模板
+  test_report:
+    type: "markdown"
+    content: |
+      ## 测试报告
+      
+      **测试项目**: {project_name}
+      **测试环境**: {environment}
+      **执行时间**: {execution_time}
+      **测试结果**: {result}
+      
+      ### 测试统计
+      - 总用例数: {total_cases}
+      - 通过数: {passed_cases}
+      - 失败数: {failed_cases}
+      - 跳过数: {skipped_cases}
+      - 成功率: {success_rate}%
+      
+      ### 失败详情
+      {failure_details}
+      
+      ---
+      *报告生成时间: {report_time}*
+  
+  # 错误告警模板
+  error_alert:
+    type: "text"
+    content: |
+      【错误告警】
+      
+      项目: {project_name}
+      环境: {environment}
+      时间: {error_time}
+      
+      错误信息: {error_message}
+      错误位置: {error_location}
+      
+      请及时处理！
+  
+  # 成功通知模板
+  success_notification:
+    type: "markdown"
+    content: |
+      ✅ **执行成功**
+      
+      **项目**: {project_name}
+      **任务**: {task_name}
+      **耗时**: {duration}
+      **完成时间**: {completion_time}
+  
+  # 自定义模板示例
+  custom_template:
+    type: "markdown"
+    content: |
+      ## {title}
+      
+      {content}
+      
+      **详细信息**:
+      {details}
+
+# 重试配置
+retry:
+  enabled: true
+  max_retries: 3
+  retry_delay: 5  # 秒
+  backoff_factor: 2.0  # 指数退避因子
+  retry_on_status: [500, 502, 503, 504]  # HTTP状态码
+  retry_on_timeout: true
+  retry_on_connection_error: true
+
+# 批量处理配置
+batch:
+  enabled: true
+  max_batch_size: 10
+  batch_timeout: 60  # 秒
+  parallel_execution: true
+  max_workers: 5
+
+# 条件通知配置
+conditional:
+  enabled: true
+  default_conditions:
+    # 只在失败时通知
+    on_failure:
+      expression: "result == 'failed'"
+      providers: ["dingtalk", "email"]
+    # 只在成功率低于阈值时通知
+    low_success_rate:
+      expression: "success_rate < 0.8"
+      providers: ["dingtalk"]
+    # 只在高优先级时通知
+    high_priority:
+      expression: "priority == 'urgent'"
+      providers: ["dingtalk", "email", "sms"]
+
+# 历史记录配置
+history:
+  enabled: true
+  max_records: 10000
+  auto_cleanup:
+    enabled: true
+    retention_days: 30
+    cleanup_interval: 86400  # 24小时
+  storage:
+    type: "memory"  # memory, file, database
+    file_path: "data/notification_history.json"
+    compress: true
+
+# 统计配置
+statistics:
+  enabled: true
+  metrics:
+    - "total_notifications"
+    - "success_rate"
+    - "provider_performance"
+    - "response_time"
+    - "error_rate"
+  aggregation_interval: 3600  # 1小时
+  retention_period: 2592000  # 30天
+
+# 监控配置
+monitoring:
+  enabled: true
+  health_check:
+    enabled: true
+    interval: 300  # 5分钟
+    timeout: 10
+  alerts:
+    enabled: true
+    thresholds:
+      error_rate: 0.1  # 10%
+      response_time: 30  # 30秒
+      success_rate: 0.9  # 90%
+  metrics_export:
+    enabled: false
+    endpoint: "http://localhost:9090/metrics"
+    format: "prometheus"
+
+# 安全配置
+security:
+  encryption:
+    enabled: false
+    algorithm: "AES-256-GCM"
+    key_source: "environment"  # environment, file, vault
+  access_control:
+    enabled: false
+    allowed_ips: []
+    api_key_required: false
+  audit:
+    enabled: true
+    log_file: "logs/notification_audit.log"
+    include_content: false  # 是否记录通知内容
+  validation:
+    enabled: true
+    max_title_length: 200
+    max_content_length: 10000
+    allowed_types: ["text", "markdown", "html", "json"]
+    sanitize_content: true
+
+# 性能配置
+performance:
+  connection_pool:
+    enabled: true
+    max_connections: 20
+    max_connections_per_host: 10
+    connection_timeout: 30
+    read_timeout: 30
+  caching:
+    enabled: true
+    cache_size: 1000
+    cache_ttl: 3600  # 1小时
+  compression:
+    enabled: true
+    algorithm: "gzip"
+    min_size: 1024  # 1KB
+  async_processing:
+    enabled: true
+    queue_size: 1000
+    worker_threads: 5
+
+# 命令映射
+commands:
+  # 基础通知命令
+  send_notification:
+    aliases: ["notify", "send_msg"]
+    description: "发送通知消息"
+    parameters:
+      title: "通知标题"
+      content: "通知内容"
+      providers: "通知提供者列表"
+      priority: "优先级 (low/normal/high/urgent)"
+      type: "消息类型 (text/markdown/html/json)"
+      recipients: "接收者列表"
+      metadata: "附加元数据"
+      target_variable: "结果存储变量名"
+  
+  send_template_notification:
+    aliases: ["send_template", "notify_template"]
+    description: "使用模板发送通知"
+    parameters:
+      template_name: "模板名称"
+      variables: "模板变量"
+      title: "通知标题"
+      providers: "通知提供者列表"
+      priority: "优先级"
+      recipients: "接收者列表"
+      target_variable: "结果存储变量名"
+  
+  # 特定提供者命令
+  send_dingtalk:
+    aliases: ["dingtalk", "dt_notify"]
+    description: "发送钉钉通知"
+    parameters:
+      title: "通知标题"
+      content: "通知内容"
+      at_mobiles: "@的手机号列表"
+      is_markdown: "是否为Markdown格式"
+      target_variable: "结果存储变量名"
+  
+  send_email:
+    aliases: ["email", "mail"]
+    description: "发送邮件通知"
+    parameters:
+      title: "邮件主题"
+      content: "邮件内容"
+      recipients: "收件人列表"
+      is_html: "是否为HTML格式"
+      target_variable: "结果存储变量名"
+  
+  send_webhook:
+    aliases: ["webhook", "http_notify"]
+    description: "发送Webhook通知"
+    parameters:
+      title: "通知标题"
+      content: "通知内容"
+      metadata: "附加数据"
+      target_variable: "结果存储变量名"
+  
+  send_slack:
+    aliases: ["slack"]
+    description: "发送Slack通知"
+    parameters:
+      title: "通知标题"
+      content: "通知内容"
+      channel: "频道名称"
+      is_markdown: "是否为Markdown格式"
+      target_variable: "结果存储变量名"
+  
+  # 批量和条件通知
+  send_batch_notification:
+    aliases: ["batch_notify", "bulk_notify"]
+    description: "发送批量通知"
+    parameters:
+      notifications: "通知列表"
+      providers: "默认提供者列表"
+      target_variable: "结果存储变量名"
+  
+  send_conditional_notification:
+    aliases: ["conditional_notify", "if_notify"]
+    description: "发送条件通知"
+    parameters:
+      condition: "触发条件"
+      title: "通知标题"
+      content: "通知内容"
+      providers: "通知提供者列表"
+      type: "消息类型"
+      priority: "优先级"
+      recipients: "接收者列表"
+      target_variable: "结果存储变量名"
+  
+  # 管理命令
+  get_notification_status:
+    aliases: ["notification_status", "provider_status"]
+    description: "获取通知提供者状态"
+    parameters:
+      target_variable: "结果存储变量名"
+  
+  get_notification_history:
+    aliases: ["notification_history", "notify_history"]
+    description: "获取通知历史记录"
+    parameters:
+      limit: "记录数量限制"
+      target_variable: "结果存储变量名"
+  
+  get_notification_stats:
+    aliases: ["notification_stats", "notify_stats"]
+    description: "获取通知统计信息"
+    parameters:
+      target_variable: "结果存储变量名"
+  
+  cleanup_notification_history:
+    aliases: ["cleanup_notify_history", "clear_notify_history"]
+    description: "清理通知历史记录"
+    parameters:
+      days: "保留天数"
+      target_variable: "清理数量存储变量名"
+
+# 使用示例
+examples:
+  basic_notification:
+    description: "基础通知发送"
+    steps:
+      - action: "send_notification"
+        title: "测试完成通知"
+        content: "自动化测试已完成，请查看结果"
+        providers: ["dingtalk"]
+        priority: "normal"
+  
+  template_notification:
+    description: "模板通知发送"
+    steps:
+      - action: "send_template_notification"
+        template_name: "test_report"
+        variables:
+          project_name: "Web自动化测试"
+          environment: "测试环境"
+          result: "成功"
+          total_cases: 100
+          passed_cases: 95
+          failed_cases: 5
+        title: "测试报告"
+        providers: ["dingtalk", "email"]
+  
+  dingtalk_notification:
+    description: "钉钉通知发送"
+    steps:
+      - action: "send_dingtalk"
+        title: "紧急告警"
+        content: "系统检测到异常，请立即处理！"
+        at_mobiles: ["13800138000"]
+        is_markdown: true
+  
+  conditional_notification:
+    description: "条件通知发送"
+    steps:
+      - action: "send_conditional_notification"
+        condition: "${test_result} == 'failed'"
+        title: "测试失败告警"
+        content: "自动化测试执行失败，请检查"
+        providers: ["dingtalk", "email"]
+        priority: "high"
+  
+  batch_notification:
+    description: "批量通知发送"
+    steps:
+      - action: "send_batch_notification"
+        notifications:
+          - title: "任务1完成"
+            content: "任务1执行成功"
+            providers: ["dingtalk"]
+          - title: "任务2完成"
+            content: "任务2执行成功"
+            providers: ["email"]
+  
+  status_check:
+    description: "检查通知状态"
+    steps:
+      - action: "get_notification_status"
+        target_variable: "provider_status"
+      - action: "get_notification_stats"
+        target_variable: "notification_statistics"
+
+# 依赖项
+dependencies:
+  required:
+    - "requests>=2.25.0"
+  optional:
+    - "aiohttp>=3.8.0"  # 异步HTTP支持
+    - "cryptography>=3.4.0"  # 加密支持
+    - "prometheus_client>=0.12.0"  # 监控指标
+
+# 版本兼容性
+compatibility:
+  python: ">=3.7"
+  framework: ">=1.0.0"
+  plugins:
+    storage_commands: ">=1.0.0"  # 可选依赖
+    expression_evaluation: ">=1.0.0"  # 可选依赖
+
+# 许可证
+license: "MIT"
+
+# 更新日志
+changelog:
+  "1.0.0":
+    date: "2024-01-15"
+    changes:
+      - "初始版本发布"
+      - "支持钉钉、邮件、Webhook、Slack通知"
+      - "提供模板系统"
+      - "支持批量和条件通知"
+      - "包含完整的监控和统计功能"

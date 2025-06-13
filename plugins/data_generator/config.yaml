@@ -1,0 +1,111 @@
+# 数据生成插件配置
+name: data_generator
+version: 1.0.0
+description: 数据生成插件，提供各种类型的测试数据生成功能
+author: Playwright UI Framework
+
+# 插件设置
+settings:
+  enabled: true
+  locale: zh_CN
+  seed: null  # 随机种子，用于可重复的数据生成
+  default_length: 10
+  
+# Faker配置
+faker:
+  locales:
+    - zh_CN
+    - en_US
+  providers:
+    - faker.providers.person
+    - faker.providers.company
+    - faker.providers.internet
+    - faker.providers.phone_number
+    - faker.providers.address
+    - faker.providers.date_time
+    - faker.providers.credit_card
+    - faker.providers.ssn
+
+# 自定义数据模板
+custom_templates:
+  # 示例：自定义用户名生成
+  custom_username:
+    generator: "'user_' + str(random.randint(1000, 9999))"
+    description: "自定义用户名"
+    category: "custom"
+  
+  # 示例：自定义商品名称
+  product_name:
+    generator: "faker.word() + '商品'"
+    description: "商品名称"
+    category: "business"
+
+# 数据类型分类
+categories:
+  basic:
+    - name
+    - email
+    - phone
+    - mobile
+    - address
+    - datetime
+    - date
+    - time
+  
+  business:
+    - user_id
+    - order_id
+    - product_code
+    - company_name
+    - bank_card
+    - id_card
+  
+  number:
+    - integer
+    - float
+    - price
+  
+  text:
+    - text
+    - paragraph
+    - sentence
+    - word
+  
+  network:
+    - url
+    - domain
+    - ip
+  
+  uuid:
+    - uuid
+    - uuid4
+
+# 命令映射
+commands:
+  generate_data:
+    action_types:
+      - "generate_data"
+      - "生成数据"
+    description: "生成指定类型的测试数据"
+    
+  generate_batch_data:
+    action_types:
+      - "generate_batch_data"
+      - "批量生成数据"
+    description: "批量生成指定类型的测试数据"
+    
+  register_data_template:
+    action_types:
+      - "register_data_template"
+      - "注册数据模板"
+    description: "注册自定义数据生成模板"
+
+# 依赖项
+dependencies:
+  - faker
+  - typing
+  - dataclasses
+  - datetime
+  - random
+  - string
+  - uuid

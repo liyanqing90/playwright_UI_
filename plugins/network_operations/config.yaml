@@ -1,0 +1,108 @@
+# 网络操作插件配置文件
+
+network_operations:
+  # 基础配置
+  enabled: true
+  timeout: 30000  # 默认超时时间（毫秒）
+  max_retries: 3  # 最大重试次数
+  
+  # 功能开关
+  mock_enabled: false      # 是否启用响应模拟
+  intercept_enabled: true  # 是否启用请求拦截
+  logging_enabled: true    # 是否启用日志记录
+  
+  # 高级配置
+  advanced:
+    # 请求拦截配置
+    intercept:
+      max_requests: 1000     # 最大拦截请求数
+      auto_cleanup: true     # 自动清理过期数据
+      cleanup_interval: 300  # 清理间隔（秒）
+    
+    # 响应模拟配置
+    mock:
+      default_delay: 0       # 默认延迟（毫秒）
+      max_response_size: 10485760  # 最大响应大小（10MB）
+      cache_responses: true  # 是否缓存响应
+    
+    # 网络监控配置
+    monitoring:
+      track_headers: true    # 是否跟踪请求头
+      track_body: true       # 是否跟踪请求体
+      track_timing: true     # 是否跟踪时间信息
+      max_body_size: 1048576 # 最大跟踪体大小（1MB）
+  
+  # 预定义规则
+  rules:
+    # API接口规则
+    - name: "API请求监控"
+      pattern: "**/api/**"
+      enabled: true
+      actions:
+        - log_request
+        - log_response
+    
+    # 静态资源规则
+    - name: "静态资源过滤"
+      pattern: "**/*.{js,css,png,jpg,gif,ico}"
+      enabled: false
+      actions:
+        - ignore
+    
+    # 第三方服务规则
+    - name: "第三方服务监控"
+      pattern: "https://external-api.example.com/**"
+      enabled: true
+      actions:
+        - log_request
+        - add_delay: 500
+  
+  # 模拟响应模板
+  mock_templates:
+    success_response:
+      status_code: 200
+      headers:
+        Content-Type: "application/json"
+      body:
+        success: true
+        message: "操作成功"
+        data: {}
+    
+    error_response:
+      status_code: 500
+      headers:
+        Content-Type: "application/json"
+      body:
+        success: false
+        message: "服务器内部错误"
+        error_code: "INTERNAL_ERROR"
+    
+    not_found_response:
+      status_code: 404
+      headers:
+        Content-Type: "application/json"
+      body:
+        success: false
+        message: "资源未找到"
+        error_code: "NOT_FOUND"
+  
+  # 性能配置
+  performance:
+    enable_compression: true   # 启用压缩
+    connection_pool_size: 10   # 连接池大小
+    keep_alive_timeout: 30     # 保持连接超时（秒）
+    request_timeout: 30        # 请求超时（秒）
+  
+  # 安全配置
+  security:
+    validate_ssl: true         # 验证SSL证书
+    allowed_domains: []        # 允许的域名列表（空表示允许所有）
+    blocked_domains: []        # 阻止的域名列表
+    max_redirects: 5           # 最大重定向次数
+  
+  # 调试配置
+  debug:
+    verbose_logging: false     # 详细日志
+    save_raw_data: false       # 保存原始数据
+    export_har: false          # 导出HAR文件
+    har_file_path: "reports/network.har"

@@ -1,0 +1,126 @@
+# 错误去重配置文件
+# Error Deduplication Configuration
+
+# 错误去重管理器配置
+error_deduplication:
+  # 时间窗口（秒）- 在此时间内的相同错误会被计数
+  time_window: 300  # 5分钟
+  
+  # 相同错误的最大记录次数
+  max_same_error_count: 3
+  
+  # 清理过期记录的间隔（秒）
+  cleanup_interval: 600  # 10分钟
+  
+  # 是否启用错误去重功能
+  enabled: true
+  
+  # 错误消息标准化配置
+  normalization:
+    # 是否移除时间戳
+    remove_timestamps: true
+    
+    # 是否移除行号信息
+    remove_line_numbers: true
+    
+    # 是否移除具体的超时时间
+    remove_timeout_values: true
+    
+    # 是否移除具体的数值
+    remove_numeric_values: true
+
+# 错误报告配置
+error_reporting:
+  # 报告输出目录
+  output_directory: "reports"
+  
+  # 是否自动生成报告
+  auto_generate: true
+  
+  # 是否在控制台打印摘要
+  print_summary: true
+  
+  # 摘要报告中显示的高频错误数量
+  top_errors_count: 10
+  
+  # 错误趋势分析的时间范围（小时）
+  trend_analysis_hours: 24
+
+# 特定错误类型的配置
+error_types:
+  # 超时错误配置
+  timeout_errors:
+    # 超时错误的最大记录次数（可以设置更低，因为超时错误通常重复性很高）
+    max_count: 2
+    
+    # 是否对超时错误进行特殊处理
+    special_handling: true
+  
+  # 元素未找到错误配置
+  element_not_found_errors:
+    max_count: 3
+    special_handling: true
+  
+  # 断言失败错误配置
+  assertion_errors:
+    # 断言失败通常需要更多关注，所以记录次数可以多一些
+    max_count: 5
+    special_handling: false
+
+# 日志配置
+logging:
+  # 错误去重相关日志级别
+  deduplication_log_level: "INFO"
+  
+  # 是否记录被抑制的错误统计
+  log_suppressed_stats: true
+  
+  # 统计信息记录间隔（秒）
+  stats_log_interval: 1800  # 30分钟
+
+# 性能优化配置
+performance:
+  # 错误记录的最大数量（防止内存泄漏）
+  max_error_records: 1000
+  
+  # 错误哈希缓存大小
+  hash_cache_size: 500
+  
+  # 是否启用错误记录的压缩存储
+  enable_compression: false
+
+# 高级配置
+advanced:
+  # 自定义错误分类规则
+  custom_error_patterns:
+    - pattern: ".*timeout.*exceeded.*"
+      category: "timeout"
+      max_count: 2
+    
+    - pattern: ".*element.*not.*found.*"
+      category: "element_not_found"
+      max_count: 3
+    
+    - pattern: ".*assertion.*failed.*"
+      category: "assertion"
+      max_count: 5
+  
+  # 错误忽略规则（完全忽略某些错误，不记录也不计数）
+  ignore_patterns:
+    - ".*The play\\(\\) request was interrupted.*"  # 媒体播放中断（可忽略）
+    - ".*favicon.ico.*404.*"  # 网站图标404错误
+  
+  # 错误优先级配置
+  error_priorities:
+    high:
+      - ".*crash.*"
+      - ".*fatal.*"
+      - ".*critical.*"
+    
+    medium:
+      - ".*timeout.*"
+      - ".*assertion.*failed.*"
+    
+    low:
+      - ".*warning.*"
+      - ".*debug.*"

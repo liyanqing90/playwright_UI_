@@ -9,11 +9,12 @@ import pytest
 from _pytest.python import Module
 from playwright.sync_api import Page, Browser, sync_playwright
 
-from constants import DEFAULT_TIMEOUT
-from page_objects.base_page import BasePage
+from config.constants import DEFAULT_TIMEOUT
+from src.core.base_page import BasePage
 from src.case_utils import run_test_data, load_test_cases, load_moules
-from src.runner import TestCaseGenerator
-from src.test_step_executor import StepExecutor
+from src.automation.runner import TestCaseGenerator
+from src.automation.step_executor import StepExecutor
+from src.performance_monitor import performance_monitor
 from utils.config import Config
 from utils.dingtalk_notifier import ReportNotifier
 from utils.logger import logger
@@ -22,6 +23,17 @@ DINGTALK_TOKEN = "636325ecf2302baf112f74ac54d8ef991de9b307c00bd168d3f2baa7df7f91
 DINGTALK_SECRET = "SECa7e01bee3a34e05d1b57297a95b8920d8c257088979c49fa0b50889fd60c570c"
 
 config = Config()
+
+
+@pytest.hookimpl(tryfirst=True)
+def pytest_sessionstart(session):
+    """测试会话开始时启动性能监控"""
+    try:
+        # 使用轻量级模式启动性能监控，减少对测试执行的影响
+        performance_monitor.start_monitoring()
+        logger.info("性能监控已启动（轻量级模式）")
+    except Exception as e:
+        logger.error(f"启动性能监控失败: {e}")
 
 
 @pytest.fixture(scope="session")
@@ -253,9 +265,34 @@ def get_test_name(request):
     """返回当前测试用例的完整名称，包括参数化ID"""
     test_name = request.node.name
     # 将Unicode转义序列解码为实际的中文字符
-    decoded_name = test_name.encode("utf-8").decode("unicode_escape")
-    logger.debug(f"当前测试用例名称: {decoded_name}")
+    try:
+        # 首先尝试标准的unicode_escape解码
+        decoded_name = test_name.encode("utf-8").decode("unicode_escape")
+
+        # 如果解码后看起来像乱码（包含特殊字符），尝试其他方法
+        if any(ord(c) > 127 and ord(c) < 256 for c in decoded_name):
+            # 这可能是UTF-8字节被错误解释，尝试重新编码
+            try:
+                decoded_name = decoded_name.encode("latin-1").decode("utf-8")
+            except (UnicodeDecodeError, UnicodeEncodeError):
+                # 如果还是失败，保持原来的解码结果
+                pass
+
+    except (UnicodeDecodeError, UnicodeEncodeError):
+        # 如果解码失败，使用原始名称
+        decoded_name = test_name
+
+    # 移除DEBUG日志，减少重复信息
     return decoded_name
+
+@pytest.fixture()
+def current_test_name(request):
+    """返回当前测试用例的基础名称（不包含参数化部分）"""
+    test_name = request.node.name
+    # 提取基础测试名称（去掉参数化部分）
+    base_name = test_name.split("[")[0] if "[" in test_name else test_name
+    logger.debug(f"当前测试用例基础名称: {base_name}")
+    return base_name
 
 
 @pytest.hookimpl(trylast=True)
@@ -264,6 +301,12 @@ def pytest_sessionfinish(session, exitstatus):
     测试会话结束时执行的钩子函数
     用于清理测试数据文件（在所有测试完成后只执行一次）
     """
+    # 输出总体断言统计
+    _output_final_assertion_stats()
+
+    # 输出性能统计和关闭性能监控
+    _output_final_performance_stats()
+
     try:
         variables_file = Path("test_data/variables.json")
         if variables_file.exists():
@@ -273,8 +316,127 @@ def pytest_sessionfinish(session, exitstatus):
         logger.error(f"删除测试数据文件时出错: {e}")
 
 
+def _output_final_assertion_stats():
+    """输出最终的断言统计信息"""
+    try:
+        from src.assertion_manager import assertion_manager
+
+        stats = assertion_manager.get_stats()
+
+        if stats.total_assertions > 0:
+            logger.info("=" * 60)
+            logger.info("🎯 测试会话断言统计总结")
+            logger.info("=" * 60)
+            logger.info(f"📊 总断言数: {stats.total_assertions}")
+            logger.info(f"✅ 通过断言: {stats.passed_assertions}")
+            logger.info(f"❌ 失败断言: {stats.failed_assertions}")
+            logger.info(f"   🔸 软断言失败: {stats.failed_soft_assertions}")
+            logger.info(f"   🔸 硬断言失败: {stats.failed_hard_assertions}")
+            logger.info(f"📈 断言成功率: {stats.success_rate:.2f}%")
+
+            # 保存断言报告
+            try:
+                assertion_manager.save_report()
+                logger.info("📄 断言报告已保存到: reports/assertion_report.json")
+            except Exception as e:
+                logger.error(f"保存断言报告失败: {e}")
+
+            # 如果有失败的断言，输出汇总
+            if stats.failed_assertions > 0:
+                logger.warning("⚠️  失败断言汇总:")
+                failed_by_type = {}
+                for assertion in assertion_manager.get_failed_assertions():
+                    test_case = assertion.test_case
+                    if test_case not in failed_by_type:
+                        failed_by_type[test_case] = {"soft": 0, "hard": 0}
+                    failed_by_type[test_case][assertion.assertion_type] += 1
+
+                for test_case, counts in failed_by_type.items():
+                    logger.warning(f"   📋 {test_case}: 软断言失败 {counts['soft']} 个, 硬断言失败 {counts['hard']} 个")
+
+            logger.info("=" * 60)
+        else:
+            logger.info("ℹ️  本次测试会话没有执行任何断言操作")
+
+    except Exception as e:
+        logger.error(f"输出断言统计时出错: {e}")
+
+
+def _output_final_performance_stats():
+    """输出最终的性能统计信息"""
+    try:
+        # 停止性能监控
+        performance_monitor.stop_monitoring()
+
+        # 获取性能统计
+        report = performance_monitor.generate_report()
+
+        logger.info("=" * 60)
+        logger.info("🚀 测试会话性能统计总结")
+        logger.info("=" * 60)
+
+        summary = report["summary"]
+        logger.info(f"📊 监控时长: {summary['monitoring_duration_minutes']:.1f} 分钟")
+        logger.info(f"💾 内存使用: 峰值 {summary['peak_memory_mb']}MB, 平均 {summary['average_memory_mb']}MB")
+        logger.info(f"🔥 CPU使用: 峰值 {summary['peak_cpu_percent']}%, 平均 {summary['average_cpu_percent']}%")
+        logger.info(f"⏱️  总测试时间: {summary['total_test_time_seconds']} 秒")
+        logger.info(f"🌐 浏览器实例: {summary['current_browser_instances']} 个")
+
+        # 添加更详细的统计信息
+        logger.info(f"📋 性能数据点: {report['metrics_count']} 个")
+
+        # 获取变量管理器详细统计
+        try:
+            from utils.variable_manager import VariableManager
+            vm = VariableManager()
+            vm_stats = vm.get_stats()
+            logger.info(f"🔧 变量管理: 获取 {vm_stats.get('get_count', 0)} 次, 设置 {vm_stats.get('set_count', 0)} 次, 缓存 {vm_stats.get('cache_size', 0)} 项")
+        except Exception as e:
+            logger.debug(f"获取变量管理器统计失败: {e}")
+
+        # 输出优化建议
+        if report["recommendations"]:
+            logger.info("💡 性能优化建议:")
+            for i, recommendation in enumerate(report["recommendations"], 1):
+                logger.info(f"   {i}. {recommendation}")
+
+        # 保存性能报告
+        try:
+            performance_monitor.save_report()
+            logger.info("📄 性能报告已保存到: reports/performance_report.json")
+        except Exception as e:
+            logger.error(f"保存性能报告失败: {e}")
+
+        logger.info("=" * 60)
+
+    except Exception as e:
+        logger.error(f"输出性能统计时出错: {e}")
+
+
+
+
+
 def pytest_collection_modifyitems(items) -> None:
     # item表示每个测试用例，解决用例名称中文显示问题
+    def decode_unicode_text(text):
+        """统一的Unicode解码函数"""
+        try:
+            # 首先尝试标准的unicode_escape解码
+            decoded = text.encode("utf-8").decode("unicode_escape")
+
+            # 如果解码后看起来像乱码，尝试其他方法
+            if any(ord(c) > 127 and ord(c) < 256 for c in decoded):
+                try:
+                    decoded = decoded.encode("latin-1").decode("utf-8")
+                except (UnicodeDecodeError, UnicodeEncodeError):
+                    pass
+            return decoded
+        except (UnicodeDecodeError, UnicodeEncodeError):
+            return text
+
     for item in items:
-        item.name = item.name.encode().decode("unicode-escape")
-        item._nodeid = item._nodeid.encode().decode("unicode-escape")
+        try:
+            item.name = decode_unicode_text(item.name)
+            item._nodeid = decode_unicode_text(item._nodeid)
+        except Exception as e:
+            logger.warning(f"无法解码测试用例名称 {item.name}: {e}")

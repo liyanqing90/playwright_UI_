@@ -1,0 +1,75 @@
+# 性能优化配置文件
+# 用于配置BasePage的性能优化参数
+
+# 元素定位缓存配置
+element_cache:
+  # 缓存超时时间(秒)
+  timeout: 30
+  # 是否启用缓存
+  enabled: true
+  # 最大缓存数量
+  max_size: 1000
+  # 缓存清理间隔(秒)
+  cleanup_interval: 60
+
+# 截图管理配置
+screenshot:
+  # 最大截图数量
+  max_count: 50
+  # 截图间隔(秒)
+  interval: 1
+  # 是否启用智能截图
+  smart_mode: true
+  # 截图质量(0-100)
+  quality: 80
+
+# 页面加载优化
+page_load:
+  # 是否禁用图片加载
+  disable_images: false
+  # 是否禁用CSS加载
+  disable_css: false
+  # 是否禁用字体加载
+  disable_fonts: false
+  # 页面加载超时时间(毫秒)
+  timeout: 30000
+
+# 元素等待配置
+element_wait:
+  # 默认等待超时时间(毫秒)
+  default_timeout: 10000
+  # 快速检查超时时间(毫秒)
+  quick_timeout: 1000
+  # 重试次数
+  retry_count: 3
+  # 重试间隔(毫秒)
+  retry_interval: 500
+
+# 性能监控配置
+monitoring:
+  # 是否启用性能监控
+  enabled: true
+  # 监控日志级别
+  log_level: "INFO"
+  # 慢操作阈值(秒)
+  slow_threshold: 2.0
+  # 内存监控间隔(秒)
+  memory_check_interval: 30
+
+# 并发优化配置
+concurrency:
+  # 最大并发元素定位数
+  max_concurrent_locators: 10
+  # 批量操作大小
+  batch_size: 20
+  # 是否启用异步操作
+  async_enabled: false
+
+# 调试配置
+debug:
+  # 是否启用详细日志
+  verbose_logging: false
+  # 是否记录缓存命中率
+  log_cache_hits: true
+  # 是否记录性能统计
+  log_performance_stats: true

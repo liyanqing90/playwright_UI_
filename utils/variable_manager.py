@@ -48,8 +48,15 @@ class VariableManager:
             "temp": ["temp", "step", "module", "test_case", "global"],
         }
 
-        # 变量缓存
+        # 变量缓存 - 使用LRU缓存机制
         self._variable_cache = {}
+        self._cache_access_order = []  # 记录访问顺序，用于LRU
+        self._max_cache_size = 1000  # 最大缓存大小
+
+        # 变量替换结果缓存
+        self._replacement_cache = {}
+        self._replacement_cache_order = []
+        self._max_replacement_cache_size = 500
 
         # 变量访问统计
         self._stats = {
@@ -57,6 +64,8 @@ class VariableManager:
             "set_count": 0,
             "cache_hits": 0,
             "cache_misses": 0,
+            "replacement_cache_hits": 0,
+            "replacement_cache_misses": 0,
         }
 
         # 文件存储模式的配置
@@ -210,6 +219,9 @@ class VariableManager:
         if name is None:
             # 清除所有缓存
             self._variable_cache.clear()
+            self._cache_access_order.clear()
+            self._replacement_cache.clear()
+            self._replacement_cache_order.clear()
             return
 
         # 清除指定变量的缓存
@@ -220,6 +232,46 @@ class VariableManager:
 
         for key in keys_to_remove:
             del self._variable_cache[key]
+            if key in self._cache_access_order:
+                self._cache_access_order.remove(key)
+
+        # 清除替换缓存中相关的条目
+        replacement_keys_to_remove = []
+        for cache_key in self._replacement_cache:
+            if name in cache_key:  # 简单的包含检查
+                replacement_keys_to_remove.append(cache_key)
+
+        for key in replacement_keys_to_remove:
+            del self._replacement_cache[key]
+            if key in self._replacement_cache_order:
+                self._replacement_cache_order.remove(key)
+
+    def _manage_cache_size(self):
+        """管理缓存大小，实现LRU策略"""
+        # 管理变量缓存
+        while len(self._variable_cache) > self._max_cache_size:
+            if self._cache_access_order:
+                oldest_key = self._cache_access_order.pop(0)
+                if oldest_key in self._variable_cache:
+                    del self._variable_cache[oldest_key]
+
+        # 管理替换缓存
+        while len(self._replacement_cache) > self._max_replacement_cache_size:
+            if self._replacement_cache_order:
+                oldest_key = self._replacement_cache_order.pop(0)
+                if oldest_key in self._replacement_cache:
+                    del self._replacement_cache[oldest_key]
+
+    def _update_cache_access(self, cache_key: str, is_replacement_cache: bool = False):
+        """更新缓存访问顺序"""
+        if is_replacement_cache:
+            if cache_key in self._replacement_cache_order:
+                self._replacement_cache_order.remove(cache_key)
+            self._replacement_cache_order.append(cache_key)
+        else:
+            if cache_key in self._cache_access_order:
+                self._cache_access_order.remove(cache_key)
+            self._cache_access_order.append(cache_key)
 
     def get_variable(
         self, name: str, scope: Optional[str] = None, default: Any = None
@@ -242,6 +294,7 @@ class VariableManager:
         cache_key = f"{name}:{scope if scope else 'default'}"
         if cache_key in self._variable_cache:
             self._stats["cache_hits"] += 1
+            self._update_cache_access(cache_key)
             return self._variable_cache[cache_key]
 
         self._stats["cache_misses"] += 1
@@ -253,6 +306,8 @@ class VariableManager:
                     value = self.variables[search_scope][name]
                     # 将结果存入缓存
                     self._variable_cache[cache_key] = value
+                    self._update_cache_access(cache_key)
+                    self._manage_cache_size()
                     return value
         else:
             # 没有指定作用域，按照默认优先级查找
@@ -261,6 +316,8 @@ class VariableManager:
                     value = self.variables[search_scope][name]
                     # 将结果存入缓存
                     self._variable_cache[cache_key] = value
+                    self._update_cache_access(cache_key)
+                    self._manage_cache_size()
                     return value
 
         # 未找到变量，返回默认值
@@ -468,6 +525,15 @@ class VariableManager:
             if "$" not in value:
                 return value
 
+            # 检查替换缓存
+            replacement_cache_key = f"{value}:{scope if scope else 'default'}"
+            if replacement_cache_key in self._replacement_cache:
+                self._stats["replacement_cache_hits"] += 1
+                self._update_cache_access(replacement_cache_key, is_replacement_cache=True)
+                return self._replacement_cache[replacement_cache_key]
+
+            self._stats["replacement_cache_misses"] += 1
+
             # 检查整个字符串是否就是一个变量引用，以保留原始类型
             # 支持两种格式：${var_name} 和 $<var_name>
             exact_match_pattern = r"^\${([^}]+)}$|^\$<([^>]+)>$"
@@ -481,7 +547,14 @@ class VariableManager:
                     else exact_match.group(2)
                 )
                 # 精确匹配，直接获取并返回原始类型的值
-                return self.get_variable(var_name)
+                result = self.get_variable(var_name)
+
+                # 将结果存入替换缓存
+                self._replacement_cache[replacement_cache_key] = result
+                self._update_cache_access(replacement_cache_key, is_replacement_cache=True)
+                self._manage_cache_size()
+
+                return result
 
             # 优化：使用缓存存储编译后的正则表达式
             if not hasattr(self, "_compiled_patterns"):
@@ -508,9 +581,16 @@ class VariableManager:
                     return str(var_value)
 
             # 使用编译后的正则表达式替换所有内嵌变量
-            return self._compiled_patterns["embedded_var"].sub(
+            result = self._compiled_patterns["embedded_var"].sub(
                 _variable_replacer, value
             )
+
+            # 将结果存入替换缓存
+            self._replacement_cache[replacement_cache_key] = result
+            self._update_cache_access(replacement_cache_key, is_replacement_cache=True)
+            self._manage_cache_size()
+
+            return result
 
         # 处理列表 (递归)
         if isinstance(value, list):

@@ -70,10 +70,11 @@
 
 **主要文件**:
 
-- `src/test_step_executor.py`: 测试步骤执行器入口（兼容性保留）
 - `src/step_actions/step_executor.py`: 测试步骤执行器核心实现
 - `src/step_actions/action_types.py`: 操作类型定义
 - `src/step_actions/commands/`: 命令模式实现目录
+- `src/step_actions/flow_control.py`: 流程控制实现
+- `src/step_actions/module_handler.py`: 模块处理器
 
 ### 4. 页面对象 (Page Objects)
 

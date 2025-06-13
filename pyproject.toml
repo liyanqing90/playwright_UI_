@@ -7,7 +7,7 @@ readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.10"
 playwright = "^1.49.1"
 pytest = "^8.3.4"
 allure-python-commons = "^2.13.5"
@@ -30,8 +30,14 @@ poetry-core = "^2.0.1"
 faker = "^37.0.0"
 pytest-playwright = "^0.7.0"
 pytest-check = "^2.5.0"
-black = "^25.1.0"
 jsonpath-ng = "^1.7.0"
+psutil = "^7.0.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+pytest-cov = "^4.0.0"
+mypy = "^1.0.0"
+pre-commit = "^3.0.0"
 
 [build-system]
 requires = ["poetry-core"]
