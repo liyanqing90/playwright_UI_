@@ -622,7 +622,7 @@ test_data:
         selector: level_btn
         action_type: click
         assert_params:
-          $.level: [1]
+          $.level: [ 1 ]
   test_check_energy:
     description: 检查能源
     steps:
