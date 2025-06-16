@@ -6,10 +6,11 @@ import datetime
 import random
 import string
 import uuid
-from typing import Dict, Any, Optional, Callable
 from dataclasses import dataclass
+from typing import Dict, Any, Optional, Callable
 
 from faker import Faker
+
 from src.automation.commands.base_command import Command, CommandFactory
 from utils.logger import logger
 

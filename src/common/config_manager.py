@@ -3,11 +3,11 @@
 本模块提供统一的配置管理功能，支持多种配置文件格式和环境变量。
 """
 
-import os
 import json
+import os
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, Any, Optional, Union, List
-from dataclasses import dataclass, field
 
 from utils.yaml_handler import YamlHandler
 from .exceptions import ConfigurationError
@@ -21,7 +21,6 @@ class ConfigSchema:
     required_keys: List[str] = field(default_factory=list)
     optional_keys: List[str] = field(default_factory=list)
     default_values: Dict[str, Any] = field(default_factory=dict)
-
 
 class ConfigManager:
     """统一配置管理器
@@ -316,10 +315,8 @@ class ConfigManager:
         
         return yaml_content
 
-
 # 全局配置管理器实例
 _config_manager: Optional[ConfigManager] = None
-
 
 def get_config_manager() -> ConfigManager:
     """获取全局配置管理器实例
@@ -332,7 +329,6 @@ def get_config_manager() -> ConfigManager:
         _config_manager = ConfigManager()
     return _config_manager
 
-
 def get_config(config_type: str) -> Dict[str, Any]:
     """获取配置的便捷函数
     
@@ -343,7 +339,6 @@ def get_config(config_type: str) -> Dict[str, Any]:
         配置字典
     """
     return get_config_manager().get_config(config_type)
-
 
 def get_config_value(config_type: str, key: str, default: Any = None) -> Any:
     """获取配置值的便捷函数

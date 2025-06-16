@@ -1063,7 +1063,7 @@ examples:
       command: "assert_matches"
       parameters:
         selector: "#email"
-        expected_value: "^[\w\.-]+@[\w\.-]+\.\w+$"
+        expected_value: "^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$"
         message: "邮箱格式不正确"
 
   advanced_assertions:

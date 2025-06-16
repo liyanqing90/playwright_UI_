@@ -3,14 +3,13 @@
 import argparse
 import json
 import sys
-from pathlib import Path
-from typing import List, Dict, Any
+from typing import List
 
 from .base_command import CommandRegistry
-from .command_monitor import command_monitor
 from .command_config import config_manager
-from .plugin_manager import PluginManager
 from .command_executor import command_executor
+from .command_monitor import command_monitor
+from .plugin_manager import PluginManager
 
 
 class CommandCLI:
@@ -420,12 +419,10 @@ class CommandCLI:
         else:
             print("Configuration is valid")
 
-
 def main():
     """CLI入口点"""
     cli = CommandCLI()
     cli.run()
-
 
 if __name__ == '__main__':
     main()

@@ -10,10 +10,11 @@ from _pytest.python import Module
 from playwright.sync_api import Page, Browser, sync_playwright
 
 from config.constants import DEFAULT_TIMEOUT
-from src.core.base_page import BasePage
-from src.case_utils import run_test_data, load_test_cases, load_moules
 from src.automation.runner import TestCaseGenerator
 from src.automation.step_executor import StepExecutor
+from src.case_utils import run_test_data, load_test_cases, load_moules
+from src.core.base_page import BasePage
+from src.core.plugin_compatibility import plugin_manager
 from src.performance_monitor import performance_monitor
 from utils.config import Config
 from utils.dingtalk_notifier import ReportNotifier
@@ -27,7 +28,23 @@ config = Config()
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_sessionstart(session):
-    """测试会话开始时启动性能监控"""
+    """测试会话开始时启动插件系统和性能监控"""
+    # 初始化插件系统
+    try:
+        plugin_count = plugin_manager.load_all_plugins()
+        logger.info(f"插件系统已启动，成功加载 {plugin_count} 个插件")
+        
+        # 输出插件加载状态
+        loaded_plugins = plugin_manager.list_plugins()
+        if loaded_plugins:
+            logger.info(f"已加载的插件: {', '.join(loaded_plugins.keys())}")
+        else:
+            logger.warning("没有加载任何插件")
+            
+    except Exception as e:
+        logger.error(f"插件系统启动失败: {e}")
+    
+    # 启动性能监控
     try:
         # 使用轻量级模式启动性能监控，减少对测试执行的影响
         performance_monitor.start_monitoring()
@@ -47,7 +64,7 @@ def browser() -> Generator[Browser, None, None]:
         browser.close()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def context(browser):
     """创建浏览器上下文"""
     context_options = config.browser_config or {}
@@ -58,10 +75,11 @@ def context(browser):
     browser_context.close()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def page(context) -> Generator[Page, Any, None]:
     """
-    创建页面，function级别的fixture
+    创建页面，session级别的fixture
+    与ui_helper保持相同作用域，避免ScopeMismatch错误
     """
     page = context.new_page()
     yield page
@@ -110,14 +128,15 @@ def convert_cookies(cookies):
     return cookies
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def ui_helper(page):
     """
     创建UIHelper的fixture,用于封装页面操作
+    使用session作用域以避免重复初始化服务容器，提升性能
     :param page:
     :return:
     """
-    ui = BasePage(page)
+    ui = BasePage(page, base_url=config.base_url)
     yield ui
 
 
@@ -133,12 +152,17 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     # 获取环境配置
     config = Config()
     env = os.getenv("ENV", config.env.value)
-    duration = round(time.time() - terminalreporter._sessionstarttime, 2)
+    # 使用session的开始时间，如果不存在则使用当前时间减去一个默认值
+    session_start_time = getattr(terminalreporter, '_sessionstarttime', None)
+    if session_start_time is None:
+        # 如果没有_sessionstarttime属性，尝试从config或session中获取
+        session_start_time = getattr(terminalreporter.config, '_session_start_time', time.time() - 1)
+    duration = round(time.time() - session_start_time, 2)
     # 获取失败用例详情
     failures = []
     if terminalreporter.stats:
         for item in terminalreporter.stats.get("failed", []):
-            logger.debug(f"Processing failed test: {item.nodeid}")
+            # logger.debug(f"Processing failed test: {item.nodeid}")
             error_msg = extract_assertion_message(item.sections)
             failures.append(
                 {

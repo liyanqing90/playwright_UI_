@@ -1,14 +1,13 @@
 """命令性能监控器"""
 
-import time
 import threading
+import time
 from collections import defaultdict, deque
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Callable, Any
-from contextlib import contextmanager
-import logging
 
-logger = logging.getLogger(__name__)
+from utils.logger import logger
 
 
 @dataclass
@@ -49,7 +48,6 @@ class CommandMetrics:
         if self.execution_count == 0:
             return 0.0
         return self.error_count / self.execution_count
-
 
 class CommandMonitor:
     """命令监控器"""
@@ -264,10 +262,8 @@ class CommandMonitor:
             
             return "\n".join(lines)
 
-
 # 全局命令监控器实例
 command_monitor = CommandMonitor()
-
 
 # 监控装饰器
 def monitor_command(command_name: str = None):

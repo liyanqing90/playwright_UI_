@@ -3,13 +3,13 @@
 本模块定义了框架中使用的所有类型注解和协议，提供类型安全支持。
 """
 
-from typing import (
-    Protocol, TypeVar, Generic, Dict, Any, Optional, Union, List, Tuple,
-    Callable, Awaitable, Type, runtime_checkable
-)
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
+from typing import (
+    Protocol, TypeVar, Dict, Any, Optional, Union, List, Tuple,
+    Callable, Awaitable, Type, runtime_checkable
+)
 
 try:
     from playwright.sync_api import Page, Locator, Browser, BrowserContext
@@ -20,7 +20,6 @@ except ImportError:
     Browser = Any
     BrowserContext = Any
 
-
 # 基础类型别名
 ElementSelector = str
 VariableValue = Union[str, int, float, bool, None, Dict[str, Any], List[Any]]
@@ -29,12 +28,10 @@ TestData = Dict[str, Any]
 ConfigData = Dict[str, Any]
 AssertionResult = Tuple[bool, str]  # (success, message)
 
-
 # 类型变量
 T = TypeVar('T')
 CommandType = TypeVar('CommandType', bound='CommandProtocol')
 PageType = TypeVar('PageType', bound='PageProtocol')
-
 
 # 枚举类型
 class ActionType(Enum):
@@ -56,7 +53,6 @@ class ActionType(Enum):
     STORAGE = "storage"
     PERFORMANCE = "performance"
 
-
 class BrowserType(Enum):
     """浏览器类型枚举"""
     CHROMIUM = "chromium"
@@ -64,7 +60,6 @@ class BrowserType(Enum):
     WEBKIT = "webkit"
     CHROME = "chrome"
     EDGE = "msedge"
-
 
 class AssertionType(Enum):
     """断言类型枚举"""
@@ -87,7 +82,6 @@ class AssertionType(Enum):
     EMPTY = "empty"
     NOT_EMPTY = "not_empty"
 
-
 class LogLevel(Enum):
     """日志级别枚举"""
     DEBUG = "debug"
@@ -95,7 +89,6 @@ class LogLevel(Enum):
     WARNING = "warning"
     ERROR = "error"
     CRITICAL = "critical"
-
 
 # 数据类
 @dataclass
@@ -107,7 +100,6 @@ class StepResult:
     duration: Optional[float] = None
     screenshot_path: Optional[str] = None
     error: Optional[Exception] = None
-
 
 @dataclass
 class TestCaseResult:
@@ -121,7 +113,6 @@ class TestCaseResult:
     error_message: Optional[str] = None
     step_results: List[StepResult] = None
 
-
 @dataclass
 class PerformanceMetrics:
     """性能指标"""
@@ -133,7 +124,6 @@ class PerformanceMetrics:
     memory_usage: Optional[Dict[str, float]] = None
     network_requests: Optional[List[Dict[str, Any]]] = None
 
-
 @dataclass
 class ElementInfo:
     """元素信息"""
@@ -144,7 +134,6 @@ class ElementInfo:
     bounding_box: Optional[Dict[str, float]] = None
     is_visible: Optional[bool] = None
     is_enabled: Optional[bool] = None
-
 
 # 协议定义
 @runtime_checkable
@@ -187,7 +176,6 @@ class CommandProtocol(Protocol):
         """
         ...
 
-
 @runtime_checkable
 class PageProtocol(Protocol):
     """页面协议
@@ -213,7 +201,6 @@ class PageProtocol(Protocol):
         """等待元素出现"""
         ...
 
-
 @runtime_checkable
 class AssertionProtocol(Protocol):
     """断言协议
@@ -233,7 +220,6 @@ class AssertionProtocol(Protocol):
         """可见性断言"""
         ...
 
-
 @runtime_checkable
 class ConfigProtocol(Protocol):
     """配置协议
@@ -252,7 +238,6 @@ class ConfigProtocol(Protocol):
     def set_value(self, config_type: str, key: str, value: Any) -> None:
         """设置配置值"""
         ...
-
 
 @runtime_checkable
 class LoggerProtocol(Protocol):
@@ -281,7 +266,6 @@ class LoggerProtocol(Protocol):
         """记录严重错误"""
         ...
 
-
 @runtime_checkable
 class DataManagerProtocol(Protocol):
     """数据管理协议
@@ -300,7 +284,6 @@ class DataManagerProtocol(Protocol):
     def validate_data(self, data: TestData, schema: str) -> bool:
         """验证数据"""
         ...
-
 
 # 抽象基类
 class BaseCommand(ABC):
@@ -328,9 +311,7 @@ class BaseCommand(ABC):
         """获取命令名称"""
         return self.__class__.__name__.replace('Command', '').lower()
 
-
 # BasePage类已移至src.core.base_page模块，避免重复定义
-
 
 # 函数类型别名
 CommandExecutor = Callable[[Any, str, Any, StepDefinition], Any]
@@ -340,13 +321,11 @@ TransformFunction = Callable[[Any], Any]
 EventHandler = Callable[[str, Dict[str, Any]], None]
 Middleware = Callable[[StepDefinition], StepDefinition]
 
-
 # 异步类型别名
 AsyncCommandExecutor = Callable[[Any, str, Any, StepDefinition], Awaitable[Any]]
 AsyncAssertionFunction = Callable[[Any, Any], Awaitable[AssertionResult]]
 AsyncValidationFunction = Callable[[Any], Awaitable[bool]]
 AsyncEventHandler = Callable[[str, Dict[str, Any]], Awaitable[None]]
-
 
 # 复合类型
 CommandRegistry = Dict[str, Type[CommandProtocol]]
@@ -355,58 +334,48 @@ AssertionRegistry = Dict[str, AssertionFunction]
 MiddlewareStack = List[Middleware]
 EventHandlerRegistry = Dict[str, List[EventHandler]]
 
-
 # 配置相关类型
 BrowserConfig = Dict[str, Union[str, bool, int, Dict[str, Any]]]
 TestConfig = Dict[str, Union[str, bool, int, List[str]]]
 PerformanceConfig = Dict[str, Union[bool, List[str], Dict[str, Any]]]
 EnvironmentConfig = Dict[str, Union[str, bool, int, Dict[str, Any]]]
 
-
 # 测试相关类型
 TestSuite = List[StepDefinition]
 TestModule = Dict[str, Union[str, List[StepDefinition], TestData]]
 TestProject = Dict[str, Union[str, List[TestModule], ConfigData]]
-
 
 # 网络相关类型
 NetworkRequest = Dict[str, Union[str, int, Dict[str, str]]]
 NetworkResponse = Dict[str, Union[str, int, Dict[str, str], bytes]]
 NetworkInterception = Callable[[NetworkRequest], Optional[NetworkResponse]]
 
-
 # 文件相关类型
 FileUpload = Dict[str, Union[str, bytes]]
 FileDownload = Dict[str, Union[str, int, bytes]]
 ScreenshotOptions = Dict[str, Union[str, bool, int, Dict[str, int]]]
-
 
 # 性能相关类型
 TimingMetrics = Dict[str, float]
 MemoryMetrics = Dict[str, Union[int, float]]
 NetworkMetrics = Dict[str, Union[int, float, List[NetworkRequest]]]
 
-
 # 工具函数类型检查
 def is_command(obj: Any) -> bool:
     """检查对象是否为命令"""
     return isinstance(obj, CommandProtocol)
 
-
 def is_page(obj: Any) -> bool:
     """检查对象是否为页面对象"""
     return isinstance(obj, PageProtocol)
-
 
 def is_assertion(obj: Any) -> bool:
     """检查对象是否为断言对象"""
     return isinstance(obj, AssertionProtocol)
 
-
 def is_config_manager(obj: Any) -> bool:
     """检查对象是否为配置管理器"""
     return isinstance(obj, ConfigProtocol)
-
 
 def is_logger(obj: Any) -> bool:
     """检查对象是否为日志记录器"""

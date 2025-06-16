@@ -1,14 +1,15 @@
 """插件系统管理器"""
 
-import json
 import importlib.util
+import json
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Any
-from dataclasses import dataclass
-from .base_command import Command, CommandRegistry
-import logging
 
-logger = logging.getLogger(__name__)
+import yaml
+
+from utils.logger import logger
+from .base_command import CommandRegistry
 
 
 @dataclass
@@ -22,7 +23,6 @@ class PluginInfo:
     dependencies: List[str]
     enabled: bool = True
     path: Optional[Path] = None
-
 
 class PluginManager:
     """插件管理器"""
@@ -64,7 +64,6 @@ class PluginManager:
 from src.automation.commands.base_command import Command, CommandRegistry
 from typing import Dict, Any
 
-
 @CommandRegistry.register(["custom_action"])
 class CustomActionCommand(Command):
     """自定义动作命令"""
@@ -75,11 +74,9 @@ class CustomActionCommand(Command):
         # 在这里实现你的自定义逻辑
         return f"Custom action executed with value: {value}"
 
-
 def plugin_init():
     """插件初始化函数"""
     print("示例插件已初始化")
-
 
 def plugin_cleanup():
     """插件清理函数"""
@@ -92,6 +89,7 @@ def plugin_cleanup():
         """发现插件"""
         discovered = []
         
+        # 查找JSON配置文件（旧格式）
         for config_file in self.plugin_dir.glob("*.json"):
             try:
                 plugin_info = self._load_plugin_config(config_file)
@@ -101,11 +99,24 @@ def plugin_cleanup():
             except Exception as e:
                 logger.error(f"Failed to load plugin config {config_file}: {e}")
         
+        # 查找目录结构的插件（新格式）
+        for plugin_dir in self.plugin_dir.iterdir():
+            if plugin_dir.is_dir() and not plugin_dir.name.startswith('.'):
+                config_file = plugin_dir / 'config.yaml'
+                if config_file.exists():
+                    try:
+                        plugin_info = self._load_plugin_yaml_config(config_file, plugin_dir)
+                        if plugin_info:
+                            discovered.append(plugin_info)
+                            self.plugins[plugin_info.name] = plugin_info
+                    except Exception as e:
+                        logger.error(f"Failed to load plugin config {config_file}: {e}")
+        
         logger.info(f"Discovered {len(discovered)} plugins")
         return discovered
     
     def _load_plugin_config(self, config_file: Path) -> Optional[PluginInfo]:
-        """加载插件配置"""
+        """加载插件配置（JSON格式）"""
         try:
             with open(config_file, 'r', encoding='utf-8') as f:
                 config = json.load(f)
@@ -125,6 +136,32 @@ def plugin_cleanup():
             
         except Exception as e:
             logger.error(f"Failed to parse plugin config {config_file}: {e}")
+            return None
+    
+    def _load_plugin_yaml_config(self, config_file: Path, plugin_dir: Path) -> Optional[PluginInfo]:
+        """加载插件配置（YAML格式）"""
+        try:
+            with open(config_file, 'r', encoding='utf-8') as f:
+                config = yaml.safe_load(f)
+            
+            # 从配置中提取插件信息
+            plugin_config = config.get('plugin', {})
+            
+            plugin_info = PluginInfo(
+                name=plugin_config.get('name', plugin_dir.name),
+                version=plugin_config.get('version', '1.0.0'),
+                description=plugin_config.get('description', ''),
+                author=plugin_config.get('author', 'Unknown'),
+                commands=plugin_config.get('commands', []),
+                dependencies=plugin_config.get('dependencies', []),
+                enabled=plugin_config.get('enabled', True),
+                path=plugin_dir / 'plugin.py'
+            )
+            
+            return plugin_info
+            
+        except Exception as e:
+            logger.error(f"Failed to parse plugin YAML config {config_file}: {e}")
             return None
     
     def load_plugin(self, plugin_name: str) -> bool:
@@ -306,7 +343,6 @@ def plugin_cleanup():
         if self.is_plugin_loaded(plugin_name):
             self.unload_plugin(plugin_name)
         return self.load_plugin(plugin_name)
-
 
 # 全局插件管理器实例
 plugin_manager = PluginManager()

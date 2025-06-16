@@ -101,11 +101,7 @@ cache:
   
   # 缓存分类
   categories:
-    # 元素缓存
-    elements:
-      enabled: true
-      ttl: 1800
-      max_size: 500
+    # 元素缓存配置已移除
     # 页面缓存
     pages:
       enabled: true

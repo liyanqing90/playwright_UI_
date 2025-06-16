@@ -2,14 +2,15 @@
 断言管理器 - 统一处理软硬断言并提供统计功能
 """
 
-from typing import List, Dict, Any
+import json
 from dataclasses import dataclass, field
 from datetime import datetime
-import json
 from pathlib import Path
+from typing import List, Dict, Any
+
+from pytest_check import check
 
 from utils.logger import logger
-from pytest_check import check
 
 
 @dataclass
@@ -23,7 +24,6 @@ class AssertionResult:
     expected: Any
     actual: Any
     error_message: str = ""
-
 
 @dataclass
 class AssertionStats:
@@ -45,7 +45,6 @@ class AssertionStats:
         if self.total_assertions == 0:
             return 0.0
         return (self.passed_assertions / self.total_assertions) * 100
-
 
 class AssertionManager:
     """
@@ -100,9 +99,8 @@ class AssertionManager:
             self.stats.failed_hard_assertions += 1
             logger.error(f"硬断言失败: {message}")
             
-            # 创建硬断言异常并标记
             error = AssertionError(message)
-            error._hard_assert = True
+            error._is_hard_assertion = True
             error._expected = expected
             error._actual = actual
             raise error
@@ -197,7 +195,6 @@ class AssertionManager:
         """保存断言报告到文件"""
         report = self.generate_report()
         
-        # 确保目录存在
         Path(file_path).parent.mkdir(parents=True, exist_ok=True)
         
         with open(file_path, 'w', encoding='utf-8') as f:
@@ -207,7 +204,6 @@ class AssertionManager:
         """重置统计信息"""
         self.stats = AssertionStats()
         logger.debug("断言统计信息已重置")
-
 
 # 全局断言管理器实例
 assertion_manager = AssertionManager()

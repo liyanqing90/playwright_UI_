@@ -6,39 +6,9 @@
 
 ## 性能优化功能
 
-### 1. 智能缓存系统
+### 1. 性能优化系统
 
-#### 元素定位缓存
-- **功能**: 自动缓存已定位的元素，避免重复查找
-- **配置**: 通过 `config/performance_optimization.yaml` 配置缓存参数
-- **效果**: 显著减少重复元素定位的时间
-
-```python
-# 缓存配置示例
-element_cache:
-  timeout: 30        # 缓存超时时间(秒)
-  enabled: true      # 是否启用缓存
-  max_size: 1000     # 最大缓存数量
-  cleanup_interval: 60  # 缓存清理间隔(秒)
-```
-
-#### 缓存使用示例
-
-```python
-from page_objects.base_page import BasePage
-
-class TestPage(BasePage):
-    def test_cached_operations(self):
-        # 第一次定位 - 缓存未命中
-        element1 = self._locator("input[name='username']")
-        
-        # 第二次定位 - 缓存命中，速度更快
-        element2 = self._locator("input[name='username']")
-        
-        # 获取缓存统计
-        stats = self.get_cache_stats()
-        print(f"缓存命中率: {stats['hit_rate']:.1f}%")
-```
+> **注意**: 元素定位缓存功能已从框架中移除，以下介绍的是其他性能优化功能。
 
 ### 2. 性能监控
 
@@ -69,18 +39,18 @@ print(f"""
 # CI环境优化
 performance_manager.optimize_for_environment("ci")
 # - 减少截图数量
-# - 缩短缓存时间
+# - 优化内存管理
 # - 禁用图片加载
 
 # 调试环境优化
 performance_manager.optimize_for_environment("debug")
 # - 启用详细日志
-# - 记录缓存命中
+# - 记录性能数据
 # - 显示性能统计
 
 # 生产环境优化
 performance_manager.optimize_for_environment("production")
-# - 最大化缓存时间
+# - 最大化性能
 # - 启用智能截图
 # - 优化页面加载
 ```
@@ -91,7 +61,6 @@ performance_manager.optimize_for_environment("production")
 
 `config/performance_optimization.yaml` 包含以下配置节：
 
-- **element_cache**: 元素缓存配置
 - **screenshot**: 截图管理配置
 - **page_load**: 页面加载优化
 - **element_wait**: 元素等待配置
@@ -103,17 +72,16 @@ performance_manager.optimize_for_environment("production")
 
 ```python
 # 运行时修改配置
-performance_manager.config['element_cache']['timeout'] = 60
+# 注意：元素缓存相关配置已移除
 performance_manager.config['screenshot']['max_count'] = 100
 
 # 获取配置值
-cache_timeout = performance_manager.get_cache_timeout()
 max_screenshots = performance_manager.get_max_screenshots()
 ```
 
 ## 性能优化最佳实践
 
-### 1. 合理使用缓存
+### 1. 合理使用选择器
 
 ```python
 # ✅ 好的做法：重复使用相同选择器
@@ -152,8 +120,7 @@ stats = performance_manager.get_performance_stats()
 if stats['slow_operation_rate'] > 10:  # 超过10%的操作是慢操作
     print("警告：检测到性能问题，建议优化")
     
-if stats['cache_hit_rate'] < 50:  # 缓存命中率低于50%
-    print("建议：优化选择器重用以提高缓存效率")
+# 性能优化建议已更新
 ```
 
 ### 3. 批量操作优化
@@ -161,18 +128,8 @@ if stats['cache_hit_rate'] < 50:  # 缓存命中率低于50%
 ```python
 # ✅ 使用批量预加载
 class DataPage(BasePage):
-    def preload_form_elements(self):
-        """预加载表单元素到缓存"""
-        selectors = [
-            "input[name='name']",
-            "input[name='email']",
-            "select[name='country']",
-            "textarea[name='message']"
-        ]
-        self.preload_elements(selectors)
-    
-    def fill_form_fast(self, data):
-        # 预加载后，这些操作会很快
+    def fill_form_efficiently(self, data):
+        # 使用高效的元素定位方式
         self.fill("input[name='name']", data['name'])
         self.fill("input[name='email']", data['email'])
         # ...
@@ -194,7 +151,7 @@ def setup_performance_optimization():
     if env == 'ci':
         # CI环境额外优化
         performance_manager.config['page_load']['disable_images'] = True
-        performance_manager.config['element_cache']['max_size'] = 500
+        # 元素缓存相关配置已移除
 ```
 
 ## 性能测试
@@ -220,14 +177,14 @@ class PerformanceBenchmark:
         selector = "input[name='search']"
         
         # 测试无缓存性能
-        performance_manager.config['element_cache']['enabled'] = False
+        # 元素缓存相关配置已移除
         start_time = time.time()
         for _ in range(iterations):
             base_page._locator(selector)
         no_cache_time = time.time() - start_time
         
         # 测试有缓存性能
-        performance_manager.config['element_cache']['enabled'] = True
+        # 元素缓存相关配置已移除
         performance_manager.reset_stats()
         start_time = time.time()
         for _ in range(iterations):
@@ -271,12 +228,11 @@ selector = "input[name='username']"  # 一致的选择器
 **解决方案**:
 ```python
 # 检查缓存大小是否过大
-if performance_manager.get_config('element_cache', 'max_size') > 2000:
-    performance_manager.config['element_cache']['max_size'] = 1000
+# 元素缓存相关配置已移除
 
 # 检查缓存超时是否过长
 if performance_manager.get_cache_timeout() > 60:
-    performance_manager.config['element_cache']['timeout'] = 30
+    # 元素缓存相关配置已移除
 
 # 清理缓存
 base_page.clear_element_cache()
@@ -290,13 +246,9 @@ base_page.clear_element_cache()
 ```python
 # 定期清理缓存
 if performance_manager.get_performance_stats()['total_operations'] % 1000 == 0:
-    base_page.clear_element_cache()
+    # 元素缓存清理方法已移除
 
-# 减少缓存大小
-performance_manager.config['element_cache']['max_size'] = 500
-
-# 缩短缓存超时
-performance_manager.config['element_cache']['timeout'] = 15
+# 元素缓存相关配置已移除
 ```
 
 ## 总结

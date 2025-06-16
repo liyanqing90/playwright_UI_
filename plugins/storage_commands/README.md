@@ -595,7 +595,7 @@ plugin.variable_manager.add_listener(variable_change_listener)
 - 定期清理过期数据
 
 ### 兼容性
-- 支持Python 3.7+
+- 支持Python 3.10+
 - 兼容主流操作系统
 - 向后兼容旧版本配置
 - 支持数据迁移

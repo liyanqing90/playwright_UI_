@@ -2,10 +2,9 @@
 
 import importlib
 from typing import Dict, Type, Optional, Set
-from .base_command import Command, CommandRegistry
-import logging
 
-logger = logging.getLogger(__name__)
+from utils.logger import logger
+from .base_command import Command, CommandRegistry
 
 
 class CommandLoader:

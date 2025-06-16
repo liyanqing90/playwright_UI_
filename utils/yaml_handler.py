@@ -55,7 +55,7 @@ class YamlHandler:
     def load_yaml_dir(self, file_path):
         yaml_files = get_yaml_files(file_path)
         result = []
-        if not yaml_files:
+        if not yaml_files or yaml_files is None:
             return result
         # 直接顺序加载并合并（后面的文件覆盖前面的）
         for yaml_file in yaml_files:

@@ -5,7 +5,6 @@
 
 from typing import Optional, Dict, Any
 
-
 class AutomationError(Exception):
     """自动化框架基础异常
     
@@ -21,7 +20,6 @@ class AutomationError(Exception):
         if self.details:
             return f"{self.message} | Details: {self.details}"
         return self.message
-
 
 class ElementNotFoundError(AutomationError):
     """元素未找到异常
@@ -48,7 +46,6 @@ class ElementNotFoundError(AutomationError):
         
         super().__init__(message, details)
 
-
 class CommandExecutionError(AutomationError):
     """命令执行异常
     
@@ -69,7 +66,6 @@ class CommandExecutionError(AutomationError):
         }
         
         super().__init__(message, details)
-
 
 class ConfigurationError(AutomationError):
     """配置错误异常
@@ -96,7 +92,6 @@ class ConfigurationError(AutomationError):
         
         super().__init__(message, details)
 
-
 class ValidationError(AutomationError):
     """验证错误异常
     
@@ -122,7 +117,6 @@ class ValidationError(AutomationError):
         
         super().__init__(message, details)
 
-
 class NetworkError(AutomationError):
     """网络错误异常
     
@@ -145,7 +139,6 @@ class NetworkError(AutomationError):
         }
         
         super().__init__(message, details)
-
 
 class TimeoutError(AutomationError):
     """超时错误异常
@@ -170,7 +163,6 @@ class TimeoutError(AutomationError):
         
         super().__init__(message, details)
 
-
 class BrowserError(AutomationError):
     """浏览器错误异常
     
@@ -191,7 +183,6 @@ class BrowserError(AutomationError):
         }
         
         super().__init__(message, details)
-
 
 class DataError(AutomationError):
     """数据错误异常
@@ -216,7 +207,6 @@ class DataError(AutomationError):
         }
         
         super().__init__(message, details)
-
 
 class AssertionError(AutomationError):
     """断言错误异常

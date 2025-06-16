@@ -376,7 +376,7 @@ def custom_validator(actual, expected):
 - **日志安全**: 敏感信息不会记录到日志中
 
 ### 兼容性
-- **Python 版本**: 支持 Python 3.8+
+- **Python 版本**: 支持 Python 3.10+
 - **Playwright 版本**: 支持 Playwright 1.20.0+
 - **框架版本**: 支持框架 1.0.0+
 - **操作系统**: 支持 Windows、macOS、Linux

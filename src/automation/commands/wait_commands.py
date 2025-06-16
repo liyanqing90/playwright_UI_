@@ -26,7 +26,6 @@ class WaitCommand(Command):
         logger.debug(f"等待 {wait_time}ms")
         ui_helper.wait_for_timeout(timeout=wait_time)
 
-
 @CommandFactory.register(StepAction.WAIT_FOR_NETWORK_IDLE)
 class WaitForNetworkIdleCommand(Command):
     """等待网络空闲命令"""
@@ -36,7 +35,6 @@ class WaitForNetworkIdleCommand(Command):
     ) -> None:
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
         ui_helper.wait_for_network_idle(timeout=timeout)
-
 
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_HIDDEN)
 class WaitForElementHiddenCommand(Command):
@@ -48,7 +46,6 @@ class WaitForElementHiddenCommand(Command):
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
         ui_helper.wait_for_element_hidden(selector=selector, timeout=timeout)
 
-
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_CLICKABLE)
 class WaitForElementClickableCommand(Command):
     """等待元素可点击命令"""
@@ -58,7 +55,6 @@ class WaitForElementClickableCommand(Command):
     ) -> None:
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
         ui_helper.wait_for_element_clickable(selector=selector, timeout=timeout)
-
 
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_TEXT)
 class WaitForElementTextCommand(Command):
@@ -73,7 +69,6 @@ class WaitForElementTextCommand(Command):
             selector=selector, expected_text=expected_text, timeout=timeout
         )
 
-
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_COUNT)
 class WaitForElementCountCommand(Command):
     """等待元素数量命令"""
@@ -86,7 +81,6 @@ class WaitForElementCountCommand(Command):
         ui_helper.wait_for_element_count(
             selector=selector, expected_count=expected_count, timeout=timeout
         )
-
 
 @CommandFactory.register(StepAction.WAIT_FOR_NEW_WINDOW)
 class WaitForNewWindowCommand(Command):

@@ -1,0 +1,186 @@
+# 服务配置文件
+# 定义服务的依赖关系和配置参数
+
+services:
+  # 基础服务层
+  element_service:
+    class: "src.core.services.element_service.ElementService"
+    interface: "src.core.services.element_service.ElementOperations"
+    scope: "singleton"
+    dependencies: []
+    config:
+      default_timeout: 30000
+      retry_count: 3
+      wait_between_retries: 1000
+
+  navigation_service:
+    class: "src.core.services.navigation_service.NavigationService"
+    interface: "src.core.services.navigation_service.NavigationOperations"
+    scope: "singleton"
+    dependencies: []
+    config:
+      default_timeout: 30000
+      wait_for_load_state: "networkidle"
+
+  wait_service:
+    class: "src.core.services.wait_service.WaitService"
+    interface: "src.core.services.wait_service.WaitOperations"
+    scope: "singleton"
+    dependencies: []
+    config:
+      default_timeout: 30000
+      polling_interval: 100
+
+  assertion_service:
+    class: "src.core.services.assertion_service.AssertionService"
+    interface: "src.core.services.assertion_service.AssertionOperations"
+    scope: "singleton"
+    dependencies: ["wait_service"]
+    config:
+      default_timeout: 30000
+      strict_mode: true
+
+  variable_service:
+    class: "src.core.services.variable_service.VariableService"
+    interface: "src.core.services.variable_service.VariableOperations"
+    scope: "singleton"
+    dependencies: []
+    config:
+      enable_encryption: false
+      variable_prefix: "${"
+      variable_suffix: "}"
+
+  performance_service:
+    class: "src.core.services.performance_service.PerformanceService"
+    interface: "src.core.services.performance_service.PerformanceOperations"
+    scope: "singleton"
+    dependencies: []
+    config:
+      enable_monitoring: true
+      metrics_collection: true
+      baseline_threshold: 1000
+      baseline_file: "performance_baseline.json"
+      tolerance_percentage: 10.0
+      min_samples: 5
+      max_samples: 100
+      auto_update: true
+      retention_days: 30
+
+  # 复合服务
+  page_service:
+    class: "src.core.services.page_service.PageService"
+    interface: "src.core.services.page_service.PageOperations"
+    scope: "transient"
+    dependencies: [
+      "element_service",
+      "navigation_service",
+      "wait_service",
+      "assertion_service",
+      "variable_service"
+    ]
+    config:
+      auto_wait: true
+      screenshot_on_failure: true
+
+# 环境特定配置
+environments:
+  development:
+    services:
+      element_service:
+        config:
+          default_timeout: 10000
+          retry_count: 1
+      performance_service:
+        config:
+          enable_monitoring: false
+
+  testing:
+    services:
+      element_service:
+        config:
+          default_timeout: 15000
+          retry_count: 2
+      assertion_service:
+        config:
+          strict_mode: false
+
+  production:
+    services:
+      element_service:
+        config:
+          default_timeout: 30000
+          retry_count: 3
+      performance_service:
+        config:
+          enable_monitoring: true
+          metrics_collection: true
+
+# 服务组合配置
+service_groups:
+  basic_page:
+    services: [
+      "element_service",
+      "navigation_service",
+      "wait_service"
+    ]
+    description: "基础页面操作服务组合"
+
+  full_page:
+    services: [
+      "element_service",
+      "navigation_service",
+      "wait_service",
+      "assertion_service",
+      "variable_service"
+    ]
+    description: "完整页面操作服务组合"
+
+  performance_page:
+    services: [
+      "element_service",
+      "navigation_service",
+      "wait_service",
+      "assertion_service",
+      "variable_service",
+      "performance_service"
+    ]
+    description: "包含性能监控的页面操作服务组合"
+
+  # 复合服务组
+  ui_testing:
+    services: ["element_service", "navigation_service", "wait_service", "assertion_service"]
+    description: "UI自动化测试核心服务组"
+
+  api_testing:
+    services: ["navigation_service", "assertion_service", "variable_service"]
+    description: "API测试服务组"
+
+  performance_testing:
+    services: ["element_service", "navigation_service", "wait_service", "performance_service"]
+    description: "性能测试服务组"
+
+  full_testing:
+    services: ["element_service", "navigation_service", "wait_service", "assertion_service", "variable_service", "performance_service"]
+    description: "完整测试服务组，包含所有核心服务"
+
+# 全局配置
+global:
+  container:
+    auto_wire: true
+    lazy_loading: true
+    circular_dependency_detection: true
+  
+  logging:
+    level: "INFO"
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    enable_service_logs: true
+  
+  timeouts:
+    default: 30000
+    short: 5000
+    long: 60000
+  
+  retry:
+    default_count: 3
+    default_delay: 1000
+    exponential_backoff: true

@@ -28,7 +28,6 @@ def generate_faker_data(data_type, **kwargs):
     else:
         raise ValueError(f"不支持的数据类型: {data_type}")
 
-
 def run_dynamic_script_from_path(file_path: Path):
     """
     从 Path 对象表示的文件路径动态地导入和执行一个 Python 模块。

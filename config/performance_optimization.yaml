@@ -1,16 +1,7 @@
 # 性能优化配置文件
 # 用于配置BasePage的性能优化参数
 
-# 元素定位缓存配置
-element_cache:
-  # 缓存超时时间(秒)
-  timeout: 30
-  # 是否启用缓存
-  enabled: true
-  # 最大缓存数量
-  max_size: 1000
-  # 缓存清理间隔(秒)
-  cleanup_interval: 60
+# 性能优化配置文件中已移除元素定位缓存相关配置
 
 # 截图管理配置
 screenshot:

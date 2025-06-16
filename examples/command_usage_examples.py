@@ -1,20 +1,17 @@
 """命令注册机制使用示例"""
 
 import asyncio
-import logging
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 # 导入新的命令系统组件
 from src.automation.commands.base_command import CommandRegistry, Command
-from src.automation.commands.command_executor import CommandExecutor
-from src.automation.commands.command_monitor import command_monitor
 from src.automation.commands.command_config import command_config_manager
-from src.automation.commands.plugin_manager import PluginManager
+from src.automation.commands.command_executor import CommandExecutor
 from src.automation.commands.command_loader import CommandLoader
-
+from src.automation.commands.command_monitor import command_monitor
+from src.core.plugin_compatibility import PluginManager
 # 配置日志
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from utils.logger import logger
 
 
 def example_1_basic_command_usage():

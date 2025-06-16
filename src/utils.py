@@ -14,17 +14,14 @@ def singleton(cls):
 
     return inner
 
-
 def set_ini(key, value):
     config = ConfigObj("pytest.ini", encoding="UTF8")
     config["pytest"][key] = value
     config.write()
 
-
 def get_ini(key):
     config = ConfigObj("pytest.ini", encoding="UTF8")
     return config["pytest"][key]
-
 
 def save_info(project, env, reporter):
     reporter = (

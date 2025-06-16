@@ -603,7 +603,7 @@ class CustomNotificationCommand(Command):
 
 ### 兼容性
 
-1. **Python版本**: 需要Python 3.7或更高版本
+1. **Python版本**: 需要Python 3.10或更高版本
 2. **依赖库**: 确保安装所需的第三方库
 3. **网络环境**: 确保能够访问各通知服务的API
 4. **防火墙**: 配置必要的出站规则

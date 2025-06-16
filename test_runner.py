@@ -8,7 +8,7 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-from utils.config import Config, Browser, Environment, Project
+from utils.config import Config, Browser, Environment, ProjectManager
 from utils.logger import logger
 
 console = Console()
@@ -62,7 +62,7 @@ def display_run_configuration(config: Config) -> None:
     table.add_row("浏览器", config.browser.value)
     table.add_row("运行模式", "有头模式" if config.headed else "无头模式")
     table.add_row("运行环境", config.env.value)
-    table.add_row("项目", config.project.value)
+    table.add_row("项目", config.project)
 
     if config.test_file:
         table.add_row("测试文件", config.test_file)
@@ -107,7 +107,7 @@ def main(
     headed: bool = typer.Option(True, "--headed", help="是否以有头模式运行浏览器"),
     browser: Browser = typer.Option(Browser.CHROMIUM, "--browser", help="指定浏览器"),
     env: Environment = typer.Option(Environment.PROD, "--env", help="指定环境"),
-    project: Project = typer.Option(Project.DEMO, "--project", help="指定项目"),
+    project: str = typer.Option("demo", "--project", help="指定项目"),
     base_url: Optional[str] = typer.Option("", "--base-url", help="指定基础 URL"),
     test_file: Optional[str] = typer.Option("", "--test-file", help="指定测试文件"),
     no_parallel: bool = typer.Option(False, "--no-parallel", help="禁用并行执行"),
@@ -115,6 +115,14 @@ def main(
     """
     测试运行入口函数
     """
+    # 验证项目是否存在
+    project_manager = ProjectManager()
+    available_projects = project_manager.get_available_projects()
+    if project not in available_projects:
+        console.print(f"[red]错误: 项目 '{project}' 不存在[/red]")
+        console.print(f"[yellow]可用项目: {', '.join(available_projects)}[/yellow]")
+        sys.exit(1)
+    
     # 创建配置对象
     config = Config(
         marker=marker,
@@ -123,13 +131,16 @@ def main(
         browser=browser,
         env=env,
         project=project,
-        base_url=base_url,
         test_file=(
             test_file + ".yaml"
             if test_file and not test_file.endswith((".yaml", ".yml"))
             else test_file
         ),
     )
+    
+    # 如果提供了base_url参数，覆盖配置中的base_url
+    if base_url:
+        config.base_url = base_url
 
     # 配置运行环境
     config.configure_environment()

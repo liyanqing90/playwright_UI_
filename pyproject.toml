@@ -32,12 +32,19 @@ pytest-playwright = "^0.7.0"
 pytest-check = "^2.5.0"
 jsonpath-ng = "^1.7.0"
 psutil = "^7.0.0"
+structlog = "^24.1.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"
 pytest-cov = "^4.0.0"
 mypy = "^1.0.0"
 pre-commit = "^3.0.0"
+
+
+[[tool.poetry.source]]
+name = "my_mirror"
+url = "https://mirrors.pku.edu.cn/pypi/web/simple"
+priority = "primary"
 
 [build-system]
 requires = ["poetry-core"]

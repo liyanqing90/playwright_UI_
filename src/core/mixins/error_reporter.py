@@ -3,11 +3,12 @@
 """
 import json
 import time
-from pathlib import Path
-from typing import Dict, List, Optional
 from datetime import datetime
-from .error_deduplication import error_dedup_manager
+from pathlib import Path
+from typing import Dict
+
 from utils.logger import logger
+from .error_deduplication import error_dedup_manager
 
 
 class ErrorReporter:
@@ -26,7 +27,6 @@ class ErrorReporter:
         """生成详细的错误报告"""
         stats = error_dedup_manager.get_error_statistics()
         
-        # 获取错误详情
         error_details = []
         for error_hash, record in error_dedup_manager.error_records.items():
             error_details.append({
@@ -184,10 +184,7 @@ class ErrorReporter:
             'errors': recent_errors
         }
 
-
-# 创建全局错误报告器实例
-error_reporter = ErrorReporter()
-
+global_error_reporter = ErrorReporter()
 
 def generate_final_error_report():
     """生成最终错误报告（测试结束时调用）"""

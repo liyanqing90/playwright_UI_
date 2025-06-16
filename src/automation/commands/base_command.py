@@ -1,19 +1,16 @@
 """基础命令类和命令注册系统"""
 
-from abc import ABC, abstractmethod
-from typing import Dict, Type, Any, Optional, List, Callable, Set
-import importlib
-import pkgutil
-import inspect
-import logging
 import asyncio
+import importlib
+import inspect
+import pkgutil
+from abc import ABC, abstractmethod
 from pathlib import Path
-from contextlib import contextmanager
+from typing import Dict, Type, Any, Optional, List, Set
 
-from .command_monitor import command_monitor, monitor_command
+from utils.logger import logger
 from .command_config import config_manager, CommandConfig
-
-logger = logging.getLogger(__name__)
+from .command_monitor import command_monitor
 
 
 class Command(ABC):
@@ -71,7 +68,6 @@ class Command(ABC):
         logger.error(f"Error in command {self.name}: {error}")
         raise error
 
-
 class CommandRegistry:
     """命令注册表 - 支持自动发现和插件机制"""
     
@@ -87,14 +83,21 @@ class CommandRegistry:
         Args:
             action_types: 操作类型列表或单个操作类型
         """
+        # 如果是字符串，转换为列表
         if isinstance(action_types, str):
+            action_types = [action_types]
+        # 如果是列表（如StepAction.NAVIGATE），直接使用
+        elif isinstance(action_types, list):
+            action_types = action_types
+        else:
+            # 其他类型转换为列表
             action_types = [action_types]
             
         def decorator(command_class: Type[Command]):
             for action_type in action_types:
                 action_key = action_type.lower() if hasattr(action_type, 'lower') else str(action_type).lower()
                 cls._commands[action_key] = command_class
-                logger.debug(f"Registered command: {action_key} -> {command_class.__name__}")
+                # logger.debug(f"Registered command: {action_key} -> {command_class.__name__}")
             return command_class
         return decorator
     
@@ -235,14 +238,16 @@ class CommandRegistry:
     def get_command(cls, action: str) -> Optional[Command]:
         """
         获取命令实例
-
+        
         Args:
             action: 操作类型
-
+            
         Returns:
-            命令实例，如果不存在则返回None
+            命令实例或None
         """
         action_key = action.lower()
+        logger.debug(f"查找命令: {action_key}, 已注册命令: {list(cls._commands.keys())}")
+        
         command_class = cls._commands.get(action_key)
         if command_class:
             try:
@@ -251,12 +256,13 @@ class CommandRegistry:
                 if not instance.is_enabled():
                     logger.warning(f"Command {action} is disabled")
                     return None
+                logger.debug(f"成功创建命令实例: {action}")
                 return instance
             except Exception as e:
                 logger.error(f"Failed to instantiate command {action}: {e}")
                 return None
         
-        logger.warning(f"Command not found: {action}")
+        logger.warning(f"Command not found: {action}, available commands: {list(cls._commands.keys())}")
         return None
     
     @classmethod
@@ -295,7 +301,6 @@ class CommandRegistry:
         cls._commands.clear()
         cls._loaded_modules.clear()
         logger.info("Cleared all registered commands")
-
 
 # 保持向后兼容性
 CommandFactory = CommandRegistry

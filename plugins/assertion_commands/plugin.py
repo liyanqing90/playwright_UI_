@@ -3,13 +3,13 @@
 提供增强的断言功能，包括软断言、硬断言、条件断言、批量断言等。
 """
 
-import re
 import json
+import re
 import time
-from typing import Dict, Any, List, Optional, Union, Callable
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
+from typing import Dict, Any, List, Optional, Callable
 
 from src.automation.action_types import StepAction
 from src.automation.commands.base_command import Command, CommandFactory

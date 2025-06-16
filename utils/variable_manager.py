@@ -277,10 +277,10 @@ class VariableManager:
         self, name: str, scope: Optional[str] = None, default: Any = None
     ) -> Any:
         """
-        获取变量值，支持作用域继承
+        获取变量值，支持作用域继承和嵌套变量访问（点号分隔）
 
         Args:
-            name: 变量名
+            name: 变量名，支持点号分隔的嵌套访问，如 'parent.child.key'
             scope: 变量作用域，如果为 None，则按照默认优先级查找
             default: 如果变量不存在，返回的默认值
 
@@ -299,6 +299,16 @@ class VariableManager:
 
         self._stats["cache_misses"] += 1
 
+        # 处理嵌套变量名（点号分隔）
+        if '.' in name:
+            result = self._get_nested_variable(name, scope, default)
+            # 将结果存入缓存
+            self._variable_cache[cache_key] = result
+            self._update_cache_access(cache_key)
+            self._manage_cache_size()
+            return result
+
+        # 处理普通变量名
         # 如果指定了作用域，则按照作用域继承关系查找
         if scope in self.scope_hierarchy:
             for search_scope in self.scope_hierarchy[scope]:
@@ -325,6 +335,60 @@ class VariableManager:
         # 将默认值存入缓存
         self._variable_cache[cache_key] = default
         return default
+
+    def _get_nested_variable(
+        self, name: str, scope: Optional[str] = None, default: Any = None
+    ) -> Any:
+        """
+        获取嵌套变量值（点号分隔）
+        
+        Args:
+            name: 嵌套变量名，如 'parent.child.key'
+            scope: 变量作用域
+            default: 默认值
+            
+        Returns:
+            嵌套变量值，如果不存在则返回默认值
+        """
+        parts = name.split('.')
+        root_name = parts[0]
+        
+        # 首先获取根变量
+        root_value = None
+        
+        # 如果指定了作用域，则按照作用域继承关系查找
+        if scope in self.scope_hierarchy:
+            for search_scope in self.scope_hierarchy[scope]:
+                if root_name in self.variables[search_scope]:
+                    root_value = self.variables[search_scope][root_name]
+                    break
+        else:
+            # 没有指定作用域，按照默认优先级查找
+            for search_scope in ["test_case", "module", "global", "step", "temp"]:
+                if root_name in self.variables[search_scope]:
+                    root_value = self.variables[search_scope][root_name]
+                    break
+        
+        if root_value is None:
+            self.logger.debug(f"未找到根变量 '{root_name}'，无法访问嵌套变量 '{name}'")
+            return default
+        
+        # 逐层访问嵌套属性
+        current_value = root_value
+        for i, part in enumerate(parts[1:], 1):
+            if isinstance(current_value, dict):
+                if part in current_value:
+                    current_value = current_value[part]
+                else:
+                    partial_path = '.'.join(parts[:i+1])
+                    self.logger.debug(f"嵌套变量路径 '{partial_path}' 不存在，返回默认值: {default}")
+                    return default
+            else:
+                partial_path = '.'.join(parts[:i])
+                self.logger.debug(f"变量 '{partial_path}' 不是字典类型，无法继续访问嵌套属性 '{name}'")
+                return default
+        
+        return current_value
 
     def get_variable_from_scope(
         self, name: str, scope: str = "global", default: Any = None

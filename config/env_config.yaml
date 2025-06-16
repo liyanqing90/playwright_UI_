@@ -2,8 +2,18 @@ projects:
   demo:
     test_dir: "test_data/demo"
     environments:
-      dev: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
-      test: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
-      stage: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
-      prod: "https://energyspace-c-test.autohome.com.cn/live-assistant/assistant"
-    browser_config: { "viewport": { "width": 1080, "height": 798 } }
+      dev: "http://dev.demo.com"
+      test: "http://test.demo.com"
+      stage: "http://stage.demo.com"
+      prod: "https://energyspace.m.autohome.com.cn"
+    browser_config: { 'user_agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1', 'viewport': { 'width': 393, 'height': 659 }, 'device_scale_factor': 3, 'is_mobile': True, 'has_touch': True, 'default_browser_type': 'webkit' }
+
+  comprehensive_demo:
+    test_dir: "test_data/comprehensive_demo"
+    environments:
+      dev: "https://www.baidu.com"
+      test: "https://www.baidu.com"
+      stage: "https://www.baidu.com"
+      prod: "https://www.baidu.com"
+    browser_config: { 'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 'viewport': { 'width': 1920, 'height': 1080 }, 'device_scale_factor': 1, 'is_mobile': False, 'has_touch': False, 'default_browser_type': 'chromium' }
+

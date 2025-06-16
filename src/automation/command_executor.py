@@ -27,18 +27,14 @@ def execute_action_with_command(
     """
     action = action.lower()
 
-    # 使用命令工厂获取命令
     command = CommandFactory.get_command(action)
 
     if command:
         try:
-            # 如果找到命令，执行命令
             command.execute(ui_helper, selector, value, step)
         except Exception as e:
-            # 标记错误已处理，避免重复记录
             setattr(e, "_logged", True)
             raise
     else:
-        # 如果没有找到命令，记录错误
         logger.error(f"不支持的操作类型: {action}")
         raise ValueError(f"不支持的操作类型: {action}")

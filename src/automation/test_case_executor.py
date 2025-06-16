@@ -2,26 +2,23 @@ from typing import Dict, Any, Set
 
 import allure
 
+from src.assertion_manager import assertion_manager
 # 导入重构后的StepExecutor
 from src.automation.step_executor import StepExecutor
-from src.assertion_manager import assertion_manager
 from src.core.mixins.error_reporter import generate_final_error_report
 from utils.logger import logger
 
 log = logger
-
 
 def _cleanup_test_environment(case: Dict[str, Any]) -> None:
     with allure.step("测试环境清理"):
         log.debug(f"Cleaning up test environment for case: {case['name']}")
         # fixture 的清理会由 pytest 自动处理
 
-
 def _setup_test_environment(case: Dict[str, Any]) -> None:
     with allure.step("测试环境准备"):
         log.debug(f"Setting up test environment for case: {case['name']}")
         # 添加环境准备代码
-
 
 class CaseExecutor:
     def __init__(self, case_data: Dict[str, Any], elements: Dict[str, Any]):
@@ -42,7 +39,6 @@ class CaseExecutor:
         # 记录测试开始时间
         test_start_time = time.time()
 
-        # 使用传递过来的测试用例名称
         case_name = test_name if test_name else "未知测试用例"
 
         # 设置当前测试用例名称到断言管理器
@@ -53,15 +49,12 @@ class CaseExecutor:
             # 执行测试步骤
             step_executor = StepExecutor(page, ui_helper, self.elements)
 
-            # 支持两种数据结构：直接的步骤列表或包含步骤的字典
             if isinstance(self.case_data, list):
-                # 如果是列表，取第一个元素（兼容旧格式）
                 if self.case_data and isinstance(self.case_data[0], dict):
                     steps = self.case_data[0].get("steps", [])
                 else:
                     steps = []
             elif isinstance(self.case_data, dict):
-                # 如果是字典，直接获取steps
                 steps = self.case_data.get("steps", [])
             else:
                 steps = []
@@ -76,7 +69,6 @@ class CaseExecutor:
         except Exception as e:
             # 只在最终层记录错误，避免重复记录
             if not hasattr(e, "_logged") or not getattr(e, "_logged", False):
-                # 使用错误去重管理器检查是否应该记录
                 from src.core.mixins.error_deduplication import error_dedup_manager
                 
                 error_info = getattr(e, "_error_info", str(e))
@@ -132,7 +124,6 @@ class CaseExecutor:
         # 输出简化的一行摘要
         log.info(f"{status_icon} {case_name} | {status_text} | {assertion_info} | 耗时 {test_duration:.2f}s")
 
-        # 如果有失败的断言，输出详细信息
         if stats.failed_assertions > 0:
             failed_assertions = assertion_manager.get_failed_assertions()
             log.warning(f"   失败断言详情:")

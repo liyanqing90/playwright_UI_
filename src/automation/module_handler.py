@@ -54,7 +54,6 @@ def _replace_module_params(
 
     return processed_steps
 
-
 def find_module(module_name: str) -> Dict[str, Any]:
     """
     查找并加载模块数据
@@ -73,9 +72,7 @@ def find_module(module_name: str) -> Dict[str, Any]:
     if module_name in all_modules:
         return {module_name: all_modules[module_name]}
 
-    # 如果所有尝试都失败，抛出错误
-    raise ValueError(f"找不到模块: {module_name}")
-
+    raise FileNotFoundError(f"找不到模块文件: {module_name}")
 
 def execute_module(step_executor, step: Dict[str, Any]) -> None:
     """

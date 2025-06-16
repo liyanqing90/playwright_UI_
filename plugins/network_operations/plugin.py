@@ -4,11 +4,8 @@
 提供网络请求监控、响应处理、API Mock等功能
 """
 
-import json
-import re
-from typing import Dict, Any, Optional, List, Callable
 from dataclasses import dataclass
-from urllib.parse import urlparse
+from typing import Dict, Any, Optional, List, Callable
 
 from config.constants import DEFAULT_TIMEOUT
 from src.automation.action_types import StepAction

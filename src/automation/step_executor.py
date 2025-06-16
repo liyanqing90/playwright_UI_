@@ -10,7 +10,6 @@ from typing import Dict, Any, List
 import allure
 
 from src.automation.action_types import StepAction
-
 # 导入命令模式执行器
 from src.automation.command_executor import execute_action_with_command
 from src.automation.flow_control import (
@@ -24,7 +23,6 @@ from utils.variable_manager import VariableManager
 
 
 # 导入所有命令类
-
 
 class StepExecutor:
 
@@ -85,7 +83,6 @@ class StepExecutor:
             self.start_time = datetime.now()
             self.step_has_error = False
 
-            # 检查是否为流程控制步骤
             if "use_module" in step:
                 execute_module(self, step)
                 return
@@ -100,21 +97,24 @@ class StepExecutor:
             pre_selector = step.get("selector")
             selector = self.variable_manager.replace_variables_refactored(
                 self.elements.get(pre_selector, pre_selector)
-            )  # 替换变量
+            )
             value = self.variable_manager.replace_variables_refactored(
                 step.get("value")
-            )  # 替换变量
+            )
+            
+            # 确保start_time在任何操作前被设置
+            if not self.start_time:
+                self.start_time = datetime.now()
+                
             logger.debug(f"执行步骤: {action} | 选择器: {selector} | 值: {value}")
             self._validate_step(action, selector)
             self._execute_action(action, selector, value, step)
         except AssertionError as e:
             self.has_error = True
             self.step_has_error = True
-            # 检查是否为硬断言异常
             if hasattr(e, "_hard_assert") and getattr(e, "_hard_assert", False):
                 logger.error(f"硬断言失败，终止测试执行: {e}")
-                raise  # 硬断言失败时重新抛出异常，终止测试执行
-            # 软断言失败时不抛出异常，继续执行
+                raise
         except Exception as e:
             # 标记错误状态但不记录日志，由最终层处理
             self.has_error = True
@@ -155,12 +155,10 @@ class StepExecutor:
                 logger.error(f"步骤执行失败: {e}")
                 setattr(e, "_logged", True)
 
-            # 添加关键信息
             setattr(e, "_action", action)
             setattr(e, "_selector", selector)
             setattr(e, "_value", value)
 
-            # 直接抛出异常，不做其他任何处理
             raise
 
     def _replace_variables(self, value: Any) -> Any:
@@ -180,7 +178,6 @@ class StepExecutor:
             return value
 
         if isinstance(value, str):
-            # 处理数学表达式引用，如 $[[1 + 2 * ${var}]]
             if (
                 value.startswith("$[[")
                 and value.endswith("]]")
@@ -191,16 +188,13 @@ class StepExecutor:
                         evaluate_math_expression,
                     )
 
-                    # 提取表达式内容
                     expr = value[3:-2].strip()
-                    # 计算表达式
                     result = evaluate_math_expression(expr, self.variable_manager)
                     return result
                 except Exception as e:
                     logger.error(f"计算表达式错误: {value} - {e}")
-                    return value  # 出错时返回原始值
+                    return value
 
-            # 处理完整的变量引用，如 ${var_name} 或 $<var_name>
             if (
                 value.startswith("${")
                 and value.endswith("}")
@@ -213,29 +207,24 @@ class StepExecutor:
 
                 if value.startswith("${"):
                     var_name = value[2:-1]
-                else:  # value.startswith("$<")
+                else:
                     var_name = value[2:-1]
 
                 return self.variable_manager.get_variable(var_name)
 
-            # 替换内嵌变量引用
             import re
 
-            # 同时匹配 ${var_name} 和 $<var_name> 两种模式
             pattern = r"\${([^{}]+)}|\$<([^<>]+)>"
 
             def replace_var(match):
-                # 获取匹配的组，第一个组是 ${} 形式，第二个组是 $<> 形式
                 var_name = (
                     match.group(1) if match.group(1) is not None else match.group(2)
                 )
                 var_value = self.variable_manager.get_variable(var_name)
                 return str(var_value) if var_value is not None else match.group(0)
 
-            # 使用正则表达式替换所有变量引用
             result = re.sub(pattern, replace_var, value)
 
-            # 处理内嵌的数学表达式引用，如 "Total: $[[1 + 2 * ${var}]]"
             pattern_expr = r"\$\[\[([^\[\]]+)\]\]"
 
             def replace_expr(match):
@@ -244,16 +233,13 @@ class StepExecutor:
                         evaluate_math_expression,
                     )
 
-                    # 提取表达式内容
                     expr = match.group(1).strip()
-                    # 计算表达式
                     result = evaluate_math_expression(expr, self.variable_manager)
                     return str(result)
                 except Exception as e:
                     logger.error(f"计算表达式错误: {match.group(0)} - {e}")
-                    return match.group(0)  # 出错时返回原始表达式
+                    return match.group(0)
 
-            # 替换所有内嵌的数学表达式
             result = re.sub(pattern_expr, replace_expr, result)
 
             return result
@@ -280,15 +266,12 @@ class StepExecutor:
 
     def _finalize_step(self):
         """统一后处理逻辑"""
-        # 移除日志handler
         if self._buffer_handler_id:
             logger.remove(self._buffer_handler_id)
             self._buffer_handler_id = None
 
-        # 记录耗时
         self._log_step_duration()
 
-        # 失败时采集证据
         if self.step_has_error:
             self._capture_failure_evidence()
 
@@ -296,10 +279,7 @@ class StepExecutor:
         """统一记录步骤耗时"""
         if self.start_time:
             duration = (datetime.now() - self.start_time).total_seconds()
-            if self.step_has_error:
-                logger.error(f"[失败] 步骤耗时: {duration:.2f}s")
-            else:
-                logger.info(f"[成功] 步骤耗时: {duration:.2f}s")
+            logger.info(f"[{'失败' if self.step_has_error else '成功'}] 步骤耗时: {duration:.2f}s")
 
     def _capture_failure_evidence(self):
         """统一失败证据采集"""

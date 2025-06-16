@@ -6,7 +6,6 @@ from loguru import logger
 # 移除默认的 sink
 logger.remove()
 
-# 创建日志目录
 log_dir = Path("logs")
 log_dir.mkdir(exist_ok=True)
 
@@ -16,7 +15,7 @@ log_file = log_dir / f'test_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'
 log_format = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> [<level>{level}</level>] <white>{message}</white> (<cyan>{file}:{line}</cyan>)"
 logger.add(
     sink=lambda msg: print(msg),
-    format=log_format,  # 使用通用格式
+    format=log_format,
     level="ERROR",
     colorize=True,
 )
@@ -24,7 +23,7 @@ logger.add(
 try:
     logger.add(
         sink=log_file,
-        format=log_format,  # 使用通用格式
+        format=log_format,
         level="DEBUG",
         rotation="10 MB",
         retention="10 days",

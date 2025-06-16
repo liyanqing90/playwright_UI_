@@ -5,8 +5,8 @@
 import math
 import operator
 import re
-from typing import Dict, Any, Optional, Callable, Union
 from dataclasses import dataclass
+from typing import Dict, Any, Optional, Callable
 
 from src.automation.commands.base_command import Command, CommandFactory
 from src.automation.flow_control import preprocess_expression

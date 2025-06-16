@@ -13,7 +13,6 @@ from datetime import datetime, timedelta
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
-from weakref import WeakValueDictionary
 
 from src.automation.action_types import StepAction
 from src.automation.commands.base_command import Command, CommandFactory

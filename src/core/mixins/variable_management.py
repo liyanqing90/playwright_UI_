@@ -1,6 +1,8 @@
 """变量管理混入类"""
-import allure
 from typing import Any, Dict, Optional
+
+import allure
+
 from utils.logger import logger
 from .decorators import handle_page_error
 
@@ -178,7 +180,10 @@ class VariableManagementMixin:
         logger.info(f"替换变量: {text}")
         
         with allure.step(f"替换变量"):
-            result = self.variable_manager.replace_variables_refactored(text)
+            if self.variable_manager:
+                result = self.variable_manager.replace_variables_refactored(text)
+            else:
+                result = text
             
             if result != text:
                 logger.info(f"变量替换结果: {text} -> {result}")
@@ -323,7 +328,10 @@ class VariableManagementMixin:
             actual_value = self.get_variable(variable_name)
             
             # 处理变量替换
-            resolved_expected = self.variable_manager.replace_variables_refactored(expected_value)
+            if self.variable_manager:
+                resolved_expected = self.variable_manager.replace_variables_refactored(expected_value)
+            else:
+                resolved_expected = expected_value
             
             assert str(actual_value) == str(resolved_expected), (
                 f"变量值验证失败: {variable_name} 期望 '{resolved_expected}', 实际 '{actual_value}'"
@@ -393,7 +401,10 @@ class VariableManagementMixin:
             
             try:
                 # 替换格式化字符串中的变量
-                resolved_format = self.variable_manager.replace_variables_refactored(format_string)
+                if self.variable_manager:
+                    resolved_format = self.variable_manager.replace_variables_refactored(format_string)
+                else:
+                    resolved_format = format_string
                 
                 # 格式化值
                 formatted_value = resolved_format.format(value=original_value)

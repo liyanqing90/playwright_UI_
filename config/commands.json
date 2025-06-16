@@ -122,6 +122,105 @@
       "tags": [],
       "metadata": {},
       "custom_settings": {}
+    },
+    "AssertElementCountCommand": {
+      "name": "AssertElementCountCommand",
+      "enabled": true,
+      "timeout": 30.0,
+      "retry_count": 3,
+      "retry_delay": 1.0,
+      "priority": 0,
+      "tags": [],
+      "metadata": {},
+      "custom_settings": {}
+    },
+    "AssertVisibleCommand": {
+      "name": "AssertVisibleCommand",
+      "enabled": true,
+      "timeout": 30.0,
+      "retry_count": 3,
+      "retry_delay": 1.0,
+      "priority": 0,
+      "tags": [],
+      "metadata": {},
+      "custom_settings": {}
+    },
+    "AssertTextContainsCommand": {
+      "name": "AssertTextContainsCommand",
+      "enabled": true,
+      "timeout": 30.0,
+      "retry_count": 3,
+      "retry_delay": 1.0,
+      "priority": 0,
+      "tags": [],
+      "metadata": {},
+      "custom_settings": {}
+    },
+    "AssertUrlContainsCommand": {
+      "name": "AssertUrlContainsCommand",
+      "enabled": true,
+      "timeout": 30.0,
+      "retry_count": 3,
+      "retry_delay": 1.0,
+      "priority": 0,
+      "tags": [],
+      "metadata": {},
+      "custom_settings": {}
+    },
+    "StoreVariableCommand": {
+      "name": "StoreVariableCommand",
+      "enabled": true,
+      "timeout": 30.0,
+      "retry_count": 3,
+      "retry_delay": 1.0,
+      "priority": 0,
+      "tags": [],
+      "metadata": {},
+      "custom_settings": {}
+    },
+    "AssertNotExistsCommand": {
+      "name": "AssertNotExistsCommand",
+      "enabled": true,
+      "timeout": 30.0,
+      "retry_count": 3,
+      "retry_delay": 1.0,
+      "priority": 0,
+      "tags": [],
+      "metadata": {},
+      "custom_settings": {}
+    },
+    "AssertAttributeCommand": {
+      "name": "AssertAttributeCommand",
+      "enabled": true,
+      "timeout": 30.0,
+      "retry_count": 3,
+      "retry_delay": 1.0,
+      "priority": 0,
+      "tags": [],
+      "metadata": {},
+      "custom_settings": {}
+    },
+    "AssertUrlCommand": {
+      "name": "AssertUrlCommand",
+      "enabled": true,
+      "timeout": 30.0,
+      "retry_count": 3,
+      "retry_delay": 1.0,
+      "priority": 0,
+      "tags": [],
+      "metadata": {},
+      "custom_settings": {}
+    },
+    "AssertValueCommand": {
+      "name": "AssertValueCommand",
+      "enabled": true,
+      "timeout": 30.0,
+      "retry_count": 3,
+      "retry_delay": 1.0,
+      "priority": 0,
+      "tags": [],
+      "metadata": {},
+      "custom_settings": {}
     }
   }
 }

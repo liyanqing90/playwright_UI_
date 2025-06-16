@@ -487,4 +487,4 @@ MIT License - 详见 LICENSE 文件
 
 ---
 
-**注意**: 本插件需要 Python 3.8+ 和 Playwright 1.40.0+ 支持。
+**注意**: 本插件需要 Python 3.10+ 和 Playwright 1.40.0+ 支持。

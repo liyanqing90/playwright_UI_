@@ -6,23 +6,20 @@
 import base64
 import hashlib
 import hmac
-import json
 import smtplib
-import time
 import threading
+import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, asdict
 from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from enum import Enum
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 from urllib.parse import quote_plus
 
 import requests
 
-from src.automation.action_types import StepAction
 from src.automation.commands.base_command import Command, CommandFactory
 from utils.logger import logger
 

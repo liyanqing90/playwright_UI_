@@ -2,13 +2,13 @@
 提供多种格式的测试报告生成和处理功能
 """
 
-import json
 import datetime
+import json
 import os
-from pathlib import Path
-from typing import Dict, Any, Optional, List, Union
-from dataclasses import dataclass, asdict
 from abc import ABC, abstractmethod
+from dataclasses import dataclass, asdict
+from pathlib import Path
+from typing import Dict, Any, Optional, List
 
 import allure
 from playwright.sync_api import Page

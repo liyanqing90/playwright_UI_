@@ -2,7 +2,6 @@
 定义所有支持的步骤操作类型
 """
 
-
 class StepAction:
     """操作类型定义"""
 
@@ -40,6 +39,8 @@ class StepAction:
     STORE_ATTRIBUTE = ["store_attribute", "存储属性"]
 
     # 等待相关
+    WAIT_FOR_SELECTOR = ["wait_for_selector", "等待选择器"]
+    WAIT_FOR_LOAD_STATE = ["wait_for_load_state", "等待加载状态"]
     WAIT_FOR_ELEMENT_HIDDEN = ["wait_for_element_hidden", "等待元素消失"]
     WAIT_FOR_NETWORK_IDLE = ["wait_for_network_idle", "等待网络空闲"]
     WAIT_FOR_ELEMENT_CLICKABLE = ["wait_for_element_clickable", "等待元素可点击"]
@@ -99,6 +100,7 @@ class StepAction:
         + ASSERT_URL_CONTAINS
         + EXECUTE_PYTHON
         + WAIT
+        + WAIT_FOR_LOAD_STATE
         + WAIT_FOR_NETWORK_IDLE
         + REFRESH
         + PAUSE
@@ -117,4 +119,5 @@ class StepAction:
         + USE_MODULE
         + IF_CONDITION
         + FOR_EACH
+        + STORE_VARIABLE
     )

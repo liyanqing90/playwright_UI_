@@ -1,11 +1,10 @@
 """性能优化混入类"""
 import time
-import hashlib
-from typing import Dict, Any, Optional, Tuple
-from playwright.sync_api import Locator
+from typing import Dict, Any, Optional
+
+from config.constants import DEFAULT_TIMEOUT
 from utils.logger import logger
 from .decorators import handle_page_error
-from config.constants import DEFAULT_TIMEOUT
 
 
 class PerformanceOptimizationMixin:
@@ -19,20 +18,14 @@ class PerformanceOptimizationMixin:
         self._last_screenshot_time = 0
         self._screenshot_interval = 1  # 截图间隔(秒)
 
-
-
-
-
     def _should_take_screenshot(self) -> bool:
         """判断是否应该截图"""
         current_time = time.time()
         
-        # 检查截图数量限制
         if self._screenshot_count >= self._max_screenshots:
             logger.debug(f"截图数量已达上限: {self._max_screenshots}")
             return False
         
-        # 检查截图间隔
         if current_time - self._last_screenshot_time < self._screenshot_interval:
             logger.debug(f"截图间隔不足: {current_time - self._last_screenshot_time:.1f}s")
             return False
@@ -101,9 +94,10 @@ class PerformanceOptimizationMixin:
         
         for selector in selectors:
             try:
-                # 替换变量
-                resolved_selector = self.variable_manager.replace_variables_refactored(selector)
-                # 创建定位器并等待
+                if self.variable_manager:
+                    resolved_selector = self.variable_manager.replace_variables_refactored(selector)
+                else:
+                    resolved_selector = selector
                 locator = self.page.locator(resolved_selector)
                 locator.wait_for(state="attached", timeout=timeout)
                 successful += 1
@@ -115,71 +109,29 @@ class PerformanceOptimizationMixin:
         logger.info(f"批量预加载完成: 成功 {successful}, 失败 {failed}")
 
     @handle_page_error(description="元素存在性快速检查")
-    def quick_element_check(self, selector: str, use_cache: bool = True) -> bool:
+    def quick_element_check(self, selector: str) -> bool:
         """
         快速检查元素是否存在（不等待）
 
         Args:
             selector: 元素选择器
-            use_cache: 是否使用缓存
 
         Returns:
             元素是否存在
         """
         try:
-            # 尝试从缓存获取
-            if use_cache:
-                cached_locator = self._get_cached_element(selector)
-                if cached_locator:
-                    try:
-                        return cached_locator.count() > 0
-                    except Exception:
-                        pass
-            
             # 快速检查（不等待）
-            resolved_selector = self.variable_manager.replace_variables_refactored(selector)
+            if self.variable_manager:
+                resolved_selector = self.variable_manager.replace_variables_refactored(selector)
+            else:
+                resolved_selector = selector
             locator = self.page.locator(resolved_selector)
             return locator.count() > 0
             
         except Exception:
             return False
 
-    @handle_page_error(description="获取元素数量")
-    def get_element_count_cached(self, selector: str, use_cache: bool = True) -> int:
-        """
-        获取元素数量（带缓存）
-
-        Args:
-            selector: 元素选择器
-            use_cache: 是否使用缓存
-
-        Returns:
-            元素数量
-        """
-        try:
-            # 尝试从缓存获取
-            if use_cache:
-                cached_locator = self._get_cached_element(selector)
-                if cached_locator:
-                    try:
-                        return cached_locator.count()
-                    except Exception:
-                        pass
-            
-            # 创建新的定位器
-            resolved_selector = self.variable_manager.replace_variables_refactored(selector)
-            locator = self.page.locator(resolved_selector)
-            count = locator.count()
-            
-            # 如果元素存在，缓存定位器
-            if use_cache and count > 0:
-                self._cache_element(selector, locator)
-            
-            return count
-            
-        except Exception as e:
-            logger.error(f"获取元素数量失败: {selector} - {e}")
-            return 0
+    # 元素缓存相关方法已删除
 
     @handle_page_error(description="性能监控装饰器")
     def monitor_performance(self, operation_name: str):
@@ -207,8 +159,7 @@ class PerformanceOptimizationMixin:
                 else:
                     logger.error(f"操作失败: {self.name} - 耗时 {elapsed:.3f}s - {exc_val}")
                 
-                # 清理过期缓存
-                self.parent._clear_expired_cache()
+                # 元素缓存清理代码已删除
         
         return PerformanceMonitor(operation_name, self)
 
@@ -257,7 +208,7 @@ class PerformanceOptimizationMixin:
         stats = {
             "rss_mb": memory_info.rss / 1024 / 1024,  # 物理内存
             "vms_mb": memory_info.vms / 1024 / 1024,  # 虚拟内存
-            "cache_count": len(self._element_cache),
+            # 元素缓存计数已删除
             "screenshot_count": self._screenshot_count,
         }
         

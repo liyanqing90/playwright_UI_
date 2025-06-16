@@ -7,6 +7,13 @@
 - 常量定义
 """
 
+from .config_manager import (
+    ConfigManager,
+    ConfigSchema,
+    get_config_manager,
+    get_config,
+    get_config_value
+)
 from .exceptions import (
     AutomationError,
     ElementNotFoundError,
@@ -19,15 +26,6 @@ from .exceptions import (
     DataError,
     AssertionError
 )
-
-from .config_manager import (
-    ConfigManager,
-    ConfigSchema,
-    get_config_manager,
-    get_config,
-    get_config_value
-)
-
 from .types import (
     # 基础类型
     ElementSelector,
@@ -36,19 +34,19 @@ from .types import (
     TestData,
     ConfigData,
     AssertionResult,
-    
+
     # 枚举类型
     ActionType,
     BrowserType,
     AssertionType,
     LogLevel,
-    
+
     # 数据类
     StepResult,
     TestCaseResult,
     PerformanceMetrics,
     ElementInfo,
-    
+
     # 协议
     CommandProtocol,
     PageProtocol,
@@ -56,11 +54,11 @@ from .types import (
     ConfigProtocol,
     LoggerProtocol,
     DataManagerProtocol,
-    
+
     # 基类
     BaseCommand,
     BasePage,
-    
+
     # 类型检查函数
     is_command,
     is_page,

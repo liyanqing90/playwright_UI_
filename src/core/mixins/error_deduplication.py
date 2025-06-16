@@ -2,12 +2,14 @@
 提供错误去重功能，避免相同错误的重复记录
 """
 import hashlib
-import time
-import yaml
 import re
-from pathlib import Path
-from typing import Dict, Set, Optional, List
+import time
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Dict, Set
+
+import yaml
+
 from utils.logger import logger
 
 
@@ -24,7 +26,6 @@ class ErrorRecord:
         """更新最后发生时间并增加计数"""
         self.last_occurrence = time.time()
         self.count += 1
-
 
 class ErrorDeduplicationManager:
     """错误去重管理器"""
@@ -266,7 +267,6 @@ class ErrorDeduplicationManager:
         self.suppressed_errors.clear()
         self.last_cleanup = time.time()
         logger.info("错误去重管理器已重置")
-
 
 # 全局错误去重管理器实例
 error_dedup_manager = ErrorDeduplicationManager()

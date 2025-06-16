@@ -2,12 +2,11 @@
 
 import json
 import os
+from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from typing import Dict, Any, Optional, List, Union
-from dataclasses import dataclass, field, asdict
-import logging
 
-logger = logging.getLogger(__name__)
+from utils.logger import logger
 
 
 @dataclass
@@ -32,7 +31,6 @@ class CommandConfig:
         """从字典创建"""
         return cls(**data)
 
-
 @dataclass
 class GlobalConfig:
     """全局配置"""
@@ -56,7 +54,6 @@ class GlobalConfig:
     def from_dict(cls, data: Dict[str, Any]) -> 'GlobalConfig':
         """从字典创建"""
         return cls(**data)
-
 
 class CommandConfigManager:
     """命令配置管理器"""
@@ -358,7 +355,6 @@ class CommandConfigManager:
         self.command_configs.clear()
         self._create_default_config()
         logger.info("Configuration reset to defaults")
-
 
 # 全局配置管理器实例
 config_manager = CommandConfigManager()

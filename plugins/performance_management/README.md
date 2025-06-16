@@ -406,7 +406,7 @@ class CustomCacheStrategy:
 - 限制报告文件的访问权限
 
 ### 兼容性
-- 支持Python 3.7+
+- 支持Python 3.10+
 - 兼容Windows、Linux、macOS
 - 需要psutil库支持
 

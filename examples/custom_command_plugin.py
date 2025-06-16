@@ -1,14 +1,11 @@
 """自定义命令插件示例"""
 
-from typing import Dict, Any
-import logging
-import time
 import random
+import time
+from typing import Dict, Any
 
 from src.automation.commands.base_command import Command, CommandRegistry
-from src.automation.action_types import StepAction
-
-logger = logging.getLogger(__name__)
+from utils.logger import logger
 
 # 插件元数据
 PLUGIN_INFO = {

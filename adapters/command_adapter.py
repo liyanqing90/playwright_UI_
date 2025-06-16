@@ -4,6 +4,7 @@
 """
 
 from typing import Any, Dict
+
 from src.core import BasePage
 
 

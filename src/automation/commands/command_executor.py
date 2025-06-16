@@ -2,16 +2,13 @@
 
 import asyncio
 import time
-import logging
-from typing import Any, Dict, Optional, Callable, List
-from contextlib import asynccontextmanager
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
+from typing import Any, Dict, Optional, Callable, List
 
+from utils.logger import logger
 from .base_command import Command, CommandRegistry
-from .command_monitor import command_monitor
 from .command_config import config_manager
-
-logger = logging.getLogger(__name__)
+from .command_monitor import command_monitor
 
 
 class CommandExecutionError(Exception):
@@ -22,16 +19,13 @@ class CommandExecutionError(Exception):
         self.original_error = original_error
         super().__init__(f"Command '{command_name}' failed: {message}")
 
-
 class CommandTimeoutError(CommandExecutionError):
     """命令超时错误"""
     pass
 
-
 class CommandValidationError(CommandExecutionError):
     """命令验证错误"""
     pass
-
 
 class CommandExecutor:
     """命令执行器"""
@@ -80,18 +74,13 @@ class CommandExecutor:
         command_name = command.name
         config = command.config
         
-        # 检查命令是否启用
         if not command.is_enabled():
             raise CommandExecutionError(command_name, "Command is disabled")
         
-        # 验证参数
         if not command.validate_args(*args, **kwargs):
             raise CommandValidationError(command_name, "Invalid arguments")
         
-        # 调用前置钩子
         self._call_hooks('before_execute', command_name, *args, **kwargs)
-        
-        # 执行命令（带重试和超时）
         retry_count = config.retry_count
         retry_delay = config.retry_delay
         timeout = config.timeout
@@ -105,10 +94,8 @@ class CommandExecutor:
                     self._call_hooks('on_retry', command_name, attempt, *args, **kwargs)
                     time.sleep(retry_delay)
                 
-                # 执行命令（带超时）
                 result = self._execute_with_timeout(command, timeout, *args, **kwargs)
                 
-                # 调用后置钩子
                 self._call_hooks('after_execute', command_name, result, *args, **kwargs)
                 
                 return result
@@ -118,14 +105,12 @@ class CommandExecutor:
                 logger.warning(f"Command {command_name} failed on attempt {attempt + 1}: {e}")
                 
                 if attempt == retry_count:
-                    # 最后一次尝试失败
                     self._call_hooks('on_error', command_name, e, *args, **kwargs)
                     if isinstance(e, (CommandTimeoutError, CommandValidationError)):
                         raise
                     else:
                         raise CommandExecutionError(command_name, str(e), e)
         
-        # 不应该到达这里
         raise CommandExecutionError(command_name, "Unexpected execution path", last_error)
     
     def _execute_with_timeout(self, command: Command, timeout: float, *args, **kwargs) -> Any:
@@ -153,18 +138,13 @@ class CommandExecutor:
         command_name = command.name
         config = command.config
         
-        # 检查命令是否启用
         if not command.is_enabled():
             raise CommandExecutionError(command_name, "Command is disabled")
         
-        # 验证参数
         if not command.validate_args(*args, **kwargs):
             raise CommandValidationError(command_name, "Invalid arguments")
         
-        # 调用前置钩子
         self._call_hooks('before_execute', command_name, *args, **kwargs)
-        
-        # 执行命令（带重试和超时）
         retry_count = config.retry_count
         retry_delay = config.retry_delay
         timeout = config.timeout
@@ -178,10 +158,8 @@ class CommandExecutor:
                     self._call_hooks('on_retry', command_name, attempt, *args, **kwargs)
                     await asyncio.sleep(retry_delay)
                 
-                # 执行命令（带超时）
                 result = await self._execute_async_with_timeout(command, timeout, *args, **kwargs)
                 
-                # 调用后置钩子
                 self._call_hooks('after_execute', command_name, result, *args, **kwargs)
                 
                 return result
@@ -191,7 +169,6 @@ class CommandExecutor:
                 logger.warning(f"Async command {command_name} failed on attempt {attempt + 1}: {e}")
                 
                 if attempt == retry_count:
-                    # 最后一次尝试失败
                     self._call_hooks('on_error', command_name, e, *args, **kwargs)
                     if isinstance(e, (CommandTimeoutError, CommandValidationError)):
                         raise
@@ -204,7 +181,6 @@ class CommandExecutor:
     async def _execute_async_with_timeout(self, command: Command, timeout: float, *args, **kwargs) -> Any:
         """异步带超时的命令执行"""
         try:
-            # 使用监控上下文
             with command_monitor.monitor_command(command.name):
                 result = await asyncio.wait_for(
                     command.execute_async(*args, **kwargs),
@@ -305,7 +281,7 @@ class CommandExecutor:
         # 记录异常
         for i, result in enumerate(results):
             if isinstance(result, Exception):
-                logger.error(f"Async parallel batch command {i} failed: {result}")
+                logger.error(f"命令执行异常: {result}")
         
         return results
     
@@ -340,7 +316,6 @@ class CommandExecutor:
     
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.shutdown()
-
 
 # 全局命令执行器实例
 command_executor = CommandExecutor()

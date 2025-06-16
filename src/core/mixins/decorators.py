@@ -2,13 +2,15 @@
 提供统一的错误处理、截图和性能监控功能
 """
 import functools
-import time
-import allure
 import gc
+import time
 from typing import Callable
+
+import allure
+from pytest_check import check
+
 from utils.logger import logger
 from .error_deduplication import error_dedup_manager
-from pytest_check import check
 
 
 class PerformanceMonitor:
@@ -37,7 +39,6 @@ class PerformanceMonitor:
         """获取操作平均时间"""
         times = self.operation_times.get(operation_name, [])
         return sum(times) / len(times) if times else 0.0
-
 
 class ScreenshotManager:
     """截图管理器"""
@@ -73,11 +74,9 @@ class ScreenshotManager:
         except Exception as e:
             logger.warning(f"截图失败: {e}")
 
-
 # 全局实例
 performance_monitor = PerformanceMonitor()
 screenshot_manager = ScreenshotManager()
-
 
 def performance_monitor_decorator(operation_name: str = None):
     """性能监控装饰器"""
@@ -98,7 +97,6 @@ def performance_monitor_decorator(operation_name: str = None):
                 
         return wrapper
     return decorator
-
 
 def handle_page_error(description: str = "操作") -> Callable:
     """统一的页面操作错误处理装饰器"""
@@ -163,7 +161,6 @@ def handle_page_error(description: str = "操作") -> Callable:
 
         return wrapper
     return decorator
-
 
 def check_and_screenshot(description="断言"):
     """断言装饰器，用于捕获断言失败并进行截图"""
@@ -239,7 +236,6 @@ def check_and_screenshot(description="断言"):
         return wrapper
     return decorator
 
-
 def memory_cleanup(threshold: int = 100):
     """内存清理装饰器"""
     def decorator(func):
@@ -255,8 +251,7 @@ def memory_cleanup(threshold: int = 100):
                 
                 # 定期清理内存
                 if operation_count % threshold == 0:
-                    if hasattr(self, '_locator_cache'):
-                        self._locator_cache.clear()
+                    # 元素定位缓存清理代码已移除
                     if hasattr(self, 'variable_manager'):
                         # 假设变量管理器有清理方法
                         if hasattr(self.variable_manager, 'cleanup_temp_variables'):
@@ -271,7 +266,6 @@ def memory_cleanup(threshold: int = 100):
                 
         return wrapper
     return decorator
-
 
 def attach_screenshot(page, name="screenshot"):
     """将屏幕截图添加到 Allure 报告"""

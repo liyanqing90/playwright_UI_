@@ -29,6 +29,8 @@
 - **多项目管理**：支持多项目、多环境配置，便于管理大型测试套件
 - **Page Object模式**：完整的Page Object模式实现，提高代码复用性
 - **详细日志与报告**：详细的操作日志、失败截图和Allure测试报告
+- **健壮的错误处理**：完善的空指针检查和异常处理机制，提高框架稳定性
+- **最新稳定性改进**：2024年版本全面优化了核心服务的空指针安全检查，彻底解决AttributeError异常问题
 
 ### 高级特性
 
@@ -54,7 +56,7 @@
 **主要文件**:
 
 - `test_runner.py`: 主入口文件，负责解析命令行参数和启动测试
-- `src/runner.py`: 核心运行器实现，负责测试用例的加载和执行
+- `src/automation/runner.py`: 核心运行器实现，负责测试用例的加载和执行
 
 ### 2. 测试用例执行器 (TestCaseExecutor)
 
@@ -62,7 +64,7 @@
 
 **主要文件**:
 
-- `src/test_case_executor.py`: 测试用例执行器实现
+- `src/automation/test_case_executor.py`: 测试用例执行器实现
 
 ### 3. 测试步骤执行器 (StepExecutor)
 
@@ -70,20 +72,31 @@
 
 **主要文件**:
 
-- `src/step_actions/step_executor.py`: 测试步骤执行器核心实现
-- `src/step_actions/action_types.py`: 操作类型定义
-- `src/step_actions/commands/`: 命令模式实现目录
-- `src/step_actions/flow_control.py`: 流程控制实现
-- `src/step_actions/module_handler.py`: 模块处理器
+- `src/automation/step_executor.py`: 测试步骤执行器核心实现
+- `src/automation/action_types.py`: 操作类型定义
+- `src/automation/command_executor.py`: 命令执行器
+- `src/automation/flow_control.py`: 流程控制实现
+- `src/automation/module_handler.py`: 模块处理器
 
-### 4. 页面对象 (Page Objects)
+### 4. 核心服务层 (Core Services)
 
-页面对象封装了与页面交互的方法，提供了更高级别的 API，使测试代码更加清晰和易于维护。
+核心服务层提供了模块化的服务组件，封装了各种UI操作、断言、导航等功能，采用依赖注入模式提供灵活的服务管理。
 
 **主要文件**:
 
-- `page_objects/base_page.py`: 基础页面类，提供通用的页面操作方法
-- `page_objects/[specific_page].py`: 特定页面的实现
+- `src/core/base_page.py`: 基础页面类，集成所有服务和混入功能
+- `src/core/services/`: 服务层目录，包含各种专业化服务
+  - `element_service.py`: 元素操作服务
+  - `navigation_service.py`: 导航服务
+  - `assertion_service.py`: 断言服务
+  - `wait_service.py`: 等待服务
+  - `variable_service.py`: 变量管理服务
+  - `performance_service.py`: 性能监控服务
+- `src/core/mixins/`: 混入层，提供横切关注点功能
+  - `variable_management.py`: 变量管理混入
+  - `performance_optimization.py`: 性能优化混入
+  - `error_reporter.py`: 错误报告混入
+  - `decorators.py`: 装饰器混入
 
 ### 5. 工具类 (Utils)
 
@@ -91,10 +104,10 @@
 
 **主要文件**:
 
-- `utils/variable_manager.py`: 变量管理器
-- `utils/config.py`: 配置管理
-- `utils/logger.py`: 日志管理
-- `utils/yaml_handler.py`: YAML 文件处理
+- `src/common/variable_manager.py`: 变量管理器
+- `src/common/config_manager.py`: 配置管理
+- `src/utils.py`: 通用工具函数
+- `src/case_utils.py`: 测试用例工具
 
 ## 安装与配置
 
@@ -170,48 +183,51 @@ allure serve reports/allure-results
 ```
 zhijia_ui/
 ├── config/                  # 配置文件目录
-│   ├── cookie.json          # Cookie配置
 │   ├── env_config.yaml      # 环境配置
-│   ├── storage_state.json   # 浏览器存储状态
-│   └── test_config.yaml     # 测试配置
+│   ├── test_config.yaml     # 测试配置
+│   ├── performance_config.yaml # 性能配置
+│   └── constants.py         # 常量定义
 ├── evidence/                # 测试证据目录
 │   └── screenshots/         # 测试截图
-├── page_objects/            # 页面对象目录
-│   ├── base_page.py         # 基础页面类
-│   └── <project>/           # 各项目的页面对象
 ├── reports/                 # 测试报告目录
 │   └── allure-results/      # Allure报告数据
 ├── src/                     # 框架核心代码
-│   ├── fixtures.py          # Pytest fixtures
-│   ├── load_data.py         # 数据加载模块
-│   ├── test_case_executor.py # 测试用例执行器
-│   ├── test_step_executor.py # 测试步骤执行器
-│   └── step_actions/        # 步骤操作实现
+│   ├── automation/          # 自动化执行引擎
+│   │   ├── runner.py        # 测试运行器
+│   │   ├── test_case_executor.py # 测试用例执行器
+│   │   ├── step_executor.py # 测试步骤执行器
+│   │   ├── command_executor.py # 命令执行器
+│   │   ├── commands/        # 命令实现目录
+│   │   ├── flow_control.py  # 流程控制
+│   │   └── module_handler.py # 模块处理器
+│   ├── core/                # 核心服务层
+│   │   ├── base_page.py     # 基础页面类
+│   │   ├── services/        # 服务层
+│   │   ├── mixins/          # 混入层
+│   │   ├── config/          # 配置管理
+│   │   └── performance/     # 性能监控
+│   ├── common/              # 公共组件
+│   │   ├── config_manager.py # 配置管理器
+│   │   ├── exceptions.py    # 异常定义
+│   │   └── types.py         # 类型定义
+│   └── utils.py             # 工具函数
+├── plugins/                 # 插件系统
+│   ├── assertion_commands/  # 断言命令插件
+│   ├── network_operations/  # 网络操作插件
+│   └── performance_management/ # 性能管理插件
 ├── test_data/               # 测试数据目录
 │   ├── <project>/           # 各项目的测试数据
-│   │   ├── excel/           # Excel格式的测试数据
-│   │   ├── variables.json   # 项目级变量定义
 │   │   ├── cases/           # 测试用例定义
 │   │   ├── data/            # 测试数据定义
 │   │   ├── elements/        # 页面元素定义
-│   │   └── modules/         # 可复用测试模块
+│   │   ├── modules/         # 可复用测试模块
+│   │   └── variables.json   # 项目级变量定义
 │   └── common/              # 公共测试数据
-├── utils/                   # 工具类目录
-│   ├── allure_logger.py     # Allure日志工具
-│   ├── config.py            # 配置处理工具
-│   ├── excel_handler.py     # Excel处理工具
-│   ├── logger.py            # 日志处理工具
-│   ├── report_handler.py    # 报告处理工具
-│   ├── variable_manager.py  # 变量管理工具
-│   └── yaml_handler.py      # YAML处理工具
-├── conftest.py              # Pytest配置文件
-├── create_structure.py      # 项目结构创建工具
-├── check_duplicates.py      # 重复检查工具
-├── poetry.lock              # Poetry依赖锁定文件
-├── pyproject.toml           # Poetry项目配置
-├── pytest.ini               # Pytest配置文件
-├── README.md                # 项目文档
-└── test_runner.py           # 测试运行器
+└── project_documentation/   # 项目文档
+    ├── architecture/        # 架构文档
+    ├── api_reference/       # API参考
+    ├── implementation_details/ # 实现细节
+    └── quick_start/         # 快速开始指南
 ```
 
 ## 测试开发指南
@@ -469,6 +485,78 @@ login_test:
     - 实现智能重试机制处理闪现问题
 
 ## 常用命令
+
+### 测试运行命令
+
+```bash
+# 基本运行
+$ python test_runner.py --project demo
+
+# 使用标记筛选测试用例
+$ python test_runner.py --project demo --marker smoke
+$ python test_runner.py --project demo -m "smoke and login"
+$ python test_runner.py --project demo -m "not slow"
+
+# 使用关键字筛选测试用例
+$ python test_runner.py --project demo --keyword login
+$ python test_runner.py --project demo -k "login or register"
+$ python test_runner.py --project demo -k "test_user and not admin"
+
+# 组合使用标记和关键字
+$ python test_runner.py --project demo -m smoke -k login
+
+# 指定浏览器和环境
+$ python test_runner.py --project demo --browser firefox --env test
+
+# 有头模式运行（用于调试）
+$ python test_runner.py --project demo --headed
+
+# 运行特定测试文件
+$ python test_runner.py --project demo --test-file login_test.yaml
+```
+
+### 命令行参数说明
+
+| 参数 | 短参数 | 类型 | 默认值 | 说明 |
+|------|--------|------|--------|------|
+| `--marker` | `-m` | string | None | 只运行特定标记的测试用例，支持pytest标记表达式 |
+| `--keyword` | `-k` | string | None | 只运行匹配关键字的测试用例，支持pytest关键字表达式 |
+| `--headed` | 无 | bool | True | 是否以有头模式运行浏览器 |
+| `--browser` | 无 | enum | chromium | 指定浏览器（chromium/firefox/webkit） |
+| `--env` | 无 | enum | prod | 指定环境（dev/test/stage/prod） |
+| `--project` | 无 | string | demo | 指定项目名称 |
+| `--base-url` | 无 | string | 空 | 指定基础URL，覆盖配置文件中的设置 |
+| `--test-file` | 无 | string | 空 | 指定要运行的测试文件 |
+| `--no-parallel` | 无 | bool | False | 禁用并行执行 |
+
+### 标记（Marker）使用说明
+
+标记用于对测试用例进行分类和筛选，常用的标记包括：
+
+- `smoke`: 冒烟测试用例
+- `regression`: 回归测试用例
+- `slow`: 执行时间较长的测试用例
+- `fast`: 执行时间较短的测试用例
+- `critical`: 关键功能测试用例
+- `login`: 登录相关测试用例
+- `payment`: 支付相关测试用例
+
+标记表达式支持逻辑运算符：
+- `and`: 逻辑与，例如 `smoke and login`
+- `or`: 逻辑或，例如 `login or register`
+- `not`: 逻辑非，例如 `not slow`
+- 括号: 用于分组，例如 `(smoke or regression) and not slow`
+
+### 关键字（Keyword）使用说明
+
+关键字筛选基于测试用例的名称、描述等文本内容进行匹配：
+
+- 支持部分匹配：`login` 会匹配包含"login"的所有测试用例
+- 支持逻辑运算符：`and`、`or`、`not`
+- 支持括号分组：`(login or register) and not admin`
+- 大小写敏感：需要注意测试用例名称的大小写
+
+### 其他工具命令
 
 ```bash
 # 导出依赖清单

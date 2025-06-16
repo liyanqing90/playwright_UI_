@@ -21,7 +21,6 @@ def evaluate_math_expression(expression: str, variable_manager) -> Any:
         表达式的计算结果
     """
     try:
-        # 如果表达式不是${{...}}格式，则包装为该格式
         if not (expression.startswith("${{") and expression.endswith("}}")):
             expression = f"${{{{{expression}}}}}"
 
@@ -29,46 +28,39 @@ def evaluate_math_expression(expression: str, variable_manager) -> Any:
         expr_content = expression[3:-2].strip()
         expr_content = variable_manager.replace_variables_refactored(expr_content)
 
-        # 定义安全的数学函数集合
         safe_math_functions = {
-            # 基本数学函数
             "abs": abs,
             "round": round,
             "min": min,
             "max": max,
             "sum": sum,
             "len": len,
-            # 数学模块函数
             "sqrt": math.sqrt,
             "pow": math.pow,
+            "exp": math.exp,
+            "log": math.log,
+            "log10": math.log10,
             "sin": math.sin,
             "cos": math.cos,
             "tan": math.tan,
             "floor": math.floor,
             "ceil": math.ceil,
-            "log": math.log,
-            "log10": math.log10,
-            "exp": math.exp,
-            # 常量
             "pi": math.pi,
             "e": math.e,
-            # 类型转换
             "int": int,
             "float": float,
             "str": str,
             "bool": bool,
         }
 
-        # 设置安全的执行环境
         safe_globals = {
-            "__builtins__": {},  # 清空内置函数
-            **safe_math_functions,  # 添加安全的数学函数
+            "__builtins__": {},
+            **safe_math_functions,
         }
 
         # 预处理表达式
         processed_expr = preprocess_expression(expr_content)
 
-        # 执行表达式
         result = eval(processed_expr, safe_globals)
         logger.debug(f"计算表达式: {expr_content} = {result}")
         return result

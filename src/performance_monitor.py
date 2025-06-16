@@ -3,14 +3,15 @@
 """
 
 import gc
-import psutil
+import json
 import threading
 import time
-from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-import json
+from typing import Dict, List, Any, Optional
+
+import psutil
 
 from utils.logger import logger
 
@@ -26,8 +27,6 @@ class PerformanceMetrics:
     test_execution_time: float = 0.0
     browser_instances: int = 0
 
-
-
 @dataclass
 class PerformanceStats:
     """性能统计信息"""
@@ -38,7 +37,6 @@ class PerformanceStats:
     total_gc_collections: int = 0
     total_test_time: float = 0.0
     metrics_history: List[PerformanceMetrics] = field(default_factory=list)
-
 
 class PerformanceMonitor:
     """
@@ -133,8 +131,6 @@ class PerformanceMonitor:
             else:
                 browser_instances = self._get_browser_instances_count()
 
-
-            
             # 创建性能指标
             metrics = PerformanceMetrics(
                 timestamp=datetime.now(),
@@ -191,8 +187,6 @@ class PerformanceMonitor:
             return min(browser_processes, 2)  # 进一步限制数量
         except Exception:
             return 1  # 默认假设有1个浏览器实例
-            
-
             
     def _update_stats(self, metrics: PerformanceMetrics):
         """更新统计信息"""
@@ -262,7 +256,6 @@ class PerformanceMonitor:
         if self.stats.peak_cpu_percent > 80:
             recommendations.append("CPU使用峰值较高，建议优化算法或减少并发操作")
 
-            
         if not recommendations:
             recommendations.append("性能表现良好，无特殊优化建议")
             
@@ -305,7 +298,6 @@ class PerformanceMonitor:
             "before_memory_mb": round(before_memory, 2),
             "after_memory_mb": round(after_memory, 2)
         }
-
 
 # 全局性能监控器实例
 performance_monitor = PerformanceMonitor()

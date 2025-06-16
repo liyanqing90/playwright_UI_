@@ -1,7 +1,9 @@
 import os
 import time
-import yaml
 from typing import Dict, Any, Optional
+
+import yaml
+
 from utils.logger import logger
 
 
@@ -39,12 +41,7 @@ class PerformanceManager:
     def _get_default_config(self) -> Dict[str, Any]:
         """获取默认配置"""
         return {
-            'element_cache': {
-                'timeout': 30,
-                'enabled': True,
-                'max_size': 1000,
-                'cleanup_interval': 60
-            },
+            # 元素缓存配置已移除
             'screenshot': {
                 'max_count': 50,
                 'interval': 1,

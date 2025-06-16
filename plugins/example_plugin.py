@@ -1,7 +1,8 @@
 """示例插件"""
 
-from src.automation.commands.base_command import Command, CommandRegistry
 from typing import Dict, Any
+
+from src.automation.commands.base_command import Command, CommandRegistry
 
 
 @CommandRegistry.register(["custom_action"])
