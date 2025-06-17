@@ -6,6 +6,9 @@
 from typing import Optional, Any, Dict
 
 from playwright.sync_api import Page, Browser, BrowserContext
+from jsonpath_ng import parse
+import allure
+from pytest_check import check
 
 from config.constants import DEFAULT_TIMEOUT
 from utils.logger import logger
@@ -661,6 +664,15 @@ class BasePage:
                     "headers": {k: v for k, v in request.headers.items()},
                 }
 
+                # 验证参数（如果需要）
+                if assert_params and request_data:
+                    logger.info(f"开始验证请求参数: {assert_params}")
+                    # 处理断言参数
+                    for jsonpath_expr, expected_value in assert_params.items():
+                        self._verify_jsonpath(
+                            request_data, jsonpath_expr, expected_value
+                        )
+
                 return captured_data
 
         except Exception as e:
@@ -807,6 +819,61 @@ class BasePage:
             response_data = {"error": str(e)}
 
         return response_data
+
+    def _verify_jsonpath(self, data, jsonpath_expr, expected):
+        """
+        验证JSONPath表达式的值是否符合预期
+
+        Args:
+            data: 要验证的数据
+            jsonpath_expr: JSONPath表达式
+            expected: 期望值
+        """
+
+        # 解析 jsonpath 表达式
+        jsonpath_expr = jsonpath_expr.strip()
+        expr = parse(jsonpath_expr)
+
+        # 查找匹配的值
+        matches = [value.value for value in expr.find(data)]
+        if not matches:
+            logger.error(f"JSONPath {jsonpath_expr} 未找到匹配项")
+            raise ValueError(f"JSONPath {jsonpath_expr} 未找到匹配项，当前数据: {data}")
+        
+        actual_value = matches[0]
+        
+        # 处理变量替换（如果有变量管理器）
+        resolved_expected = expected
+        if hasattr(self, 'variable_manager') and self.variable_manager:
+            resolved_expected = self.variable_manager.replace_variables_refactored(expected)
+
+        # 执行断言
+        with check, allure.step(f"验证参数 {jsonpath_expr}"):
+            if isinstance(actual_value, list) and isinstance(resolved_expected, list):
+                # 列表比较
+                assert sorted([str(x) for x in actual_value]) == sorted(
+                    [str(x) for x in resolved_expected]
+                ), f"断言失败: 参数 {jsonpath_expr} 期望值为 '{resolved_expected}', 实际值为 '{actual_value}'"
+            elif isinstance(actual_value, list):
+                # 检查列表中是否包含期望值
+                expected_str = str(resolved_expected)
+                found = any(str(item) == expected_str for item in actual_value)
+                assert (
+                    found
+                ), f"断言失败: 参数 {jsonpath_expr} 期望包含值 '{resolved_expected}', 实际值为 '{actual_value}'"
+            else:
+                # 单值比较
+                assert str(actual_value) == str(
+                    resolved_expected
+                ), f"断言失败: 参数 {jsonpath_expr} 期望值为 '{resolved_expected}', 实际值为 '{actual_value}'"
+
+        allure.attach(
+            f"断言成功: 参数 {jsonpath_expr} 匹配期望值 {resolved_expected}",
+            name="断言结果",
+            attachment_type=allure.attachment_type.TEXT,
+        )
+
+        logger.info(f"参数验证成功: {jsonpath_expr} 匹配期望值 {resolved_expected}")
 
     # ==================== 断言操作 ====================
 
