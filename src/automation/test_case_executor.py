@@ -3,6 +3,7 @@ from typing import Dict, Any, Set
 import allure
 
 from src.assertion_manager import assertion_manager
+
 # 导入重构后的StepExecutor
 from src.automation.step_executor import StepExecutor
 from src.core.mixins.error_reporter import generate_final_error_report
@@ -10,15 +11,18 @@ from utils.logger import logger
 
 log = logger
 
+
 def _cleanup_test_environment(case: Dict[str, Any]) -> None:
     with allure.step("测试环境清理"):
         log.debug(f"Cleaning up test environment for case: {case['name']}")
         # fixture 的清理会由 pytest 自动处理
 
+
 def _setup_test_environment(case: Dict[str, Any]) -> None:
     with allure.step("测试环境准备"):
         log.debug(f"Setting up test environment for case: {case['name']}")
         # 添加环境准备代码
+
 
 class CaseExecutor:
     def __init__(self, case_data: Dict[str, Any], elements: Dict[str, Any]):
@@ -40,6 +44,9 @@ class CaseExecutor:
         test_start_time = time.time()
 
         case_name = test_name if test_name else "未知测试用例"
+
+        # 重置断言统计信息，确保每个测试用例的统计都是独立的
+        assertion_manager.reset_stats()
 
         # 设置当前测试用例名称到断言管理器
         assertion_manager.set_current_test_case(case_name)
@@ -70,14 +77,13 @@ class CaseExecutor:
             # 只在最终层记录错误，避免重复记录
             if not hasattr(e, "_logged") or not getattr(e, "_logged", False):
                 from src.core.mixins.error_deduplication import error_dedup_manager
-                
+
                 error_info = getattr(e, "_error_info", str(e))
                 if error_dedup_manager.should_log_error(
-                    error_message=error_info,
-                    error_type=type(e).__name__
+                    error_message=error_info, error_type=type(e).__name__
                 ):
                     log.error(f"❌ 测试用例 {case_name} 执行失败: {error_info}")
-                
+
                 setattr(e, "_logged", True)
             raise
         finally:
@@ -86,27 +92,32 @@ class CaseExecutor:
             test_duration = test_end_time - test_start_time
             performance_monitor.record_test_execution_time(test_duration)
 
-            # 输出简化的测试结果统计
-            self._output_test_summary(case_name, test_duration)
-            
+            # 输出简化的测试结果统计，传递 step_executor 以检查步骤执行状态
+            self._output_test_summary(case_name, test_duration, step_executor)
+
             # 生成错误去重报告（仅在测试会话结束时）
-            if hasattr(self, '_is_last_test') and self._is_last_test:
+            if hasattr(self, "_is_last_test") and self._is_last_test:
                 try:
                     log.info("📊 生成错误去重效果报告...")
                     report_files = generate_final_error_report()
-                    if report_files.get('summary_report'):
+                    if report_files.get("summary_report"):
                         log.info(f"📋 错误摘要报告: {report_files['summary_report']}")
-                    if report_files.get('detailed_report'):
+                    if report_files.get("detailed_report"):
                         log.info(f"📄 详细错误报告: {report_files['detailed_report']}")
                 except Exception as e:
                     log.warning(f"生成错误报告时出现问题: {e}")
 
-    def _output_test_summary(self, case_name: str, test_duration: float):
+    def _output_test_summary(
+        self, case_name: str, test_duration: float, step_executor=None
+    ):
         """输出简化的测试结果摘要"""
         stats = assertion_manager.get_stats()
 
-        # 构建状态图标
-        if stats.failed_assertions > 0:
+        # 检查是否有步骤执行失败
+        has_step_error = step_executor and getattr(step_executor, "has_error", False)
+
+        # 构建状态图标 - 有失败断言或步骤错误时标记为失败
+        if stats.failed_assertions > 0 or has_step_error:
             status_icon = "❌"
             status_text = "失败"
         else:
@@ -121,19 +132,20 @@ class CaseExecutor:
         else:
             assertion_info = "无断言"
 
+        # 如果有步骤执行失败，添加步骤失败信息
+        if has_step_error:
+            assertion_info += " | 步骤执行失败"
+
         # 输出简化的一行摘要
-        log.info(f"{status_icon} {case_name} | {status_text} | {assertion_info} | 耗时 {test_duration:.2f}s")
+        log.info(
+            f"{status_icon} {case_name} | {status_text} | {assertion_info} | 耗时 {test_duration:.2f}s"
+        )
 
         if stats.failed_assertions > 0:
             failed_assertions = assertion_manager.get_failed_assertions()
             log.warning(f"   失败断言详情:")
             for i, assertion in enumerate(failed_assertions, 1):
-                log.warning(f"   {i}. [{assertion.assertion_type}断言] {assertion.step_description}")
                 log.warning(f"      错误: {assertion.error_message}")
-                if assertion.expected is not None:
-                    log.warning(f"      期望: {assertion.expected}")
-                if assertion.actual is not None:
-                    log.warning(f"      实际: {assertion.actual}")
 
     def _output_assertion_stats(self, case_name: str):
         """保留原方法以兼容性，但不再使用"""

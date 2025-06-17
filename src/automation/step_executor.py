@@ -10,6 +10,8 @@ from typing import Dict, Any, List
 import allure
 
 from src.automation.action_types import StepAction
+from src.assertion_manager import assertion_manager  # 导入断言管理器
+
 # 导入命令模式执行器
 from src.automation.command_executor import execute_action_with_command
 from src.automation.flow_control import (
@@ -19,10 +21,11 @@ from src.automation.flow_control import (
 )
 from src.automation.module_handler import execute_module
 from utils.logger import logger
-from utils.variable_manager import VariableManager
+from src.core.services.variable_service import VariableService
 
 
 # 导入所有命令类
+
 
 class StepExecutor:
 
@@ -46,7 +49,7 @@ class StepExecutor:
         self._NO_SELECTOR_ACTIONS = {a.lower() for a in StepAction.NO_SELECTOR_ACTIONS}
 
         # 初始化变量管理器
-        self.variable_manager = VariableManager()
+        self.variable_manager = VariableService()
 
         # 初始化项目名称
         self.project_name = None
@@ -95,17 +98,15 @@ class StepExecutor:
 
             action = step.get("action", "").lower()
             pre_selector = step.get("selector")
-            selector = self.variable_manager.replace_variables_refactored(
+            selector = self.variable_manager.replace_variables(
                 self.elements.get(pre_selector, pre_selector)
             )
-            value = self.variable_manager.replace_variables_refactored(
-                step.get("value")
-            )
-            
+            value = self.variable_manager.replace_variables(step.get("value"))
+
             # 确保start_time在任何操作前被设置
             if not self.start_time:
                 self.start_time = datetime.now()
-                
+
             logger.debug(f"执行步骤: {action} | 选择器: {selector} | 值: {value}")
             self._validate_step(action, selector)
             self._execute_action(action, selector, value, step)
@@ -279,7 +280,9 @@ class StepExecutor:
         """统一记录步骤耗时"""
         if self.start_time:
             duration = (datetime.now() - self.start_time).total_seconds()
-            logger.info(f"[{'失败' if self.step_has_error else '成功'}] 步骤耗时: {duration:.2f}s")
+            logger.info(
+                f"[{'失败' if self.step_has_error else '成功'}] 步骤耗时: {duration:.2f}s"
+            )
 
     def _capture_failure_evidence(self):
         """统一失败证据采集"""

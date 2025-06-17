@@ -2,4 +2,4 @@
 
 from .plugin import ExpressionEvaluatorPlugin
 
-__all__ = ['ExpressionEvaluatorPlugin']
+__all__ = ["ExpressionEvaluatorPlugin"]

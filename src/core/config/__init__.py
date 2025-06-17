@@ -8,8 +8,4 @@
 from .config_loader import ConfigLoader, ServiceConfig
 from .environment_manager import EnvironmentManager
 
-__all__ = [
-    'ConfigLoader',
-    'ServiceConfig', 
-    'EnvironmentManager'
-]
+__all__ = ["ConfigLoader", "ServiceConfig", "EnvironmentManager"]

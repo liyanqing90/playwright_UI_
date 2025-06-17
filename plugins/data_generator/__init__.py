@@ -2,4 +2,4 @@
 
 from .plugin import DataGeneratorPlugin
 
-__all__ = ['DataGeneratorPlugin']
+__all__ = ["DataGeneratorPlugin"]

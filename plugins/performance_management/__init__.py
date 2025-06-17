@@ -5,4 +5,4 @@
 
 from .plugin import PerformanceManagementPlugin
 
-__all__ = ['PerformanceManagementPlugin']
+__all__ = ["PerformanceManagementPlugin"]

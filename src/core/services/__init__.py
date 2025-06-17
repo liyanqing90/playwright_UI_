@@ -10,15 +10,15 @@ from .variable_service import VariableService, VariableOperations
 from .wait_service import WaitService, WaitOperations
 
 __all__ = [
-    'BaseService',
-    'ElementService',
-    'ElementOperations',
-    'NavigationService',
-    'NavigationOperations',
-    'WaitService',
-    'WaitOperations',
-    'AssertionService',
-    'AssertionOperations',
-    'VariableService',
-    'VariableOperations',
+    "BaseService",
+    "ElementService",
+    "ElementOperations",
+    "NavigationService",
+    "NavigationOperations",
+    "WaitService",
+    "WaitOperations",
+    "AssertionService",
+    "AssertionOperations",
+    "VariableService",
+    "VariableOperations",
 ]

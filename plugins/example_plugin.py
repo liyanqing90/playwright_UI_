@@ -8,8 +8,10 @@ from src.automation.commands.base_command import Command, CommandRegistry
 @CommandRegistry.register(["custom_action"])
 class CustomActionCommand(Command):
     """自定义动作命令"""
-    
-    def execute(self, ui_helper, selector: str, value: Any, step: Dict[str, Any]) -> Any:
+
+    def execute(
+        self, ui_helper, selector: str, value: Any, step: Dict[str, Any]
+    ) -> Any:
         """执行自定义动作"""
         print(f"执行自定义动作: {value}")
         # 在这里实现你的自定义逻辑

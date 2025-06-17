@@ -2,4 +2,4 @@
 
 from .plugin import ReportHandlerPlugin
 
-__all__ = ['ReportHandlerPlugin']
+__all__ = ["ReportHandlerPlugin"]

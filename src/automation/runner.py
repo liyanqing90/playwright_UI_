@@ -6,7 +6,7 @@ from playwright.async_api import Page
 
 from src.automation.test_case_executor import CaseExecutor
 from utils.logger import logger
-from utils.variable_manager import VariableManager
+from src.core.services.variable_service import VariableService
 
 _DEFAULT_FIXTURES = [
     "page",
@@ -14,6 +14,7 @@ _DEFAULT_FIXTURES = [
     "get_test_name",
     "value",
 ]
+
 
 def build_test_signature(fixtures: list) -> Signature:
     if not isinstance(fixtures, list):
@@ -29,6 +30,7 @@ def build_test_signature(fixtures: list) -> Signature:
         for name in _DEFAULT_FIXTURES + fixtures
     ]
     return Signature(parameters)
+
 
 class TestCaseGenerator(pytest.Item):
 
@@ -47,7 +49,7 @@ class TestCaseGenerator(pytest.Item):
         self.elements = self.datas.get("elements", {})
         self.module: types.ModuleType = module  # 动态创建的 module 模型
         self.module_variable = {}  # 模块变量
-        self.variable_manager = VariableManager()  # 初始化变量管理器
+        self.variable_manager = VariableService()  # 初始化变量管理器
 
     def generate(self) -> None:
         """主生成方法"""
@@ -119,31 +121,41 @@ class TestCaseGenerator(pytest.Item):
         marked_func = pytest.mark.dependency(name=case_name, depends=depends)(
             _test_function_wrapper_for_case
         )
-        
+
         # 添加自定义标记
         if markers:
             logger.debug(f"为用例 {case_name} 添加标记: {markers}")
             if not isinstance(markers, (list, tuple)):
-                logger.warning(f"用例 {case_name} 的markers格式错误，期望列表类型，实际为: {type(markers)}")
+                logger.warning(
+                    f"用例 {case_name} 的markers格式错误，期望列表类型，实际为: {type(markers)}"
+                )
                 markers = []  # 防止为None时的迭代错误
-                
+
             for marker in markers:
                 if isinstance(marker, str):
                     try:
                         marked_func = getattr(pytest.mark, marker)(marked_func)
                     except AttributeError:
-                        logger.warning(f"未知的标记类型: {marker}，请确保已在pytest.ini中注册")
+                        logger.warning(
+                            f"未知的标记类型: {marker}，请确保已在pytest.ini中注册"
+                        )
                         continue
                 elif isinstance(marker, dict):
                     # 支持带参数的标记，如 {"parametrize": {"argnames": "value", "argvalues": [1, 2, 3]}}
                     for mark_name, mark_args in marker.items():
                         try:
                             if isinstance(mark_args, dict):
-                                marked_func = getattr(pytest.mark, mark_name)(**mark_args)(marked_func)
+                                marked_func = getattr(pytest.mark, mark_name)(
+                                    **mark_args
+                                )(marked_func)
                             else:
-                                marked_func = getattr(pytest.mark, mark_name)(mark_args)(marked_func)
+                                marked_func = getattr(pytest.mark, mark_name)(
+                                    mark_args
+                                )(marked_func)
                         except AttributeError:
-                            logger.warning(f"未知的标记类型: {mark_name}，请确保已在pytest.ini中注册")
+                            logger.warning(
+                                f"未知的标记类型: {mark_name}，请确保已在pytest.ini中注册"
+                            )
                             continue
                 else:
                     logger.warning(f"未支持的标记格式: {marker}，跳过此标记")
@@ -155,7 +167,9 @@ class TestCaseGenerator(pytest.Item):
         marked_func.__signature__ = build_test_signature(fixtures)
         return marked_func
 
-    def execute_test(self, case_data, page: Page, ui_helper, test_name=None, **kwargs) -> None:
+    def execute_test(
+        self, case_data, page: Page, ui_helper, test_name=None, **kwargs
+    ) -> None:
         # 使用传递过来的测试用例名称
         if not test_name:
             test_name = "未知测试用例"

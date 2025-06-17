@@ -300,7 +300,7 @@ class VariableManager:
         self._stats["cache_misses"] += 1
 
         # 处理嵌套变量名（点号分隔）
-        if '.' in name:
+        if "." in name:
             result = self._get_nested_variable(name, scope, default)
             # 将结果存入缓存
             self._variable_cache[cache_key] = result
@@ -341,21 +341,21 @@ class VariableManager:
     ) -> Any:
         """
         获取嵌套变量值（点号分隔）
-        
+
         Args:
             name: 嵌套变量名，如 'parent.child.key'
             scope: 变量作用域
             default: 默认值
-            
+
         Returns:
             嵌套变量值，如果不存在则返回默认值
         """
-        parts = name.split('.')
+        parts = name.split(".")
         root_name = parts[0]
-        
+
         # 首先获取根变量
         root_value = None
-        
+
         # 如果指定了作用域，则按照作用域继承关系查找
         if scope in self.scope_hierarchy:
             for search_scope in self.scope_hierarchy[scope]:
@@ -368,11 +368,11 @@ class VariableManager:
                 if root_name in self.variables[search_scope]:
                     root_value = self.variables[search_scope][root_name]
                     break
-        
+
         if root_value is None:
             self.logger.debug(f"未找到根变量 '{root_name}'，无法访问嵌套变量 '{name}'")
             return default
-        
+
         # 逐层访问嵌套属性
         current_value = root_value
         for i, part in enumerate(parts[1:], 1):
@@ -380,14 +380,18 @@ class VariableManager:
                 if part in current_value:
                     current_value = current_value[part]
                 else:
-                    partial_path = '.'.join(parts[:i+1])
-                    self.logger.debug(f"嵌套变量路径 '{partial_path}' 不存在，返回默认值: {default}")
+                    partial_path = ".".join(parts[: i + 1])
+                    self.logger.debug(
+                        f"嵌套变量路径 '{partial_path}' 不存在，返回默认值: {default}"
+                    )
                     return default
             else:
-                partial_path = '.'.join(parts[:i])
-                self.logger.debug(f"变量 '{partial_path}' 不是字典类型，无法继续访问嵌套属性 '{name}'")
+                partial_path = ".".join(parts[:i])
+                self.logger.debug(
+                    f"变量 '{partial_path}' 不是字典类型，无法继续访问嵌套属性 '{name}'"
+                )
                 return default
-        
+
         return current_value
 
     def get_variable_from_scope(
@@ -593,7 +597,9 @@ class VariableManager:
             replacement_cache_key = f"{value}:{scope if scope else 'default'}"
             if replacement_cache_key in self._replacement_cache:
                 self._stats["replacement_cache_hits"] += 1
-                self._update_cache_access(replacement_cache_key, is_replacement_cache=True)
+                self._update_cache_access(
+                    replacement_cache_key, is_replacement_cache=True
+                )
                 return self._replacement_cache[replacement_cache_key]
 
             self._stats["replacement_cache_misses"] += 1
@@ -613,9 +619,15 @@ class VariableManager:
                 # 精确匹配，直接获取并返回原始类型的值
                 result = self.get_variable(var_name)
 
+                # 如果变量未找到（返回None），则返回原始字符串
+                if result is None:
+                    result = value
+
                 # 将结果存入替换缓存
                 self._replacement_cache[replacement_cache_key] = result
-                self._update_cache_access(replacement_cache_key, is_replacement_cache=True)
+                self._update_cache_access(
+                    replacement_cache_key, is_replacement_cache=True
+                )
                 self._manage_cache_size()
 
                 return result

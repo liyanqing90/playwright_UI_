@@ -33,17 +33,17 @@ def pytest_sessionstart(session):
     try:
         plugin_count = plugin_manager.load_all_plugins()
         logger.info(f"插件系统已启动，成功加载 {plugin_count} 个插件")
-        
+
         # 输出插件加载状态
         loaded_plugins = plugin_manager.list_plugins()
         if loaded_plugins:
             logger.info(f"已加载的插件: {', '.join(loaded_plugins.keys())}")
         else:
             logger.warning("没有加载任何插件")
-            
+
     except Exception as e:
         logger.error(f"插件系统启动失败: {e}")
-    
+
     # 启动性能监控
     try:
         # 使用轻量级模式启动性能监控，减少对测试执行的影响
@@ -153,10 +153,12 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     config = Config()
     env = os.getenv("ENV", config.env.value)
     # 使用session的开始时间，如果不存在则使用当前时间减去一个默认值
-    session_start_time = getattr(terminalreporter, '_sessionstarttime', None)
+    session_start_time = getattr(terminalreporter, "_sessionstarttime", None)
     if session_start_time is None:
         # 如果没有_sessionstarttime属性，尝试从config或session中获取
-        session_start_time = getattr(terminalreporter.config, '_session_start_time', time.time() - 1)
+        session_start_time = getattr(
+            terminalreporter.config, "_session_start_time", time.time() - 1
+        )
     duration = round(time.time() - session_start_time, 2)
     # 获取失败用例详情
     failures = []
@@ -309,6 +311,7 @@ def get_test_name(request):
     # 移除DEBUG日志，减少重复信息
     return decoded_name
 
+
 @pytest.fixture()
 def current_test_name(request):
     """返回当前测试用例的基础名称（不包含参数化部分）"""
@@ -358,6 +361,10 @@ def _output_final_assertion_stats():
             logger.info(f"   🔸 硬断言失败: {stats.failed_hard_assertions}")
             logger.info(f"📈 断言成功率: {stats.success_rate:.2f}%")
 
+            # 重置断言统计，避免累积到下次测试会话
+            assertion_manager.reset_stats()
+            logger.debug("测试会话结束，断言统计已重置")
+
             # 保存断言报告
             try:
                 assertion_manager.save_report()
@@ -376,7 +383,9 @@ def _output_final_assertion_stats():
                     failed_by_type[test_case][assertion.assertion_type] += 1
 
                 for test_case, counts in failed_by_type.items():
-                    logger.warning(f"   📋 {test_case}: 软断言失败 {counts['soft']} 个, 硬断言失败 {counts['hard']} 个")
+                    logger.warning(
+                        f"   📋 {test_case}: 软断言失败 {counts['soft']} 个, 硬断言失败 {counts['hard']} 个"
+                    )
 
             logger.info("=" * 60)
         else:
@@ -401,8 +410,12 @@ def _output_final_performance_stats():
 
         summary = report["summary"]
         logger.info(f"📊 监控时长: {summary['monitoring_duration_minutes']:.1f} 分钟")
-        logger.info(f"💾 内存使用: 峰值 {summary['peak_memory_mb']}MB, 平均 {summary['average_memory_mb']}MB")
-        logger.info(f"🔥 CPU使用: 峰值 {summary['peak_cpu_percent']}%, 平均 {summary['average_cpu_percent']}%")
+        logger.info(
+            f"💾 内存使用: 峰值 {summary['peak_memory_mb']}MB, 平均 {summary['average_memory_mb']}MB"
+        )
+        logger.info(
+            f"🔥 CPU使用: 峰值 {summary['peak_cpu_percent']}%, 平均 {summary['average_cpu_percent']}%"
+        )
         logger.info(f"⏱️  总测试时间: {summary['total_test_time_seconds']} 秒")
         logger.info(f"🌐 浏览器实例: {summary['current_browser_instances']} 个")
 
@@ -411,10 +424,14 @@ def _output_final_performance_stats():
 
         # 获取变量管理器详细统计
         try:
-            from utils.variable_manager import VariableManager
-            vm = VariableManager()
-            vm_stats = vm.get_stats()
-            logger.info(f"🔧 变量管理: 获取 {vm_stats.get('get_count', 0)} 次, 设置 {vm_stats.get('set_count', 0)} 次, 缓存 {vm_stats.get('cache_size', 0)} 项")
+            from src.core.services.variable_service import VariableService
+
+            vm = VariableService()
+            # VariableService 暂时没有 get_stats 方法，使用 get_all_variables 替代
+            vm_stats = {"variables_count": len(vm.get_all_variables())}
+            logger.info(
+                f"🔧 变量管理: 获取 {vm_stats.get('get_count', 0)} 次, 设置 {vm_stats.get('set_count', 0)} 次, 缓存 {vm_stats.get('cache_size', 0)} 项"
+            )
         except Exception as e:
             logger.debug(f"获取变量管理器统计失败: {e}")
 
@@ -435,9 +452,6 @@ def _output_final_performance_stats():
 
     except Exception as e:
         logger.error(f"输出性能统计时出错: {e}")
-
-
-
 
 
 def pytest_collection_modifyitems(items) -> None:

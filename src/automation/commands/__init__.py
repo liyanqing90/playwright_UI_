@@ -6,7 +6,7 @@ from .base_command import Command, CommandRegistry, CommandFactory
 CommandRegistry.auto_discover_commands(__name__)
 
 # 导出主要接口
-__all__ = ['Command', 'CommandRegistry', 'CommandFactory']
+__all__ = ["Command", "CommandRegistry", "CommandFactory"]
 
 from .element_commands import *
 from .io_commands import *

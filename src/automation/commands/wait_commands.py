@@ -23,8 +23,19 @@ class WaitCommand(Command):
             wait_time = 1000  # 默认1秒
 
         from utils.logger import logger
+
         logger.debug(f"等待 {wait_time}ms")
         ui_helper.wait_for_timeout(timeout=wait_time)
+
+    def _build_step_description(self, *args, **kwargs) -> str:
+        """构建等待操作的步骤描述"""
+        if len(args) >= 3:
+            value = args[2]
+            if value:
+                wait_time = int(value)
+                return f"等待 {wait_time} 秒"
+        return "等待 1 秒"
+
 
 @CommandFactory.register(StepAction.WAIT_FOR_NETWORK_IDLE)
 class WaitForNetworkIdleCommand(Command):
@@ -36,6 +47,7 @@ class WaitForNetworkIdleCommand(Command):
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
         ui_helper.wait_for_network_idle(timeout=timeout)
 
+
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_HIDDEN)
 class WaitForElementHiddenCommand(Command):
     """等待元素消失命令"""
@@ -46,6 +58,14 @@ class WaitForElementHiddenCommand(Command):
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
         ui_helper.wait_for_element_hidden(selector=selector, timeout=timeout)
 
+    def _build_step_description(self, *args, **kwargs) -> str:
+        """构建等待元素隐藏的步骤描述"""
+        if len(args) >= 2:
+            selector = args[1]
+            return f"等待元素 {selector} 隐藏"
+        return "等待元素隐藏"
+
+
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_CLICKABLE)
 class WaitForElementClickableCommand(Command):
     """等待元素可点击命令"""
@@ -55,6 +75,7 @@ class WaitForElementClickableCommand(Command):
     ) -> None:
         timeout = int(step.get("timeout", DEFAULT_TIMEOUT))
         ui_helper.wait_for_element_clickable(selector=selector, timeout=timeout)
+
 
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_TEXT)
 class WaitForElementTextCommand(Command):
@@ -69,6 +90,7 @@ class WaitForElementTextCommand(Command):
             selector=selector, expected_text=expected_text, timeout=timeout
         )
 
+
 @CommandFactory.register(StepAction.WAIT_FOR_ELEMENT_COUNT)
 class WaitForElementCountCommand(Command):
     """等待元素数量命令"""
@@ -81,6 +103,7 @@ class WaitForElementCountCommand(Command):
         ui_helper.wait_for_element_count(
             selector=selector, expected_count=expected_count, timeout=timeout
         )
+
 
 @CommandFactory.register(StepAction.WAIT_FOR_NEW_WINDOW)
 class WaitForNewWindowCommand(Command):

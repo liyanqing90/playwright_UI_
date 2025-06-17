@@ -12,11 +12,11 @@ from .services.variable_service import VariableService
 from .services.wait_service import WaitService
 
 __all__ = [
-    'BasePage',
-    'ServiceContainer',
-    'ElementService',
-    'NavigationService',
-    'WaitService',
-    'AssertionService',
-    'VariableService',
+    "BasePage",
+    "ServiceContainer",
+    "ElementService",
+    "NavigationService",
+    "WaitService",
+    "AssertionService",
+    "VariableService",
 ]

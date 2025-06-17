@@ -122,7 +122,7 @@ def main(
         console.print(f"[red]错误: 项目 '{project}' 不存在[/red]")
         console.print(f"[yellow]可用项目: {', '.join(available_projects)}[/yellow]")
         sys.exit(1)
-    
+
     # 创建配置对象
     config = Config(
         marker=marker,
@@ -137,7 +137,7 @@ def main(
             else test_file
         ),
     )
-    
+
     # 如果提供了base_url参数，覆盖配置中的base_url
     if base_url:
         config.base_url = base_url

@@ -8,6 +8,8 @@ test_cases:
   - name: test_inquire_price
   - name: test_filter
   - name: test_car_detail_click
+    depends:
+      - test_store_info
   - name: test_car_detail_goto
   - name: test_car_detail_gift
   - name: test_detail_store_info

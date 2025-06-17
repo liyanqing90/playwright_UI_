@@ -28,6 +28,7 @@ class DownloadFileCommand(Command):
                 step["variable_name"], file_path, step.get("scope", "global")
             )
 
+
 @CommandFactory.register(StepAction.DOWNLOAD_VERIFY)
 class DownloadVerifyCommand(Command):
     """验证下载命令"""
@@ -42,6 +43,7 @@ class DownloadVerifyCommand(Command):
             ui_helper.store_variable(
                 step["variable_name"], str(result), step.get("scope", "global")
             )
+
 
 class StoreVariableCommand(Command):
     """存储变量命令，支持表达式计算"""
@@ -68,6 +70,7 @@ class StoreVariableCommand(Command):
         ui_helper.variable_manager.set_variable(var_name, var_value, scope)
         logger.debug(f"已存储变量 {var_name}={var_value} (scope={scope})")
 
+
 @CommandFactory.register(StepAction.STORE_TEXT)
 class StoreTextCommand(Command):
     """存储文本命令"""
@@ -82,6 +85,7 @@ class StoreTextCommand(Command):
         # 存储文本
         ui_helper.variable_manager.set_variable(var_name, text, scope)
         logger.debug(f"已存储元素文本 {var_name}={text} (scope={scope})")
+
 
 @CommandFactory.register(StepAction.STORE_ATTRIBUTE)
 class StoreAttributeCommand(Command):
@@ -100,6 +104,7 @@ class StoreAttributeCommand(Command):
         # 存储属性
         ui_helper.variable_manager.set_variable(var_name, attr_value, scope)
         logger.debug(f"已存储元素属性 {var_name}={attr_value} (scope={scope})")
+
 
 @CommandFactory.register(StepAction.SAVE_ELEMENT_COUNT)
 class SaveElementCountCommand(Command):

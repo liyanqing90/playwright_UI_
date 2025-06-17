@@ -43,6 +43,7 @@ def execute_condition(step_executor, step: Dict[str, Any]) -> None:
             for else_step in else_steps:
                 step_executor.execute_step(else_step)
 
+
 def execute_loop(step_executor, step: Dict[str, Any]) -> None:
     """
     执行循环
@@ -82,6 +83,7 @@ def execute_loop(step_executor, step: Dict[str, Any]) -> None:
 
             for do_step in do_steps:
                 step_executor.execute_step(do_step)
+
 
 def evaluate_expression(step_executor, expression: str) -> bool:
     """
@@ -143,6 +145,7 @@ def evaluate_expression(step_executor, expression: str) -> bool:
         logger.error(f"表达式计算错误: {expr_content} - {e}")
         return False
 
+
 def preprocess_expression(expr: str) -> str:
     """
     预处理表达式，处理字符串和数字
@@ -181,6 +184,7 @@ def preprocess_expression(expr: str) -> str:
                     return f"{left} {op} {right}"
 
     return process_operand(expr)
+
 
 def process_operand(operand: str) -> str:
     """

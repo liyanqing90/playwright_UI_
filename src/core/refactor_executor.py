@@ -14,132 +14,133 @@ from utils.logger import logger
 @dataclass
 class RefactorOperation:
     """重构操作"""
+
     operation_type: str  # move, remove, create, modify
     source_path: str
     target_path: Optional[str] = None
     description: str = ""
     backup_required: bool = True
 
+
 class RefactorExecutor:
     """重构执行器
-    
+
     负责执行具体的重构操作，包括文件移动、删除、修改等。
     """
-    
+
     def __init__(self, project_root: str = "/Users/mac/PycharmProjects/zhijia_ui"):
         self.project_root = Path(project_root)
         self.backup_dir = self.project_root / "backup" / "refactor_backup"
         self.operations_log = []
-    
+
     def execute_phase1_core_boundary_cleanup(self):
         """执行第一阶段：核心边界清理"""
         logger.info("开始执行第一阶段：核心边界清理")
-        
+
         operations = [
             # 清理核心服务中的非必需功能
             RefactorOperation(
                 operation_type="modify",
                 source_path="src/core/services/assertion_service.py",
-                description="移除高级断言功能，保留基础断言"
+                description="移除高级断言功能，保留基础断言",
             ),
-            
             # 确保核心服务实现标准接口
             RefactorOperation(
                 operation_type="modify",
                 source_path="src/core/services/element_service.py",
-                description="确保实现ServiceInterface"
+                description="确保实现ServiceInterface",
             ),
-            
             RefactorOperation(
                 operation_type="modify",
                 source_path="src/core/services/navigation_service.py",
-                description="确保实现ServiceInterface"
+                description="确保实现ServiceInterface",
             ),
-            
             RefactorOperation(
                 operation_type="modify",
                 source_path="src/core/services/wait_service.py",
-                description="确保实现ServiceInterface"
-            )
+                description="确保实现ServiceInterface",
+            ),
         ]
-        
+
         for operation in operations:
             self._execute_operation(operation)
-    
+
     def execute_phase2_eliminate_duplicates(self):
         """执行第二阶段：消除重复功能"""
         logger.info("开始执行第二阶段：消除重复功能")
-        
+
         # 断言功能重构
         self._refactor_assertion_duplicates()
-        
+
         # 性能监控重构
         self._refactor_performance_duplicates()
-    
+
     def _refactor_assertion_duplicates(self):
         """重构断言功能重复"""
         logger.info("重构断言功能重复")
-        
+
         # 定义核心断言功能（保留在核心服务中）
         core_assertions = [
-            'assert_element_visible',
-            'assert_element_not_visible',
-            'assert_text_equals',
-            'assert_text_contains',
-            'assert_url_equals',
-            'assert_url_contains',
-            'assert_attribute_equals',
-            'assert_element_enabled',
-            'assert_element_disabled'
+            "assert_element_visible",
+            "assert_element_not_visible",
+            "assert_text_equals",
+            "assert_text_contains",
+            "assert_url_equals",
+            "assert_url_contains",
+            "assert_attribute_equals",
+            "assert_element_enabled",
+            "assert_element_disabled",
         ]
-        
+
         # 定义高级断言功能（移动到插件中）
         advanced_assertions = [
-            'soft_assert',
-            'batch_assert',
-            'retry_assert',
-            'timeout_assert',
-            'json_schema_assert',
-            'custom_matcher_assert'
+            "soft_assert",
+            "batch_assert",
+            "retry_assert",
+            "timeout_assert",
+            "json_schema_assert",
+            "custom_matcher_assert",
         ]
-        
+
         # 创建核心断言服务的清理版本
         core_assertion_content = self._generate_core_assertion_service(core_assertions)
-        
+
         operation = RefactorOperation(
             operation_type="modify",
             source_path="src/core/services/assertion_service.py",
-            description="清理核心断言服务，只保留基础断言功能"
+            description="清理核心断言服务，只保留基础断言功能",
         )
-        
+
         self._execute_operation(operation, content=core_assertion_content)
-        
+
         # 更新插件断言功能，移除与核心重复的部分
-        plugin_assertion_content = self._generate_plugin_assertion_service(advanced_assertions)
-        
+        plugin_assertion_content = self._generate_plugin_assertion_service(
+            advanced_assertions
+        )
+
         operation = RefactorOperation(
             operation_type="modify",
             source_path="plugins/assertion_commands/plugin.py",
-            description="更新插件断言功能，专注于高级断言"
+            description="更新插件断言功能，专注于高级断言",
         )
-        
+
         self._execute_operation(operation, content=plugin_assertion_content)
-    
+
     def _refactor_performance_duplicates(self):
         """重构性能监控重复"""
         logger.info("重构性能监控重复")
-        
+
         # 核心服务只保留基础性能记录接口
         base_service_content = self._generate_base_service_performance()
-        
+
         operation = RefactorOperation(
             operation_type="modify",
             source_path="src/core/services/base_service.py",
-            description="简化基础服务性能记录，提供标准接口"
+            description="简化基础服务性能记录，提供标准接口",
         )
-        
+
         self._execute_operation(operation, content=base_service_content)
-    
+
     def _generate_core_assertion_service(self, core_assertions: List[str]) -> str:
         """生成核心断言服务内容"""
         return '''"""核心断言服务
@@ -456,7 +457,7 @@ class AssertionService(BaseService, AssertionOperations):
             logger.error(f"断言失败：检查元素状态失败 - {e}")
             raise AssertionError(f"检查元素 {selector} 禁用状态失败: {e}")
 '''
-    
+
     def _generate_plugin_assertion_service(self, advanced_assertions: List[str]) -> str:
         """生成插件断言服务内容（部分更新）"""
         return '''# 在现有plugin.py文件中添加以下注释和重构说明
@@ -483,7 +484,7 @@ class AssertionService(BaseService, AssertionOperations):
 
 # 专注于高级断言功能的实现
 '''
-    
+
     def _generate_base_service_performance(self) -> str:
         """生成基础服务性能记录内容（部分更新）"""
         return '''# 在base_service.py中简化性能记录功能
@@ -497,64 +498,66 @@ def _record_operation(self, operation_name: str, success: bool, duration: float 
     """
     if self.performance_manager:
         self.performance_manager.record_basic_operation(
-            operation_name=operation_name,
+            operation_type=operation_name,
             success=success,
             duration=duration
         )
 '''
-    
+
     def _execute_operation(self, operation: RefactorOperation, content: str = None):
         """执行重构操作"""
         try:
             # 创建备份
             if operation.backup_required:
                 self._create_backup(operation.source_path)
-            
+
             source_file = self.project_root / operation.source_path
-            
+
             if operation.operation_type == "modify" and content:
                 # 修改文件内容
-                with open(source_file, 'w', encoding='utf-8') as f:
+                with open(source_file, "w", encoding="utf-8") as f:
                     f.write(content)
                 logger.info(f"已修改文件: {operation.source_path}")
-            
+
             elif operation.operation_type == "move":
                 # 移动文件
                 target_file = self.project_root / operation.target_path
                 target_file.parent.mkdir(parents=True, exist_ok=True)
                 shutil.move(str(source_file), str(target_file))
-                logger.info(f"已移动文件: {operation.source_path} -> {operation.target_path}")
-            
+                logger.info(
+                    f"已移动文件: {operation.source_path} -> {operation.target_path}"
+                )
+
             elif operation.operation_type == "remove":
                 # 删除文件
                 if source_file.exists():
                     source_file.unlink()
                     logger.info(f"已删除文件: {operation.source_path}")
-            
+
             elif operation.operation_type == "create":
                 # 创建文件
                 source_file.parent.mkdir(parents=True, exist_ok=True)
                 if content:
-                    with open(source_file, 'w', encoding='utf-8') as f:
+                    with open(source_file, "w", encoding="utf-8") as f:
                         f.write(content)
                 logger.info(f"已创建文件: {operation.source_path}")
-            
+
             # 记录操作
-            self.operations_log.append({
-                'operation': operation,
-                'status': 'success',
-                'timestamp': logger.info.__name__  # 简化时间戳
-            })
-            
+            self.operations_log.append(
+                {
+                    "operation": operation,
+                    "status": "success",
+                    "timestamp": logger.info.__name__,  # 简化时间戳
+                }
+            )
+
         except Exception as e:
             logger.error(f"执行重构操作失败: {operation.description} - {e}")
-            self.operations_log.append({
-                'operation': operation,
-                'status': 'failed',
-                'error': str(e)
-            })
+            self.operations_log.append(
+                {"operation": operation, "status": "failed", "error": str(e)}
+            )
             raise
-    
+
     def _create_backup(self, file_path: str):
         """创建文件备份"""
         source_file = self.project_root / file_path
@@ -563,43 +566,48 @@ def _record_operation(self, operation_name: str, success: bool, duration: float 
             backup_file.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(str(source_file), str(backup_file))
             logger.info(f"已创建备份: {backup_file}")
-    
+
     def execute_full_refactor(self):
         """执行完整重构"""
         logger.info("开始执行完整重构计划")
-        
+
         try:
             # 创建备份目录
             self.backup_dir.mkdir(parents=True, exist_ok=True)
-            
+
             # 执行各阶段重构
             self.execute_phase1_core_boundary_cleanup()
             self.execute_phase2_eliminate_duplicates()
-            
+
             logger.info("重构执行完成")
             self._print_operations_summary()
-            
+
         except Exception as e:
             logger.error(f"重构执行失败: {e}")
             self._print_operations_summary()
             raise
-    
+
     def _print_operations_summary(self):
         """打印操作摘要"""
         logger.info("=== 重构操作摘要 ===")
-        
-        success_count = sum(1 for op in self.operations_log if op['status'] == 'success')
-        failed_count = sum(1 for op in self.operations_log if op['status'] == 'failed')
-        
+
+        success_count = sum(
+            1 for op in self.operations_log if op["status"] == "success"
+        )
+        failed_count = sum(1 for op in self.operations_log if op["status"] == "failed")
+
         logger.info(f"总操作数: {len(self.operations_log)}")
         logger.info(f"成功: {success_count}")
         logger.info(f"失败: {failed_count}")
-        
+
         if failed_count > 0:
             logger.info("失败操作:")
             for op in self.operations_log:
-                if op['status'] == 'failed':
-                    logger.error(f"  - {op['operation'].description}: {op.get('error', '未知错误')}")
+                if op["status"] == "failed":
+                    logger.error(
+                        f"  - {op['operation'].description}: {op.get('error', '未知错误')}"
+                    )
+
 
 if __name__ == "__main__":
     executor = RefactorExecutor()

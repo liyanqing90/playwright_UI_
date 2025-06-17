@@ -3,11 +3,12 @@ from typing import Dict, Any
 from src.utils import singleton
 from utils.config import BaseInfo
 from utils.logger import logger
-from utils.variable_manager import VariableManager
+from src.core.services.variable_service import VariableService
 from utils.yaml_handler import YamlHandler
 
 yaml_handler = YamlHandler()
 base_info = BaseInfo()
+
 
 @singleton
 class LoadData:
@@ -59,7 +60,9 @@ class LoadData:
     def return_modules(self):
         return self.yaml.merge_yaml_files(self.test_data_dir + "/modules")
 
+
 load_data = LoadData()
+
 
 @singleton
 def run_test_data():
@@ -67,16 +70,19 @@ def run_test_data():
     set_global_variables()
     return test_data
 
+
 def set_global_variables():
     logger.info("当前测试环境: " + base_info.env)
-    variable_manager = VariableManager()
+    variable_manager = VariableService()
     if variables := load_data.return_vars():
         for var_name, var_value in variables.items():
             variable_manager.set_variable(var_name, var_value, "temp")
 
+
 def load_test_cases(file_path):
     test_cases = yaml_handler.load_yaml(file_path).get("test_cases", [])
     return test_cases
+
 
 @singleton
 def load_moules():

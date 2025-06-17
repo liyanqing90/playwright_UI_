@@ -5,4 +5,4 @@
 
 from .plugin import FileOperationsPlugin
 
-__all__ = ['FileOperationsPlugin']
+__all__ = ["FileOperationsPlugin"]
