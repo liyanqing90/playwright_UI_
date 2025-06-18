@@ -105,7 +105,7 @@ class BaseService(ConfigurableService, ABC):
         log_msg = f"{self._service_name}.{operation}"
         if details:
             log_msg += f": {details}"
-        logger.debug(log_msg)
+        # logger.debug(log_msg)
 
     def _get_locator(
         self, page: Page, selector: str, timeout: Optional[int] = DEFAULT_TIMEOUT

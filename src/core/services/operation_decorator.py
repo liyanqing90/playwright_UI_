@@ -76,7 +76,7 @@ def operation_decorator(
                         duration = time.time() - start_time
                         self._record_operation(func.__name__, duration, True)
 
-                    logger.debug(f"操作成功: {operation_description}")
+                    # logger.debug(f"操作成功: {operation_description}")
                     return result
 
             except Exception as e:
@@ -126,7 +126,6 @@ def _extract_operation_params(func_name: str, args: tuple, kwargs: dict) -> str:
     params = []
 
     # 提取selector参数
-    logger.debug(f"参数 args: {args}, kwargs: {kwargs}")
     if selector := kwargs.get("selector"):
         params.append(f"元素: {selector}")
 

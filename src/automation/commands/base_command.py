@@ -140,7 +140,7 @@ class CommandRegistry:
                     try:
                         # 动态导入模块，触发装饰器注册
                         importlib.import_module(full_module_name)
-                        logger.debug(f"Auto-discovered module: {full_module_name}")
+                        # logger.debug(f"Auto-discovered module: {full_module_name}")
                     except Exception as e:
                         logger.warning(
                             f"Failed to import module {full_module_name}: {e}"
@@ -265,9 +265,9 @@ class CommandRegistry:
             命令实例或None
         """
         action_key = action.lower()
-        logger.debug(
-            f"查找命令: {action_key}, 已注册命令: {list(cls._commands.keys())}"
-        )
+        # logger.debug(
+        #     f"查找命令: {action_key}, 已注册命令: {list(cls._commands.keys())}"
+        # )
 
         command_class = cls._commands.get(action_key)
         if command_class:
@@ -277,7 +277,7 @@ class CommandRegistry:
                 if not instance.is_enabled():
                     logger.warning(f"Command {action} is disabled")
                     return None
-                logger.debug(f"成功创建命令实例: {action}")
+                # logger.debug(f"成功创建命令实例: {action}")
                 return instance
             except Exception as e:
                 logger.error(f"Failed to instantiate command {action}: {e}")

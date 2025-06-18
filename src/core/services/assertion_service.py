@@ -499,7 +499,6 @@ class AssertionService(BaseService, AssertionOperations):
         except Exception as e:
             raise AssertionError(f"元素不包含指定文本: {selector}, 期望包含: '{text}'")
 
-    # assert_text_equals 方法已删除，使用 assert_text 方法替代
 
     @soft_assert("断言URL包含指定部分")
     def assert_url_contains(self, page: Page, url_part: str):

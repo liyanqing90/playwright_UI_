@@ -84,7 +84,7 @@ class StoreTextCommand(Command):
         text = ui_helper.get_text(selector=selector)
         # 存储文本
         ui_helper.variable_manager.set_variable(var_name, text, scope)
-        logger.debug(f"已存储元素文本 {var_name}={text} (scope={scope})")
+        # logger.debug(f"已存储元素文本 {var_name}={text} (scope={scope})")
 
 
 @CommandFactory.register(StepAction.STORE_ATTRIBUTE)

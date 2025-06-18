@@ -62,8 +62,8 @@ elements:
   confirm_3_text: "text=确认选择 (3)"
   toast_text: "div.van-toast__text"
   brand-num: //span[@class="checked-brand-num"]
-  car_name: //div[@class="series-card__name"]/span[1]
-  level: //span[@class="van-popover__wrapper"]//div[@class="filter-button__container"]
+  car_name: (//div[@class="series-card__name"])[1]
+  level: //span[@class='van-popover__wrapper']//div[@class='filter-button']
   level_轿车: //li[contains(text(),'轿车')]
   level_纯电动: //li[contains(text(),'纯电动')]
   level_btn:  //div[@class="btn"]

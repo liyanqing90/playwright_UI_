@@ -59,14 +59,14 @@ test_data:
       - action: store_text
         selector: worktime_text
         variable_name: worktime_text
-      - action: store_text
-        selector: car_name
-        variable_name: store_car_name
   test_car_detail_click:
     description: "点击进入车系详情"
     steps:
       - action: goto
         value: "/ahoh-marketing/carStore?rimCityId=110100&storeCode=4682"
+      - action: store_text
+        selector: car_name
+        variable_name: store_car_name
       - action: click
         selector: car_name
       - action: assert_text
@@ -328,13 +328,6 @@ test_data:
       - action: click
         selector: detail_car_1_car
 
-
-
-
-
-
-
-
   test_detail_car_trade_quotation:
     description: "以旧换新"
     steps:
@@ -444,7 +437,6 @@ test_data:
       - action: navigate
         value: /ahoh-marketing/specDetail?seriesId=82&rimCityId=110100&cityId=110100&pvareaid=6861434&storeCode=4682
       - action: wait
-        value: 2
       - action: click
         selector: detail_floor_price
       - action: assert_text
@@ -611,6 +603,7 @@ test_data:
     steps:
       - action: goto
         value: /ahoh-marketing/carStore?rimCityId=110100&storeCode=4682
+      - action: wait
       - action: click
         selector: level
       - action: click
@@ -626,6 +619,7 @@ test_data:
     steps:
       - action: goto
         value: /ahoh-marketing/carStore?rimCityId=110100&storeCode=4682
+      - action: wait
       - action: click
         selector: level
       - action: click

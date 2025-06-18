@@ -66,8 +66,7 @@ class NavigationService(BaseService):
             timeout: 超时时间（毫秒）
         """
         # 增加超时时间并使用更宽松的等待策略
-        page.goto(url)
-        page.wait_for_load_state()
+        page.goto(url, wait_until="domcontentloaded")
 
     @operation_decorator(operation_type="页面后退", auto_screenshot=False)
     def go_back(self, page: Page, timeout: Optional[int] = DEFAULT_TIMEOUT) -> None:
