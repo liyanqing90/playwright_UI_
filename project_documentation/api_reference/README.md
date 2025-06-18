@@ -1423,6 +1423,7 @@ class JiraIntegration(BaseIntegration):
 12. ✅ **扩展指南**: 框架扩展方法
 
 通过本文档，开发者可以：
+
 - 理解框架的API设计
 - 扩展框架功能
 - 集成到其他系统

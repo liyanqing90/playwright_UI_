@@ -5,13 +5,10 @@
 import functools
 import gc
 import time
-from typing import Callable
 
 import allure
-from pytest_check import check
 
 from utils.logger import logger
-from .error_deduplication import error_dedup_manager
 
 
 class PerformanceMonitor:

@@ -66,7 +66,7 @@ network_operations:
       body:
         success: true
         message: "操作成功"
-        data: {}
+        data: { }
     
     error_response:
       status_code: 500
@@ -96,8 +96,8 @@ network_operations:
   # 安全配置
   security:
     validate_ssl: true         # 验证SSL证书
-    allowed_domains: []        # 允许的域名列表（空表示允许所有）
-    blocked_domains: []        # 阻止的域名列表
+    allowed_domains: [ ]        # 允许的域名列表（空表示允许所有）
+    blocked_domains: [ ]        # 阻止的域名列表
     max_redirects: 5           # 最大重定向次数
   
   # 调试配置

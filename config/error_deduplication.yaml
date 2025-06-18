@@ -96,11 +96,11 @@ advanced:
     - pattern: ".*timeout.*exceeded.*"
       category: "timeout"
       max_count: 2
-    
+
     - pattern: ".*element.*not.*found.*"
       category: "element_not_found"
       max_count: 3
-    
+
     - pattern: ".*assertion.*failed.*"
       category: "assertion"
       max_count: 5

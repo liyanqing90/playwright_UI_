@@ -908,7 +908,7 @@ class SendBatchNotificationCommand(Command):
         for i, notification in enumerate(notifications):
             message = NotificationMessage(
                 id=f"batch_{int(time.time() * 1000)}_{i}",
-                title=notification.get("title", f"批量通知 {i+1}"),
+                title=notification.get("title", f"批量通知 {i + 1}"),
                 content=notification.get("content", ""),
                 type=NotificationType(notification.get("type", "text")),
                 priority=NotificationPriority(notification.get("priority", "normal")),

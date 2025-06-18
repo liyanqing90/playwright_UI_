@@ -199,31 +199,31 @@ class MyConfigurablePlugin(ConfigurablePlugin):
 ```python
 class MyServiceDependentPlugin(PluginInterface):
     """依赖服务的插件"""
-    
+
     def initialize(self, container: ServiceContainer) -> None:
         """初始化并获取依赖服务"""
         super().initialize(container)
-        
+
         # 获取核心服务
         self.element_service = container.resolve('ElementService')
         self.navigation_service = container.resolve('NavigationService')
         self.assertion_service = container.resolve('AssertionService')
         self.config_loader = container.resolve('ConfigLoader')
-        
+
         # 获取可选服务
         try:
             self.performance_monitor = container.resolve('PerformanceMonitor')
         except Exception:
             self.performance_monitor = None
-    
+
     def execute_with_services(self, **kwargs):
         """使用服务执行操作"""
         # 使用元素服务
         element = self.element_service.find_element("#my-button")
-        
+
         # 使用导航服务
         self.navigation_service.navigate_to("https://example.com")
-        
+
         # 使用断言服务
         self.assertion_service.assert_element_visible(element)
 ```
@@ -888,24 +888,24 @@ class MyMonitoredPlugin(PluginInterface):
 ### 常见问题
 
 1. **插件加载失败**
-   - 检查插件目录结构
-   - 验证配置文件格式
-   - 查看依赖是否满足
+    - 检查插件目录结构
+    - 验证配置文件格式
+    - 查看依赖是否满足
 
 2. **服务依赖问题**
-   - 确认服务已注册
-   - 检查服务名称拼写
-   - 验证服务初始化顺序
+    - 确认服务已注册
+    - 检查服务名称拼写
+    - 验证服务初始化顺序
 
 3. **配置问题**
-   - 验证配置文件语法
-   - 检查配置参数类型
-   - 确认配置文件路径
+    - 验证配置文件语法
+    - 检查配置参数类型
+    - 确认配置文件路径
 
 4. **性能问题**
-   - 使用性能监控工具
-   - 检查缓存策略
-   - 优化算法复杂度
+    - 使用性能监控工具
+    - 检查缓存策略
+    - 优化算法复杂度
 
 ### 调试技巧
 

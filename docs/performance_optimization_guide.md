@@ -13,6 +13,7 @@
 ### 2. 性能监控
 
 #### 实时性能统计
+
 - **操作计时**: 自动记录每个操作的执行时间
 - **慢操作检测**: 自动识别和报告慢操作
 - **缓存效率**: 监控缓存命中率和效果
@@ -210,6 +211,7 @@ class PerformanceBenchmark:
 **症状**: 缓存命中率为0或很低
 
 **解决方案**:
+
 ```python
 # 检查缓存是否启用
 if not performance_manager.is_cache_enabled():
@@ -226,6 +228,7 @@ selector = "input[name='username']"  # 一致的选择器
 **症状**: 启用优化后性能变差
 
 **解决方案**:
+
 ```python
 # 检查缓存大小是否过大
 # 元素缓存相关配置已移除
@@ -243,6 +246,7 @@ base_page.clear_element_cache()
 **症状**: 测试运行时内存持续增长
 
 **解决方案**:
+
 ```python
 # 定期清理缓存
 if performance_manager.get_performance_stats()['total_operations'] % 1000 == 0:

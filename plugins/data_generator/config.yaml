@@ -10,7 +10,7 @@ settings:
   locale: zh_CN
   seed: null  # 随机种子，用于可重复的数据生成
   default_length: 10
-  
+
 # Faker配置
 faker:
   locales:
@@ -87,13 +87,13 @@ commands:
       - "generate_data"
       - "生成数据"
     description: "生成指定类型的测试数据"
-    
+
   generate_batch_data:
     action_types:
       - "generate_batch_data"
       - "批量生成数据"
     description: "批量生成指定类型的测试数据"
-    
+
   register_data_template:
     action_types:
       - "register_data_template"

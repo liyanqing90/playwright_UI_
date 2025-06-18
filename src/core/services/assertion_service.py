@@ -7,24 +7,23 @@
 包含统一的断言装饰器，类似于其他service的操作装饰器。
 """
 
-import time
 import functools
-from typing import Any, List, Optional, Protocol, Tuple
-import json
+import time
+from typing import Any, Optional, Protocol, Tuple
+
 import allure
 import pytest_check as check
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 from config.constants import DEFAULT_TIMEOUT
+from src.assertion_manager import assertion_manager
 from src.core.services.base_service import BaseService
 from utils.logger import logger
-from src.assertion_manager import assertion_manager
 from .operation_decorator import operation_decorator  # 导入通用操作装饰器
 
 
 def _parse_error_message(
     error_str: str,
-    operation_description: str,
     expected: Any = None,
     selector: str = None,
     actual_value: Any = None,
@@ -33,7 +32,6 @@ def _parse_error_message(
 
     Args:
         error_str: 原始错误消息
-        operation_description: 操作描述
         expected: 期望值
         selector: 元素选择器
         actual_value: 实际值
@@ -162,14 +160,34 @@ def assertion_decorator(assertion_type: str = "soft", description: str = "断言
                         if selector:
                             try:
                                 # 尝试获取元素的实际文本值
-                                actual_element = page.locator(selector).first
-                                if actual_element.is_visible():
-                                    actual_value = actual_element.text_content()
-                                    logger.debug(
-                                        f"从元素获取到的实际值: {actual_value}"
+                                error_str = str(e)
+                                logger.debug(f"原始断言错误: {error_str}")
+                                # 尝试提取 Locator expected 和 Actual value 部分
+                                import re
+
+                                # 多种正则表达式模式来匹配不同格式的错误消息
+                                patterns = [
+                                    r"实际结果:\s*'([^']*)'",  # 匹配单引号包围的实际值
+                                    r"实际结果:\s*([^\n,]*)",  # 匹配到换行或逗号为止的实际值
+                                    r"实际\s*'([^']*)'",  # 匹配 "实际 'value'" 格式
+                                    r"actual\s*'([^']*)'",  # 匹配英文格式
+                                    r"received\s*'([^']*)'",  # 匹配 received 格式
+                                ]
+
+                                for pattern in patterns:
+                                    actual_match = re.search(
+                                        pattern, error_str, re.IGNORECASE
                                     )
+                                    if actual_match:
+                                        actual_value = actual_match.group(1)
+                                        logger.debug(
+                                            f"通过模式 '{pattern}' 匹配到实际值: {actual_value}"
+                                        )
+                                        break
+
                             except Exception as text_error:
                                 logger.debug(f"获取元素实际值失败: {text_error}")
+                                actual_value = "获取失败"
 
                             # 硬断言会抛出异常，这里先捕获，后面再选择是否抛出
 
@@ -177,7 +195,6 @@ def assertion_decorator(assertion_type: str = "soft", description: str = "断言
                         simplified_error, extracted_expected, extracted_actual = (
                             _parse_error_message(
                                 error_str,
-                                operation_description,
                                 expected,
                                 selector,
                                 actual_value,
@@ -257,8 +274,9 @@ class AssertionServiceExample:
     @assertion_decorator("soft", "验证元素文本")
     def assert_text_contains(self, page: Page, selector: str, expected: str):
         """断言元素包含指定文本"""
-        actual = page.locator(selector).text_content()
-        assert expected in actual, f"期望文本 '{expected}' 不在实际文本 '{actual}' 中"
+        assert expected in (
+            actual := page.locator(selector).text_content()
+        ), f"期望文本 '{expected}' 不在实际文本 '{actual}' 中"
 
     # 辅助操作使用 operation_decorator
     @operation_decorator(
@@ -446,7 +464,13 @@ class AssertionService(BaseService, AssertionOperations):
         start_time = time.time()
 
         try:
-            expect(page.locator(selector).first).to_be_visible(timeout=timeout)
+            # 等待元素出现
+            page.locator(selector).first.wait_for(state="visible", timeout=timeout)
+            assert page.locator(
+                selector
+            ).first.is_visible(), (
+                f"元素可见性断言失败: 期望结果: '可见', 实际结果: '不可见' ({selector})"
+            )
 
             if hasattr(self, "_record_operation"):
                 duration = time.time() - start_time
@@ -486,19 +510,18 @@ class AssertionService(BaseService, AssertionOperations):
     @soft_assert("断言元素隐藏")
     def assert_element_hidden(self, page: Page, selector: str):
         """断言元素隐藏"""
-        try:
-            expect(page.locator(selector).first).to_be_hidden()
-        except Exception as e:
-            raise AssertionError(f"元素可见但期望隐藏: {selector}")
+        assert not page.locator(
+            selector
+        ).first.is_visible(), (
+            f"元素隐藏性断言失败: 期望结果: '隐藏', 实际结果: '可见' ({selector})"
+        )
 
     @soft_assert("断言元素包含指定文本")
     def assert_text_contains(self, page: Page, selector: str, text: str):
         """断言元素包含指定文本"""
-        try:
-            expect(page.locator(selector).first).to_contain_text(text)
-        except Exception as e:
-            raise AssertionError(f"元素不包含指定文本: {selector}, 期望包含: '{text}'")
-
+        assert text in (
+            actual := page.locator(selector).first.inner_text()
+        ), f"文本包含断言失败: 期望包含 '{text}', 实际 '{actual}' ({selector})"
 
     @soft_assert("断言URL包含指定部分")
     def assert_url_contains(self, page: Page, url_part: str):
@@ -528,10 +551,9 @@ class AssertionService(BaseService, AssertionOperations):
     @soft_assert("断言页面标题")
     def assert_title(self, page: Page, title: str):
         """断言页面标题"""
-        try:
-            expect(page).to_have_title(title)
-        except Exception as e:
-            raise AssertionError(f"页面标题不等于期望值: 期望 '{title}'")
+        assert (
+            actual := page.title()
+        ) == title, f"页面标题断言失败: 期望结果: '{title}', 实际结果: '{actual}'"
 
     @hard_assert("断言页面标题")
     def assert_title_hard(self, page: Page, title: str):
@@ -543,28 +565,25 @@ class AssertionService(BaseService, AssertionOperations):
         self, page: Page, selector: str, attribute: str, expected: str
     ):
         """断言元素属性等于指定值"""
-        try:
-            expect(page.locator(selector).first).to_have_attribute(attribute, expected)
-        except Exception as e:
-            raise AssertionError(
-                f"元素属性不等于期望值: {selector}, 属性: {attribute}, 期望: '{expected}'"
-            )
+        assert (
+            actual := page.locator(selector).first.get_attribute(attribute)
+        ) == expected, f"元素属性断言失败: {selector}, 属性: {attribute}, 期望结果: '{expected}', 实际结果: '{actual}'"
 
     @soft_assert("断言元素数量等于指定值")
     def assert_element_count(self, page: Page, selector: str, count: int):
         """断言元素数量等于指定值"""
-        try:
-            expect(page.locator(selector)).to_have_count(count)
-        except Exception as e:
-            raise AssertionError(f"元素数量不等于期望值: {selector}, 期望: {count}")
+        assert (
+            actual := page.locator(selector).count()
+        ) == count, (
+            f"元素数量断言失败: {selector}, 期望结果: {count}, 实际结果: {actual}"
+        )
 
     @soft_assert("断言页面URL等于指定值")
     def assert_url(self, page: Page, url: str):
         """断言页面URL等于指定值"""
-        try:
-            expect(page).to_have_url(url)
-        except Exception as e:
-            raise AssertionError(f"页面URL不等于期望值: 期望 '{url}'")
+        assert (
+            actual := page.url
+        ) == url, f"页面URL断言失败: 期望结果: '{url}', 实际结果: '{actual}'"
 
     @hard_assert("断言页面URL等于指定值")
     def assert_url_hard(self, page: Page, url: str):
@@ -574,18 +593,18 @@ class AssertionService(BaseService, AssertionOperations):
     @soft_assert("断言元素值等于指定值")
     def assert_value(self, page: Page, selector: str, expected: str):
         """断言元素值等于指定值"""
-        try:
-            expect(page.locator(selector).first).to_have_value(expected)
-        except Exception as e:
-            raise AssertionError(f"元素值不等于期望值: {selector}, 期望: '{expected}'")
+        assert (
+            actual := page.locator(selector).first.input_value()
+        ) == expected, (
+            f"元素值断言失败: {selector}, 期望结果: '{expected}', 实际结果: '{actual}'"
+        )
 
     @soft_assert("断言元素存在")
     def assert_exists(self, page: Page, selector: str):
         """断言元素存在"""
-        try:
-            expect(page.locator(selector)).to_have_count(1)
-        except Exception as e:
-            raise AssertionError(f"元素不存在: {selector}")
+        assert (
+            actual := page.locator(selector).count()
+        ) >= 1, f"元素存在断言失败: {selector}, 期望结果: '存在', 实际结果: '不存在' (数量: {actual})"
 
     @hard_assert("断言元素存在")
     def assert_exists_hard(self, page: Page, selector: str):
@@ -595,60 +614,63 @@ class AssertionService(BaseService, AssertionOperations):
     @soft_assert("断言元素不存在")
     def assert_not_exists(self, page: Page, selector: str):
         """断言元素不存在"""
-        try:
-            expect(page.locator(selector)).to_have_count(0)
-        except Exception as e:
-            raise AssertionError(f"元素存在但期望不存在: {selector}")
+        assert (
+            actual := page.locator(selector).count()
+        ) == 0, f"元素不存在断言失败: {selector}, 期望结果: '不存在', 实际结果: '存在' (数量: {actual})"
 
     @soft_assert("断言元素启用")
     def assert_element_enabled(self, page: Page, selector: str):
         """断言元素启用"""
-        try:
-            expect(page.locator(selector).first).to_be_enabled()
-        except Exception as e:
-            raise AssertionError(f"元素未启用: {selector}")
+        assert page.locator(
+            selector
+        ).first.is_enabled(), (
+            f"元素启用断言失败: {selector}, 期望结果: '启用', 实际结果: '禁用'"
+        )
 
     @soft_assert("断言元素禁用")
     def assert_element_disabled(self, page: Page, selector: str):
         """断言元素禁用"""
-        try:
-            expect(page.locator(selector).first).to_be_disabled()
-        except Exception as e:
-            raise AssertionError(f"元素已启用但期望禁用: {selector}")
+        assert not page.locator(
+            selector
+        ).first.is_enabled(), (
+            f"元素禁用断言失败: {selector}, 期望结果: '禁用', 实际结果: '启用'"
+        )
 
     @soft_assert("断言元素多个值")
     def assert_values(self, page: Page, selector: str, expected: list):
         """断言元素多个值"""
-        try:
-            expect(page.locator(selector)).to_have_values(expected)
-        except Exception as e:
-            raise AssertionError(f"元素值不匹配: {selector}, 期望: {expected}")
+        assert (
+            actual := [
+                page.locator(selector).nth(i).input_value()
+                for i in range(page.locator(selector).count())
+            ]
+        ) == expected, (
+            f"元素多个值断言失败: {selector}, 期望结果: {expected}, 实际结果: {actual}"
+        )
 
     @soft_assert("断言元素文本")
     def assert_text(self, page: Page, selector: str, expected: str):
         """断言元素文本（软断言）"""
 
-        try:
-            expect(page.locator(selector).first).to_have_text(expected)
-        except Exception as e:
-            raise AssertionError(f"文本断言失败: 期望 '{expected}', 元素 {selector}")
+        assert (
+            actual := page.locator(selector).first.inner_text()
+        ) == expected, f"文本断言失败: 期望结果: '{expected}', 实际结果: '{actual}'"
 
     @hard_assert("断言元素文本")
     def assert_text_hard(self, page: Page, selector: str, expected: str):
         """断言元素文本（硬断言，失败时终止执行）"""
-        try:
-            expect(page.locator(selector).first).to_have_text(expected)
-        except Exception as e:
-            raise AssertionError(f"文本断言失败: 期望 '{expected}', 元素 {selector}")
+        assert (
+            actual := page.locator(selector).first.inner_text()
+        ) == expected, f"文本断言失败: 期望 '{expected}', 实际 '{actual}'"
 
     @soft_assert("断言元素可见")
     def assert_visible(self, page: Page, selector: str):
         """断言元素可见"""
-
-        try:
-            expect(page.locator(selector).first).to_be_visible()
-        except Exception as e:
-            raise AssertionError(f"元素可见性断言失败: 元素 {selector} 不可见")
+        assert page.locator(
+            selector
+        ).first.is_visible(), (
+            f"元素可见性断言失败: {selector}, 期望结果: '可见', 实际结果: '不可见'"
+        )
 
     @hard_assert("断言元素可见")
     def assert_visible_hard(self, page: Page, selector: str):

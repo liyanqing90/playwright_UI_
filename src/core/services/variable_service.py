@@ -7,9 +7,9 @@ import re
 import time
 from typing import Protocol, Dict, Any
 
+from src.utils import singleton
 from utils.logger import logger
 from .base_service import BaseService
-from src.utils import singleton
 
 
 class VariableOperations(Protocol):

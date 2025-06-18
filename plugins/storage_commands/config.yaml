@@ -7,10 +7,10 @@ plugin:
   description: "提供全面的数据存储和状态管理功能"
   author: "Automation Team"
   category: "storage"
-  tags: ["storage", "variables", "cache", "persistence", "state"]
+  tags: [ "storage", "variables", "cache", "persistence", "state" ]
   priority: 5
-  dependencies: []
-  
+  dependencies: [ ]
+
 # 通用设置
 general:
   # 日志设置
@@ -107,7 +107,7 @@ cache:
   # 预加载策略
   preload:
     enabled: false
-    keys: []
+    keys: [ ]
     warmup_on_start: false
   
   # 压缩设置
@@ -224,8 +224,8 @@ security:
   access_control:
     enabled: false
     require_authentication: false
-    allowed_users: []
-    allowed_roles: []
+    allowed_users: [ ]
+    allowed_roles: [ ]
   
   # 数据加密
   encryption:
@@ -248,7 +248,7 @@ security:
     validate_size: true
     max_key_length: 255
     max_value_size: "10MB"
-    forbidden_keys: ["password", "secret", "token"]
+    forbidden_keys: [ "password", "secret", "token" ]
 
 # 性能配置
 performance:
@@ -329,7 +329,7 @@ monitoring:
 commands:
   # 基础存储命令
   store_variable:
-    aliases: ["set_var", "store_var"]
+    aliases: [ "set_var", "store_var" ]
     description: "存储变量到指定作用域"
     parameters:
       name: "变量名称"
@@ -343,7 +343,7 @@ commands:
       - "store_variable: {name: 'result', expression: '${var1} + ${var2}'}"
   
   store_text:
-    aliases: ["save_text"]
+    aliases: [ "save_text" ]
     description: "存储元素文本内容"
     parameters:
       variable_name: "变量名称"
@@ -353,7 +353,7 @@ commands:
       - "store_text: {variable_name: 'page_title', scope: 'test'}"
   
   store_attribute:
-    aliases: ["save_attr"]
+    aliases: [ "save_attr" ]
     description: "存储元素属性值"
     parameters:
       variable_name: "变量名称"
@@ -364,7 +364,7 @@ commands:
       - "store_attribute: {variable_name: 'link_url', attribute: 'href'}"
   
   save_element_count:
-    aliases: ["count_elements"]
+    aliases: [ "count_elements" ]
     description: "保存元素数量"
     parameters:
       variable_name: "变量名称"
@@ -375,7 +375,7 @@ commands:
   
   # 扩展存储命令
   store_json:
-    aliases: ["save_json"]
+    aliases: [ "save_json" ]
     description: "存储JSON数据"
     parameters:
       variable_name: "变量名称"
@@ -386,7 +386,7 @@ commands:
       - "store_json: {variable_name: 'config', json_data: {'key': 'value'}}"
   
   store_list:
-    aliases: ["save_list"]
+    aliases: [ "save_list" ]
     description: "存储列表数据"
     parameters:
       variable_name: "变量名称"
@@ -397,7 +397,7 @@ commands:
       - "store_list: {variable_name: 'items', list_data: ['a', 'b', 'c']}"
   
   store_expression:
-    aliases: ["calc_store"]
+    aliases: [ "calc_store" ]
     description: "计算表达式并存储结果"
     parameters:
       variable_name: "变量名称"
@@ -408,7 +408,7 @@ commands:
       - "store_expression: {variable_name: 'total', expression: '${price} * ${quantity}'}"
   
   get_variable:
-    aliases: ["retrieve_var", "fetch_var"]
+    aliases: [ "retrieve_var", "fetch_var" ]
     description: "获取变量值"
     parameters:
       variable_name: "变量名称"
@@ -419,7 +419,7 @@ commands:
       - "get_variable: {variable_name: 'user_id', target_variable: 'current_user'}"
   
   delete_variable:
-    aliases: ["remove_var", "del_var"]
+    aliases: [ "remove_var", "del_var" ]
     description: "删除变量"
     parameters:
       variable_name: "变量名称"
@@ -428,7 +428,7 @@ commands:
       - "delete_variable: {variable_name: 'temp_data', scope: 'step'}"
   
   list_variables:
-    aliases: ["show_vars", "list_vars"]
+    aliases: [ "show_vars", "list_vars" ]
     description: "列出变量"
     parameters:
       scope: "作用域（可选，为空则列出所有）"
@@ -437,7 +437,7 @@ commands:
       - "list_variables: {scope: 'session', target_variable: 'session_vars'}"
   
   clear_scope:
-    aliases: ["clear_vars"]
+    aliases: [ "clear_vars" ]
     description: "清空作用域中的所有变量"
     parameters:
       scope: "作用域名称"
@@ -446,7 +446,7 @@ commands:
   
   # 缓存命令
   set_cache:
-    aliases: ["cache_set"]
+    aliases: [ "cache_set" ]
     description: "设置缓存"
     parameters:
       key: "缓存键"
@@ -456,7 +456,7 @@ commands:
       - "set_cache: {key: 'api_response', value: '${response}', ttl: 300}"
   
   get_cache:
-    aliases: ["cache_get"]
+    aliases: [ "cache_get" ]
     description: "获取缓存"
     parameters:
       key: "缓存键"
@@ -466,7 +466,7 @@ commands:
       - "get_cache: {key: 'api_response', target_variable: 'cached_data'}"
   
   delete_cache:
-    aliases: ["cache_del"]
+    aliases: [ "cache_del" ]
     description: "删除缓存"
     parameters:
       key: "缓存键"
@@ -474,14 +474,14 @@ commands:
       - "delete_cache: {key: 'old_data'}"
   
   clear_cache:
-    aliases: ["cache_clear"]
+    aliases: [ "cache_clear" ]
     description: "清空所有缓存"
-    parameters: {}
+    parameters: { }
     examples:
       - "clear_cache: {}"
   
   cache_stats:
-    aliases: ["cache_info"]
+    aliases: [ "cache_info" ]
     description: "获取缓存统计信息"
     parameters:
       target_variable: "目标变量名（可选）"
@@ -490,7 +490,7 @@ commands:
   
   # 持久化命令
   save_persistent:
-    aliases: ["persist_save"]
+    aliases: [ "persist_save" ]
     description: "保存持久化数据"
     parameters:
       key: "数据键"
@@ -503,7 +503,7 @@ commands:
       - "save_persistent: {key: 'user_settings', value: '${settings}', format: 'json'}"
   
   load_persistent:
-    aliases: ["persist_load"]
+    aliases: [ "persist_load" ]
     description: "加载持久化数据"
     parameters:
       key: "数据键"
@@ -514,7 +514,7 @@ commands:
       - "load_persistent: {key: 'user_settings', target_variable: 'settings'}"
   
   delete_persistent:
-    aliases: ["persist_del"]
+    aliases: [ "persist_del" ]
     description: "删除持久化数据"
     parameters:
       key: "数据键"
@@ -523,7 +523,7 @@ commands:
       - "delete_persistent: {key: 'temp_config'}"
   
   export_data:
-    aliases: ["data_export"]
+    aliases: [ "data_export" ]
     description: "导出数据到文件"
     parameters:
       file_path: "文件路径"
@@ -532,7 +532,7 @@ commands:
       - "export_data: {file_path: 'backup/data.json', scope: 'global'}"
   
   import_data:
-    aliases: ["data_import"]
+    aliases: [ "data_import" ]
     description: "从文件导入数据"
     parameters:
       file_path: "文件路径"
@@ -542,7 +542,7 @@ commands:
   
   # 批量操作命令
   batch_store:
-    aliases: ["bulk_store"]
+    aliases: [ "bulk_store" ]
     description: "批量存储变量"
     parameters:
       variables: "变量字典"
@@ -552,7 +552,7 @@ commands:
       - "batch_store: {variables: {'var1': 'value1', 'var2': 'value2'}, scope: 'test'}"
   
   batch_get:
-    aliases: ["bulk_get"]
+    aliases: [ "bulk_get" ]
     description: "批量获取变量"
     parameters:
       variable_names: "变量名列表"
@@ -562,7 +562,7 @@ commands:
       - "batch_get: {variable_names: ['var1', 'var2'], target_variable: 'batch_result'}"
   
   batch_delete:
-    aliases: ["bulk_delete"]
+    aliases: [ "bulk_delete" ]
     description: "批量删除变量"
     parameters:
       variable_names: "变量名列表"
@@ -572,7 +572,7 @@ commands:
   
   # 管理命令
   cleanup_storage:
-    aliases: ["storage_cleanup"]
+    aliases: [ "storage_cleanup" ]
     description: "清理存储空间"
     parameters:
       target_variable: "目标变量名（可选）"
@@ -580,7 +580,7 @@ commands:
       - "cleanup_storage: {target_variable: 'cleanup_result'}"
   
   storage_stats:
-    aliases: ["storage_info"]
+    aliases: [ "storage_info" ]
     description: "获取存储统计信息"
     parameters:
       target_variable: "目标变量名（可选）"
@@ -593,48 +593,48 @@ examples:
     description: "基本变量存储和获取"
     steps:
       - action: "store_variable"
-        params: {name: "username", value: "admin", scope: "session"}
+        params: { name: "username", value: "admin", scope: "session" }
       - action: "get_variable"
-        params: {variable_name: "username", target_variable: "current_user"}
+        params: { variable_name: "username", target_variable: "current_user" }
   
   expression_calculation:
     description: "表达式计算和存储"
     steps:
       - action: "store_variable"
-        params: {name: "price", value: 100}
+        params: { name: "price", value: 100 }
       - action: "store_variable"
-        params: {name: "quantity", value: 3}
+        params: { name: "quantity", value: 3 }
       - action: "store_expression"
-        params: {variable_name: "total", expression: "${price} * ${quantity}"}
+        params: { variable_name: "total", expression: "${price} * ${quantity}" }
   
   cache_usage:
     description: "缓存使用示例"
     steps:
       - action: "set_cache"
-        params: {key: "api_data", value: "${response}", ttl: 300}
+        params: { key: "api_data", value: "${response}", ttl: 300 }
       - action: "get_cache"
-        params: {key: "api_data", target_variable: "cached_response"}
+        params: { key: "api_data", target_variable: "cached_response" }
   
   persistence_example:
     description: "持久化数据示例"
     steps:
       - action: "save_persistent"
-        params: {key: "user_config", value: "${config}", format: "json"}
+        params: { key: "user_config", value: "${config}", format: "json" }
       - action: "load_persistent"
-        params: {key: "user_config", target_variable: "loaded_config"}
+        params: { key: "user_config", target_variable: "loaded_config" }
   
   batch_operations:
     description: "批量操作示例"
     steps:
       - action: "batch_store"
-        params: 
+        params:
           variables:
             var1: "value1"
             var2: "value2"
             var3: "value3"
           scope: "test"
       - action: "batch_get"
-        params: {variable_names: ["var1", "var2", "var3"], target_variable: "batch_result"}
+        params: { variable_names: [ "var1", "var2", "var3" ], target_variable: "batch_result" }
 
 # 依赖项
 dependencies:
@@ -654,7 +654,7 @@ dependencies:
 compatibility:
   python_version: ">=3.7"
   framework_version: ">=1.0.0"
-  
+
 # 许可证
 license: "MIT"
 

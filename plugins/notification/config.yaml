@@ -7,9 +7,9 @@ plugin:
   description: "多渠道通知插件，支持钉钉、邮件、Webhook、Slack等多种通知方式"
   author: "Automation Team"
   category: "notification"
-  tags: ["notification", "dingtalk", "email", "webhook", "slack", "alert"]
+  tags: [ "notification", "dingtalk", "email", "webhook", "slack", "alert" ]
   priority: 50
-  dependencies: ["requests"]
+  dependencies: [ "requests" ]
 
 # 通用设置
 general:
@@ -177,7 +177,7 @@ retry:
   max_retries: 3
   retry_delay: 5  # 秒
   backoff_factor: 2.0  # 指数退避因子
-  retry_on_status: [500, 502, 503, 504]  # HTTP状态码
+  retry_on_status: [ 500, 502, 503, 504 ]  # HTTP状态码
   retry_on_timeout: true
   retry_on_connection_error: true
 
@@ -196,15 +196,15 @@ conditional:
     # 只在失败时通知
     on_failure:
       expression: "result == 'failed'"
-      providers: ["dingtalk", "email"]
+      providers: [ "dingtalk", "email" ]
     # 只在成功率低于阈值时通知
     low_success_rate:
       expression: "success_rate < 0.8"
-      providers: ["dingtalk"]
+      providers: [ "dingtalk" ]
     # 只在高优先级时通知
     high_priority:
       expression: "priority == 'urgent'"
-      providers: ["dingtalk", "email", "sms"]
+      providers: [ "dingtalk", "email", "sms" ]
 
 # 历史记录配置
 history:
@@ -257,7 +257,7 @@ security:
     key_source: "environment"  # environment, file, vault
   access_control:
     enabled: false
-    allowed_ips: []
+    allowed_ips: [ ]
     api_key_required: false
   audit:
     enabled: true
@@ -267,7 +267,7 @@ security:
     enabled: true
     max_title_length: 200
     max_content_length: 10000
-    allowed_types: ["text", "markdown", "html", "json"]
+    allowed_types: [ "text", "markdown", "html", "json" ]
     sanitize_content: true
 
 # 性能配置
@@ -295,7 +295,7 @@ performance:
 commands:
   # 基础通知命令
   send_notification:
-    aliases: ["notify", "send_msg"]
+    aliases: [ "notify", "send_msg" ]
     description: "发送通知消息"
     parameters:
       title: "通知标题"
@@ -308,7 +308,7 @@ commands:
       target_variable: "结果存储变量名"
   
   send_template_notification:
-    aliases: ["send_template", "notify_template"]
+    aliases: [ "send_template", "notify_template" ]
     description: "使用模板发送通知"
     parameters:
       template_name: "模板名称"
@@ -321,7 +321,7 @@ commands:
   
   # 特定提供者命令
   send_dingtalk:
-    aliases: ["dingtalk", "dt_notify"]
+    aliases: [ "dingtalk", "dt_notify" ]
     description: "发送钉钉通知"
     parameters:
       title: "通知标题"
@@ -331,7 +331,7 @@ commands:
       target_variable: "结果存储变量名"
   
   send_email:
-    aliases: ["email", "mail"]
+    aliases: [ "email", "mail" ]
     description: "发送邮件通知"
     parameters:
       title: "邮件主题"
@@ -341,7 +341,7 @@ commands:
       target_variable: "结果存储变量名"
   
   send_webhook:
-    aliases: ["webhook", "http_notify"]
+    aliases: [ "webhook", "http_notify" ]
     description: "发送Webhook通知"
     parameters:
       title: "通知标题"
@@ -350,7 +350,7 @@ commands:
       target_variable: "结果存储变量名"
   
   send_slack:
-    aliases: ["slack"]
+    aliases: [ "slack" ]
     description: "发送Slack通知"
     parameters:
       title: "通知标题"
@@ -361,7 +361,7 @@ commands:
   
   # 批量和条件通知
   send_batch_notification:
-    aliases: ["batch_notify", "bulk_notify"]
+    aliases: [ "batch_notify", "bulk_notify" ]
     description: "发送批量通知"
     parameters:
       notifications: "通知列表"
@@ -369,7 +369,7 @@ commands:
       target_variable: "结果存储变量名"
   
   send_conditional_notification:
-    aliases: ["conditional_notify", "if_notify"]
+    aliases: [ "conditional_notify", "if_notify" ]
     description: "发送条件通知"
     parameters:
       condition: "触发条件"
@@ -383,26 +383,26 @@ commands:
   
   # 管理命令
   get_notification_status:
-    aliases: ["notification_status", "provider_status"]
+    aliases: [ "notification_status", "provider_status" ]
     description: "获取通知提供者状态"
     parameters:
       target_variable: "结果存储变量名"
   
   get_notification_history:
-    aliases: ["notification_history", "notify_history"]
+    aliases: [ "notification_history", "notify_history" ]
     description: "获取通知历史记录"
     parameters:
       limit: "记录数量限制"
       target_variable: "结果存储变量名"
   
   get_notification_stats:
-    aliases: ["notification_stats", "notify_stats"]
+    aliases: [ "notification_stats", "notify_stats" ]
     description: "获取通知统计信息"
     parameters:
       target_variable: "结果存储变量名"
   
   cleanup_notification_history:
-    aliases: ["cleanup_notify_history", "clear_notify_history"]
+    aliases: [ "cleanup_notify_history", "clear_notify_history" ]
     description: "清理通知历史记录"
     parameters:
       days: "保留天数"
@@ -416,7 +416,7 @@ examples:
       - action: "send_notification"
         title: "测试完成通知"
         content: "自动化测试已完成，请查看结果"
-        providers: ["dingtalk"]
+        providers: [ "dingtalk" ]
         priority: "normal"
   
   template_notification:
@@ -432,7 +432,7 @@ examples:
           passed_cases: 95
           failed_cases: 5
         title: "测试报告"
-        providers: ["dingtalk", "email"]
+        providers: [ "dingtalk", "email" ]
   
   dingtalk_notification:
     description: "钉钉通知发送"
@@ -440,7 +440,7 @@ examples:
       - action: "send_dingtalk"
         title: "紧急告警"
         content: "系统检测到异常，请立即处理！"
-        at_mobiles: ["13800138000"]
+        at_mobiles: [ "13800138000" ]
         is_markdown: true
   
   conditional_notification:
@@ -450,7 +450,7 @@ examples:
         condition: "${test_result} == 'failed'"
         title: "测试失败告警"
         content: "自动化测试执行失败，请检查"
-        providers: ["dingtalk", "email"]
+        providers: [ "dingtalk", "email" ]
         priority: "high"
   
   batch_notification:
@@ -460,10 +460,10 @@ examples:
         notifications:
           - title: "任务1完成"
             content: "任务1执行成功"
-            providers: ["dingtalk"]
+            providers: [ "dingtalk" ]
           - title: "任务2完成"
             content: "任务2执行成功"
-            providers: ["email"]
+            providers: [ "email" ]
   
   status_check:
     description: "检查通知状态"

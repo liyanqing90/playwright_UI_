@@ -375,7 +375,7 @@ class AllureReportHandler(ReportHandler):
                             with open(screenshot, "rb") as f:
                                 allure.attach(
                                     f.read(),
-                                    name=f"截图_{i+1}",
+                                    name=f"截图_{i + 1}",
                                     attachment_type=allure.attachment_type.PNG,
                                 )
 

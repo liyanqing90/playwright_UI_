@@ -5,9 +5,9 @@
 
 from typing import Optional, Any, Dict
 
-from playwright.sync_api import Page, Browser, BrowserContext
-from jsonpath_ng import parse
 import allure
+from jsonpath_ng import parse
+from playwright.sync_api import Page, Browser, BrowserContext
 from pytest_check import check
 
 from config.constants import DEFAULT_TIMEOUT
@@ -839,13 +839,15 @@ class BasePage:
         if not matches:
             logger.error(f"JSONPath {jsonpath_expr} 未找到匹配项")
             raise ValueError(f"JSONPath {jsonpath_expr} 未找到匹配项，当前数据: {data}")
-        
+
         actual_value = matches[0]
-        
+
         # 处理变量替换（如果有变量管理器）
         resolved_expected = expected
-        if hasattr(self, 'variable_manager') and self.variable_manager:
-            resolved_expected = self.variable_manager.replace_variables_refactored(expected)
+        if hasattr(self, "variable_manager") and self.variable_manager:
+            resolved_expected = self.variable_manager.replace_variables_refactored(
+                expected
+            )
 
         # 执行断言
         with check, allure.step(f"验证参数 {jsonpath_expr}"):

@@ -160,7 +160,7 @@ reporting:
   # 是否启用报告
   enabled: true
   # 报告格式：json, html, pdf
-  formats: ["json", "html"]
+  formats: [ "json", "html" ]
   # 自动生成报告
   auto_generate: true
   # 报告生成间隔（秒）
@@ -193,7 +193,7 @@ commands:
   # 监控命令
   start_monitor:
     action: "START_PERFORMANCE_MONITOR"
-    aliases: ["start_perf_monitor", "begin_monitoring"]
+    aliases: [ "start_perf_monitor", "begin_monitoring" ]
     description: "启动性能监控"
     parameters:
       interval:
@@ -205,12 +205,12 @@ commands:
   
   stop_monitor:
     action: "STOP_PERFORMANCE_MONITOR"
-    aliases: ["stop_perf_monitor", "end_monitoring"]
+    aliases: [ "stop_perf_monitor", "end_monitoring" ]
     description: "停止性能监控"
   
   get_stats:
     action: "GET_PERFORMANCE_STATS"
-    aliases: ["perf_stats", "performance_statistics"]
+    aliases: [ "perf_stats", "performance_statistics" ]
     description: "获取性能统计信息"
     parameters:
       variable_name:
@@ -221,16 +221,16 @@ commands:
         type: "string"
         description: "变量作用域"
         default: "global"
-        options: ["global", "local", "session"]
+        options: [ "global", "local", "session" ]
   
   reset_stats:
     action: "RESET_PERFORMANCE_STATS"
-    aliases: ["clear_stats", "reset_performance"]
+    aliases: [ "clear_stats", "reset_performance" ]
     description: "重置性能统计信息"
   
   record_metric:
     action: "RECORD_PERFORMANCE_METRIC"
-    aliases: ["add_metric", "log_metric"]
+    aliases: [ "add_metric", "log_metric" ]
     description: "记录性能指标"
     parameters:
       metric_name:
@@ -257,7 +257,7 @@ commands:
   # 缓存命令
   set_cache:
     action: "SET_CACHE"
-    aliases: ["cache_set", "store_cache"]
+    aliases: [ "cache_set", "store_cache" ]
     description: "设置缓存值"
     parameters:
       cache_key:
@@ -275,7 +275,7 @@ commands:
   
   get_cache:
     action: "GET_CACHE"
-    aliases: ["cache_get", "retrieve_cache"]
+    aliases: [ "cache_get", "retrieve_cache" ]
     description: "获取缓存值"
     parameters:
       cache_key:
@@ -293,7 +293,7 @@ commands:
   
   delete_cache:
     action: "DELETE_CACHE"
-    aliases: ["cache_delete", "remove_cache"]
+    aliases: [ "cache_delete", "remove_cache" ]
     description: "删除缓存"
     parameters:
       cache_key:
@@ -303,12 +303,12 @@ commands:
   
   clear_cache:
     action: "CLEAR_CACHE"
-    aliases: ["cache_clear", "flush_cache"]
+    aliases: [ "cache_clear", "flush_cache" ]
     description: "清空所有缓存"
   
   cache_stats:
     action: "GET_CACHE_STATS"
-    aliases: ["cache_statistics", "cache_info"]
+    aliases: [ "cache_statistics", "cache_info" ]
     description: "获取缓存统计信息"
     parameters:
       variable_name:
@@ -319,7 +319,7 @@ commands:
   # 优化命令
   optimize:
     action: "OPTIMIZE_PERFORMANCE"
-    aliases: ["perf_optimize", "performance_tune"]
+    aliases: [ "perf_optimize", "performance_tune" ]
     description: "执行性能优化"
     parameters:
       context:
@@ -333,7 +333,7 @@ commands:
   
   get_suggestions:
     action: "GET_OPTIMIZATION_SUGGESTIONS"
-    aliases: ["optimization_advice", "perf_suggestions"]
+    aliases: [ "optimization_advice", "perf_suggestions" ]
     description: "获取优化建议"
     parameters:
       variable_name:
@@ -343,7 +343,7 @@ commands:
   
   generate_report:
     action: "GENERATE_PERFORMANCE_REPORT"
-    aliases: ["perf_report", "create_report"]
+    aliases: [ "perf_report", "create_report" ]
     description: "生成性能报告"
     parameters:
       report_path:
@@ -366,7 +366,7 @@ examples:
     command: "start_monitor"
     parameters:
       interval: 10
-  
+
   - name: "记录自定义指标"
     description: "记录业务相关的性能指标"
     command: "record_metric"
@@ -378,20 +378,20 @@ examples:
       tags:
         page: "login"
         browser: "chrome"
-  
+
   - name: "使用缓存"
     description: "设置和获取缓存数据"
     steps:
       - command: "set_cache"
         parameters:
           cache_key: "user_data"
-          cache_value: {"id": 123, "name": "test"}
+          cache_value: { "id": 123, "name": "test" }
           ttl: 1800
       - command: "get_cache"
         parameters:
           cache_key: "user_data"
           variable_name: "cached_user"
-  
+
   - name: "性能优化"
     description: "执行性能优化并获取建议"
     steps:
@@ -403,7 +403,7 @@ examples:
       - command: "get_suggestions"
         parameters:
           variable_name: "optimization_tips"
-  
+
   - name: "生成性能报告"
     description: "生成详细的性能分析报告"
     command: "generate_report"
@@ -428,7 +428,7 @@ dependencies:
 compatibility:
   python_version: ">=3.7"
   framework_version: ">=1.0.0"
-  os_support: ["Windows", "Linux", "macOS"]
+  os_support: [ "Windows", "Linux", "macOS" ]
 
 # 许可证
 license: "MIT"

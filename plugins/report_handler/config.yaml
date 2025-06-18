@@ -142,7 +142,7 @@ notification_config:
   enabled: false
   
   # 通知方式 (email, webhook, slack)
-  methods: []
+  methods: [ ]
   
   # 邮件配置
   email:
@@ -151,14 +151,14 @@ notification_config:
     username: null
     password: null
     from_address: null
-    to_addresses: []
+    to_addresses: [ ]
     subject_template: "测试报告 - {status}"
   
   # Webhook配置
   webhook:
     url: null
     method: "POST"
-    headers: {}
+    headers: { }
     timeout: 30
   
   # Slack配置
@@ -171,13 +171,13 @@ notification_config:
 filter_config:
   # 状态过滤
   status_filter:
-    include: ["passed", "failed", "skipped"]
-    exclude: []
+    include: [ "passed", "failed", "skipped" ]
+    exclude: [ ]
   
   # 测试名称过滤
   name_filter:
-    include_patterns: []
-    exclude_patterns: []
+    include_patterns: [ ]
+    exclude_patterns: [ ]
   
   # 时间范围过滤
   time_filter:
@@ -186,8 +186,8 @@ filter_config:
   
   # 标签过滤
   tag_filter:
-    include_tags: []
-    exclude_tags: []
+    include_tags: [ ]
+    exclude_tags: [ ]
 
 # 模板配置
 template_config:
@@ -209,25 +209,25 @@ template_config:
 # 插件扩展配置
 extensions:
   # 自定义报告处理器
-  custom_handlers: []
+  custom_handlers: [ ]
   
   # 自定义过滤器
-  custom_filters: []
+  custom_filters: [ ]
   
   # 自定义模板函数
-  custom_template_functions: []
+  custom_template_functions: [ ]
 
 # 命令映射
 command_mappings:
   generate_report:
-    aliases: ["生成报告", "create_report"]
+    aliases: [ "生成报告", "create_report" ]
     description: "生成指定格式的测试报告"
     parameters:
       format:
         type: "string"
         required: true
         default: "html"
-        choices: ["html", "json", "allure"]
+        choices: [ "html", "json", "allure" ]
         description: "报告格式"
       config:
         type: "object"
@@ -235,7 +235,7 @@ command_mappings:
         description: "报告配置"
   
   attach_screenshot:
-    aliases: ["添加截图", "screenshot"]
+    aliases: [ "添加截图", "screenshot" ]
     description: "添加截图到报告"
     parameters:
       name:
@@ -244,7 +244,7 @@ command_mappings:
         description: "截图名称"
   
   attach_page_source:
-    aliases: ["添加页面源码", "page_source"]
+    aliases: [ "添加页面源码", "page_source" ]
     description: "添加页面源码到报告"
     parameters:
       name:
@@ -253,7 +253,7 @@ command_mappings:
         description: "页面源码名称"
   
   add_test_result:
-    aliases: ["添加测试结果", "add_result"]
+    aliases: [ "添加测试结果", "add_result" ]
     description: "添加测试结果"
     parameters:
       test_name:
@@ -263,7 +263,7 @@ command_mappings:
       status:
         type: "string"
         required: true
-        choices: ["passed", "failed", "skipped"]
+        choices: [ "passed", "failed", "skipped" ]
         description: "测试状态"
       start_time:
         type: "string"
@@ -283,9 +283,9 @@ command_mappings:
         description: "错误信息"
   
   clear_results:
-    aliases: ["清空结果", "clear"]
+    aliases: [ "清空结果", "clear" ]
     description: "清空所有测试结果"
-    parameters: {}
+    parameters: { }
 
 # 示例配置
 examples:

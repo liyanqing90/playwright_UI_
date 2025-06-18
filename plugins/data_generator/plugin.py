@@ -215,7 +215,7 @@ class DataGeneratorPlugin:
         """生成用户ID"""
         prefix = kwargs.get("prefix", "USER")
         length = kwargs.get("length", 8)
-        return f"{prefix}{random.randint(10**(length-1), 10**length-1)}"
+        return f"{prefix}{random.randint(10 ** (length - 1), 10 ** length - 1)}"
 
     def _generate_order_id(self, **kwargs) -> str:
         """生成订单ID"""

@@ -7,6 +7,7 @@
 ## 功能特性
 
 ### 核心功能
+
 - **请求监控** - 监控和拦截HTTP请求
 - **响应处理** - 处理和修改HTTP响应
 - **API Mock** - 模拟API响应
@@ -14,6 +15,7 @@
 - **缓存管理** - 管理网络数据缓存
 
 ### 扩展功能
+
 - **规则引擎** - 灵活的网络规则配置
 - **性能监控** - 网络性能指标收集
 - **安全控制** - 域名白名单/黑名单
@@ -182,28 +184,31 @@ responses = plugin.get_intercepted_data("responses")
 
 ### 基础配置
 
-| 参数 | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| enabled | boolean | true | 是否启用插件 |
-| timeout | number | 30000 | 默认超时时间（毫秒） |
-| max_retries | integer | 3 | 最大重试次数 |
-| mock_enabled | boolean | false | 是否启用响应模拟 |
-| intercept_enabled | boolean | true | 是否启用请求拦截 |
-| logging_enabled | boolean | true | 是否启用日志记录 |
+| 参数                | 类型      | 默认值   | 说明         |
+|-------------------|---------|-------|------------|
+| enabled           | boolean | true  | 是否启用插件     |
+| timeout           | number  | 30000 | 默认超时时间（毫秒） |
+| max_retries       | integer | 3     | 最大重试次数     |
+| mock_enabled      | boolean | false | 是否启用响应模拟   |
+| intercept_enabled | boolean | true  | 是否启用请求拦截   |
+| logging_enabled   | boolean | true  | 是否启用日志记录   |
 
 ### 高级配置
 
 #### 拦截配置
+
 - `max_requests`: 最大拦截请求数
 - `auto_cleanup`: 自动清理过期数据
 - `cleanup_interval`: 清理间隔（秒）
 
 #### 模拟配置
+
 - `default_delay`: 默认延迟（毫秒）
 - `max_response_size`: 最大响应大小
 - `cache_responses`: 是否缓存响应
 
 #### 监控配置
+
 - `track_headers`: 是否跟踪请求头
 - `track_body`: 是否跟踪请求体
 - `track_timing`: 是否跟踪时间信息
@@ -212,14 +217,14 @@ responses = plugin.get_intercepted_data("responses")
 
 ### 命令列表
 
-| 命令 | 说明 | 参数 |
-|------|------|------|
-| MONITOR_REQUEST | 监控请求 | url_pattern, action_type, selector, variable_name |
-| MONITOR_RESPONSE | 监控响应 | url_pattern, action_type, selector, assert_params |
-| INTERCEPT_REQUEST | 拦截请求 | url_pattern, method, headers, modify_request |
-| MOCK_RESPONSE | 模拟响应 | url_pattern, status_code, response_body, headers |
-| NETWORK_DELAY | 网络延迟 | url_pattern, delay_ms, apply_to |
-| CLEAR_NETWORK_CACHE | 清空缓存 | cache_type |
+| 命令                  | 说明   | 参数                                                |
+|---------------------|------|---------------------------------------------------|
+| MONITOR_REQUEST     | 监控请求 | url_pattern, action_type, selector, variable_name |
+| MONITOR_RESPONSE    | 监控响应 | url_pattern, action_type, selector, assert_params |
+| INTERCEPT_REQUEST   | 拦截请求 | url_pattern, method, headers, modify_request      |
+| MOCK_RESPONSE       | 模拟响应 | url_pattern, status_code, response_body, headers  |
+| NETWORK_DELAY       | 网络延迟 | url_pattern, delay_ms, apply_to                   |
+| CLEAR_NETWORK_CACHE | 清空缓存 | cache_type                                        |
 
 ### 插件方法
 
@@ -271,6 +276,7 @@ class NetworkOperationsPlugin:
 **问题**: 配置的URL模式没有匹配到请求
 
 **解决方案**:
+
 - 检查URL模式是否正确
 - 使用通配符 `**` 匹配路径
 - 启用详细日志查看实际请求URL
@@ -280,6 +286,7 @@ class NetworkOperationsPlugin:
 **问题**: Mock响应没有返回预期数据
 
 **解决方案**:
+
 - 确认 `mock_enabled` 为 true
 - 检查URL模式匹配
 - 验证响应格式是否正确
@@ -289,6 +296,7 @@ class NetworkOperationsPlugin:
 **问题**: 插件影响测试执行速度
 
 **解决方案**:
+
 - 减少监控的请求数量
 - 启用自动清理
 - 优化规则配置
@@ -308,6 +316,7 @@ class NetworkOperationsPlugin:
 ## 版本历史
 
 ### v1.0.0
+
 - 初始版本发布
 - 支持基础的请求监控和响应处理
 - 提供API Mock功能

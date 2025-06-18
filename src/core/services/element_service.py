@@ -7,9 +7,9 @@
 """
 
 import time
-from typing import Protocol, Any, Optional
+from typing import Protocol, Optional
 
-from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError
+from playwright.sync_api import Page
 
 from config.constants import DEFAULT_TIMEOUT
 from utils.logger import logger

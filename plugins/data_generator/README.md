@@ -15,6 +15,7 @@
 ## 支持的数据类型
 
 ### 基础类型
+
 - `name` - 姓名
 - `email` - 邮箱地址
 - `phone` / `mobile` - 手机号码
@@ -24,6 +25,7 @@
 - `time` - 时间
 
 ### 业务类型
+
 - `user_id` - 用户ID
 - `order_id` - 订单ID
 - `product_code` - 产品编码
@@ -32,22 +34,26 @@
 - `id_card` - 身份证号
 
 ### 数字类型
+
 - `integer` - 整数
 - `float` - 浮点数
 - `price` - 价格
 
 ### 文本类型
+
 - `text` - 文本
 - `paragraph` - 段落
 - `sentence` - 句子
 - `word` - 单词
 
 ### 网络类型
+
 - `url` - URL地址
 - `domain` - 域名
 - `ip` - IP地址
 
 ### UUID类型
+
 - `uuid` / `uuid4` - UUID
 
 ## 使用方法
@@ -128,50 +134,63 @@
 ### 特定参数
 
 #### name（姓名）
+
 - `prefix` - 前缀，默认为"新零售"
 - `english` - 是否生成英文姓名，默认为false
 
 #### email（邮箱）
+
 - `domain` - 指定域名
 
 #### phone/mobile（手机号）
+
 - `default` - 默认手机号，默认为"18210233933"
 
 #### datetime/date/time（日期时间）
+
 - `format` - 日期格式，默认为"%Y-%m-%d"
 - `today` - 是否使用今天的日期，默认为true
 
 #### user_id（用户ID）
+
 - `prefix` - 前缀，默认为"USER"
 - `length` - ID长度，默认为8
 
 #### order_id（订单ID）
+
 - `prefix` - 前缀，默认为"ORD"
 
 #### product_code（产品编码）
+
 - `prefix` - 前缀，默认为"PRD"
 - `length` - 编码长度，默认为6
 
 #### integer（整数）
+
 - `min` - 最小值，默认为1
 - `max` - 最大值，默认为1000
 
 #### float（浮点数）
+
 - `min` - 最小值，默认为0.0
 - `max` - 最大值，默认为1000.0
 - `decimals` - 小数位数，默认为2
 
 #### price（价格）
+
 - `min` - 最小价格，默认为1.0
 - `max` - 最大价格，默认为10000.0
 
 #### text（文本）
+
 - `length` - 文本长度，默认为10
 
 #### paragraph（段落）
+
 - `sentences` - 句子数量，默认为5
 
 #### sentence（句子）
+
 - `words` - 单词数量，默认为10
 
 ## 配置文件

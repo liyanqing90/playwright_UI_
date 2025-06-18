@@ -1,9 +1,9 @@
 from typing import Dict, Any
 
+from src.core.services.variable_service import VariableService
 from src.utils import singleton
 from utils.config import BaseInfo
 from utils.logger import logger
-from src.core.services.variable_service import VariableService
 from utils.yaml_handler import YamlHandler
 
 yaml_handler = YamlHandler()

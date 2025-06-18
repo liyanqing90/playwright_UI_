@@ -8,7 +8,6 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Dict, Type, Any, Optional, List, Set
 
-import allure
 from utils.logger import logger
 from .command_config import config_manager, CommandConfig
 from .command_monitor import command_monitor
@@ -247,7 +246,6 @@ class CommandRegistry:
         """
         for name, obj in inspect.getmembers(module, inspect.isclass):
             if issubclass(obj, Command) and obj != Command and hasattr(obj, "execute"):
-
                 # 从类名推断操作类型
                 action_type = name.replace("Command", "").lower()
                 cls._commands[action_type] = obj

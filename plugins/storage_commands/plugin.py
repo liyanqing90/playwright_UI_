@@ -17,7 +17,6 @@ from typing import Any, Dict, List, Optional, Union
 from src.automation.action_types import StepAction
 from src.automation.commands.base_command import Command, CommandFactory
 from src.automation.expression_evaluator import evaluate_math_expression
-from src.core.services.variable_service import VariableService
 from utils.logger import logger
 
 
@@ -404,30 +403,62 @@ class PersistenceManager:
         with sqlite3.connect(self.db_path) as conn:
             conn.execute(
                 """
-                CREATE TABLE IF NOT EXISTS storage_entries (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    key TEXT NOT NULL,
-                    value TEXT NOT NULL,
-                    data_type TEXT NOT NULL,
-                    scope TEXT NOT NULL,
-                    format TEXT NOT NULL,
-                    created_at TEXT NOT NULL,
-                    updated_at TEXT NOT NULL,
-                    expires_at TEXT,
-                    metadata TEXT,
-                    UNIQUE(key, scope)
+                CREATE TABLE IF NOT EXISTS storage_entries
+                (
+                    id
+                    INTEGER
+                    PRIMARY
+                    KEY
+                    AUTOINCREMENT,
+                    key
+                    TEXT
+                    NOT
+                    NULL,
+                    value
+                    TEXT
+                    NOT
+                    NULL,
+                    data_type
+                    TEXT
+                    NOT
+                    NULL,
+                    scope
+                    TEXT
+                    NOT
+                    NULL,
+                    format
+                    TEXT
+                    NOT
+                    NULL,
+                    created_at
+                    TEXT
+                    NOT
+                    NULL,
+                    updated_at
+                    TEXT
+                    NOT
+                    NULL,
+                    expires_at
+                    TEXT,
+                    metadata
+                    TEXT,
+                    UNIQUE
+                (
+                    key,
+                    scope
                 )
-            """
+                    )
+                """
             )
             conn.execute(
                 """
                 CREATE INDEX IF NOT EXISTS idx_key_scope ON storage_entries(key, scope)
-            """
+                """
             )
             conn.execute(
                 """
                 CREATE INDEX IF NOT EXISTS idx_expires_at ON storage_entries(expires_at)
-            """
+                """
             )
 
     def save(
@@ -474,9 +505,10 @@ class PersistenceManager:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.execute(
                 """
-                SELECT value, data_type, format, expires_at FROM storage_entries 
+                SELECT value, data_type, format, expires_at
+                FROM storage_entries
                 WHERE key = ? AND scope = ?
-            """,
+                """,
                 (key, scope.value),
             )
             row = cursor.fetchone()
@@ -491,8 +523,10 @@ class PersistenceManager:
                         # 删除过期数据
                         conn.execute(
                             """
-                            DELETE FROM storage_entries WHERE key = ? AND scope = ?
-                        """,
+                            DELETE
+                            FROM storage_entries
+                            WHERE key = ? AND scope = ?
+                            """,
                             (key, scope.value),
                         )
                         return default
@@ -508,8 +542,10 @@ class PersistenceManager:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.execute(
                 """
-                DELETE FROM storage_entries WHERE key = ? AND scope = ?
-            """,
+                DELETE
+                FROM storage_entries
+                WHERE key = ? AND scope = ?
+                """,
                 (key, scope.value),
             )
 
@@ -524,17 +560,26 @@ class PersistenceManager:
             if scope:
                 cursor = conn.execute(
                     """
-                    SELECT key FROM storage_entries WHERE scope = ? AND 
-                    (expires_at IS NULL OR expires_at > ?)
-                """,
+                    SELECT key
+                    FROM storage_entries
+                    WHERE scope = ?
+                      AND
+                        (expires_at IS NULL
+                       OR expires_at
+                        > ?)
+                    """,
                     (scope.value, datetime.now().isoformat()),
                 )
             else:
                 cursor = conn.execute(
                     """
-                    SELECT key FROM storage_entries WHERE 
-                    (expires_at IS NULL OR expires_at > ?)
-                """,
+                    SELECT key
+                    FROM storage_entries
+                    WHERE
+                        (expires_at IS NULL
+                       OR expires_at
+                        > ?)
+                    """,
                     (datetime.now().isoformat(),),
                 )
 
@@ -545,8 +590,11 @@ class PersistenceManager:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.execute(
                 """
-                DELETE FROM storage_entries WHERE expires_at IS NOT NULL AND expires_at <= ?
-            """,
+                DELETE
+                FROM storage_entries
+                WHERE expires_at IS NOT NULL
+                  AND expires_at <= ?
+                """,
                 (datetime.now().isoformat(),),
             )
 
@@ -562,8 +610,10 @@ class PersistenceManager:
             if scope:
                 cursor = conn.execute(
                     """
-                    SELECT * FROM storage_entries WHERE scope = ?
-                """,
+                    SELECT *
+                    FROM storage_entries
+                    WHERE scope = ?
+                    """,
                     (scope.value,),
                 )
             else:

@@ -11,6 +11,7 @@
 为提高框架稳定性，在2024年最新版本中对所有核心服务实现了完善的空指针检查机制，有效防止因依赖注入失败导致的AttributeError异常。
 
 **修复范围：**
+
 - `../../src/core/services/element_service.py`: 元素操作服务
 - `../../src/core/services/navigation_service.py`: 导航服务
 - `../../src/core/services/assertion_service.py`: 断言服务
@@ -18,6 +19,7 @@
 - `../../src/core/mixins/performance_optimization.py`: 性能优化混入
 
 **技术实现：**
+
 ```python
 # 统一的空指针检查模式
 def safe_variable_replacement(self, value: str) -> str:

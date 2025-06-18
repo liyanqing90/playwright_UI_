@@ -7,7 +7,7 @@ services:
     class: "src.core.services.element_service.ElementService"
     interface: "src.core.services.element_service.ElementOperations"
     scope: "singleton"
-    dependencies: []
+    dependencies: [ ]
     config:
       default_timeout: 30000
       retry_count: 3
@@ -17,7 +17,7 @@ services:
     class: "src.core.services.navigation_service.NavigationService"
     interface: "src.core.services.navigation_service.NavigationOperations"
     scope: "singleton"
-    dependencies: []
+    dependencies: [ ]
     config:
       default_timeout: 30000
       wait_for_load_state: "networkidle"
@@ -26,7 +26,7 @@ services:
     class: "src.core.services.wait_service.WaitService"
     interface: "src.core.services.wait_service.WaitOperations"
     scope: "singleton"
-    dependencies: []
+    dependencies: [ ]
     config:
       default_timeout: 30000
       polling_interval: 100
@@ -35,7 +35,7 @@ services:
     class: "src.core.services.assertion_service.AssertionService"
     interface: "src.core.services.assertion_service.AssertionOperations"
     scope: "singleton"
-    dependencies: ["wait_service"]
+    dependencies: [ "wait_service" ]
     config:
       default_timeout: 30000
       strict_mode: true
@@ -44,7 +44,7 @@ services:
     class: "src.core.services.variable_service.VariableService"
     interface: "src.core.services.variable_service.VariableOperations"
     scope: "singleton"
-    dependencies: []
+    dependencies: [ ]
     config:
       enable_encryption: false
       variable_prefix: "${"
@@ -54,7 +54,7 @@ services:
     class: "src.core.services.performance_service.PerformanceService"
     interface: "src.core.services.performance_service.PerformanceOperations"
     scope: "singleton"
-    dependencies: []
+    dependencies: [ ]
     config:
       enable_monitoring: true
       metrics_collection: true
@@ -148,19 +148,19 @@ service_groups:
 
   # 复合服务组
   ui_testing:
-    services: ["element_service", "navigation_service", "wait_service", "assertion_service"]
+    services: [ "element_service", "navigation_service", "wait_service", "assertion_service" ]
     description: "UI自动化测试核心服务组"
 
   api_testing:
-    services: ["navigation_service", "assertion_service", "variable_service"]
+    services: [ "navigation_service", "assertion_service", "variable_service" ]
     description: "API测试服务组"
 
   performance_testing:
-    services: ["element_service", "navigation_service", "wait_service", "performance_service"]
+    services: [ "element_service", "navigation_service", "wait_service", "performance_service" ]
     description: "性能测试服务组"
 
   full_testing:
-    services: ["element_service", "navigation_service", "wait_service", "assertion_service", "variable_service", "performance_service"]
+    services: [ "element_service", "navigation_service", "wait_service", "assertion_service", "variable_service", "performance_service" ]
     description: "完整测试服务组，包含所有核心服务"
 
 # 全局配置

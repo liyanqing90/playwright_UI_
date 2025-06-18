@@ -7,6 +7,7 @@
 ## 核心特性
 
 ### 🔧 变量管理
+
 - **多作用域支持**：global、session、test、step、temporary
 - **TTL过期机制**：支持变量自动过期
 - **类型检测**：自动检测和管理数据类型
@@ -14,6 +15,7 @@
 - **表达式计算**：支持数学表达式计算和存储
 
 ### 💾 缓存机制
+
 - **LRU淘汰策略**：最近最少使用算法
 - **内存限制**：可配置的内存使用限制
 - **自动清理**：定期清理过期缓存
@@ -21,6 +23,7 @@
 - **压缩支持**：可选的数据压缩功能
 
 ### 🗄️ 持久化存储
+
 - **SQLite数据库**：轻量级本地数据库
 - **多种序列化格式**：JSON、Pickle、Binary、String
 - **数据备份**：自动备份和恢复
@@ -28,12 +31,14 @@
 - **导入导出**：支持数据的导入和导出
 
 ### 🚀 批量操作
+
 - **批量存储**：一次性存储多个变量
 - **批量获取**：一次性获取多个变量
 - **批量删除**：一次性删除多个变量
 - **事务支持**：保证批量操作的原子性
 
 ### 🔍 监控和统计
+
 - **实时统计**：存储使用情况实时监控
 - **性能指标**：操作耗时、内存使用等
 - **健康检查**：存储系统健康状态检查
@@ -44,7 +49,9 @@
 ### 基础存储命令
 
 #### store_variable
+
 存储变量到指定作用域
+
 ```yaml
 - action: store_variable
   params:
@@ -58,7 +65,9 @@
 ```
 
 #### store_text
+
 存储元素文本内容
+
 ```yaml
 - action: store_text
   selector: "h1.title"
@@ -69,7 +78,9 @@
 ```
 
 #### store_attribute
+
 存储元素属性值
+
 ```yaml
 - action: store_attribute
   selector: "a.download-link"
@@ -80,7 +91,9 @@
 ```
 
 #### save_element_count
+
 保存元素数量
+
 ```yaml
 - action: save_element_count
   selector: ".product-item"
@@ -92,7 +105,9 @@
 ### 扩展存储命令
 
 #### store_json
+
 存储JSON数据
+
 ```yaml
 - action: store_json
   params:
@@ -105,7 +120,9 @@
 ```
 
 #### store_list
+
 存储列表数据
+
 ```yaml
 - action: store_list
   params:
@@ -115,7 +132,9 @@
 ```
 
 #### store_expression
+
 计算表达式并存储结果
+
 ```yaml
 - action: store_expression
   params:
@@ -125,7 +144,9 @@
 ```
 
 #### get_variable
+
 获取变量值
+
 ```yaml
 - action: get_variable
   params:
@@ -136,7 +157,9 @@
 ```
 
 #### delete_variable
+
 删除变量
+
 ```yaml
 - action: delete_variable
   params:
@@ -145,7 +168,9 @@
 ```
 
 #### list_variables
+
 列出变量
+
 ```yaml
 - action: list_variables
   params:
@@ -154,7 +179,9 @@
 ```
 
 #### clear_scope
+
 清空作用域中的所有变量
+
 ```yaml
 - action: clear_scope
   params:
@@ -164,7 +191,9 @@
 ### 缓存命令
 
 #### set_cache
+
 设置缓存
+
 ```yaml
 - action: set_cache
   params:
@@ -174,7 +203,9 @@
 ```
 
 #### get_cache
+
 获取缓存
+
 ```yaml
 - action: get_cache
   params:
@@ -184,7 +215,9 @@
 ```
 
 #### delete_cache
+
 删除缓存
+
 ```yaml
 - action: delete_cache
   params:
@@ -192,14 +225,18 @@
 ```
 
 #### clear_cache
+
 清空所有缓存
+
 ```yaml
 - action: clear_cache
   params: {}
 ```
 
 #### cache_stats
+
 获取缓存统计信息
+
 ```yaml
 - action: cache_stats
   params:
@@ -209,7 +246,9 @@
 ### 持久化命令
 
 #### save_persistent
+
 保存持久化数据
+
 ```yaml
 - action: save_persistent
   params:
@@ -224,7 +263,9 @@
 ```
 
 #### load_persistent
+
 加载持久化数据
+
 ```yaml
 - action: load_persistent
   params:
@@ -235,7 +276,9 @@
 ```
 
 #### delete_persistent
+
 删除持久化数据
+
 ```yaml
 - action: delete_persistent
   params:
@@ -244,7 +287,9 @@
 ```
 
 #### export_data
+
 导出数据到文件
+
 ```yaml
 - action: export_data
   params:
@@ -253,7 +298,9 @@
 ```
 
 #### import_data
+
 从文件导入数据
+
 ```yaml
 - action: import_data
   params:
@@ -264,7 +311,9 @@
 ### 批量操作命令
 
 #### batch_store
+
 批量存储变量
+
 ```yaml
 - action: batch_store
   params:
@@ -277,7 +326,9 @@
 ```
 
 #### batch_get
+
 批量获取变量
+
 ```yaml
 - action: batch_get
   params:
@@ -287,7 +338,9 @@
 ```
 
 #### batch_delete
+
 批量删除变量
+
 ```yaml
 - action: batch_delete
   params:
@@ -298,7 +351,9 @@
 ### 管理命令
 
 #### cleanup_storage
+
 清理存储空间
+
 ```yaml
 - action: cleanup_storage
   params:
@@ -306,7 +361,9 @@
 ```
 
 #### storage_stats
+
 获取存储统计信息
+
 ```yaml
 - action: storage_stats
   params:
@@ -316,6 +373,7 @@
 ## 配置选项
 
 ### 基本配置
+
 ```yaml
 general:
   data_directory: "data/storage"
@@ -325,6 +383,7 @@ general:
 ```
 
 ### 变量管理配置
+
 ```yaml
 variables:
   enabled: true
@@ -342,6 +401,7 @@ variables:
 ```
 
 ### 缓存配置
+
 ```yaml
 cache:
   enabled: true
@@ -354,6 +414,7 @@ cache:
 ```
 
 ### 持久化配置
+
 ```yaml
 persistence:
   enabled: true
@@ -370,6 +431,7 @@ persistence:
 ```
 
 ### 安全配置
+
 ```yaml
 security:
   validation:
@@ -385,6 +447,7 @@ security:
 ## 错误处理
 
 ### 常见错误类型
+
 - **变量不存在**：尝试获取不存在的变量
 - **作用域无效**：使用了不支持的作用域
 - **数据过大**：存储的数据超过大小限制
@@ -392,6 +455,7 @@ security:
 - **数据库错误**：持久化存储操作失败
 
 ### 错误处理策略
+
 ```yaml
 # 在测试步骤中处理错误
 - action: get_variable
@@ -418,18 +482,21 @@ security:
 ## 性能考虑
 
 ### 内存优化
+
 - 使用合适的TTL避免内存泄漏
 - 定期清理过期数据
 - 控制缓存大小
 - 使用压缩减少内存占用
 
 ### 性能优化
+
 - 批量操作减少I/O次数
 - 使用缓存避免重复计算
 - 异步清理任务
 - 数据库连接池
 
 ### 最佳实践
+
 ```yaml
 # 1. 使用合适的作用域
 - action: store_variable
@@ -469,6 +536,7 @@ security:
 ## 扩展开发
 
 ### 自定义存储后端
+
 ```python
 class CustomStorageBackend:
     def __init__(self, config):
@@ -488,6 +556,7 @@ class CustomStorageBackend:
 ```
 
 ### 自定义序列化器
+
 ```python
 class CustomSerializer:
     def serialize(self, data):
@@ -500,6 +569,7 @@ class CustomSerializer:
 ```
 
 ### 自定义监听器
+
 ```python
 def variable_change_listener(action, key, value, scope):
     """变量变化监听器"""
@@ -515,6 +585,7 @@ plugin.variable_manager.add_listener(variable_change_listener)
 ## 使用场景
 
 ### 测试数据管理
+
 ```yaml
 # 存储测试配置
 - action: store_json
@@ -536,6 +607,7 @@ plugin.variable_manager.add_listener(variable_change_listener)
 ```
 
 ### 状态管理
+
 ```yaml
 # 记录测试进度
 - action: store_variable
@@ -553,6 +625,7 @@ plugin.variable_manager.add_listener(variable_change_listener)
 ```
 
 ### 数据共享
+
 ```yaml
 # 在步骤间共享数据
 - action: store_variable
@@ -570,6 +643,7 @@ plugin.variable_manager.add_listener(variable_change_listener)
 ```
 
 ### 性能优化
+
 ```yaml
 # 缓存API响应
 - action: set_cache
@@ -589,18 +663,21 @@ plugin.variable_manager.add_listener(variable_change_listener)
 ## 注意事项
 
 ### 安全性
+
 - 避免存储敏感信息（密码、密钥等）
 - 使用加密存储敏感数据
 - 设置合适的访问权限
 - 定期清理过期数据
 
 ### 兼容性
+
 - 支持Python 3.10+
 - 兼容主流操作系统
 - 向后兼容旧版本配置
 - 支持数据迁移
 
 ### 可维护性
+
 - 使用描述性的变量名
 - 添加适当的元数据
 - 定期备份重要数据
@@ -609,6 +686,7 @@ plugin.variable_manager.add_listener(variable_change_listener)
 ## 版本历史
 
 ### v1.0.0 (2024-01-15)
+
 - 初始版本发布
 - 支持基本变量存储和管理
 - 支持缓存功能

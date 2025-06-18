@@ -10,7 +10,6 @@ from typing import Dict, Any, List
 import allure
 
 from src.automation.action_types import StepAction
-from src.assertion_manager import assertion_manager  # 导入断言管理器
 
 # 导入命令模式执行器
 from src.automation.command_executor import execute_action_with_command
@@ -20,8 +19,8 @@ from src.automation.flow_control import (
     evaluate_expression,
 )
 from src.automation.module_handler import execute_module
-from utils.logger import logger
 from src.core.services.variable_service import VariableService
+from utils.logger import logger
 
 
 # 导入所有命令类

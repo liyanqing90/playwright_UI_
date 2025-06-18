@@ -53,12 +53,14 @@
 **职责**: 测试执行的总控制器
 
 **核心功能**:
+
 - 解析命令行参数和配置
 - 管理浏览器生命周期
 - 协调测试用例的加载和执行
 - 收集测试结果和生成报告
 
 **关键实现**:
+
 ```python
 class TestCaseGenerator(pytest.Item):
     def __init__(self, module, name, test_cases, datas, **kw):
@@ -78,12 +80,14 @@ class TestCaseGenerator(pytest.Item):
 **职责**: 单个测试用例的执行管理
 
 **核心功能**:
+
 - 解析YAML测试用例定义
 - 管理用例级别的变量和配置
 - 协调测试步骤的执行
 - 处理用例级别的错误和异常
 
 **关键特性**:
+
 - 支持用例依赖管理
 - 支持数据驱动测试
 - 支持用例级别的fixture注入
@@ -93,12 +97,14 @@ class TestCaseGenerator(pytest.Item):
 **职责**: 单个测试步骤的执行
 
 **核心功能**:
+
 - 解析和验证步骤参数
 - 调用相应的命令执行器
 - 管理步骤级别的变量
 - 处理流程控制逻辑
 
 **关键实现**:
+
 ```python
 class StepExecutor:
     def execute_step(self, step: Dict[str, Any]):
@@ -127,6 +133,7 @@ class StepExecutor:
 **核心组件**:
 
 #### 4.1 基础命令类
+
 ```python
 class Command(ABC):
     @abstractmethod
@@ -141,6 +148,7 @@ class Command(ABC):
 ```
 
 #### 4.2 命令注册表
+
 ```python
 class CommandRegistry:
     _commands: Dict[str, Type[Command]] = {}
@@ -156,6 +164,7 @@ class CommandRegistry:
 ```
 
 #### 4.3 命令工厂
+
 ```python
 class CommandFactory:
     @staticmethod
@@ -172,12 +181,14 @@ class CommandFactory:
 **设计模式**: 依赖注入 + 服务定位器
 
 **核心功能**:
+
 - 服务注册和解析
 - 依赖关系管理
 - 生命周期管理
 - 配置驱动的服务装配
 
 **关键实现**:
+
 ```python
 class ServiceContainer:
     def __init__(self):
@@ -200,12 +211,14 @@ class ServiceContainer:
 **设计模式**: 组合模式 + 依赖注入
 
 **核心功能**:
+
 - 封装Playwright页面操作
 - 提供高级API抽象
 - 集成服务容器
 - 支持配置驱动
 
 **关键实现**:
+
 ```python
 class BasePage:
     def __init__(self, page, container=None, service_group="full_page"):
@@ -252,6 +265,7 @@ class ServiceContainerSingleton:
 **应用场景**: 测试步骤操作的封装
 
 **优势**:
+
 - 操作与执行者解耦
 - 支持操作的撤销和重做
 - 便于扩展新操作
@@ -470,6 +484,7 @@ class AssertionService:
 ```
 
 **涵盖的服务模块：**
+
 - ElementService: 元素操作服务
 - NavigationService: 导航服务
 - AssertionService: 断言服务

@@ -5,6 +5,7 @@
 ## 🚀 核心特性
 
 ### 断言类型
+
 - **硬断言 (Hard Assertion)**: 失败时立即停止执行
 - **软断言 (Soft Assertion)**: 失败时记录错误但继续执行
 - **条件断言 (Conditional Assertion)**: 基于条件执行的断言
@@ -14,6 +15,7 @@
 - **自定义断言 (Custom Assertion)**: 使用自定义验证逻辑
 
 ### 断言操作符
+
 - **相等性**: `equals`, `not_equals`
 - **包含性**: `contains`, `not_contains`, `starts_with`, `ends_with`
 - **正则匹配**: `matches`
@@ -24,6 +26,7 @@
 - **长度检查**: `length_equals`, `length_greater`, `length_less`
 
 ### 高级功能
+
 - **统计监控**: 实时跟踪断言执行统计
 - **性能监控**: 监控断言执行时间和性能
 - **报告生成**: 自动生成详细的断言报告
@@ -35,6 +38,7 @@
 ### 基础断言命令
 
 #### 等于断言
+
 ```yaml
 - action: assert_equals
   selector: "#username"
@@ -43,6 +47,7 @@
 ```
 
 #### 包含断言
+
 ```yaml
 - action: assert_contains
   selector: ".message"
@@ -51,6 +56,7 @@
 ```
 
 #### 正则匹配断言
+
 ```yaml
 - action: assert_matches
   selector: "#email"
@@ -59,6 +65,7 @@
 ```
 
 #### 数值比较断言
+
 ```yaml
 - action: assert_greater_than
   selector: "#score"
@@ -67,6 +74,7 @@
 ```
 
 #### 长度断言
+
 ```yaml
 - action: assert_length
   selector: ".items"
@@ -77,6 +85,7 @@
 ### 高级断言命令
 
 #### 软断言
+
 ```yaml
 - action: soft_assert
   selector: "#status"
@@ -86,6 +95,7 @@
 ```
 
 #### 重试断言
+
 ```yaml
 - action: retry_assert
   selector: ".loading"
@@ -96,6 +106,7 @@
 ```
 
 #### 超时断言
+
 ```yaml
 - action: timeout_assert
   selector: ".result"
@@ -105,6 +116,7 @@
 ```
 
 #### 条件断言
+
 ```yaml
 - action: conditional_assert
   condition: "user_type == 'admin'"
@@ -114,6 +126,7 @@
 ```
 
 #### 批量断言
+
 ```yaml
 - action: batch_assert
   assertions:
@@ -128,6 +141,7 @@
 ```
 
 #### 自定义断言
+
 ```yaml
 - action: custom_assert
   selector: "#price"
@@ -138,18 +152,21 @@
 ### 管理命令
 
 #### 检查软断言
+
 ```yaml
 - action: check_soft_assertions
   fail_on_soft_assertion: true
 ```
 
 #### 获取统计信息
+
 ```yaml
 - action: get_assertion_stats
   variable_name: "assertion_stats"
 ```
 
 #### 重置统计信息
+
 ```yaml
 - action: reset_assertion_stats
 ```
@@ -157,6 +174,7 @@
 ## ⚙️ 配置选项
 
 ### 基础配置
+
 ```yaml
 settings:
   enabled: true
@@ -167,6 +185,7 @@ settings:
 ```
 
 ### 断言配置
+
 ```yaml
 assertion:
   default_type: "hard"
@@ -179,6 +198,7 @@ assertion:
 ```
 
 ### 软断言配置
+
 ```yaml
 soft_assertion:
   enabled: true
@@ -189,6 +209,7 @@ soft_assertion:
 ```
 
 ### 重试断言配置
+
 ```yaml
 retry_assertion:
   enabled: true
@@ -199,6 +220,7 @@ retry_assertion:
 ```
 
 ### 性能配置
+
 ```yaml
 performance:
   monitoring_enabled: true
@@ -209,6 +231,7 @@ performance:
 ```
 
 ### 安全配置
+
 ```yaml
 security:
   enabled: true
@@ -221,18 +244,21 @@ security:
 ## 🔧 错误处理
 
 ### 断言失败处理
+
 - **硬断言失败**: 立即抛出 `AssertionError` 并停止执行
 - **软断言失败**: 记录失败信息，继续执行后续步骤
 - **重试断言失败**: 按配置进行重试，最终失败时根据断言类型处理
 - **超时断言失败**: 超时后根据断言类型处理
 
 ### 异常类型
+
 - `AssertionError`: 断言失败
 - `TimeoutError`: 超时断言超时
 - `ValidationError`: 输入验证失败
 - `ConfigurationError`: 配置错误
 
 ### 日志记录
+
 ```python
 # 断言成功
 logger.info("断言成功: assert_equals - 期望 'admin' 等于 'admin'")
@@ -250,18 +276,21 @@ logger.warning("软断言失败: assert_not_empty - 期望 '' 不为空")
 ## 📊 性能考虑
 
 ### 性能优化
+
 - **断言缓存**: 缓存断言结果以提高性能
 - **批量执行**: 支持批量断言以减少开销
 - **异步执行**: 支持异步断言执行
 - **内存管理**: 自动清理过期的断言结果
 
 ### 性能监控
+
 - **执行时间**: 监控每个断言的执行时间
 - **内存使用**: 监控断言过程中的内存使用
 - **慢断言检测**: 自动检测执行时间过长的断言
 - **统计报告**: 生成性能统计报告
 
 ### 性能建议
+
 1. **合理使用重试断言**: 避免过多的重试次数
 2. **优化选择器**: 使用高效的元素选择器
 3. **批量断言**: 对于多个相关断言，使用批量断言
@@ -271,6 +300,7 @@ logger.warning("软断言失败: assert_not_empty - 期望 '' 不为空")
 ## 🔌 扩展开发
 
 ### 自定义断言操作符
+
 ```python
 class CustomAssertionOperator(Enum):
     CUSTOM_OPERATION = "custom_operation"
@@ -281,6 +311,7 @@ def evaluate_custom_operation(actual, expected):
 ```
 
 ### 自定义断言类型
+
 ```python
 class CustomAssertionType(Enum):
     CUSTOM_TYPE = "custom_type"
@@ -291,6 +322,7 @@ def execute_custom_assertion(assertion_id, actual, expected, config):
 ```
 
 ### 自定义验证器
+
 ```python
 def custom_validator(actual, expected):
     """自定义验证器示例"""
@@ -306,6 +338,7 @@ def custom_validator(actual, expected):
 ## 📝 使用场景
 
 ### Web UI 测试
+
 ```yaml
 # 登录页面断言
 - action: assert_equals
@@ -321,6 +354,7 @@ def custom_validator(actual, expected):
 ```
 
 ### API 响应断言
+
 ```yaml
 # API 响应断言
 - action: assert_equals
@@ -337,6 +371,7 @@ def custom_validator(actual, expected):
 ```
 
 ### 数据验证
+
 ```yaml
 # 数据格式验证
 - action: assert_matches
@@ -353,6 +388,7 @@ def custom_validator(actual, expected):
 ```
 
 ### 性能测试断言
+
 ```yaml
 # 性能断言
 - action: timeout_assert
@@ -370,18 +406,21 @@ def custom_validator(actual, expected):
 ## 📋 注意事项
 
 ### 安全性
+
 - **输入验证**: 所有输入都经过严格验证
 - **代码注入防护**: 自定义验证器有安全限制
 - **权限控制**: 支持断言类型和操作符的权限控制
 - **日志安全**: 敏感信息不会记录到日志中
 
 ### 兼容性
+
 - **Python 版本**: 支持 Python 3.10+
 - **Playwright 版本**: 支持 Playwright 1.20.0+
 - **框架版本**: 支持框架 1.0.0+
 - **操作系统**: 支持 Windows、macOS、Linux
 
 ### 可维护性
+
 - **模块化设计**: 清晰的模块结构
 - **配置驱动**: 通过配置文件控制行为
 - **文档完整**: 详细的代码文档和使用说明
@@ -391,6 +430,7 @@ def custom_validator(actual, expected):
 ## 📈 版本历史
 
 ### v1.0.0 (2024-01-15)
+
 - ✨ 初始版本发布
 - ✨ 支持基础断言命令（equals, contains, matches等）
 - ✨ 支持软断言和硬断言

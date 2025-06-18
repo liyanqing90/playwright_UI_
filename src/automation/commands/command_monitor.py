@@ -257,7 +257,7 @@ class CommandMonitor:
             lines.append(f"Total time: {total_time:.2f}s")
             lines.append(f"Total errors: {total_errors}")
             lines.append(
-                f"Overall error rate: {total_errors/total_executions:.2%}"
+                f"Overall error rate: {total_errors / total_executions:.2%}"
                 if total_executions > 0
                 else "Overall error rate: 0%"
             )

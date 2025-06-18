@@ -1291,7 +1291,7 @@ class BatchAssertCommand(BaseAssertCommand):
                 results.append(result)
 
             except Exception as e:
-                logger.error(f"批量断言第 {i+1} 项执行失败: {e}")
+                logger.error(f"批量断言第 {i + 1} 项执行失败: {e}")
 
         # 存储批量断言结果
         if step.get("variable_name"):

@@ -16,6 +16,7 @@
 ## 支持的函数类型
 
 ### 数学函数
+
 - `abs(x)` - 绝对值
 - `round(x)` - 四舍五入
 - `min(...)` - 最小值
@@ -30,6 +31,7 @@
 - `exp(x)` - 指数函数
 
 ### 三角函数
+
 - `sin(x)` - 正弦
 - `cos(x)` - 余弦
 - `tan(x)` - 正切
@@ -38,12 +40,14 @@
 - `atan(x)` - 反正切
 
 ### 类型转换函数
+
 - `int(x)` - 转换为整数
 - `float(x)` - 转换为浮点数
 - `str(x)` - 转换为字符串
 - `bool(x)` - 转换为布尔值
 
 ### 字符串函数
+
 - `upper(s)` - 转大写
 - `lower(s)` - 转小写
 - `strip(s)` - 去除空白
@@ -51,11 +55,13 @@
 - `len(s)` - 获取长度
 
 ### 逻辑函数
+
 - `and_(a, b)` - 逻辑与
 - `or_(a, b)` - 逻辑或
 - `not_(a)` - 逻辑非
 
 ### 比较函数
+
 - `eq(a, b)` - 等于
 - `ne(a, b)` - 不等于
 - `lt(a, b)` - 小于
@@ -64,9 +70,11 @@
 - `ge(a, b)` - 大于等于
 
 ### 条件函数
+
 - `if_(condition, true_val, false_val)` - 条件判断
 
 ### 常量
+
 - `pi` - 圆周率 (3.141592653589793)
 - `e` - 自然常数 (2.718281828459045)
 
@@ -174,11 +182,13 @@
 ### evaluate_expression 命令参数
 
 #### 简单格式
+
 ```yaml
 value: "expression_string"
 ```
 
 #### 完整格式
+
 ```yaml
 value:
   expression: "expression_string"  # 必需：表达式字符串
@@ -210,11 +220,13 @@ value:
 ### get_variable 命令参数
 
 #### 简单格式
+
 ```yaml
 value: "variable_name"
 ```
 
 #### 完整格式
+
 ```yaml
 value:
   name: "variable_name"           # 必需：变量名称

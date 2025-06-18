@@ -119,19 +119,19 @@ commands:
       - "evaluate_expression"
       - "计算表达式"
     description: "计算数学表达式"
-    
+
   register_function:
     action_types:
       - "register_function"
       - "注册函数"
     description: "注册自定义函数"
-    
+
   set_variable:
     action_types:
       - "set_variable"
       - "设置变量"
     description: "设置表达式变量"
-    
+
   get_variable:
     action_types:
       - "get_variable"

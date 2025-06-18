@@ -255,8 +255,11 @@ python test_runner.py --project my_first_test --browser firefox
 # 指定环境
 python test_runner.py --project my_first_test --env test
 ```
+
 # 查看Allure报告
+
 allure serve reports
+
 ```
 
 ## 4. 常用操作示例

@@ -5,8 +5,8 @@ import pytest
 from playwright.async_api import Page
 
 from src.automation.test_case_executor import CaseExecutor
-from utils.logger import logger
 from src.core.services.variable_service import VariableService
+from utils.logger import logger
 
 _DEFAULT_FIXTURES = [
     "page",

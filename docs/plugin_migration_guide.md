@@ -23,12 +23,14 @@
 ### 1. 导入路径更新
 
 **旧的导入方式：**
+
 ```python
 from src.automation.commands.plugin_manager import plugin_manager
 from src.automation.commands.plugin_manager import PluginManager
 ```
 
 **新的导入方式：**
+
 ```python
 # 使用兼容性适配器（推荐用于渐进式迁移）
 from src.core.plugin_compatibility import plugin_manager
@@ -42,6 +44,7 @@ from src.core.interfaces.plugin_interface import PluginInterface
 ### 2. 插件接口更新
 
 **旧的插件结构：**
+
 ```python
 # plugin.py
 def plugin_init():
@@ -60,6 +63,7 @@ class CustomActionCommand(Command):
 ```
 
 **新的插件结构：**
+
 ```python
 # plugin.py
 from src.core.interfaces.plugin_interface import (
@@ -165,6 +169,7 @@ class Plugin(PluginInterface, ConfigurablePlugin, LifecyclePlugin):
 ### 3. 插件元数据更新
 
 **旧的配置格式（JSON）：**
+
 ```json
 {
   "name": "custom_plugin",
@@ -179,6 +184,7 @@ class Plugin(PluginInterface, ConfigurablePlugin, LifecyclePlugin):
 ```
 
 **新的配置格式（YAML）：**
+
 ```yaml
 # metadata.json 或 config.yaml
 plugin:
@@ -208,6 +214,7 @@ configuration:
 ### 4. 服务容器集成
 
 **新插件可以访问核心服务：**
+
 ```python
 class Plugin(PluginInterface):
     def initialize(self, service_container) -> bool:

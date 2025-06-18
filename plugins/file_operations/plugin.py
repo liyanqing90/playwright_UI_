@@ -835,7 +835,7 @@ class BatchOperationCommand(Command):
                     if not continue_on_error:
                         raise
                     else:
-                        logger.warning(f"批量操作第 {i+1} 项失败: {e}")
+                        logger.warning(f"批量操作第 {i + 1} 项失败: {e}")
 
             # 存储结果到变量
             if variable_name:

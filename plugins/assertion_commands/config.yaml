@@ -10,7 +10,7 @@ plugin:
   license: "MIT"
   homepage: "https://github.com/playwright-ui/assertion-commands"
   repository: "https://github.com/playwright-ui/assertion-commands.git"
-  keywords: ["assertion", "testing", "validation", "playwright", "ui-testing"]
+  keywords: [ "assertion", "testing", "validation", "playwright", "ui-testing" ]
 
 # 插件通用设置
 settings:
@@ -221,7 +221,7 @@ reporting:
   enabled: true
   
   # 报告格式
-  formats: ["json", "html", "xml"]
+  formats: [ "json", "html", "xml" ]
   
   # 自动生成报告
   auto_generate: true
@@ -282,7 +282,7 @@ security:
     - "custom"
   
   # 禁用的操作符
-  forbidden_operators: []
+  forbidden_operators: [ ]
   
   # 最大断言深度
   max_assertion_depth: 10
@@ -298,7 +298,7 @@ commands:
   # 基础断言命令
   assert_equals:
     action: "ASSERT_EQUALS"
-    aliases: ["assertEquals", "equal", "eq"]
+    aliases: [ "assertEquals", "equal", "eq" ]
     description: "断言两个值相等"
     parameters:
       selector:
@@ -344,7 +344,7 @@ commands:
 
   assert_not_equals:
     action: "ASSERT_NOT_EQUALS"
-    aliases: ["assertNotEquals", "notEqual", "ne"]
+    aliases: [ "assertNotEquals", "notEqual", "ne" ]
     description: "断言两个值不相等"
     parameters:
       selector:
@@ -375,7 +375,7 @@ commands:
 
   assert_contains:
     action: "ASSERT_CONTAINS"
-    aliases: ["assertContains", "contains"]
+    aliases: [ "assertContains", "contains" ]
     description: "断言包含指定内容"
     parameters:
       selector:
@@ -407,7 +407,7 @@ commands:
 
   assert_not_contains:
     action: "ASSERT_NOT_CONTAINS"
-    aliases: ["assertNotContains", "notContains"]
+    aliases: [ "assertNotContains", "notContains" ]
     description: "断言不包含指定内容"
     parameters:
       selector:
@@ -434,7 +434,7 @@ commands:
 
   assert_starts_with:
     action: "ASSERT_STARTS_WITH"
-    aliases: ["assertStartsWith", "startsWith"]
+    aliases: [ "assertStartsWith", "startsWith" ]
     description: "断言以指定内容开头"
     parameters:
       selector:
@@ -461,7 +461,7 @@ commands:
 
   assert_ends_with:
     action: "ASSERT_ENDS_WITH"
-    aliases: ["assertEndsWith", "endsWith"]
+    aliases: [ "assertEndsWith", "endsWith" ]
     description: "断言以指定内容结尾"
     parameters:
       selector:
@@ -488,7 +488,7 @@ commands:
 
   assert_matches:
     action: "ASSERT_MATCHES"
-    aliases: ["assertMatches", "matches", "regex"]
+    aliases: [ "assertMatches", "matches", "regex" ]
     description: "断言匹配正则表达式"
     parameters:
       selector:
@@ -515,7 +515,7 @@ commands:
 
   assert_greater_than:
     action: "ASSERT_GREATER_THAN"
-    aliases: ["assertGreaterThan", "gt"]
+    aliases: [ "assertGreaterThan", "gt" ]
     description: "断言大于指定值"
     parameters:
       selector:
@@ -542,7 +542,7 @@ commands:
 
   assert_less_than:
     action: "ASSERT_LESS_THAN"
-    aliases: ["assertLessThan", "lt"]
+    aliases: [ "assertLessThan", "lt" ]
     description: "断言小于指定值"
     parameters:
       selector:
@@ -569,7 +569,7 @@ commands:
 
   assert_in:
     action: "ASSERT_IN"
-    aliases: ["assertIn", "in"]
+    aliases: [ "assertIn", "in" ]
     description: "断言值在指定集合中"
     parameters:
       selector:
@@ -596,7 +596,7 @@ commands:
 
   assert_not_in:
     action: "ASSERT_NOT_IN"
-    aliases: ["assertNotIn", "notIn"]
+    aliases: [ "assertNotIn", "notIn" ]
     description: "断言值不在指定集合中"
     parameters:
       selector:
@@ -623,7 +623,7 @@ commands:
 
   assert_empty:
     action: "ASSERT_EMPTY"
-    aliases: ["assertEmpty", "empty"]
+    aliases: [ "assertEmpty", "empty" ]
     description: "断言值为空"
     parameters:
       selector:
@@ -646,7 +646,7 @@ commands:
 
   assert_not_empty:
     action: "ASSERT_NOT_EMPTY"
-    aliases: ["assertNotEmpty", "notEmpty"]
+    aliases: [ "assertNotEmpty", "notEmpty" ]
     description: "断言值不为空"
     parameters:
       selector:
@@ -669,7 +669,7 @@ commands:
 
   assert_null:
     action: "ASSERT_NULL"
-    aliases: ["assertNull", "null"]
+    aliases: [ "assertNull", "null" ]
     description: "断言值为null"
     parameters:
       selector:
@@ -692,7 +692,7 @@ commands:
 
   assert_not_null:
     action: "ASSERT_NOT_NULL"
-    aliases: ["assertNotNull", "notNull"]
+    aliases: [ "assertNotNull", "notNull" ]
     description: "断言值不为null"
     parameters:
       selector:
@@ -715,7 +715,7 @@ commands:
 
   assert_true:
     action: "ASSERT_TRUE"
-    aliases: ["assertTrue", "true"]
+    aliases: [ "assertTrue", "true" ]
     description: "断言值为true"
     parameters:
       selector:
@@ -738,7 +738,7 @@ commands:
 
   assert_false:
     action: "ASSERT_FALSE"
-    aliases: ["assertFalse", "false"]
+    aliases: [ "assertFalse", "false" ]
     description: "断言值为false"
     parameters:
       selector:
@@ -761,7 +761,7 @@ commands:
 
   assert_length:
     action: "ASSERT_LENGTH"
-    aliases: ["assertLength", "length"]
+    aliases: [ "assertLength", "length" ]
     description: "断言长度"
     parameters:
       selector:
@@ -794,7 +794,7 @@ commands:
   # 高级断言命令
   soft_assert:
     action: "SOFT_ASSERT"
-    aliases: ["softAssert", "soft"]
+    aliases: [ "softAssert", "soft" ]
     description: "软断言（失败时不停止执行）"
     parameters:
       selector:
@@ -825,7 +825,7 @@ commands:
 
   hard_assert:
     action: "HARD_ASSERT"
-    aliases: ["hardAssert", "hard"]
+    aliases: [ "hardAssert", "hard" ]
     description: "硬断言（失败时立即停止）"
     parameters:
       selector:
@@ -856,7 +856,7 @@ commands:
 
   conditional_assert:
     action: "CONDITIONAL_ASSERT"
-    aliases: ["conditionalAssert", "conditional"]
+    aliases: [ "conditionalAssert", "conditional" ]
     description: "条件断言（基于条件执行）"
     parameters:
       condition:
@@ -891,7 +891,7 @@ commands:
 
   batch_assert:
     action: "BATCH_ASSERT"
-    aliases: ["batchAssert", "batch"]
+    aliases: [ "batchAssert", "batch" ]
     description: "批量断言"
     parameters:
       assertions:
@@ -905,7 +905,7 @@ commands:
 
   retry_assert:
     action: "RETRY_ASSERT"
-    aliases: ["retryAssert", "retry"]
+    aliases: [ "retryAssert", "retry" ]
     description: "重试断言"
     parameters:
       selector:
@@ -946,7 +946,7 @@ commands:
 
   timeout_assert:
     action: "TIMEOUT_ASSERT"
-    aliases: ["timeoutAssert", "timeout"]
+    aliases: [ "timeoutAssert", "timeout" ]
     description: "超时断言"
     parameters:
       selector:
@@ -982,7 +982,7 @@ commands:
 
   custom_assert:
     action: "CUSTOM_ASSERT"
-    aliases: ["customAssert", "custom"]
+    aliases: [ "customAssert", "custom" ]
     description: "自定义断言"
     parameters:
       selector:
@@ -1013,7 +1013,7 @@ commands:
   # 管理命令
   check_soft_assertions:
     action: "CHECK_SOFT_ASSERTIONS"
-    aliases: ["checkSoftAssertions", "checkSoft"]
+    aliases: [ "checkSoftAssertions", "checkSoft" ]
     description: "检查软断言结果"
     parameters:
       fail_on_soft_assertion:
@@ -1028,7 +1028,7 @@ commands:
 
   get_assertion_stats:
     action: "GET_ASSERTION_STATS"
-    aliases: ["getAssertionStats", "stats"]
+    aliases: [ "getAssertionStats", "stats" ]
     description: "获取断言统计信息"
     parameters:
       variable_name:
@@ -1038,9 +1038,9 @@ commands:
 
   reset_assertion_stats:
     action: "RESET_ASSERTION_STATS"
-    aliases: ["resetAssertionStats", "resetStats"]
+    aliases: [ "resetAssertionStats", "resetStats" ]
     description: "重置断言统计信息"
-    parameters: {}
+    parameters: { }
 
 # 使用示例
 examples:
@@ -1051,14 +1051,14 @@ examples:
         selector: "#username"
         expected_value: "admin"
         message: "用户名应该是admin"
-    
+
     - name: "包含断言"
       command: "assert_contains"
       parameters:
         selector: ".message"
         expected_value: "成功"
         ignore_case: true
-    
+
     - name: "正则匹配断言"
       command: "assert_matches"
       parameters:
@@ -1074,7 +1074,7 @@ examples:
         operator: "equals"
         expected_value: "active"
         message: "状态应该是active"
-    
+
     - name: "重试断言"
       command: "retry_assert"
       parameters:
@@ -1083,7 +1083,7 @@ examples:
         expected_value: "loading"
         retry_count: 5
         retry_interval: 2.0
-    
+
     - name: "超时断言"
       command: "timeout_assert"
       parameters:
@@ -1091,7 +1091,7 @@ examples:
         operator: "not_empty"
         timeout: 30.0
         message: "30秒内应该有结果"
-    
+
     - name: "条件断言"
       command: "conditional_assert"
       parameters:
@@ -1099,7 +1099,7 @@ examples:
         selector: ".admin-panel"
         operator: "not_empty"
         message: "管理员应该能看到管理面板"
-    
+
     - name: "批量断言"
       command: "batch_assert"
       parameters:
@@ -1112,7 +1112,7 @@ examples:
           - selector: ".footer"
             operator: "contains"
             expected_value: "版权所有"
-    
+
     - name: "自定义断言"
       command: "custom_assert"
       parameters:
@@ -1125,15 +1125,15 @@ examples:
       command: "check_soft_assertions"
       parameters:
         fail_on_soft_assertion: true
-    
+
     - name: "获取统计信息"
       command: "get_assertion_stats"
       parameters:
         variable_name: "assertion_stats"
-    
+
     - name: "重置统计信息"
       command: "reset_assertion_stats"
-      parameters: {}
+      parameters: { }
 
 # 依赖项
 dependencies:
